@@ -259,34 +259,38 @@ pip freeze > requirements.txt
 - Task 1은 정량 평가이므로 Task 2/3 응답 생성과 실행 경로를 분리하는 것을 우선 검토한다.
 - Task 1 모델 선택 기준은 모델 크기가 아니라 F1 Score, 클래스별 성능, 추론 시간, 모델 파일 크기, Colab/평가 환경 재현성이다.
 - Task 2와 Task 3는 같은 응답 파이프라인을 공유할 수 있으나, Task 3는 실시간 정보 조회 실패 시 기본 응답으로 fallback할 수 있어야 한다.
+- 구현 계획은 `docs/project_architecture_plan.md`를 따른다.
+- UI는 Gradio로 구현한다.
+- Task 3는 최소 구현으로 진행한다.
+- 최종 제출 환경은 Colab 기준 Python 3.10.12와 과제 문서의 `torch 2.5.1`을 우선한다.
+- 로컬 Windows XPU의 `torch 2.9.1+xpu`는 개발용 환경으로만 유지한다.
+- Task 2/3의 기본 generator 목표는 Qwen3.5-9B로 두되, Colab T4 실측 실패 또는 batch 안정성 부족 시 deterministic composer fallback을 사용한다.
+- 최종 inference time에는 외부 LLM API, MCP, full tool-call agent를 사용하지 않는다.
 
 ## 8. 미확정 질문
 
 다음 조건은 아직 명확하지 않으며, 추후 확인 또는 설계 시 결정이 필요하다.
 
-1. Task 1 분류 모델을 어느 수준의 모델로 구현할 것인가?
-   - 가벼운 분류 모델로 충분한지, 더 큰 언어모델 또는 임베딩 기반 접근이 필요한지는 실험으로 결정해야 한다.
-   - 후보군은 TF-IDF + Logistic Regression/SVM, KLUE/BERT 계열 fine-tuning, 임베딩 기반 분류, LLM prompting 분류 등을 비교할 수 있다.
+1. Qwen3.5-9B가 Colab T4에서 안정적으로 동작하는가?
+   - `context 4096`, peak VRAM 14.5GB 이하, 10개 대표 질문 batch 10분 이내를 1차 기준으로 본다.
+   - 통과하지 못하면 deterministic composer fallback을 제출 기본 경로로 유지한다.
 
-2. Task 2에 RAG를 기본 적용할 것인가?
-   - RAG를 사용하면 학교 정보 기반 응답의 정확성과 사실성을 높일 수 있다.
-   - 반면 구현 복잡도, 데이터 정제, 제출 환경 재현성 리스크가 증가한다.
+2. 식단 source의 parser와 공식 연결고리는 충분히 검증되는가?
+   - `mobileadmin.cnu.ac.kr/food/index.jsp`와 `cnucoop.co.kr`를 후보 source로 둔다.
+   - date parameter, encoding, 공식 link chain을 확인해야 한다.
 
-3. Task 3를 RAG + tool call로 구현할 것인가?
-   - 실시간 정보 반영에는 tool call 또는 crawling이 자연스럽다.
-   - 단, 네트워크 실패와 평가 환경 차이를 고려해 fallback 전략이 필요하다.
-
-4. `chatbot.sh`의 책임 범위는 어디까지인가?
-   - UI 실행만 담당하는지, `chat_output.json`과 `realtime_output.json` 생성까지 담당해야 하는지 명확하지 않다.
-   - 문서상 평가 시 `classifier.ipynb`와 `chatbot.sh`만 실행한다고 되어 있으므로, 보수적으로는 `chatbot.sh`가 JSON 생성까지 지원해야 한다.
+3. 졸업요건 답변 범위는 어디까지로 제한할 것인가?
+   - CNU 공통 교육과정 PDF를 기본 source로 둔다.
+   - 학과별 졸업요건은 selected department supplementary로만 사용할지 결정해야 한다.
 
 ## 9. 다음 단계
 
 이 문서를 기준으로 다음을 순서대로 결정한다.
 
-1. Task 1 후보 모델과 실험 기준
-2. Task 2의 기본 응답 생성 구조
-3. RAG 적용 여부와 범위
-4. Task 3 optional 구현 여부
-5. 최종 디렉터리 구조와 실행 명령
-6. README와 제출 체크리스트
+1. `docs/project_architecture_plan.md`를 기준으로 구현 계획을 세분화한다.
+2. `src/classifier.ipynb`, root `chatbot.sh`, schema validator를 먼저 만든다.
+3. 공식 CNU source를 수집하고 raw snapshot과 verification metadata를 남긴다.
+4. Task 1 classification dataset을 구축하고 self-consistency labeling audit을 남긴다.
+5. Task 1 baseline classifier를 학습하고 F1을 측정한다.
+6. Task 2 Gradio UI와 batch JSON output 경로를 구현한다.
+7. Task 3 최소 realtime/fallback 경로를 구현한다.
