@@ -49,6 +49,7 @@ class ClassificationExample(BaseModel):
     source_doc_id: str | None = None
     generation_method: Literal["manual", "template", "augmented", "self_consistency", "dry_run"] = "dry_run"
     validated: bool = False
+    metadata: dict[str, Any] = Field(default_factory=dict)
 
 
 class LabelAudit(BaseModel):

@@ -33,3 +33,26 @@
   - all validator commands printed `validation-ok`
 - gate:
   - pass: all commands exited 0
+
+## Phase 1.0 Machine-Checked Quality Gates
+
+- status: pass
+- changed_files:
+  - `src/nlp_term/validators.py`
+  - `src/nlp_term/schemas.py`
+- command:
+  - `uv run python -m nlp_term.validators --help`
+  - `uv run python -m compileall src\nlp_term\validators.py src\nlp_term\schemas.py`
+  - `uv run ruff check src\nlp_term\validators.py src\nlp_term\schemas.py`
+- additional_sanity:
+  - `uv run python -m nlp_term.validators --seed-data --data-dir data`
+  - `uv run python -m nlp_term.validators --dataset-quality --data-dir data --no-dry-run --require-validated --require-qa-source`
+- result:
+  - help output includes the planned validator modes
+  - compileall exited 0
+  - ruff reported `All checks passed!`
+  - additional seed/dataset validator sanity checks printed `validation-ok`
+  - after critic feedback, classifier metrics validation now requires `split_strategy`, `label_distribution`, and source id or source hash evidence
+  - after critic feedback, runtime knowledge consistency now fails unless composer, batch, and UI expose the planned shared knowledge path boundary
+- gate:
+  - pass: validator CLI now exposes machine-checkable quality modes for later phases
