@@ -5,12 +5,15 @@ description = "Campus ChatBot term project environment and utilities."
 requires-python = ">=3.10.12,<3.11"
 dependencies = [
   "beautifulsoup4",
+  "gradio",
   "ipykernel",
+  "jedi<0.20",
   "jupyter",
   "lxml",
   "numpy",
   "pandas",
   "pydantic",
+  "python-dateutil",
   "pyyaml",
   "requests",
   "scikit-learn",
