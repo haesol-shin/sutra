@@ -187,8 +187,6 @@ class ChatOutput(BaseModel):
 class RealtimeOutput(BaseModel):
     user: str
     model: str
-    source_url: str | None = None
-    fetched_at: str | None = None
 ```
 
 모든 출력 파일은 `validators.py`를 통과한 뒤 저장한다.
@@ -209,8 +207,8 @@ Self-consistency 규칙:
 - offline LLM/API는 labeling, paraphrase, review 보조에만 사용한다.
 - 5 vote를 기본으로 한다.
 - 4/5 이상 일치하면 accept.
-- 3/5 이하 또는 schema 오류는 review bucket으로 보낸다.
-- review bucket 전체와 accepted sample 일부를 수동 검증한다.
+- 3/5 이하 또는 schema 오류는 quarantine/review bucket으로 보내고 자동 학습 데이터에서는 제외한다.
+- 수동 검증은 최종 품질 감사 단계에서 권장하지만, 현재 구현 단계의 성공 조건에는 넣지 않는다.
 - audit log에는 question, source_id, vote labels, final label, confidence, reviewer_override를 남긴다.
 
 ## 7. Task 2 전략

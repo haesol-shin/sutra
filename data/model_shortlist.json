@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Qwen/Qwen3.5-9B",
+    "task": "task2",
+    "max_params_b": 9.0,
+    "status": "primary",
+    "reason": "9B upper-bound generator candidate for source-grounded Korean campus QA; requires T4 quantization proof before final runtime use.",
+    "source_url": "https://huggingface.co/Qwen/Qwen3.5-9B"
+  },
+  {
+    "name": "Qwen/Qwen3.5-4B",
+    "task": "task2",
+    "max_params_b": 4.0,
+    "status": "candidate",
+    "reason": "Smaller fallback candidate if Qwen3.5-9B fails 15GB VRAM or latency checks.",
+    "source_url": "https://huggingface.co/docs/transformers/model_doc/qwen3_5"
+  },
+  {
+    "name": "Gemma4 E4B instruction-tuned variant",
+    "task": "task2",
+    "max_params_b": 4.0,
+    "status": "candidate",
+    "reason": "Current <=9B alternative with 128K context in the small Gemma4 family; needs Korean campus QA evaluation before use.",
+    "source_url": "https://huggingface.co/docs/transformers/model_doc/gemma4"
+  },
+  {
+    "name": "EXAONE-4.0-1.2B",
+    "task": "task2",
+    "max_params_b": 1.2,
+    "status": "reference",
+    "reason": "Korean-capable recent EXAONE family member, but likely too small to replace Qwen3.5-9B for answer generation without experiments.",
+    "source_url": "https://huggingface.co/docs/transformers/model_doc/exaone4"
+  },
+  {
+    "name": "EXAONE-4.5-33B",
+    "task": "task2",
+    "max_params_b": 33.0,
+    "status": "cut",
+    "reason": "Recent Korean-relevant model, but exceeds the 9B and 15GB VRAM constraints for this project.",
+    "source_url": "https://huggingface.co/docs/transformers/main/en/model_doc/exaone4_5"
+  }
+]

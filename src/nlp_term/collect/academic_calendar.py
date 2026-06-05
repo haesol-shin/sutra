@@ -1,12 +1,14 @@
 from __future__ import annotations
 
-from nlp_term.collect.base import build_stub_source, verify_stub
+from nlp_term.collect.base import build_stub_source, fetch_source, verify_stub
 
 
 URL = "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr"
 
 
-def collect():
+def collect(*, fetch: bool = False):
+    if fetch:
+        return [fetch_source("academic_calendar", 2, "academic_calendar", URL)]
     return [build_stub_source("academic_calendar", 2, "academic_calendar", URL)]
 
 

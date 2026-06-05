@@ -11,10 +11,10 @@ from nlp_term.paths import ensure_parent
 COLLECTORS = [graduation, notices, academic_calendar, dining, shuttle]
 
 
-def run_probe(output_path: Path) -> None:
+def run_probe(output_path: Path, *, fetch: bool = False) -> None:
     rows = []
     for module in COLLECTORS:
-        for raw in module.collect():
+        for raw in module.collect(fetch=fetch):
             verification = module.verify(raw)
             rows.append({"raw": raw.model_dump(), "verification": verification.model_dump()})
     ensure_parent(output_path)
@@ -26,8 +26,9 @@ def run_probe(output_path: Path) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Write source probe metadata without final labeling decisions.")
     parser.add_argument("--output", type=Path, default=Path("data/sources/source_probe.json"))
+    parser.add_argument("--fetch", action="store_true", help="Download raw source snapshots before writing metadata.")
     args = parser.parse_args()
-    run_probe(args.output)
+    run_probe(args.output, fetch=args.fetch)
     print(f"wrote {args.output}")
 
 

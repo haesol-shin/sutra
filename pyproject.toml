@@ -8,6 +8,7 @@ dependencies = [
   "gradio",
   "ipykernel",
   "jedi<0.20",
+  "joblib",
   "jupyter",
   "lxml",
   "numpy",

@@ -47,8 +47,44 @@ class ClassificationExample(BaseModel):
     question: str
     label: int = Field(ge=0, le=4)
     source_doc_id: str | None = None
-    generation_method: Literal["manual", "template", "augmented", "dry_run"] = "dry_run"
+    generation_method: Literal["manual", "template", "augmented", "self_consistency", "dry_run"] = "dry_run"
     validated: bool = False
+
+
+class LabelAudit(BaseModel):
+    question: str
+    source_doc_id: str
+    vote_labels: list[int] = Field(min_length=1)
+    final_label: int = Field(ge=0, le=4)
+    confidence: float = Field(ge=0.0, le=1.0)
+    decision: Literal["accept", "review", "reject"]
+    reviewer_override: int | None = Field(default=None, ge=0, le=4)
+
+
+class QAExample(BaseModel):
+    user: str
+    model: str
+    source_doc_id: str
+    source_url: str
+    label: int = Field(ge=0, le=4)
+    validated: bool = False
+
+
+class RetrievedDoc(BaseModel):
+    doc_id: str
+    score: float
+    title: str
+    source_url: str
+    label: int = Field(ge=0, le=4)
+
+
+class ModelCandidate(BaseModel):
+    name: str
+    task: Literal["task1", "task2", "task3"]
+    max_params_b: float
+    status: Literal["primary", "candidate", "cut", "reference"]
+    reason: str
+    source_url: str | None = None
 
 
 class ClassificationInput(BaseModel):

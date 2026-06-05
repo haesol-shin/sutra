@@ -1,0 +1,72 @@
+[
+  {
+    "question": "졸업하려면 몇 학점을 들어야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_scope",
+    "generation_method": "template",
+    "validated": true
+  },
+  {
+    "question": "전공 학점 졸업요건을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_scope",
+    "generation_method": "template",
+    "validated": true
+  },
+  {
+    "question": "최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_scope",
+    "generation_method": "template",
+    "validated": true
+  },
+  {
+    "question": "장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_scope",
+    "generation_method": "template",
+    "validated": true
+  },
+  {
+    "question": "이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_scope",
+    "generation_method": "template",
+    "validated": true
+  },
+  {
+    "question": "수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_scope",
+    "generation_method": "template",
+    "validated": true
+  },
+  {
+    "question": "오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "dining_scope",
+    "generation_method": "template",
+    "validated": true
+  },
+  {
+    "question": "이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "dining_scope",
+    "generation_method": "template",
+    "validated": true
+  },
+  {
+    "question": "셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_scope",
+    "generation_method": "template",
+    "validated": true
+  },
+  {
+    "question": "통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_scope",
+    "generation_method": "template",
+    "validated": true
+  }
+]

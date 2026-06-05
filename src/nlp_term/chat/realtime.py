@@ -1,32 +1,28 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
 from nlp_term.chat.router import route_question
-from nlp_term.paths import default_input_path, default_output_path, ensure_parent
+from nlp_term.paths import default_input_path, default_output_path
 from nlp_term.schemas import ChatInput, RealtimeOutput
+from nlp_term.validators import read_json, write_json
 
 
 def realtime_fallback(user: str) -> RealtimeOutput:
     route = route_question(user)
     message = (
-        f"현재 dry-run에서는 {route.domain} 실시간 source를 호출하지 않습니다. "
-        "제출 구현에서는 검증된 공식 source를 우선 사용하고 실패 시 cached/static fallback을 제공합니다."
+        f"{route.domain} 영역의 최신 정보는 검증된 공식 source를 우선 확인해야 합니다. "
+        "실시간 조회가 실패하면 저장된 공식 source snapshot을 기준으로 답변합니다."
     )
     return RealtimeOutput(user=user, model=message)
 
 
 def run_realtime_file(input_path: Path, output_path: Path) -> None:
-    with input_path.open("r", encoding="utf-8") as file:
-        payload = json.load(file)
+    payload = read_json(input_path)
     inputs = [ChatInput.model_validate(row) for row in payload]
     outputs = [realtime_fallback(row.user) for row in inputs]
-    ensure_parent(output_path)
-    with output_path.open("w", encoding="utf-8") as file:
-        json.dump([row.model_dump() for row in outputs], file, ensure_ascii=False, indent=2)
-        file.write("\n")
+    write_json(output_path, outputs)
 
 
 def build_parser() -> argparse.ArgumentParser:

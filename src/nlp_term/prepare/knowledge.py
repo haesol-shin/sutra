@@ -1,0 +1,66 @@
+from __future__ import annotations
+
+from nlp_term.schemas import KnowledgeDoc
+
+
+SEED_DOCS: list[KnowledgeDoc] = [
+    KnowledgeDoc(
+        doc_id="graduation_curriculum_scope",
+        label=0,
+        domain="graduation",
+        title="졸업요건 안내",
+        body="졸업요건 질문은 졸업학점, 전공/교양 이수구분, 수료와 졸업 가능 여부를 확인하는 범위로 분류한다.",
+        source_url="https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+        source_id="graduation_curriculum_pdf",
+        section="seed_scope",
+        metadata={"parser": "seed"},
+    ),
+    KnowledgeDoc(
+        doc_id="academic_notice_scope",
+        label=1,
+        domain="notices",
+        title="학사 공지 안내",
+        body="학교 공지사항 질문은 장학, 모집, 학사정보 게시판, 학교에서 게시한 안내문과 최신 공지 확인 요청을 포함한다.",
+        source_url="https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+        source_id="academic_notice_board",
+        section="seed_scope",
+        metadata={"parser": "seed"},
+    ),
+    KnowledgeDoc(
+        doc_id="academic_calendar_scope",
+        label=2,
+        domain="academic_calendar",
+        title="학사일정 안내",
+        body="학사일정 질문은 수강신청, 수강정정, 개강, 종강, 휴학, 복학, 학기 주요 일정을 확인하는 범위다.",
+        source_url="https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+        source_id="academic_calendar",
+        section="seed_scope",
+        metadata={"parser": "seed"},
+    ),
+    KnowledgeDoc(
+        doc_id="dining_scope",
+        label=3,
+        domain="dining",
+        title="식단 안내",
+        body="식단 질문은 학생식당, 교내 식당, 아침, 점심, 저녁 메뉴와 특정 날짜의 학식 확인 요청을 포함한다.",
+        source_url="https://mobileadmin.cnu.ac.kr/food/index.jsp",
+        source_id="cnu_mobile_food",
+        section="seed_scope",
+        metadata={"parser": "seed"},
+    ),
+    KnowledgeDoc(
+        doc_id="shuttle_scope",
+        label=4,
+        domain="shuttle",
+        title="통학 및 셔틀버스 안내",
+        body="통학과 셔틀버스 질문은 운행 시간표, 정류장 위치, 노선, 운행 여부와 버스 관련 안내를 포함한다.",
+        source_url="https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+        source_id="shuttle_bus",
+        section="seed_scope",
+        metadata={"parser": "seed"},
+    ),
+]
+
+
+def build_seed_knowledge() -> list[KnowledgeDoc]:
+    return SEED_DOCS

@@ -1,0 +1,42 @@
+[
+  {
+    "user": "졸업요건 안내에 대해 알려줘.",
+    "model": "졸업요건은 학과와 입학연도에 따라 달라질 수 있어 공식 졸업요건 자료를 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+    "source_doc_id": "graduation_curriculum_scope",
+    "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+    "label": 0,
+    "validated": true
+  },
+  {
+    "user": "학사 공지 안내에 대해 알려줘.",
+    "model": "공지사항은 충남대학교 공식 학사정보 게시판 기준으로 확인하는 것이 안전합니다. 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+    "source_doc_id": "academic_notice_scope",
+    "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+    "label": 1,
+    "validated": true
+  },
+  {
+    "user": "학사일정 안내에 대해 알려줘.",
+    "model": "학사일정은 공식 학사일정 페이지의 해당 학기 일정을 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_doc_id": "academic_calendar_scope",
+    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "label": 2,
+    "validated": true
+  },
+  {
+    "user": "식단 안내에 대해 알려줘.",
+    "model": "식단은 교내 식단 페이지의 날짜별 메뉴를 기준으로 확인해야 합니다. 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "source_doc_id": "dining_scope",
+    "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "label": 3,
+    "validated": true
+  },
+  {
+    "user": "통학 및 셔틀버스 안내에 대해 알려줘.",
+    "model": "셔틀과 통학버스 정보는 공식 시간표와 운행 안내를 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "source_doc_id": "shuttle_scope",
+    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "label": 4,
+    "validated": true
+  }
+]
