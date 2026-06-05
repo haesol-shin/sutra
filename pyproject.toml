@@ -1,0 +1,46 @@
+[project]
+name = "nlp-term"
+version = "0.1.0"
+description = "Campus ChatBot term project environment and utilities."
+requires-python = ">=3.10.12,<3.11"
+dependencies = [
+  "beautifulsoup4",
+  "ipykernel",
+  "jupyter",
+  "lxml",
+  "numpy",
+  "pandas",
+  "pydantic",
+  "pyyaml",
+  "requests",
+  "scikit-learn",
+  "tqdm",
+]
+
+[project.optional-dependencies]
+xpu = [
+  "torch==2.9.1",
+  "pytorch-triton-xpu==3.5.0",
+]
+
+[dependency-groups]
+dev = [
+  "pytest",
+  "ruff",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.uv.sources]
+torch = { index = "pytorch-xpu" }
+pytorch-triton-xpu = { index = "pytorch-xpu" }
+
+[[tool.uv.index]]
+name = "pytorch-xpu"
+url = "https://download.pytorch.org/whl/xpu"
+explicit = true
