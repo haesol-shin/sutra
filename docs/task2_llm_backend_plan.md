@@ -23,10 +23,11 @@ Task 2의 기본 응답 생성 후보는 로컬 LLM이다. 목표 설정은 다�
 - GPU: Intel(R) Arc(TM) 130V GPU (16GB)
 - Driver: 32.0.101.8826
 - CUDA/NVIDIA backend: `nvidia-smi` 없음
-- PyTorch/Transformers stack: 현재 `uv` 환경에는 `torch`, `transformers`, `accelerate`, `bitsandbytes`, `vllm`, `llama_cpp`가 설치되어 있지 않음
+- PyTorch XPU: `uv sync --extra xpu` 후 `torch 2.9.1+xpu`, `torch.xpu.is_available() == True`, XPU total memory 약 16837MB 확인
+- Transformers/runtime stack: 현재 `uv` 환경에는 `transformers`, `accelerate`, `bitsandbytes`, `vllm`, `llama_cpp`가 설치되어 있지 않음
 - Level Zero SDK: `LEVEL_ZERO_V1_SDK_PATH` 존재
 
-따라서 로컬 검증 기준에서는 CUDA 전용 경로를 기본 백엔드로 둘 수 없다. Intel Arc/XPU 또는 Intel GPU를 지원하는 GGUF runner 계열을 먼저 검증한다.
+따라서 로컬 검증 기준에서는 CUDA 전용 경로를 기본 백엔드로 둘 수 없다. 우선순위는 `PyTorch XPU + Transformers` smoke, 그 다음 `vLLM XPU` 또는 Intel GPU 지원 GGUF runner 검증이다.
 
 ## Backend 후보
 
@@ -36,7 +37,7 @@ Task 2의 기본 응답 생성 후보는 로컬 LLM이다. 목표 설정은 다�
 
 - Python 코드와 직접 통합하기 쉽다.
 - 로컬 머신의 Intel Arc/XPU 방향과 맞다.
-- PyTorch 문서는 Intel Client GPU에 대한 XPU 지원과 `torch.xpu.is_available()` 확인 경로를 제공한다.
+- PyTorch 문서는 Intel Client GPU에 대한 XPU 지원과 `torch.xpu.is_available()` 확인 경로를 제공하며, 현재 로컬에서 이 경로가 실제로 통과했다.
 
 검증 필요:
 
@@ -44,7 +45,22 @@ Task 2의 기본 응답 생성 후보는 로컬 LLM이다. 목표 설정은 다�
 - FP8 KV cache를 이 경로에서 정확히 설정할 수 있는가.
 - 정확한 FP8 KV가 안 되면 가장 가까운 지원 설정과 품질/VRAM 차이를 기록한다.
 
-### 2. GGUF runner with Intel GPU backend
+### 2. vLLM XPU
+
+장점:
+
+- Qwen3.5 model card는 vLLM/SGLang/Transformers 호환성을 명시한다.
+- vLLM 문서는 Intel GPU/XPU backend를 제공한다.
+- vLLM XPU platform 문서는 `VLLM_ATTENTION_BACKEND=TRITON_ATTN`일 때 `fp8_e4m3`, `fp8_e5m2`, `fp8` KV cache dtype을 지원한다고 명시한다.
+- vLLM quantization 표는 Intel GPU에서 AWQ/GPTQ를 지원 대상으로 표시한다.
+
+검증 필요:
+
+- 로컬 Windows에서 vLLM XPU 설치가 가능한가. 공식 XPU 설치 문서는 Linux/oneAPI 중심이므로 Windows local proof가 막힐 수 있다.
+- Qwen3.5-9B INT4 artifact가 vLLM XPU의 Intel GPU 지원 quantization 경로와 맞는가.
+- `VLLM_ATTENTION_BACKEND=TRITON_ATTN` + `kv_cache_dtype=fp8` 조합으로 context 2048/4096을 통과하는가.
+
+### 3. GGUF runner with Intel GPU backend
 
 장점:
 
@@ -57,19 +73,6 @@ Task 2의 기본 응답 생성 후보는 로컬 LLM이다. 목표 설정은 다�
 - Qwen3.5-9B quantized artifact가 텍스트 QA에 충분히 안정적인가.
 - runner가 정확한 FP8 KV cache를 지원하는지, 아니면 Q8/Q4 등 다른 KV cache quantization만 지원하는지 확인한다.
 - exact FP8 KV가 아니면 `nearest_supported_kv_cache`로 기록하고, INT4 weight + nearest KV 기준으로 별도 비교한다.
-
-### 3. vLLM
-
-장점:
-
-- Qwen3.5 model card는 vLLM/SGLang/Transformers 호환성을 명시한다.
-- vLLM 문서는 FP8 KV cache 설정을 제공한다.
-
-제약:
-
-- vLLM FP8 KV 문서는 CUDA/ROCm 중심 지원을 명시한다.
-- 현재 로컬 머신에는 CUDA/NVIDIA backend가 없다.
-- 따라서 로컬 기본 백엔드가 아니라, 별도 환경 검증 후보로 둔다.
 
 ## 검증 기준
 
@@ -100,4 +103,6 @@ Task 2의 기본 응답 생성 후보는 로컬 LLM이다. 목표 설정은 다�
 - [Qwen/Qwen3.5-9B model card](https://huggingface.co/Qwen/Qwen3.5-9B)
 - [PyTorch Intel GPU/XPU guide](https://docs.pytorch.org/docs/2.12/notes/get_start_xpu.html)
 - [vLLM Quantized KV Cache](https://docs.vllm.ai/en/latest/features/quantization/quantized_kvcache/)
+- [vLLM XPU platform API](https://docs.vllm.ai/en/v0.11.0/api/vllm/platforms/xpu.html)
+- [vLLM XPU installation](https://docs.vllm.ai/en/v0.6.4/getting_started/xpu-installation.html)
 - [llama.cpp repository](https://github.com/ggml-org/llama.cpp)

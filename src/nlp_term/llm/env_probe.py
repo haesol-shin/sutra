@@ -129,6 +129,12 @@ def infer_capabilities(payload: dict[str, Any]) -> dict[str, Any]:
     has_gguf_runner = any(executables[name] for name in ("llama-cli", "llama-server", "ollama")) or packages[
         "llama_cpp"
     ]
+    vllm_xpu_fp8_kv_candidate = bool(
+        packages["vllm"]
+        and packages["torch"]
+        and has_xpu
+        and payload["environment"].get("VLLM_ATTENTION_BACKEND") == "TRITON_ATTN"
+    )
 
     blockers: list[str] = []
     if not packages["torch"]:
@@ -154,6 +160,7 @@ def infer_capabilities(payload: dict[str, Any]) -> dict[str, Any]:
         },
         "local_gpu_family": "intel_arc_xpu" if "intel" in gpu_names and "arc" in gpu_names else "unknown",
         "pytorch_xpu_stack_available": bool(packages["torch"] and packages["transformers"] and has_xpu),
+        "vllm_xpu_fp8_kv_candidate": vllm_xpu_fp8_kv_candidate,
         "cuda_quant_stack_available": bool(
             packages["torch"] and packages["transformers"] and packages["bitsandbytes"] and has_cuda
         ),
@@ -174,6 +181,7 @@ def build_probe() -> dict[str, Any]:
         "environment": {
             "LEVEL_ZERO_V1_SDK_PATH": os.environ.get("LEVEL_ZERO_V1_SDK_PATH"),
             "ONEAPI_ROOT": os.environ.get("ONEAPI_ROOT"),
+            "VLLM_ATTENTION_BACKEND": os.environ.get("VLLM_ATTENTION_BACKEND"),
         },
         "packages": {name: package_available(name) for name in PACKAGE_NAMES},
         "executables": {name: executable_path(name) for name in EXECUTABLE_NAMES},
