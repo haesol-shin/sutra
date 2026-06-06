@@ -7,6 +7,7 @@ import inspect
 import json
 from pathlib import Path
 import re
+from urllib.parse import urlparse
 import unicodedata
 from typing import TypeVar
 
@@ -159,7 +160,12 @@ def validate_seed_data(data_dir: Path) -> None:
         _validate_qa_answer_text(row, docs_by_id=docs_by_id)
 
 
-def validate_source_probe(path: Path, *, require_raw_files: bool = False) -> None:
+def validate_source_probe(
+    path: Path,
+    *,
+    require_raw_files: bool = False,
+    require_official_chain_evidence: bool = False,
+) -> None:
     payload = read_json(path)
     if not isinstance(payload, list):
         raise ValueError(f"{path} must contain a JSON list")
@@ -167,7 +173,13 @@ def validate_source_probe(path: Path, *, require_raw_files: bool = False) -> Non
         if not isinstance(row, dict):
             raise ValueError(f"{path} rows must be objects")
         raw = RawSource.model_validate(row.get("raw"))
-        SourceVerification.model_validate(row.get("verification"))
+        verification = SourceVerification.model_validate(row.get("verification"))
+        if require_official_chain_evidence and verification.official_chain_ok:
+            if raw.url not in verification.evidence:
+                raise ValueError(f"{raw.source_id} official-chain evidence does not include source URL")
+            hostname = urlparse(raw.url).hostname or ""
+            if not (hostname == "cnu.ac.kr" or hostname.endswith(".cnu.ac.kr")):
+                raise ValueError(f"{raw.source_id} official-chain source URL is not under cnu.ac.kr")
         raw_path = Path(raw.raw_path)
         if require_raw_files:
             if not raw_path.exists():
@@ -177,6 +189,33 @@ def validate_source_probe(path: Path, *, require_raw_files: bool = False) -> Non
             checksum = sha256(raw_path.read_bytes()).hexdigest()
             if checksum != raw.checksum:
                 raise ValueError(f"{raw.source_id} checksum does not match raw file")
+
+
+def validate_source_inventory(
+    *,
+    min_stage1_candidates: int | None = None,
+    min_stage2_candidates: int | None = None,
+    require_stage_candidate_labels: bool = False,
+) -> None:
+    from nlp_term.collect.source_inventory import iter_specs
+
+    specs = iter_specs(stage="all", active_only=False)
+    rows_by_stage = {
+        "stage1": [spec for spec in specs if spec.stage == "stage1" and not spec.active],
+        "stage2": [spec for spec in specs if spec.stage == "stage2" and not spec.active],
+    }
+    thresholds = {"stage1": min_stage1_candidates, "stage2": min_stage2_candidates}
+    for stage, threshold in thresholds.items():
+        rows = rows_by_stage[stage]
+        if threshold is not None and len(rows) < threshold:
+            raise ValueError(f"source-inventory: {stage} inactive candidates {len(rows)} below {threshold}")
+        if require_stage_candidate_labels:
+            labels = {spec.label for spec in rows}
+            if labels != {0, 1, 2, 3, 4}:
+                raise ValueError(f"source-inventory: {stage} candidate labels {sorted(labels)} do not cover 0-4")
+    for spec in specs:
+        if not spec.active and spec.official_chain_ok:
+            raise ValueError(f"source-inventory: inactive candidate {spec.source_id} must not be official-chain true")
 
 
 def validate_source_stage_coverage(
@@ -229,6 +268,7 @@ def validate_knowledge_provenance(
     source_probe_path: Path,
     *,
     require_official_chain: bool = False,
+    require_raw_provenance: bool = False,
 ) -> None:
     probe_payload = read_json(source_probe_path)
     if not isinstance(probe_payload, list):
@@ -247,6 +287,21 @@ def validate_knowledge_provenance(
             raise ValueError(f"{doc.doc_id} source has non-2xx status: {raw.status_code}")
         if require_official_chain and not verification.official_chain_ok:
             raise ValueError(f"{doc.doc_id} source is not official-chain verified")
+        if require_raw_provenance:
+            expected = {
+                "raw_path": raw.raw_path,
+                "raw_checksum": raw.checksum,
+                "raw_fetched_at": raw.fetched_at,
+                "raw_status_code": raw.status_code,
+                "raw_content_type": raw.content_type,
+                "verification_official_chain_ok": verification.official_chain_ok,
+                "verification_parser_name": verification.parser_name,
+                "verification_parser_version": verification.parser_version,
+                "verification_verified_at": verification.verified_at,
+            }
+            for key, value in expected.items():
+                if doc.metadata.get(key) != value:
+                    raise ValueError(f"{doc.doc_id} metadata {key} does not match source probe")
 
 
 def validate_model_shortlist(path: Path) -> None:
@@ -271,17 +326,12 @@ def validate_final_readiness(outputs_dir: Path) -> None:
 
 def validate_realtime_provenance(output_path: Path, source_probe_path: Path | None = None) -> None:
     rows = validate_rows(output_path, RealtimeOutput, required=True)
-    if source_probe_path is None:
-        any_official_chain = False
-    else:
+    if source_probe_path is not None:
         payload = read_json(source_probe_path)
         if not isinstance(payload, list):
             raise ValueError(f"{source_probe_path} must contain a JSON list")
-        any_official_chain = any(
-            SourceVerification.model_validate(row.get("verification")).official_chain_ok for row in payload
-        )
-    if any_official_chain:
-        return
+        for row in payload:
+            SourceVerification.model_validate(row.get("verification"))
     for row in rows:
         for term in UNSUPPORTED_REALTIME_CLAIMS:
             if term.casefold() in row.model.casefold():
@@ -574,6 +624,7 @@ def validate_retrieval_metrics(
     qa_path: Path | None = None,
     min_top1_label_accuracy: float | None = None,
     min_top3_source_hit_rate: float | None = None,
+    require_metadata_aware: bool = False,
 ) -> None:
     payload = read_json(path)
     if not isinstance(payload, dict):
@@ -584,6 +635,12 @@ def validate_retrieval_metrics(
         raise ValueError("retrieval-metrics: knowledge_checksum does not match knowledge file")
     if payload.get("qa_checksum") != file_checksum(qa_path):
         raise ValueError("retrieval-metrics: qa_checksum does not match QA file")
+    if require_metadata_aware:
+        if payload.get("retrieval_strategy") != "lexical_metadata_label_hint":
+            raise ValueError("retrieval-metrics: metadata-aware retrieval strategy is required")
+        fields = payload.get("metadata_fields")
+        if not isinstance(fields, list) or not {"source_id", "source_stage", "source_parser_type"} <= set(fields):
+            raise ValueError("retrieval-metrics: required metadata fields are missing")
     if min_top1_label_accuracy is not None:
         value = _metric_value(payload, ("top1_label_accuracy", "top_1_label_accuracy"))
         if value < min_top1_label_accuracy:
@@ -610,8 +667,10 @@ def validate_chat_quality(
     output_path: Path,
     *,
     input_path: Path | None = None,
+    knowledge_path: Path | None = None,
     min_answer_chars: int | None = None,
     require_source_hint: bool = False,
+    require_evidence_alignment: bool = False,
 ) -> None:
     rows = validate_rows(output_path, ChatOutput, required=True)
     if input_path:
@@ -624,6 +683,35 @@ def validate_chat_quality(
             raise ValueError(f"chat-quality: answer shorter than {min_answer_chars} chars for {row.user}")
         if require_source_hint and not ("http" in answer.lower() or "출처" in answer or "source" in answer.lower()):
             raise ValueError(f"chat-quality: answer lacks source hint for {row.user}")
+    if require_evidence_alignment:
+        if knowledge_path is None:
+            raise ValueError("chat-quality: --knowledge is required for evidence alignment")
+        _validate_chat_evidence_alignment(rows, knowledge_path)
+
+
+def _validate_chat_evidence_alignment(rows: list[ChatOutput], knowledge_path: Path) -> None:
+    from nlp_term.chat.router import route_question
+    from nlp_term.retrieve.knowledge import load_knowledge
+    from nlp_term.retrieve.rank import rank_docs
+
+    docs = load_knowledge(knowledge_path)
+    docs_by_id = {doc.doc_id: doc for doc in docs}
+    for row in rows:
+        route = route_question(row.user)
+        ranked = [doc for doc in rank_docs(row.user, docs=docs, top_k=3) if doc.label == route.label]
+        if not ranked:
+            continue
+        top_doc = docs_by_id.get(ranked[0].doc_id)
+        if top_doc is None:
+            raise ValueError(f"chat-quality: missing ranked knowledge doc for {row.user}")
+        if top_doc.source_url not in row.model:
+            raise ValueError(f"chat-quality: answer does not cite top evidence URL for {row.user}")
+        excerpts = QA_EVIDENCE_RE.findall(row.model)
+        if not excerpts:
+            raise ValueError(f"chat-quality: answer lacks quoted evidence excerpt for {row.user}")
+        token_hits = sum(1 for token in excerpts[-1].split() if len(token) > 1 and token in top_doc.body)
+        if token_hits < 6:
+            raise ValueError(f"chat-quality: evidence excerpt is not aligned with ranked source for {row.user}")
 
 
 def validate_runtime_knowledge_consistency(knowledge_path: Path) -> None:
@@ -666,9 +754,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--inputs-only", action="store_true", help="Only validate required input fixtures.")
     parser.add_argument("--seed-data", action="store_true", help="Validate generated seed datasets.")
     parser.add_argument("--source-probe", type=Path, help="Validate source probe metadata.")
+    parser.add_argument("--source-inventory", action="store_true", help="Validate source inventory candidate stages.")
     parser.add_argument("--source-stage-coverage", type=Path, help="Validate staged source inventory coverage.")
     parser.add_argument("--knowledge-provenance", type=Path, help="Validate knowledge docs against source probe metadata.")
     parser.add_argument("--require-official-chain", action="store_true", help="Require provenance sources to be official-chain verified.")
+    parser.add_argument("--require-official-chain-evidence", action="store_true")
+    parser.add_argument("--require-raw-provenance", action="store_true")
     parser.add_argument("--model-shortlist", type=Path, help="Validate model shortlist metadata.")
     parser.add_argument("--knowledge-quality", type=Path, help="Validate source-backed knowledge quality gates.")
     parser.add_argument("--dataset-quality", action="store_true", help="Validate generated classification/QA quality gates.")
@@ -701,10 +792,15 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--min-class-f1", type=float)
     parser.add_argument("--min-top1-label-accuracy", type=float)
     parser.add_argument("--min-top3-source-hit-rate", type=float)
+    parser.add_argument("--require-metadata-aware", action="store_true")
     parser.add_argument("--min-answer-chars", type=int)
+    parser.add_argument("--require-evidence-alignment", action="store_true")
     parser.add_argument("--stage", default="stage0")
     parser.add_argument("--min-stage-sources", type=int)
     parser.add_argument("--max-stage-sources", type=int)
+    parser.add_argument("--min-stage1-candidates", type=int)
+    parser.add_argument("--min-stage2-candidates", type=int)
+    parser.add_argument("--require-stage-candidate-labels", action="store_true")
     parser.add_argument("--require-stage-labels", action="store_true")
     parser.add_argument("--require-graduation-departments", type=int)
     parser.add_argument("--require-source-hint", action="store_true")
@@ -721,6 +817,7 @@ def main() -> None:
         and not args.inputs_only
         and not args.seed_data
         and not args.source_probe
+        and not args.source_inventory
         and not args.source_stage_coverage
         and not args.knowledge_provenance
         and not args.model_shortlist
@@ -747,7 +844,17 @@ def main() -> None:
         if args.seed_data:
             validate_seed_data(args.data_dir)
         if args.source_probe:
-            validate_source_probe(args.source_probe, require_raw_files=args.require_raw_files)
+            validate_source_probe(
+                args.source_probe,
+                require_raw_files=args.require_raw_files,
+                require_official_chain_evidence=args.require_official_chain_evidence,
+            )
+        if args.source_inventory:
+            validate_source_inventory(
+                min_stage1_candidates=args.min_stage1_candidates,
+                min_stage2_candidates=args.min_stage2_candidates,
+                require_stage_candidate_labels=args.require_stage_candidate_labels,
+            )
         if args.source_stage_coverage:
             validate_source_stage_coverage(
                 args.source_stage_coverage,
@@ -762,6 +869,7 @@ def main() -> None:
                 args.data_dir,
                 args.knowledge_provenance,
                 require_official_chain=args.require_official_chain,
+                require_raw_provenance=args.require_raw_provenance,
             )
         if args.model_shortlist:
             validate_model_shortlist(args.model_shortlist)
@@ -802,13 +910,16 @@ def main() -> None:
                 qa_path=args.qa,
                 min_top1_label_accuracy=args.min_top1_label_accuracy,
                 min_top3_source_hit_rate=args.min_top3_source_hit_rate,
+                require_metadata_aware=args.require_metadata_aware,
             )
         if args.chat_quality:
             validate_chat_quality(
                 args.chat_quality,
                 input_path=args.input,
+                knowledge_path=args.knowledge,
                 min_answer_chars=args.min_answer_chars,
                 require_source_hint=args.require_source_hint,
+                require_evidence_alignment=args.require_evidence_alignment,
             )
         if args.realtime_provenance:
             validate_realtime_provenance(args.realtime_provenance, source_probe_path=args.source_probe)

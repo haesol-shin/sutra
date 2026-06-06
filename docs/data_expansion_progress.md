@@ -9,11 +9,21 @@
   - `src/nlp_term/collect/source_inventory.py`
   - `src/nlp_term/collect/run_collect.py`
   - `src/nlp_term/prepare/from_sources.py`
+  - `src/nlp_term/retrieve/rank.py`
+  - `src/nlp_term/retrieve/evaluate.py`
+  - `src/nlp_term/chat/composer.py`
   - `src/nlp_term/validators.py`
   - `docs/source_inventory.md`
+  - `docs/evidence/stage0-review-repair-2026-06-07.json`
   - `docs/data_expansion_failure_log.md`
   - `docs/data_expansion_progress.md`
-  - regenerated data/model/output artifacts
+  - regenerated tracked data artifacts
+- local_ignored_evidence:
+  - `data/sources/source_probe.json`
+  - `model/retrieval_metrics.json`
+  - `outputs/chat_output.json`
+- durable_evidence_manifest:
+  - `docs/evidence/stage0-review-repair-2026-06-07.json`
 
 ## Source Coverage
 
@@ -31,9 +41,12 @@
 
 - command:
   - `uv run python -m nlp_term.collect.run_collect --fetch --output data/sources/source_probe.json`
-  - `uv run python -m nlp_term.validators --source-probe data/sources/source_probe.json --require-raw-files --source-stage-coverage data/sources/source_probe.json --stage stage0 --min-stage-sources 8 --max-stage-sources 12 --require-stage-labels --require-graduation-departments 2`
+  - `uv run python -m nlp_term.validators --source-probe data/sources/source_probe.json --require-raw-files --require-official-chain-evidence`
+  - `uv run python -m nlp_term.validators --source-stage-coverage data/sources/source_probe.json --stage stage0 --min-stage-sources 8 --max-stage-sources 12 --require-stage-labels --require-graduation-departments 2`
 - result:
-  - all 10 Stage 0 sources returned HTTP 200.
+  - 10 Stage 0 sources are represented in the local source probe.
+  - `graduation_curriculum_pdf` reused an existing raw snapshot after a `ReadTimeout`; this is recorded in verification warnings.
+  - `cnu_mobile_food` is marked `official_chain_ok=false` until explicit official-chain verification is added.
   - raw file checksum validation printed `validation-ok`.
 - gate:
   - pass: every active Stage 0 source has a saved raw snapshot and matching checksum.
@@ -42,6 +55,7 @@
 
 - command:
   - `uv run python -m nlp_term.prepare.from_sources --source-probe data/sources/source_probe.json --output data/knowledge_seed.json --failures-output data/source_parse_failures.json --chunks-per-source 9`
+  - `uv run python -m nlp_term.validators --knowledge-provenance data/sources/source_probe.json --data-dir data --require-raw-provenance`
   - `uv run python -m nlp_term.validators --knowledge-quality data/knowledge_seed.json --source-probe data/sources/source_probe.json --min-total-docs 50 --min-docs-per-label 1 --min-body-chars 80 --min-source-parse-ratio 0.9`
 - result:
   - generated 53 knowledge docs.
@@ -49,7 +63,7 @@
   - `data/source_parse_failures.json`: `[]`
   - knowledge quality validator printed `validation-ok`
 - gate:
-  - pass: total source-backed docs exceed 50 and every label has accepted chunks.
+  - pass: total source-backed docs exceed 50, every label has accepted chunks, and every knowledge row carries raw checksum/probe provenance metadata.
 - bottleneck:
   - dining produced only 3 clean chunks, so freshness-specific parsing remains a likely next bottleneck.
 
@@ -72,12 +86,13 @@
 
 - command:
   - `uv run python -m nlp_term.retrieve.evaluate --knowledge data/knowledge_seed.json --qa data/qa_seed.json --output model/retrieval_metrics.json`
-  - `uv run python -m nlp_term.validators --retrieval-metrics model/retrieval_metrics.json --knowledge data/knowledge_seed.json --qa data/qa_seed.json --min-top1-label-accuracy 0.80 --min-top3-source-hit-rate 0.75`
+  - `uv run python -m nlp_term.validators --retrieval-metrics model/retrieval_metrics.json --knowledge data/knowledge_seed.json --qa data/qa_seed.json --require-metadata-aware --min-top1-label-accuracy 0.80 --min-top3-source-hit-rate 0.75`
 - result:
   - row count: 50
   - top-1 label accuracy: 1.0
   - top-3 source hit rate: 0.78
-  - per-label failure counts: `{0: 7, 1: 3, 2: 1, 3: 0, 4: 0}`
+  - per-label failure counts: `{0: 9, 1: 0, 2: 2, 3: 0, 4: 0}`
+  - retrieval strategy: `lexical_metadata_label_hint`
   - validator printed `validation-ok`
 - gate:
   - pass: retrieval smoke exceeded the Stage 0 thresholds.
@@ -87,19 +102,21 @@
 ## Chatbot Batch Smoke
 
 - command:
-  - `bash ./chatbot.sh batch`
-  - `uv run python -m nlp_term.validators --chat-quality outputs/chat_output.json --input data/test_chat.json --min-answer-chars 30`
+  - `uv run python -m nlp_term.chat.batch --input data/test_chat.json --output outputs/chat_output.json --knowledge data/knowledge_seed.json --backend deterministic`
+  - `uv run python -m nlp_term.validators --chat-quality outputs/chat_output.json --input data/test_chat.json --knowledge data/knowledge_seed.json --min-answer-chars 30 --require-source-hint --require-evidence-alignment`
 - result:
   - `outputs/chat_output.json` was generated.
   - chat quality validator printed `validation-ok`
 - gate:
-  - pass: grading batch path produced valid JSON with non-empty answers.
+  - pass: batch module produced valid JSON with source hints and quoted evidence aligned to the ranked knowledge source.
+- known_runtime_gap:
+  - `bash ./chatbot.sh batch` timed out under the local PowerShell/bash bridge when `NLP_TERM_CHAT_BACKEND=auto`; backend/script reliability remains a separate backend decision task.
 
 ## Final Verification
 
 - command:
-  - `uv run python -m compileall src\nlp_term\collect src\nlp_term\prepare\from_sources.py src\nlp_term\validators.py`
-  - `uv run ruff check src\nlp_term\collect src\nlp_term\prepare\from_sources.py src\nlp_term\validators.py`
+  - `uv run python -m compileall src\nlp_term\collect src\nlp_term\prepare\from_sources.py src\nlp_term\retrieve src\nlp_term\chat src\nlp_term\validators.py`
+  - `uv run ruff check src\nlp_term\collect src\nlp_term\prepare\from_sources.py src\nlp_term\retrieve src\nlp_term\chat src\nlp_term\validators.py`
 - result:
   - compileall exited 0.
   - ruff reported `All checks passed!`

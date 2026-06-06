@@ -22,7 +22,7 @@ class SourceSpec:
     stage: Stage = "stage0"
     active: bool = True
     priority: int = 100
-    official_chain_ok: bool = True
+    official_chain_ok: bool = False
     freshness_policy: str = "snapshot"
     notes: str = ""
     department: str | None = None
@@ -52,6 +52,7 @@ STAGE0_SOURCES: tuple[SourceSpec, ...] = (
         url="https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
         parser_type="pdf",
         raw_suffix="pdf",
+        official_chain_ok=True,
         notes="central curriculum PDF",
         curriculum_year="2025",
     ),
@@ -61,6 +62,7 @@ STAGE0_SOURCES: tuple[SourceSpec, ...] = (
         domain="graduation",
         url="https://english.cnu.ac.kr/english/edu/undergraduate02.do",
         parser_type="html",
+        official_chain_ok=True,
         notes="English department graduation requirements",
         department="영어영문학과",
     ),
@@ -70,6 +72,7 @@ STAGE0_SOURCES: tuple[SourceSpec, ...] = (
         domain="graduation",
         url="https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
         parser_type="html",
+        official_chain_ok=True,
         notes="Biochemistry department graduation requirements",
         department="생화학과",
     ),
@@ -79,6 +82,7 @@ STAGE0_SOURCES: tuple[SourceSpec, ...] = (
         domain="notices",
         url="https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
         parser_type="html",
+        official_chain_ok=True,
         freshness_policy="latest_snapshot",
         notes="central academic notice board list",
     ),
@@ -91,6 +95,7 @@ STAGE0_SOURCES: tuple[SourceSpec, ...] = (
             "&site_dvs_cd=kr&menu_dvs_cd=0702"
         ),
         parser_type="board_detail",
+        official_chain_ok=True,
         freshness_policy="latest_snapshot",
         notes="recent academic notice detail",
     ),
@@ -103,6 +108,7 @@ STAGE0_SOURCES: tuple[SourceSpec, ...] = (
             "&site_dvs_cd=kr&menu_dvs_cd=0702"
         ),
         parser_type="board_detail",
+        official_chain_ok=True,
         freshness_policy="latest_snapshot",
         notes="recent academic notice detail",
     ),
@@ -115,6 +121,7 @@ STAGE0_SOURCES: tuple[SourceSpec, ...] = (
             "&site_dvs_cd=kr&menu_dvs_cd=0702"
         ),
         parser_type="board_detail",
+        official_chain_ok=True,
         freshness_policy="latest_snapshot",
         notes="recent academic notice detail",
     ),
@@ -124,6 +131,7 @@ STAGE0_SOURCES: tuple[SourceSpec, ...] = (
         domain="academic_calendar",
         url="https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
         parser_type="calendar",
+        official_chain_ok=True,
         notes="official academic calendar",
     ),
     SourceSpec(
@@ -132,8 +140,9 @@ STAGE0_SOURCES: tuple[SourceSpec, ...] = (
         domain="dining",
         url="https://mobileadmin.cnu.ac.kr/food/index.jsp",
         parser_type="dining",
+        official_chain_ok=False,
         freshness_policy="short_ttl",
-        notes="current mobile dining menu snapshot",
+        notes="current mobile dining menu snapshot; needs explicit official-chain confirmation before current/latest claims",
     ),
     SourceSpec(
         source_id="shuttle_bus",
@@ -141,12 +150,152 @@ STAGE0_SOURCES: tuple[SourceSpec, ...] = (
         domain="shuttle",
         url="https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
         parser_type="shuttle",
+        official_chain_ok=True,
         freshness_policy="snapshot_with_term_check",
         notes="official shuttle timetable page",
     ),
 )
 
-SOURCE_SPECS: tuple[SourceSpec, ...] = STAGE0_SOURCES
+STAGE1_CANDIDATE_SOURCES: tuple[SourceSpec, ...] = (
+    SourceSpec(
+        source_id="graduation_energy_requirements",
+        label=0,
+        domain="graduation",
+        url="https://energy.cnu.ac.kr/energy/department/graduate.do",
+        parser_type="html",
+        stage="stage1",
+        active=False,
+        priority=10,
+        notes="candidate department graduation requirements",
+        department="에너지공학과",
+    ),
+    SourceSpec(
+        source_id="graduation_horticulture_counsel",
+        label=0,
+        domain="graduation",
+        url="https://horti.cnu.ac.kr/horti/college/college04.do",
+        parser_type="html",
+        stage="stage1",
+        active=False,
+        priority=20,
+        notes="candidate department academic counsel page with graduation table",
+        department="원예학과",
+    ),
+    SourceSpec(
+        source_id="notice_energy_academic",
+        label=1,
+        domain="notices",
+        url="https://energy.cnu.ac.kr/energy/department/academic.do",
+        parser_type="html",
+        stage="stage1",
+        active=False,
+        priority=30,
+        freshness_policy="snapshot",
+        notes="candidate department academic guide covering course registration and leave/return",
+        department="에너지공학과",
+    ),
+    SourceSpec(
+        source_id="academic_calendar_dance",
+        label=2,
+        domain="academic_calendar",
+        url="https://dance.cnu.ac.kr/dance/academiccal/calendar/academiccal02.do",
+        parser_type="calendar",
+        stage="stage1",
+        active=False,
+        priority=40,
+        notes="candidate department academic calendar mirror",
+        department="무용학과",
+    ),
+    SourceSpec(
+        source_id="shuttle_geo_notice_2026",
+        label=4,
+        domain="shuttle",
+        url="https://geo.cnu.ac.kr/notice/?vid=956",
+        parser_type="board_detail",
+        stage="stage1",
+        active=False,
+        priority=50,
+        freshness_policy="snapshot_with_term_check",
+        notes="candidate 2026 shuttle notice with HWP attachment",
+    ),
+    SourceSpec(
+        source_id="dining_mobile_candidate",
+        label=3,
+        domain="dining",
+        url="https://mobileadmin.cnu.ac.kr/food/index.jsp",
+        parser_type="dining",
+        stage="stage1",
+        active=False,
+        priority=60,
+        freshness_policy="short_ttl",
+        notes="candidate dining endpoint retained inactive until official-chain and parser behavior are verified",
+    ),
+)
+
+STAGE2_CANDIDATE_SOURCES: tuple[SourceSpec, ...] = (
+    SourceSpec(
+        source_id="curriculum_2025_pdf_candidate",
+        label=0,
+        domain="graduation",
+        url="https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+        parser_type="pdf",
+        raw_suffix="pdf",
+        stage="stage2",
+        active=False,
+        priority=10,
+        notes="candidate expanded curriculum PDF parsing and chunking",
+        curriculum_year="2025",
+    ),
+    SourceSpec(
+        source_id="sugang_entry_2025_pdf",
+        label=1,
+        domain="notices",
+        url="https://sugang.cnu.ac.kr/login/data/2025_SugangEntry.pdf",
+        parser_type="pdf",
+        raw_suffix="pdf",
+        stage="stage2",
+        active=False,
+        priority=20,
+        notes="candidate course-registration guide PDF",
+    ),
+    SourceSpec(
+        source_id="academic_calendar_cic",
+        label=2,
+        domain="academic_calendar",
+        url="https://cic.cnu.ac.kr/",
+        parser_type="html",
+        stage="stage2",
+        active=False,
+        priority=30,
+        notes="candidate secondary academic calendar entrypoint",
+    ),
+    SourceSpec(
+        source_id="dining_plus_welfare_candidate",
+        label=3,
+        domain="dining",
+        url="https://plus.cnu.ac.kr/html/kr/sub05/sub05_050401.html",
+        parser_type="dining",
+        stage="stage2",
+        active=False,
+        priority=40,
+        freshness_policy="short_ttl",
+        notes="candidate welfare/dining page; URL requires fetch verification before activation",
+    ),
+    SourceSpec(
+        source_id="shuttle_plus_main_candidate",
+        label=4,
+        domain="shuttle",
+        url="https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+        parser_type="shuttle",
+        stage="stage2",
+        active=False,
+        priority=50,
+        freshness_policy="snapshot_with_term_check",
+        notes="candidate expanded shuttle parsing for stops and term-specific operation dates",
+    ),
+)
+
+SOURCE_SPECS: tuple[SourceSpec, ...] = STAGE0_SOURCES + STAGE1_CANDIDATE_SOURCES + STAGE2_CANDIDATE_SOURCES
 
 
 def iter_specs(*, stage: Stage | Literal["all"] = "stage0", active_only: bool = True) -> list[SourceSpec]:

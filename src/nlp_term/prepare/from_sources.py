@@ -12,7 +12,7 @@ from nlp_term.paths import PROJECT_ROOT
 from nlp_term.prepare.document_parsers import document_to_text
 from nlp_term.prepare.normalize import clip_text
 from nlp_term.prepare.parsers import html_to_text, source_doc_from_text
-from nlp_term.schemas import KnowledgeDoc, RawSource
+from nlp_term.schemas import KnowledgeDoc, RawSource, SourceVerification
 from nlp_term.validators import read_json
 
 
@@ -111,15 +111,32 @@ def build_knowledge_from_probe(
         if not isinstance(row, dict):
             raise ValueError(f"{source_probe_path} rows must be objects")
         raw = RawSource.model_validate(row.get("raw"))
+        verification = SourceVerification.model_validate(row.get("verification"))
         parsed_docs, failure = parse_source(raw, chunks_per_source=chunks_per_source)
         inventory = row.get("inventory")
         if isinstance(inventory, dict):
             for doc in parsed_docs:
                 doc.metadata.update({f"source_{key}": value for key, value in inventory.items()})
+        for doc in parsed_docs:
+            doc.metadata.update(_raw_provenance_metadata(raw, verification))
         docs.extend(parsed_docs)
         if failure:
             failures.append(failure)
     return docs, failures
+
+
+def _raw_provenance_metadata(raw: RawSource, verification: SourceVerification) -> dict[str, object]:
+    return {
+        "raw_path": raw.raw_path,
+        "raw_checksum": raw.checksum,
+        "raw_fetched_at": raw.fetched_at,
+        "raw_status_code": raw.status_code,
+        "raw_content_type": raw.content_type,
+        "verification_official_chain_ok": verification.official_chain_ok,
+        "verification_parser_name": verification.parser_name,
+        "verification_parser_version": verification.parser_version,
+        "verification_verified_at": verification.verified_at,
+    }
 
 
 def write_payload(path: Path, payload: object) -> None:

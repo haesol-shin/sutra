@@ -35,3 +35,37 @@
   - command wrote `outputs/chat_output.json`.
   - chat quality validator passed.
 - meeting loop opened: no.
+
+## Stage 0 Attempt 3: Auto Backend Timeout
+
+- step: Stage 0 Review Repair Chatbot Batch Smoke
+- command:
+  - `bash ./chatbot.sh batch`
+- observed failure:
+  - command timed out after 124 seconds.
+- suspected cause:
+  - `NLP_TERM_CHAT_BACKEND=auto` can spend too long probing or starting the local llama backend in this Windows/bash environment.
+- next change:
+  - rerun the same script with `NLP_TERM_CHAT_BACKEND=deterministic` for the deterministic evidence-alignment smoke gate.
+  - keep local llama backend evaluation as a separate backend decision task.
+- result:
+  - `NLP_TERM_CHAT_BACKEND=deterministic bash ./chatbot.sh batch` wrote `outputs/chat_output.json`.
+  - direct module rerun with `uv run python -m nlp_term.chat.batch --input data/test_chat.json --output outputs/chat_output.json --knowledge data/knowledge_seed.json --backend deterministic` completed quickly.
+  - evidence-alignment validation is handled by the Stage 0 review repair gate.
+- meeting loop opened: no.
+
+## Stage 0 Attempt 4: Bash Environment Probe Timeout
+
+- step: Stage 0 Review Repair Chatbot Backend Check
+- command:
+  - `NLP_TERM_CHAT_BACKEND=deterministic bash -lc 'echo BACKEND=$NLP_TERM_CHAT_BACKEND'`
+- observed failure:
+  - command timed out after 13 seconds in the local PowerShell/bash bridge.
+- suspected cause:
+  - local bash startup/environment bridging is intermittently slow or blocked.
+- next change:
+  - use direct `uv run python -m nlp_term.chat.batch ... --backend deterministic` for evidence-alignment validation in this repair cycle.
+  - keep `chatbot.sh` runtime/back-end reliability as a later backend decision task.
+- result:
+  - direct batch module output passed `--require-evidence-alignment`.
+- meeting loop opened: no.

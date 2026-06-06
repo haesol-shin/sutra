@@ -13,5 +13,14 @@ def compose_answer(route: RoutedQuestion, *, knowledge_path: Path | None = None)
     docs = [doc for doc in rank_docs(route.user, docs=knowledge_docs, top_k=3) if doc.label == route.label]
     if not docs:
         return fallback_answer(route)
-    doc = docs[0]
-    return f"{fallback_answer(route)}\n근거 후보: {doc.title} ({doc.source_url})"
+    retrieved = docs[0]
+    doc = next((item for item in knowledge_docs if item.doc_id == retrieved.doc_id), None)
+    excerpt = _evidence_excerpt(doc.body if doc else "")
+    return f"{fallback_answer(route)}\n근거 후보: {retrieved.title} ({retrieved.source_url})\n근거 요약: '{excerpt}'"
+
+
+def _evidence_excerpt(body: str, *, max_chars: int = 120) -> str:
+    compact = " ".join(body.split())
+    if len(compact) <= max_chars:
+        return compact
+    return compact[:max_chars].rstrip()

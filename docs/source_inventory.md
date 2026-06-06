@@ -1,6 +1,6 @@
 # Source Inventory
 
-작성일: 2026-06-06
+작성일: 2026-06-07
 
 이 문서는 수집 대상 source와 현재 구현 상태를 분리해서 기록한다. `seed` 데이터는 파이프라인 검증용이며, 최종 성능 주장이나 제출 데이터셋 근거로 단독 사용하지 않는다.
 
@@ -11,6 +11,8 @@
 - `stage2`: 안정화 후 병렬 확장 후보이다.
 - 현재 `run_collect` 기본값은 `stage0`이다.
 - Stage 0은 8-12개 active source, 다섯 라벨 전체, 졸업요건 중앙 PDF와 학과 1-2개를 포함해야 한다.
+- Stage 1/2 후보는 기본 fetch 대상이 아니며 `active=False`로 둔다.
+- `official_chain_ok` 기본값은 `False`이다. 공식 chain이 확인된 active source만 명시적으로 `True`로 둔다.
 
 ## Stage 0 Active Sources
 
@@ -27,6 +29,27 @@
 | 3 | dining | `cnu_mobile_food` | `dining` | `https://mobileadmin.cnu.ac.kr/food/index.jsp` | 최신 식단 snapshot |
 | 4 | shuttle | `shuttle_bus` | `shuttle` | `https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html` | 공식 셔틀 시간표 |
 
+## Stage 1 Inactive Candidates
+
+| Label | Domain | Source ID | Parser | URL | Notes |
+| ---: | --- | --- | --- | --- | --- |
+| 0 | graduation | `graduation_energy_requirements` | `html` | `https://energy.cnu.ac.kr/energy/department/graduate.do` | 에너지공학과 졸업요건 후보 |
+| 0 | graduation | `graduation_horticulture_counsel` | `html` | `https://horti.cnu.ac.kr/horti/college/college04.do` | 원예학과 졸업/상담 표 후보 |
+| 1 | notices | `notice_energy_academic` | `html` | `https://energy.cnu.ac.kr/energy/department/academic.do` | 학과 학사 안내 후보 |
+| 2 | academic_calendar | `academic_calendar_dance` | `calendar` | `https://dance.cnu.ac.kr/dance/academiccal/calendar/academiccal02.do` | 학과 학사일정 후보 |
+| 3 | dining | `dining_mobile_candidate` | `dining` | `https://mobileadmin.cnu.ac.kr/food/index.jsp` | 식단 parser/공식 chain 재검증 후보 |
+| 4 | shuttle | `shuttle_geo_notice_2026` | `board_detail` | `https://geo.cnu.ac.kr/notice/?vid=956` | 셔틀 HWP 공지 후보 |
+
+## Stage 2 Inactive Candidates
+
+| Label | Domain | Source ID | Parser | URL | Notes |
+| ---: | --- | --- | --- | --- | --- |
+| 0 | graduation | `curriculum_2025_pdf_candidate` | `pdf` | `https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf` | 교육과정 PDF 확장 chunking 후보 |
+| 1 | notices | `sugang_entry_2025_pdf` | `pdf` | `https://sugang.cnu.ac.kr/login/data/2025_SugangEntry.pdf` | 수강신청 guide PDF 후보 |
+| 2 | academic_calendar | `academic_calendar_cic` | `html` | `https://cic.cnu.ac.kr/` | 보조 학사일정 entrypoint 후보 |
+| 3 | dining | `dining_plus_welfare_candidate` | `dining` | `https://plus.cnu.ac.kr/html/kr/sub05/sub05_050401.html` | 식당/복지 페이지 후보 |
+| 4 | shuttle | `shuttle_plus_main_candidate` | `shuttle` | `https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html` | 셔틀 stops/term parsing 확장 후보 |
+
 ## Legacy Smoke Sources
 
 | Label | Domain | Source ID | URL | Current status |
@@ -40,10 +63,11 @@
 ## Validation Contract
 
 - `uv run python -m nlp_term.collect.run_collect --fetch --output data/sources/source_probe.json`
-- `uv run python -m nlp_term.validators --source-probe data/sources/source_probe.json --require-raw-files`
-- `uv run python -m nlp_term.validators --knowledge-provenance data/sources/source_probe.json --data-dir data`
+- `uv run python -m nlp_term.validators --source-inventory --min-stage1-candidates 5 --min-stage2-candidates 5 --require-stage-candidate-labels`
+- `uv run python -m nlp_term.validators --source-probe data/sources/source_probe.json --require-raw-files --require-official-chain-evidence`
+- `uv run python -m nlp_term.validators --knowledge-provenance data/sources/source_probe.json --data-dir data --require-raw-provenance`
 
-위 명령들이 통과해야 실제 raw snapshot, source metadata, seed knowledge provenance가 연결된 것으로 본다. `official_chain_ok=False`인 source는 최종 답변에서 단정적인 최신 정보 근거로 사용하지 않는다.
+위 명령들이 통과해야 실제 raw snapshot, source metadata, seed knowledge provenance가 연결된 것으로 본다. `official_chain_ok=False`인 source는 최종 답변에서 단정적인 최신 정보 근거로 사용하지 않는다. ignored local artifacts의 checksum과 요약은 `docs/evidence/` manifest에 기록한다.
 
 ## Document Parser Boundary
 

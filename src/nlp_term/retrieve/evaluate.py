@@ -8,7 +8,7 @@ from pathlib import Path
 
 from nlp_term.paths import data_dir, model_dir
 from nlp_term.retrieve.knowledge import load_knowledge
-from nlp_term.retrieve.rank import rank_docs
+from nlp_term.retrieve.rank import METADATA_FIELDS, rank_docs
 from nlp_term.schemas import QAExample
 
 
@@ -56,6 +56,8 @@ def evaluate_retrieval(knowledge_path: Path, qa_path: Path) -> dict[str, object]
     total = max(len(qa_rows), 1)
     return {
         "evaluation_scope": "qa_seed_retrieval_sanity",
+        "retrieval_strategy": "lexical_metadata_label_hint",
+        "metadata_fields": list(METADATA_FIELDS),
         "knowledge_path": str(knowledge_path),
         "qa_path": str(qa_path),
         "knowledge_checksum": file_checksum(knowledge_path),

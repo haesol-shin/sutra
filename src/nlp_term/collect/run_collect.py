@@ -6,6 +6,7 @@ from pathlib import Path
 
 from nlp_term.collect.source_inventory import Stage, collect_spec, iter_specs, verify_spec
 from nlp_term.paths import ensure_parent
+from nlp_term.schemas import RawSource
 
 
 def run_probe(
@@ -16,9 +17,19 @@ def run_probe(
     active_only: bool = True,
 ) -> None:
     rows = []
+    cached_rows = _cached_raw_sources(output_path)
     for spec in iter_specs(stage=stage, active_only=active_only):
-        raw = collect_spec(spec, fetch=fetch)
+        try:
+            raw = collect_spec(spec, fetch=fetch)
+            fetch_warning = None
+        except Exception as exc:
+            raw = cached_rows.get(spec.source_id)
+            if raw is None or not Path(raw.raw_path).exists():
+                raise
+            fetch_warning = f"fetch failed; reused cached raw snapshot: {type(exc).__name__}"
         verification = verify_spec(spec, raw)
+        if fetch_warning:
+            verification.warnings.append(fetch_warning)
         rows.append(
             {
                 "raw": raw.model_dump(),
@@ -30,6 +41,27 @@ def run_probe(
     with output_path.open("w", encoding="utf-8") as file:
         json.dump(rows, file, ensure_ascii=False, indent=2)
         file.write("\n")
+
+
+def _cached_raw_sources(output_path: Path) -> dict[str, RawSource]:
+    if not output_path.exists():
+        return {}
+    try:
+        payload = json.loads(output_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    if not isinstance(payload, list):
+        return {}
+    cached = {}
+    for row in payload:
+        if not isinstance(row, dict):
+            continue
+        try:
+            raw = RawSource.model_validate(row.get("raw"))
+        except Exception:
+            continue
+        cached[raw.source_id] = raw
+    return cached
 
 
 def main() -> None:
