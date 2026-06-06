@@ -12,8 +12,8 @@ from nlp_term.validators import read_json, write_json
 def realtime_fallback(user: str) -> RealtimeOutput:
     route = route_question(user)
     message = (
-        f"{route.domain} 영역의 최신 정보는 검증된 공식 source를 우선 확인해야 합니다. "
-        "실시간 조회가 실패하면 저장된 공식 source snapshot을 기준으로 답변합니다."
+        f"{route.domain} 영역은 정보가 자주 바뀔 수 있어 저장된 출처 스냅샷만으로 현재 상태를 단정하지 않습니다. "
+        "확인 가능한 출처 내용을 기준으로 안내하되, 날짜·메뉴·공지 제목처럼 변동되는 내용은 실제 이용 전에 해당 페이지에서 다시 확인하세요."
     )
     return RealtimeOutput(user=user, model=message)
 

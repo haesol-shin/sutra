@@ -169,3 +169,52 @@
 - suspected_cause: The cleaning logic still relies on deny-lists and generic fallback text instead of selecting cleaner source spans or excluding unusable chunks.
 - next_action: Human decision required because the maximum 3 Phase 2.2 critic loops has been reached. Recommended next direction is to exclude polluted source chunks from QA generation or add positive evidence selection before regenerating QA.
 - unresolved_blocker: `phase-2.2-qa-dataset-generation` did not pass
+
+## 2026-06-06 step-6.1-realtime-timeout-attempt-1
+
+- step_id: `phase-6.1-final-local-suite`
+- phase: `final_pre_colab_readiness`
+- command_or_action: `bash chatbot.sh realtime`
+- exit_status: timeout
+- failure_summary: The realtime fallback command exceeded the local 60 second command timeout during final readiness rerun after wording hardening.
+- changed_files: none intentionally changed by the timed-out command
+- suspected_cause: Windows bash/uv startup latency; the same command had passed earlier in the run.
+- next_action: Retry once with a 120 second timeout before changing runtime behavior.
+- unresolved_blocker: none until retry fails
+
+## 2026-06-06 step-6.1-realtime-bash-vm-timeout-attempt-2
+
+- step_id: `phase-6.1-final-local-suite`
+- phase: `final_pre_colab_readiness`
+- command_or_action: `bash chatbot.sh realtime`
+- exit_status: failed
+- failure_summary: Retrying with a 120 second timeout failed before the script body could run because Bash/WSL reported `HCS_E_CONNECTION_TIMEOUT` while creating the VM.
+- changed_files: none intentionally changed by the failed command
+- suspected_cause: Local WSL/bash service startup failure, not Python realtime code failure.
+- next_action: Inspect which `bash` executable is being used, verify the Python module path directly, then retry `chatbot.sh` after local bash/WSL recovery if possible.
+- resolution: A later submission-readiness critic successfully ran `chatbot.sh realtime` and regenerated valid realtime output; the failure was transient local WSL/bash startup behavior.
+- unresolved_blocker: none after successful rerun
+
+## 2026-06-06 step-6.1-realtime-provenance-request-changes
+
+- step_id: `phase-6.1-final-local-suite`
+- phase: `final_pre_colab_readiness`
+- command_or_action: final Data/Source critic review.
+- exit_status: request_changes
+- failure_summary: `outputs/realtime_output.json` claimed `검증된 공식 source` and `최신 정보` even though current source probe entries have `official_chain_ok=false`.
+- changed_files: `src/nlp_term/chat/realtime.py`, `src/nlp_term/validators.py`, `outputs/realtime_output.json`
+- suspected_cause: Final-readiness validator only checked placeholder terms and did not bind realtime wording to source verification status.
+- next_action: Keep Task 3 path as fallback-only, soften realtime wording, and add a realtime provenance validator that rejects unsupported verified/latest source claims.
+- unresolved_blocker: none after wording and validator hardening
+
+## 2026-06-06 step-6.1-submission-doc-status-request-changes
+
+- step_id: `phase-6.1-final-local-suite`
+- phase: `final_pre_colab_readiness`
+- command_or_action: final Submission-readiness critic review.
+- exit_status: request_changes
+- failure_summary: Functional readiness passed, but `docs/pre_colab_progress.md` still marked Phase 6.1 as `in_progress` and this failure log still made the bash/WSL timeout look like a current blocker.
+- changed_files: `docs/pre_colab_progress.md`, `docs/pre_colab_failure_log.md`
+- suspected_cause: Documentation was updated before the successful post-fix critic reruns completed.
+- next_action: Update Phase 6.1 status to pass and record that the later critic successfully reran `chatbot.sh realtime`.
+- unresolved_blocker: none after documentation status update

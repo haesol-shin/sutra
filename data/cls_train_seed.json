@@ -2952,7 +2952,7 @@
     }
   },
   {
-    "question": "16 4548 공지 2026학년도 제1학기 학생 출석인정 내용을 묻는다면 어떤 질문 유형인가요?",
+    "question": "16 4555 공지 2026학년도 제1학기 학생 출석인정 내용을 묻는다면 어떤 질문 유형인가요?",
     "label": 1,
     "source_doc_id": "academic_notice_board_chunk_1",
     "generation_method": "template",
@@ -2964,7 +2964,7 @@
     }
   },
   {
-    "question": "학사공지 기준으로 16 4548 공지 2026학년도 제1학기 학생 출석인정 정보를 확인하고 싶어요.",
+    "question": "학사공지 기준으로 16 4555 공지 2026학년도 제1학기 학생 출석인정 정보를 확인하고 싶어요.",
     "label": 1,
     "source_doc_id": "academic_notice_board_chunk_1",
     "generation_method": "template",
@@ -2976,7 +2976,7 @@
     }
   },
   {
-    "question": "공식 자료의 16 4548 공지 2026학년도 제1학기 학생 출석인정 부분은 어디에 해당하나요?",
+    "question": "공식 자료의 16 4555 공지 2026학년도 제1학기 학생 출석인정 부분은 어디에 해당하나요?",
     "label": 1,
     "source_doc_id": "academic_notice_board_chunk_1",
     "generation_method": "template",

@@ -328,3 +328,42 @@
   - ruff reported `All checks passed!`
 - gate:
   - pass: UI answer path runs with the shared generated knowledge artifact
+
+## Phase 6.1 Final Local Suite
+
+- status: pass
+- command:
+  - `uv run python -c "import nlp_term; print('import-ok')"`
+  - `uv run python -m nlp_term.collect.run_collect --fetch --output data/sources/source_probe.json`
+  - `uv run python -m nlp_term.validators --source-probe data/sources/source_probe.json --require-raw-files`
+  - `uv run python -m nlp_term.prepare.from_sources --source-probe data/sources/source_probe.json --output data/knowledge_seed.json`
+  - `uv run python -m nlp_term.validators --knowledge-provenance data/sources/source_probe.json --data-dir data`
+  - `uv run python -m nlp_term.validators --knowledge-quality data/knowledge_seed.json --source-probe data/sources/source_probe.json --min-docs-per-label 3 --min-body-chars 80 --min-source-parse-ratio 0.8`
+  - `uv run python -m nlp_term.prepare.build_all --output-dir data`
+  - `uv run python -m nlp_term.validators --seed-data --data-dir data`
+  - `uv run python -m nlp_term.validators --dataset-quality --data-dir data --min-cls-rows 250 --min-cls-per-label 40 --min-ambiguous-per-label 5 --min-qa-rows 50 --min-qa-per-label 8 --no-dry-run --require-validated --require-qa-source`
+  - `uv run python -m nlp_term.classify.train --input data/cls_train_seed.json --model-output model/classifier.joblib --metrics-output model/classifier_metrics.json`
+  - `uv run python -m nlp_term.validators --classifier-metrics model/classifier_metrics.json --input data/cls_train_seed.json --require-source-disjoint --min-macro-f1 0.70 --min-weighted-f1 0.70 --min-class-f1 0.55`
+  - `uv run python -m nlp_term.validators --runtime-knowledge-consistency --knowledge data/knowledge_seed.json`
+  - `uv run python -m nlp_term.retrieve.evaluate --knowledge data/knowledge_seed.json --qa data/qa_seed.json --output model/retrieval_metrics.json`
+  - `uv run python -m nlp_term.validators --retrieval-metrics model/retrieval_metrics.json --knowledge data/knowledge_seed.json --qa data/qa_seed.json --min-top1-label-accuracy 0.80 --min-top3-source-hit-rate 0.70`
+  - `uv run jupyter nbconvert --execute src/classifier.ipynb --to notebook --inplace`
+  - `bash chatbot.sh batch`
+  - `bash chatbot.sh realtime`
+  - `uv run python -m nlp_term.ui.app --smoke-test`
+  - `uv run python -m nlp_term.validators --chat-quality outputs/chat_output.json --input data/test_chat.json --min-answer-chars 80 --require-source-hint`
+  - `uv run python -m nlp_term.validators --check-all --data-dir data --outputs-dir outputs --require-realtime --final-readiness`
+  - `uv run ruff check src\nlp_term`
+  - `uv run python -m compileall src\nlp_term`
+- result:
+  - all source, data, classifier, retrieval, notebook, chat batch, UI smoke, final-readiness, ruff, and compileall gates passed before final critic review
+  - runtime critic returned `PASS`
+  - data/source critic returned `REQUEST CHANGES` because realtime output claimed `검증된 공식 source` and `최신 정보` while current sources have `official_chain_ok=false`
+  - 5-agent meeting consensus: keep Task 3 as fallback-only, soften final-facing wording, and add a realtime provenance validator
+  - realtime fallback wording now avoids verified official/latest claims and tells users that stored snapshots cannot determine current state
+  - `uv run python -m nlp_term.validators --realtime-provenance outputs/realtime_output.json --source-probe data/sources/source_probe.json` printed `validation-ok`
+  - negative check with the old `검증된 공식 source` wording now fails
+  - data/source critic rerun returned `PASS`
+  - submission-readiness critic found no code/data blocker; it requested only this documentation status update
+- gate:
+  - pass: Goal 1 local pre-Colab baseline is functionally ready, with Task 3 preserved as fallback-only and non-claiming

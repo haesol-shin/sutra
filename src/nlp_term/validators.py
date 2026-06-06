@@ -30,6 +30,13 @@ from nlp_term.schemas import (
 
 ModelT = TypeVar("ModelT", bound=BaseModel)
 BANNED_OUTPUT_TERMS = ("dry-run", "dry_run", "stub", "parser 미구현", "제출 구현에서는")
+UNSUPPORTED_REALTIME_CLAIMS = (
+    "검증된 공식 source",
+    "저장된 공식 source",
+    "공식 source snapshot",
+    "최신 정보는",
+    "실시간 조회가",
+)
 QUESTION_NORMALIZE_RE = re.compile(r"\s+")
 QA_BOILERPLATE_TERMS = (
     "본문 바로가기",
@@ -212,6 +219,28 @@ def validate_final_readiness(outputs_dir: Path) -> None:
         for term in BANNED_OUTPUT_TERMS:
             if term.lower() in text:
                 raise ValueError(f"{path} contains final-readiness banned term: {term}")
+    realtime_path = outputs_dir / "realtime_output.json"
+    if realtime_path.exists():
+        validate_realtime_provenance(realtime_path)
+
+
+def validate_realtime_provenance(output_path: Path, source_probe_path: Path | None = None) -> None:
+    rows = validate_rows(output_path, RealtimeOutput, required=True)
+    if source_probe_path is None:
+        any_official_chain = False
+    else:
+        payload = read_json(source_probe_path)
+        if not isinstance(payload, list):
+            raise ValueError(f"{source_probe_path} must contain a JSON list")
+        any_official_chain = any(
+            SourceVerification.model_validate(row.get("verification")).official_chain_ok for row in payload
+        )
+    if any_official_chain:
+        return
+    for row in rows:
+        for term in UNSUPPORTED_REALTIME_CLAIMS:
+            if term.casefold() in row.model.casefold():
+                raise ValueError(f"realtime-provenance: unsupported realtime/source claim {term}: {row.user}")
 
 
 def validate_knowledge_quality(
@@ -597,6 +626,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--classifier-metrics", type=Path, help="Validate classifier metric gates.")
     parser.add_argument("--retrieval-metrics", type=Path, help="Validate retrieval metric gates.")
     parser.add_argument("--chat-quality", type=Path, help="Validate chat output quality gates.")
+    parser.add_argument("--realtime-provenance", type=Path, help="Validate realtime output against source provenance.")
     parser.add_argument("--runtime-knowledge-consistency", action="store_true", help="Validate runtime knowledge loader consistency.")
     parser.add_argument("--final-readiness", action="store_true", help="Reject placeholder terms in final-facing outputs.")
     parser.add_argument("--require-raw-files", action="store_true", help="Require source probe raw files to exist.")
@@ -643,6 +673,7 @@ def main() -> None:
         and not args.classifier_metrics
         and not args.retrieval_metrics
         and not args.chat_quality
+        and not args.realtime_provenance
         and not args.runtime_knowledge_consistency
         and not args.final_readiness
     ):
@@ -713,6 +744,8 @@ def main() -> None:
                 min_answer_chars=args.min_answer_chars,
                 require_source_hint=args.require_source_hint,
             )
+        if args.realtime_provenance:
+            validate_realtime_provenance(args.realtime_provenance, source_probe_path=args.source_probe)
         if args.runtime_knowledge_consistency:
             if args.knowledge is None:
                 raise ValueError("--runtime-knowledge-consistency requires --knowledge")
