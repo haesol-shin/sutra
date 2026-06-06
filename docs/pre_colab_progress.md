@@ -141,3 +141,40 @@
   - ruff reported `All checks passed!`
 - gate:
   - pass: classification data exceeds row, per-label, ambiguity, no-dry-run, and validation thresholds
+
+## Phase 2.2 QA Dataset Generation
+
+- status: pass
+- changed_files:
+  - `src/nlp_term/prepare/parsers.py`
+  - `src/nlp_term/prepare/from_sources.py`
+  - `src/nlp_term/prepare/qa_data.py`
+  - `src/nlp_term/validators.py`
+  - `data/knowledge_seed.json`
+  - `data/qa_seed.json`
+  - `data/cls_train_seed.json`
+  - `data/label_audit_seed.json`
+  - `data/source_parse_failures.json`
+- command:
+  - `uv run python -m nlp_term.prepare.from_sources --source-probe data\sources\source_probe.json --output data\knowledge_seed.json --failures-output data\source_parse_failures.json`
+  - `uv run python -m nlp_term.validators --knowledge-quality data\knowledge_seed.json --source-probe data\sources\source_probe.json --min-docs-per-label 3 --min-body-chars 80 --min-source-parse-ratio 0.8`
+  - `uv run python -m nlp_term.prepare.build_all --output-dir data`
+  - `uv run python -m nlp_term.validators --dataset-quality --data-dir data --min-qa-rows 50 --min-qa-per-label 8 --require-qa-source --require-validated --no-dry-run`
+  - `uv run python -m nlp_term.validators --seed-data --data-dir data`
+  - `uv run python -m compileall src\nlp_term\prepare src\nlp_term\validators.py`
+  - `uv run ruff check src\nlp_term\prepare src\nlp_term\validators.py`
+- result:
+  - initial QA-only fixes passed scripted gates but failed critic review; meeting protocol opened a 5-agent meeting instead of stopping
+  - first meeting selected positive evidence span selection plus hard validator gates
+  - second meeting cycle found the blocker was upstream HTML extraction, so CNU HTML parsing now uses source-specific main-content selectors before chunking
+  - generated 15 source-backed knowledge docs, 3 per label
+  - generated 50 QA rows, 10 per label
+  - generated 512 classification rows after source regeneration
+  - `data/source_parse_failures.json` records `cnucoop_discovery` as excluded because no clean chunk passed quality gates; dining remains covered by 3 `cnu_mobile_food` docs
+  - independent page-chrome scan reported 0 hits in `knowledge_seed.json` and `qa_seed.json`
+  - Source/Data critic reviewed all 50 QA rows and returned `PASS`
+  - knowledge-quality, dataset-quality, and seed-data validators printed `validation-ok`
+  - compileall exited 0
+  - ruff reported `All checks passed!`
+- gate:
+  - pass: QA data meets row, per-label, source grounding, no-dry-run, validation, page-chrome, and all-row Source/Data critic gates

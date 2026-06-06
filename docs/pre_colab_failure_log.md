@@ -133,3 +133,39 @@
 - suspected_cause: Global dedupe and stronger anchor filtering removed low-quality rows faster than template variants replaced them.
 - next_action: Add safe domain-specific template variants that include label hints and do not create cross-label duplicate questions.
 - unresolved_blocker: none until max attempts is reached
+
+## 2026-06-06 step-2.2-qa-quality-attempt-1
+
+- step_id: `phase-2.2-qa-dataset-generation`
+- phase: `source_backed_classification_and_qa_data`
+- command_or_action: sequential Phase 2.2 critic review.
+- exit_status: request_changes
+- failure_summary: QA rows passed numeric/source-presence gates but copied navigation boilerplate, mojibake, and generic non-answer text into answers.
+- changed_files: `data/qa_seed.json`, `docs/pre_colab_progress.md`, `src/nlp_term/prepare/qa_data.py`
+- suspected_cause: QA generator used the first source body tokens directly and validator only checked for URL/source hint presence.
+- next_action: Clean source excerpts before QA generation, remove generic answer variants, and strengthen QA validators against boilerplate, mojibake, banned terms, and generic non-answer rows.
+- unresolved_blocker: none until max attempts is reached
+
+## 2026-06-06 step-2.2-qa-quality-attempt-2
+
+- step_id: `phase-2.2-qa-dataset-generation`
+- phase: `source_backed_classification_and_qa_data`
+- command_or_action: sequential Phase 2.2 critic recheck.
+- exit_status: request_changes
+- failure_summary: Generic answers were fixed, but QA answers still contained broader navigation/promotional boilerplate and CNU coop mojibake not covered by the first filter.
+- changed_files: `src/nlp_term/prepare/qa_data.py`, `src/nlp_term/validators.py`, `data/qa_seed.json`, `docs/pre_colab_progress.md`
+- suspected_cause: Boilerplate and mojibake rejection lists were too narrow.
+- next_action: Expand cleaning and validation terms for promotional chrome, open/close button text, footer-only content, and non-Korean mojibake fragments; regenerate QA and rerun gates.
+- unresolved_blocker: none until max attempts is reached
+
+## 2026-06-06 step-2.2-qa-quality-attempt-3
+
+- step_id: `phase-2.2-qa-dataset-generation`
+- phase: `source_backed_classification_and_qa_data`
+- command_or_action: final allowed sequential Phase 2.2 critic recheck.
+- exit_status: request_changes
+- failure_summary: Numeric/source gates passed, but QA answers still contained case-variant boilerplate (`The Strong CNU`), additional CNU coop mojibake fragments, and fallback evidence text (`공식 source에서 확인한 해당 주제의 안내 범위와 근거`) that is not source-specific.
+- changed_files: `src/nlp_term/prepare/qa_data.py`, `src/nlp_term/validators.py`, `data/qa_seed.json`, `docs/pre_colab_progress.md`
+- suspected_cause: The cleaning logic still relies on deny-lists and generic fallback text instead of selecting cleaner source spans or excluding unusable chunks.
+- next_action: Human decision required because the maximum 3 Phase 2.2 critic loops has been reached. Recommended next direction is to exclude polluted source chunks from QA generation or add positive evidence selection before regenerating QA.
+- unresolved_blocker: `phase-2.2-qa-dataset-generation` did not pass

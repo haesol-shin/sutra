@@ -7,6 +7,7 @@ import inspect
 import json
 from pathlib import Path
 import re
+import unicodedata
 from typing import TypeVar
 
 from pydantic import BaseModel, ValidationError
@@ -30,6 +31,65 @@ from nlp_term.schemas import (
 ModelT = TypeVar("ModelT", bound=BaseModel)
 BANNED_OUTPUT_TERMS = ("dry-run", "dry_run", "stub", "parser 미구현", "제출 구현에서는")
 QUESTION_NORMALIZE_RE = re.compile(r"\s+")
+QA_BOILERPLATE_TERMS = (
+    "본문 바로가기",
+    "사이드메뉴",
+    "주요메뉴",
+    "통합검색",
+    "사이트맵",
+    "CNU홍보",
+    "CNU 홍보브로슈어",
+    "사이버투어",
+    "THE STRONG CNU",
+    "미래 사회를 선도할",
+    "홍보동영상",
+    "홍보브로슈어",
+    "캠퍼스투어",
+    "대학/대학원",
+    "열기 버튼",
+    "닫기버튼",
+    "All Rights Reserved",
+    "Login",
+    "ENG",
+    "SNS",
+    "URL복사",
+    "facebook",
+    "카카오톡",
+    "Naver",
+    "print",
+    "학사서비스소개",
+    "교직원커뮤니티",
+    "백마게시판",
+    "금주의식단",
+    "온라인FAQ",
+    "학생증발급안내",
+    "학생생활관안내",
+    "주차안내",
+    "교내현수막관리",
+    "기타 서비스안내",
+    "교내복지안내",
+    "편의시설안내",
+    "시설이용안내",
+    "입법예고",
+    "주간업무추진계획",
+    "행정정보",
+    "입찰공고",
+    "대학정보공시",
+    "청렴행정",
+    "회의실예약",
+)
+GENERIC_QA_PHRASES = (
+    "자료를 우선 확인해야 합니다.",
+    "공식 source에서 확인한 해당 주제의 안내 범위와 근거",
+)
+QA_LABEL_KEYWORDS: dict[int, tuple[str, ...]] = {
+    0: ("졸업", "교양", "전공", "학점", "교육과정", "이수"),
+    1: ("공지", "학사정보", "게시", "백마광장", "학사지원과", "작성일", "조회수", "수강신청", "휴학", "복학"),
+    2: ("학사일정", "일정", "학기"),
+    3: ("식단", "메뉴", "학생회관", "조식", "중식", "석식"),
+    4: ("셔틀", "버스", "통학", "시간표", "운행"),
+}
+QA_EVIDENCE_RE = re.compile(r"'([^']+)'")
 
 
 def read_json(path: Path) -> object:
@@ -77,14 +137,19 @@ def validate_seed_data(data_dir: Path) -> None:
     examples = validate_rows(data_dir / "cls_train_seed.json", ClassificationExample, required=True)
     audits = validate_rows(data_dir / "label_audit_seed.json", LabelAudit, required=True)
     qa_rows = validate_rows(data_dir / "qa_seed.json", QAExample, required=True)
+    docs_by_id = {doc.doc_id: doc for doc in docs}
     if {doc.label for doc in docs} != {0, 1, 2, 3, 4}:
         raise ValueError("knowledge_seed.json must cover labels 0-4")
+    for doc in docs:
+        _validate_knowledge_body_text(doc)
     if any(not row.validated for row in examples):
         raise ValueError("cls_train_seed.json contains unvalidated examples")
     if any(row.decision != "accept" for row in audits):
         raise ValueError("label_audit_seed.json contains non-accepted audit rows")
     if any(not row.validated for row in qa_rows):
         raise ValueError("qa_seed.json contains unvalidated rows")
+    for row in qa_rows:
+        _validate_qa_answer_text(row, docs_by_id=docs_by_id)
 
 
 def validate_source_probe(path: Path, *, require_raw_files: bool = False) -> None:
@@ -178,6 +243,8 @@ def validate_knowledge_quality(
         for doc in docs:
             if len(doc.body.strip()) < min_body_chars:
                 raise ValueError(f"knowledge-quality: {doc.doc_id} body is shorter than {min_body_chars} chars")
+    for doc in docs:
+        _validate_knowledge_body_text(doc)
     if min_source_parse_ratio is not None:
         parsed = sum(1 for doc in docs if doc.metadata.get("generation_method") == "source_parse")
         ratio = parsed / max(len(docs), 1)
@@ -208,9 +275,13 @@ def validate_dataset_quality(
     require_validated: bool = False,
     require_qa_source: bool = False,
 ) -> None:
+    docs = validate_rows(data_dir / "knowledge_seed.json", KnowledgeDoc, required=True)
     cls_rows = validate_rows(data_dir / "cls_train_seed.json", ClassificationExample, required=True)
     audits = validate_rows(data_dir / "label_audit_seed.json", LabelAudit, required=True)
     qa_rows = validate_rows(data_dir / "qa_seed.json", QAExample, required=True)
+    docs_by_id = {doc.doc_id: doc for doc in docs}
+    for doc in docs:
+        _validate_knowledge_body_text(doc)
     _validate_question_label_consistency(cls_rows)
     _validate_audit_consistency(cls_rows, audits)
     if min_cls_rows is not None and len(cls_rows) < min_cls_rows:
@@ -244,10 +315,89 @@ def validate_dataset_quality(
             has_source_text = "http" in row.model.lower() or "출처" in row.model
             if not row.source_url or not has_source_text:
                 raise ValueError(f"dataset-quality: QA row lacks source evidence: {row.user}")
+            _validate_qa_answer_text(row, docs_by_id=docs_by_id)
 
 
 def _normalize_question(text: str) -> str:
     return QUESTION_NORMALIZE_RE.sub(" ", text.strip().lower())
+
+
+def _validate_qa_answer_text(row: QAExample, *, docs_by_id: dict[str, KnowledgeDoc] | None = None) -> None:
+    lowered = row.model.lower()
+    for term in BANNED_OUTPUT_TERMS:
+        if term.lower() in lowered:
+            raise ValueError(f"dataset-quality: QA answer contains banned term {term}: {row.user}")
+    for term in QA_BOILERPLATE_TERMS:
+        if term.casefold() in row.model.casefold():
+            raise ValueError(f"dataset-quality: QA answer contains boilerplate term {term}: {row.user}")
+    for phrase in GENERIC_QA_PHRASES:
+        if phrase in row.model:
+            raise ValueError(f"dataset-quality: QA answer is too generic: {row.user}")
+    if _mojibake_score(row.model) >= 3:
+        raise ValueError(f"dataset-quality: QA answer appears garbled: {row.user}")
+    if _contains_private_use(row.model):
+        raise ValueError(f"dataset-quality: QA answer contains private-use glyphs: {row.user}")
+    _validate_qa_evidence_span(row, docs_by_id=docs_by_id)
+
+
+def _validate_knowledge_body_text(doc: KnowledgeDoc) -> None:
+    for term in QA_BOILERPLATE_TERMS:
+        if term.casefold() in doc.body.casefold():
+            raise ValueError(f"knowledge-quality: {doc.doc_id} contains page chrome term {term}")
+    if _mojibake_score(doc.body) >= 3:
+        raise ValueError(f"knowledge-quality: {doc.doc_id} appears garbled")
+    if _contains_private_use(doc.body):
+        raise ValueError(f"knowledge-quality: {doc.doc_id} contains private-use glyphs")
+    if not _has_label_specific_source_signal(doc.body, doc.label):
+        raise ValueError(f"knowledge-quality: {doc.doc_id} lacks source-specific content signal")
+
+
+def _has_label_specific_source_signal(text: str, label: int) -> bool:
+    if label == 1:
+        return bool(re.search(r"20\d{2}-\d{2}-\d{2}", text)) and any(
+            term in text for term in ("공지", "학사지원과", "작성일", "조회수")
+        )
+    if label == 2:
+        return bool(re.search(r"\d{2}\.\d{2}", text)) and any(
+            term in text for term in ("개강", "수강신청", "휴학", "복학", "등록", "계절학기", "성적")
+        )
+    if label == 3:
+        return any(term in text for term in ("조식", "중식", "석식", "메뉴운영내역", "원산지"))
+    if label == 4:
+        return any(term in text for term in ("운영기준", "운행", "시간표", "평일", "주말", "공휴일", "월평역"))
+    return True
+
+
+def _validate_qa_evidence_span(row: QAExample, *, docs_by_id: dict[str, KnowledgeDoc] | None) -> None:
+    excerpts = QA_EVIDENCE_RE.findall(row.model)
+    if not excerpts:
+        raise ValueError(f"dataset-quality: QA row lacks quoted evidence: {row.user}")
+    excerpt = excerpts[0].strip()
+    if len(excerpt) < 40:
+        raise ValueError(f"dataset-quality: QA quoted evidence is too short: {row.user}")
+    if sum(1 for char in excerpt if "가" <= char <= "힣") < 20:
+        raise ValueError(f"dataset-quality: QA quoted evidence has low Korean density: {row.user}")
+    if not any(keyword in excerpt for keyword in QA_LABEL_KEYWORDS[row.label]):
+        raise ValueError(f"dataset-quality: QA quoted evidence lacks label keyword: {row.user}")
+    if docs_by_id is None:
+        return
+    doc = docs_by_id.get(row.source_doc_id)
+    if doc is None:
+        raise ValueError(f"dataset-quality: QA row references missing source doc: {row.user}")
+    if row.source_url != doc.source_url:
+        raise ValueError(f"dataset-quality: QA row source URL mismatches source doc: {row.user}")
+    token_hits = sum(1 for token in excerpt.split() if len(token) > 1 and token in doc.body)
+    if token_hits < 6:
+        raise ValueError(f"dataset-quality: QA evidence is not grounded in source body: {row.user}")
+
+
+def _mojibake_score(text: str) -> int:
+    suspicious = "泲湮ȯմϴбտαøũĴ�"
+    return sum(text.count(char) for char in suspicious)
+
+
+def _contains_private_use(text: str) -> bool:
+    return any(unicodedata.category(char) == "Co" for char in text)
 
 
 def _validate_question_label_consistency(rows: list[ClassificationExample]) -> None:

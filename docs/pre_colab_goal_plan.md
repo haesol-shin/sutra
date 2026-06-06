@@ -13,7 +13,8 @@
 - seed data는 pipeline sanity 전용이며 최종 성능 주장에 사용하지 않는다.
 - 각 step의 `max_attempts`는 3이다.
 - 실패 시 `docs/pre_colab_failure_log.md`에 기록하고 같은 step을 재시도한다.
-- 3회 실패한 step은 중단하고 blocked로 보고한다.
+- `REQUEST CHANGES`가 나오거나 같은 step이 2회 실패하면 `docs/meeting_protocol.md`의 5-agent meeting을 연다.
+- 3회 실패한 step은 바로 중단하지 않고 5-agent meeting의 handoff 또는 user escalation 결과에 따른다.
 - 각 구현 step 뒤에는 critic 1회를 실행한다.
 - 사용자가 완료 명령을 내리면 runtime critic, data/source critic, submission critic 3개를 순차 실행한다.
 

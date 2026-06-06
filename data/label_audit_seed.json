@@ -1200,7 +1200,7 @@
     "reviewer_override": null
   },
   {
-    "question": "졸업요건에서 교양 관련 내용은 어떻게 확인해?",
+    "question": "졸업요건에서 교양과정 관련 내용은 어떻게 확인해?",
     "source_doc_id": "graduation_curriculum_pdf_chunk_1",
     "vote_labels": [
       0,
@@ -1215,7 +1215,7 @@
     "reviewer_override": null
   },
   {
-    "question": "졸업요건 자료의 교양 정보를 어디서 봐야 하나요?",
+    "question": "졸업요건 자료의 교양과정 정보를 어디서 봐야 하나요?",
     "source_doc_id": "graduation_curriculum_pdf_chunk_1",
     "vote_labels": [
       0,
@@ -1230,7 +1230,7 @@
     "reviewer_override": null
   },
   {
-    "question": "졸업요건 질문으로 교양 내용을 물어보면 돼?",
+    "question": "졸업요건 질문으로 교양과정 내용을 물어보면 돼?",
     "source_doc_id": "graduation_curriculum_pdf_chunk_1",
     "vote_labels": [
       0,
@@ -1245,7 +1245,7 @@
     "reviewer_override": null
   },
   {
-    "question": "졸업요건에서 이수 관련 내용은 어떻게 확인해?",
+    "question": "졸업요건에서 전공과정 관련 내용은 어떻게 확인해?",
     "source_doc_id": "graduation_curriculum_pdf_chunk_1",
     "vote_labels": [
       0,
@@ -1260,7 +1260,7 @@
     "reviewer_override": null
   },
   {
-    "question": "졸업요건 자료의 이수 정보를 어디서 봐야 하나요?",
+    "question": "졸업요건 자료의 전공과정 정보를 어디서 봐야 하나요?",
     "source_doc_id": "graduation_curriculum_pdf_chunk_1",
     "vote_labels": [
       0,
@@ -1275,7 +1275,142 @@
     "reviewer_override": null
   },
   {
-    "question": "졸업요건 질문으로 이수 내용을 물어보면 돼?",
+    "question": "졸업요건 질문으로 전공과정 내용을 물어보면 돼?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건에서 이수단위는 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 자료의 이수단위는 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 질문으로 이수단위는 내용을 물어보면 돼?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건에서 학점으로 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 자료의 학점으로 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 질문으로 학점으로 내용을 물어보면 돼?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건에서 1학점은 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 자료의 1학점은 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 질문으로 1학점은 내용을 물어보면 돼?",
     "source_doc_id": "graduation_curriculum_pdf_chunk_1",
     "vote_labels": [
       0,
@@ -1352,6 +1487,231 @@
   {
     "question": "입학년도에 따라 달라지는 기준을 어디서 봐?",
     "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건에서 이수에 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 자료의 이수에 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 질문으로 이수에 내용을 물어보면 돼?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건에서 소요학점 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 자료의 소요학점 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 질문으로 소요학점 내용을 물어보면 돼?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건에서 이수학점 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 자료의 이수학점 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 질문으로 이수학점 내용을 물어보면 돼?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건에서 교양 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 자료의 교양 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 질문으로 교양 내용을 물어보면 돼?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건에서 졸업소요학점 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_3",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 자료의 졸업소요학점 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_3",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업요건 질문으로 졸업소요학점 내용을 물어보면 돼?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_3",
     "vote_labels": [
       0,
       0,
@@ -2565,7 +2925,7 @@
     "reviewer_override": null
   },
   {
-    "question": "학사공지에서 학사정보 관련 내용은 어떻게 확인해?",
+    "question": "학사공지에서 학사정보게시판 관련 내용은 어떻게 확인해?",
     "source_doc_id": "academic_notice_board_chunk_1",
     "vote_labels": [
       1,
@@ -2580,7 +2940,7 @@
     "reviewer_override": null
   },
   {
-    "question": "학사공지 자료의 학사정보 정보를 어디서 봐야 하나요?",
+    "question": "학사공지 자료의 학사정보게시판 정보를 어디서 봐야 하나요?",
     "source_doc_id": "academic_notice_board_chunk_1",
     "vote_labels": [
       1,
@@ -2595,7 +2955,97 @@
     "reviewer_override": null
   },
   {
-    "question": "학사공지 질문으로 학사정보 내용을 물어보면 돼?",
+    "question": "학사공지 질문으로 학사정보게시판 내용을 물어보면 돼?",
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "학사공지에서 공지 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "학사공지 자료의 공지 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "학사공지 질문으로 공지 내용을 물어보면 돼?",
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "학사공지에서 안내 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "학사공지 자료의 안내 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "학사공지 질문으로 안내 내용을 물어보면 돼?",
     "source_doc_id": "academic_notice_board_chunk_1",
     "vote_labels": [
       1,
@@ -2672,6 +3122,96 @@
   {
     "question": "최근 안내 제목만 보고 어디에 해당하는지 모르겠어.",
     "source_doc_id": "academic_notice_board_chunk_1",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "학사공지에서 장학생 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "학사공지 자료의 장학생 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "학사공지 질문으로 장학생 내용을 물어보면 돼?",
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "학사공지에서 모집 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "학사공지 자료의 모집 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "학사공지 질문으로 모집 내용을 물어보면 돼?",
+    "source_doc_id": "academic_notice_board_chunk_2",
     "vote_labels": [
       1,
       1,
@@ -3885,7 +4425,7 @@
     "reviewer_override": null
   },
   {
-    "question": "학사일정에서 일정 관련 내용은 어떻게 확인해?",
+    "question": "학사일정에서 개강일 관련 내용은 어떻게 확인해?",
     "source_doc_id": "academic_calendar_chunk_1",
     "vote_labels": [
       2,
@@ -3900,7 +4440,7 @@
     "reviewer_override": null
   },
   {
-    "question": "학사일정 자료의 일정 정보를 어디서 봐야 하나요?",
+    "question": "학사일정 자료의 개강일 정보를 어디서 봐야 하나요?",
     "source_doc_id": "academic_calendar_chunk_1",
     "vote_labels": [
       2,
@@ -3915,7 +4455,7 @@
     "reviewer_override": null
   },
   {
-    "question": "학사일정 질문으로 일정 내용을 물어보면 돼?",
+    "question": "학사일정 질문으로 개강일 내용을 물어보면 돼?",
     "source_doc_id": "academic_calendar_chunk_1",
     "vote_labels": [
       2,
@@ -3930,7 +4470,7 @@
     "reviewer_override": null
   },
   {
-    "question": "학사일정에서 학사일정 관련 내용은 어떻게 확인해?",
+    "question": "학사일정에서 수강신청 관련 내용은 어떻게 확인해?",
     "source_doc_id": "academic_calendar_chunk_1",
     "vote_labels": [
       2,
@@ -3945,7 +4485,7 @@
     "reviewer_override": null
   },
   {
-    "question": "학사일정 자료의 학사일정 정보를 어디서 봐야 하나요?",
+    "question": "학사일정 자료의 수강신청 정보를 어디서 봐야 하나요?",
     "source_doc_id": "academic_calendar_chunk_1",
     "vote_labels": [
       2,
@@ -3960,7 +4500,7 @@
     "reviewer_override": null
   },
   {
-    "question": "학사일정 질문으로 학사일정 내용을 물어보면 돼?",
+    "question": "학사일정 질문으로 수강신청 내용을 물어보면 돼?",
     "source_doc_id": "academic_calendar_chunk_1",
     "vote_labels": [
       2,
@@ -4037,51 +4577,6 @@
   {
     "question": "수업 일정인지 공지사항인지 헷갈리는 질문이야.",
     "source_doc_id": "academic_calendar_chunk_1",
-    "vote_labels": [
-      2,
-      2,
-      2,
-      2,
-      2
-    ],
-    "final_label": 2,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "학사일정에서 우수강의 관련 내용은 어떻게 확인해?",
-    "source_doc_id": "academic_calendar_chunk_2",
-    "vote_labels": [
-      2,
-      2,
-      2,
-      2,
-      2
-    ],
-    "final_label": 2,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "학사일정 자료의 우수강의 정보를 어디서 봐야 하나요?",
-    "source_doc_id": "academic_calendar_chunk_2",
-    "vote_labels": [
-      2,
-      2,
-      2,
-      2,
-      2
-    ],
-    "final_label": 2,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "학사일정 질문으로 우수강의 내용을 물어보면 돼?",
-    "source_doc_id": "academic_calendar_chunk_2",
     "vote_labels": [
       2,
       2,
@@ -5295,141 +5790,6 @@
     "reviewer_override": null
   },
   {
-    "question": "식단에서 식당메뉴 관련 내용은 어떻게 확인해?",
-    "source_doc_id": "cnu_mobile_food_chunk_1",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 자료의 식당메뉴 정보를 어디서 봐야 하나요?",
-    "source_doc_id": "cnu_mobile_food_chunk_1",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 질문으로 식당메뉴 내용을 물어보면 돼?",
-    "source_doc_id": "cnu_mobile_food_chunk_1",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단에서 식단 관련 내용은 어떻게 확인해?",
-    "source_doc_id": "cnu_mobile_food_chunk_1",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 자료의 식단 정보를 어디서 봐야 하나요?",
-    "source_doc_id": "cnu_mobile_food_chunk_1",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 질문으로 식단 내용을 물어보면 돼?",
-    "source_doc_id": "cnu_mobile_food_chunk_1",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단에서 식당별 관련 내용은 어떻게 확인해?",
-    "source_doc_id": "cnu_mobile_food_chunk_1",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 자료의 식당별 정보를 어디서 봐야 하나요?",
-    "source_doc_id": "cnu_mobile_food_chunk_1",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 질문으로 식당별 내용을 물어보면 돼?",
-    "source_doc_id": "cnu_mobile_food_chunk_1",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
     "question": "식단에서 식단메뉴에 관련 내용은 어떻게 확인해?",
     "source_doc_id": "cnu_mobile_food_chunk_1",
     "vote_labels": [
@@ -5520,6 +5880,51 @@
     "reviewer_override": null
   },
   {
+    "question": "식단에서 학생 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "vote_labels": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "final_label": 3,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "식단 자료의 학생 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "vote_labels": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "final_label": 3,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "식단 질문으로 학생 내용을 물어보면 돼?",
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "vote_labels": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "final_label": 3,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
     "question": "오늘 먹을 수 있는 메뉴가 있는지 알고 싶어.",
     "source_doc_id": "cnu_mobile_food_chunk_1",
     "vote_labels": [
@@ -5582,231 +5987,6 @@
   {
     "question": "날짜별 메뉴를 확인하는 질문이야.",
     "source_doc_id": "cnu_mobile_food_chunk_1",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단에서 학생 관련 내용은 어떻게 확인해?",
-    "source_doc_id": "cnu_mobile_food_chunk_2",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 자료의 학생 정보를 어디서 봐야 하나요?",
-    "source_doc_id": "cnu_mobile_food_chunk_2",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 질문으로 학생 내용을 물어보면 돼?",
-    "source_doc_id": "cnu_mobile_food_chunk_2",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단에서 구내식당 관련 내용은 어떻게 확인해?",
-    "source_doc_id": "cnu_mobile_food_chunk_2",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 자료의 구내식당 정보를 어디서 봐야 하나요?",
-    "source_doc_id": "cnu_mobile_food_chunk_2",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 질문으로 구내식당 내용을 물어보면 돼?",
-    "source_doc_id": "cnu_mobile_food_chunk_2",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단에서 메뉴의 관련 내용은 어떻게 확인해?",
-    "source_doc_id": "cnu_mobile_food_chunk_3",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 자료의 메뉴의 정보를 어디서 봐야 하나요?",
-    "source_doc_id": "cnu_mobile_food_chunk_3",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 질문으로 메뉴의 내용을 물어보면 돼?",
-    "source_doc_id": "cnu_mobile_food_chunk_3",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단에서 저염식단을 관련 내용은 어떻게 확인해?",
-    "source_doc_id": "cnu_mobile_food_chunk_3",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 자료의 저염식단을 정보를 어디서 봐야 하나요?",
-    "source_doc_id": "cnu_mobile_food_chunk_3",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 질문으로 저염식단을 내용을 물어보면 돼?",
-    "source_doc_id": "cnu_mobile_food_chunk_3",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단에서 잡곡식단으로 관련 내용은 어떻게 확인해?",
-    "source_doc_id": "cnu_mobile_food_chunk_3",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 자료의 잡곡식단으로 정보를 어디서 봐야 하나요?",
-    "source_doc_id": "cnu_mobile_food_chunk_3",
-    "vote_labels": [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    "final_label": 3,
-    "confidence": 1.0,
-    "decision": "accept",
-    "reviewer_override": null
-  },
-  {
-    "question": "식단 질문으로 잡곡식단으로 내용을 물어보면 돼?",
-    "source_doc_id": "cnu_mobile_food_chunk_3",
     "vote_labels": [
       3,
       3,
@@ -7065,6 +7245,186 @@
     "reviewer_override": null
   },
   {
+    "question": "셔틀버스에서 운행 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 자료의 운행 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 질문으로 운행 내용을 물어보면 돼?",
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스에서 시간표는 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 자료의 시간표는 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 질문으로 시간표는 내용을 물어보면 돼?",
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스에서 운행시간은 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 자료의 운행시간은 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 질문으로 운행시간은 내용을 물어보면 돼?",
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스에서 학교버스 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 자료의 학교버스 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 질문으로 학교버스 내용을 물어보면 돼?",
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
     "question": "등하교 이동 시간표를 어디서 봐야 해?",
     "source_doc_id": "shuttle_bus_chunk_1",
     "vote_labels": [
@@ -7127,6 +7487,186 @@
   {
     "question": "시간표인지 노선도인지 헷갈리지만 버스 관련 질문이야.",
     "source_doc_id": "shuttle_bus_chunk_1",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스에서 시간표 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 자료의 시간표 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 질문으로 시간표 내용을 물어보면 돼?",
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스에서 노선 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 자료의 노선 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 질문으로 노선 내용을 물어보면 돼?",
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스에서 셔틀버스 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 자료의 셔틀버스 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 질문으로 셔틀버스 내용을 물어보면 돼?",
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스에서 순환버스 관련 내용은 어떻게 확인해?",
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 자료의 순환버스 정보를 어디서 봐야 하나요?",
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 질문으로 순환버스 내용을 물어보면 돼?",
+    "source_doc_id": "shuttle_bus_chunk_3",
     "vote_labels": [
       4,
       4,
