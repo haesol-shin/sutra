@@ -31,6 +31,12 @@ Task 2의 기본 응답 생성 후보는 로컬 LLM이다. 목표 설정은 다�
 
 ## Backend 후보
 
+Hub metadata scan 결과, Qwen3.5-9B 계열 실행 후보는 base model이 아니라 quantized artifact 단위로 추적한다.
+
+- `RedHatAI/Qwen3.5-9B-quantized.w4a16`: INT4 W4A16, vLLM/LLM Compressor 계열 후보. `INT4 weight + FP8 KV cache` 목표와 가장 직접적으로 맞는 후보지만, 로컬 Windows에서 vLLM XPU 설치 가능성이 먼저 확인되어야 한다.
+- `unsloth/Qwen3.5-9B-GGUF`: Q4_K_M 약 5.68GB 등 여러 GGUF quantization을 제공한다. 15GB VRAM feasibility에는 유리하지만 exact FP8 KV cache는 runner 지원 여부가 불확실하다.
+- `Intel/Qwen3.5-9B-int4-AutoRound`: Intel stack을 의식한 INT4 후보로 보인다. 로컬 Intel/XPU 실험 후보지만 KV FP8 지원은 별도 backend 증거가 필요하다.
+
 ### 1. PyTorch XPU + Transformers
 
 장점:

@@ -16,6 +16,30 @@
     "source_url": "https://huggingface.co/docs/transformers/model_doc/qwen3_5"
   },
   {
+    "name": "RedHatAI/Qwen3.5-9B-quantized.w4a16",
+    "task": "task2",
+    "max_params_b": 9.0,
+    "status": "candidate",
+    "reason": "INT4 W4A16 vLLM/LLM Compressor candidate; closest artifact class for the INT4 weight + vLLM XPU FP8 KV target if local vLLM XPU installation succeeds.",
+    "source_url": "https://huggingface.co/RedHatAI/Qwen3.5-9B-quantized.w4a16"
+  },
+  {
+    "name": "unsloth/Qwen3.5-9B-GGUF",
+    "task": "task2",
+    "max_params_b": 9.0,
+    "status": "candidate",
+    "reason": "Practical GGUF Q4 local runner candidate with Q4_K_M around 5.68GB; good for INT4 weight feasibility, but exact FP8 KV cache is runner-dependent and unproven.",
+    "source_url": "https://huggingface.co/unsloth/Qwen3.5-9B-GGUF"
+  },
+  {
+    "name": "Intel/Qwen3.5-9B-int4-AutoRound",
+    "task": "task2",
+    "max_params_b": 9.0,
+    "status": "candidate",
+    "reason": "Intel-stack INT4 AutoRound candidate; useful for local Intel/XPU-oriented experiments, but FP8 KV cache support still needs backend proof.",
+    "source_url": "https://huggingface.co/Intel/Qwen3.5-9B-int4-AutoRound"
+  },
+  {
     "name": "Gemma4 E4B instruction-tuned variant",
     "task": "task2",
     "max_params_b": 4.0,
