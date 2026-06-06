@@ -1,5 +1,212 @@
 [
   {
+    "doc_id": "graduation_biochemistry_requirements_chunk_1",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 1",
+    "body": "메뉴 닫기 학사정보 학사일정표 학부교육과정 졸업요건 재이수 대학원교육과정 학과내규 장학제도 졸업요건 Home 학사정보 졸업요건 졸업학점 자가 진단법 본인의 교육과정 년도를 먼저 확인합니다. 교육과정에 따라 이수해야 할 과목이 많이 다릅니다. (보통은 학번 앞자리이지만 변경한 경우 학번과 다를 수 있습니다.) F학점은 제외하고 확인합니다. 이수구분이 바르게 표시 되었는지 먼저 확인하세요! 13학년도 교육과정 이전학생은 교양에서 국어 관련3학점, 영어 관련 6학점이상 이수하여 교양이 합계 24학점이 되어야 합니다. (1~5영역 골로루",
+    "date": null,
+    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "source_id": "graduation_biochemistry_requirements",
+    "section": "chunk_1",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "Biochemistry department graduation requirements",
+      "source_department": "생화학과"
+    }
+  },
+  {
+    "doc_id": "graduation_biochemistry_requirements_chunk_2",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 2",
+    "body": "전공기초학점은 전공핵심, 심화로 넘어가지 않습니다. 전공핵심, 심화는 구분 없이 62학점이상 채우면 됩니다. 09학점 이후 학생들은 미래설계상담 5개 과목이상, 편입생들은 2개 과목 이상 이수해야합니다. (전과학생은 전적과에서 이수한 미래설계상담이 일선으로 인정되더라도 다시 들을 필요는 없습니다.) 졸업이 얼마 남지 않았는데 전공학점이 부족하고, 시간표가 겹쳐서 수업듣기가 어렵다면 전공선택 인정과목을 활용하세요. 전공선택과목은 타과 전공과목이지만 우리과 전공으로 인정해주는 과목입니다. ((2025 교육과정))을 적용받는 학생들은 기",
+    "date": null,
+    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "source_id": "graduation_biochemistry_requirements",
+    "section": "chunk_2",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "Biochemistry department graduation requirements",
+      "source_department": "생화학과"
+    }
+  },
+  {
+    "doc_id": "graduation_biochemistry_requirements_chunk_3",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 3",
+    "body": "다시 들을 필요는 없습니다.) 졸업이 얼마 남지 않았는데 전공학점이 부족하고, 시간표가 겹쳐서 수업듣기가 어렵다면 전공선택 인정과목을 활용하세요. 전공선택과목은 타과 전공과목이지만 우리과 전공으로 인정해주는 과목입니다. ((2025 교육과정))을 적용받는 학생들은 기초교양필수 13학점, 균형교양(인문학3학점/사회과학3학점/자연과학3학점/균형교양필수(물리학개론,실험통계학)을 필수로 이수하고 나머지를 소양교양으로 채워 최소 36학점 이상 최대 48학점까지 채우세요. 48학점 이상은 인정되지 않습니다. 전공(기초16학점,핵심+심화=62",
+    "date": null,
+    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "source_id": "graduation_biochemistry_requirements",
+    "section": "chunk_3",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "Biochemistry department graduation requirements",
+      "source_department": "생화학과"
+    }
+  },
+  {
+    "doc_id": "graduation_biochemistry_requirements_chunk_4",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 4",
+    "body": "초교양필수 13학점, 균형교양(인문학3학점/사회과학3학점/자연과학3학점/균형교양필수(물리학개론,실험통계학)을 필수로 이수하고 나머지를 소양교양으로 채워 최소 36학점 이상 최대 48학점까지 채우세요. 48학점 이상은 인정되지 않습니다. 전공(기초16학점,핵심+심화=62)은 78학점 필수로 채우면 됩니다.따라서 교양, 전공의 최소학점을 채우고 나머지를 일선 또는 전공으로 채워 130학점 이상 이수하면 됩니다. 조기졸업자의 경우 의약바이오센터 과목은 졸업이수학점에서 제외합니다. 16학기 (편입생은 8학기)내에 졸업이수학점 채워야합니다.",
+    "date": null,
+    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "source_id": "graduation_biochemistry_requirements",
+    "section": "chunk_4",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "Biochemistry department graduation requirements",
+      "source_department": "생화학과"
+    }
+  },
+  {
+    "doc_id": "graduation_biochemistry_requirements_chunk_5",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 5",
+    "body": ")은 78학점 필수로 채우면 됩니다.따라서 교양, 전공의 최소학점을 채우고 나머지를 일선 또는 전공으로 채워 130학점 이상 이수하면 됩니다. 조기졸업자의 경우 의약바이오센터 과목은 졸업이수학점에서 제외합니다. 16학기 (편입생은 8학기)내에 졸업이수학점 채워야합니다. 초과되면 재학년한 초과로 제적 처리됩니다. 졸업장도 받을 수 없습니다. 기존 실험과목이 없어진 경우 폐지재이수 신청하고 다른 전공과목으로 이수하면 됩니다. 2013학번이후 교육과정을 적용받은 학생의 경우 교양을 42이상 초과해서 이수하면 초과한 학점은 졸업이수학점에",
+    "date": null,
+    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "source_id": "graduation_biochemistry_requirements",
+    "section": "chunk_5",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "Biochemistry department graduation requirements",
+      "source_department": "생화학과"
+    }
+  },
+  {
+    "doc_id": "graduation_biochemistry_requirements_chunk_6",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 6",
+    "body": "초과되면 재학년한 초과로 제적 처리됩니다. 졸업장도 받을 수 없습니다. 기존 실험과목이 없어진 경우 폐지재이수 신청하고 다른 전공과목으로 이수하면 됩니다. 2013학번이후 교육과정을 적용받은 학생의 경우 교양을 42이상 초과해서 이수하면 초과한 학점은 졸업이수학점에 포함되지 않습니다. 그래서 특히 2015학번이후 교육과정을 적용받는 학생들은 일선학점에 주의해야합니다. 교양42+전공78=120학점이므로 졸업이수학점 130에서 10학점이 부족하죠? 부족한 10학점은 일반선택으로 채우거나 전공을 초과해서 들어야 합니다. 일선으로 구분된",
+    "date": null,
+    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "source_id": "graduation_biochemistry_requirements",
+    "section": "chunk_6",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "Biochemistry department graduation requirements",
+      "source_department": "생화학과"
+    }
+  },
+  {
+    "doc_id": "graduation_biochemistry_requirements_chunk_7",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 7",
+    "body": "포함되지 않습니다. 그래서 특히 2015학번이후 교육과정을 적용받는 학생들은 일선학점에 주의해야합니다. 교양42+전공78=120학점이므로 졸업이수학점 130에서 10학점이 부족하죠? 부족한 10학점은 일반선택으로 채우거나 전공을 초과해서 들어야 합니다. 일선으로 구분된 교과목을 찾아서 이수하거나 타과 교과목(전선과목 아니라도 괜찮습니다. 전선과목이 아닌 타과 전공은 일선입니다.)을 듣거나 우리과 전공 심화나 핵심 과목을 초과하여 들어서 130학점이상 이수하면 됩니다. 반면, 2014학번 이전학생들은 교양42 + 기초(9/12) +",
+    "date": null,
+    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "source_id": "graduation_biochemistry_requirements",
+    "section": "chunk_7",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "Biochemistry department graduation requirements",
+      "source_department": "생화학과"
+    }
+  },
+  {
+    "doc_id": "graduation_biochemistry_requirements_chunk_8",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 8",
+    "body": "교과목을 찾아서 이수하거나 타과 교과목(전선과목 아니라도 괜찮습니다. 전선과목이 아닌 타과 전공은 일선입니다.)을 듣거나 우리과 전공 심화나 핵심 과목을 초과하여 들어서 130학점이상 이수하면 됩니다. 반면, 2014학번 이전학생들은 교양42 + 기초(9/12) + 전공 81 = 130이상이 되므로 일선은 신경 쓰지 말고 원하는 과목으로 이수구분 상관없이 추가로 수강하여 130이상이 되도록 이수하면 됩니다. 초과된 학점은 일선으로 넘어간다고 생각하면 쉽습니다. 이수학점은 졸업직전 계절 학기까지 인정됩니다. (단, 직전계절학기 인턴",
+    "date": null,
+    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "source_id": "graduation_biochemistry_requirements",
+    "section": "chunk_8",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "Biochemistry department graduation requirements",
+      "source_department": "생화학과"
+    }
+  },
+  {
+    "doc_id": "graduation_biochemistry_requirements_chunk_9",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 9",
+    "body": "전공 81 = 130이상이 되므로 일선은 신경 쓰지 말고 원하는 과목으로 이수구분 상관없이 추가로 수강하여 130이상이 되도록 이수하면 됩니다. 초과된 학점은 일선으로 넘어간다고 생각하면 쉽습니다. 이수학점은 졸업직전 계절 학기까지 인정됩니다. (단, 직전계절학기 인턴쉽(8주과정) 학점은 인정하지 않으며, 휴학한 학기 직후 개설되는 계절 학기를 듣고 바로 졸업할 수는 없습니다.) 편입생의 경우 본교 과목으로 인정받은 교과목을 다시 들으면 안 됩니다. 중복 이수되지 않게 주의하세요. 전과학생 (08학번이후)은 생화학과 교육과정에 맞추",
+    "date": null,
+    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "source_id": "graduation_biochemistry_requirements",
+    "section": "chunk_9",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "Biochemistry department graduation requirements",
+      "source_department": "생화학과"
+    }
+  },
+  {
     "doc_id": "graduation_curriculum_pdf_chunk_1",
     "label": 0,
     "domain": "graduation",
@@ -12,7 +219,14 @@
     "metadata": {
       "parser": "pdf_source_parse",
       "generation_method": "source_parse",
-      "content_type": "application/pdf"
+      "content_type": "application/pdf",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "pdf",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "central curriculum PDF",
+      "source_curriculum_year": "2025"
     }
   },
   {
@@ -20,7 +234,7 @@
     "label": 0,
     "domain": "graduation",
     "title": "graduation source 2",
-    "body": "을 때에는 따로 정할 수 있다. (개정 2009.7.1.) ③ 특기생으로 입학한 학생의 육성을 위하여 교육과정을 따로 운영할 수 있다. ④ 학생의 실무 적응력을 높이기 위하여 국내외의 산업체, 학교기관 및 학교기업 등에서 학점으로 인정받는 사회체험활동의 교과목을 운영할 수 있다. ⑤ 이 학칙에서 규정하지 아니한 교육과정의 편성, 운영 및 이수에 관하여 필요한 사항은 따로 정 한다. (개정 2009.7.1.) 제54조(영역별 소요학점 및 이수학점 [제목개정 2015.2.16.] ) ① 교양 과정의 졸업소요학점 배점기준은 36학점 이상",
+    "body": ".) ② 교과목 이수단위는 학점으로 하고, 1학점은 학기당 15시간(평가시험시간을 포함)이상을 원칙 으로 하되, 실험･실습･실기･체육 및 기타 총장이 지정하는 과목의 1학점은 30시간 이상으로 한 다. 다만, 음악분야의 전공실기 교과목과 수업일수를 단축하였거나 휴업하였을 때에는 따로 정할 수 있다. (개정 2009.7.1.) ③ 특기생으로 입학한 학생의 육성을 위하여 교육과정을 따로 운영할 수 있다. ④ 학생의 실무 적응력을 높이기 위하여 국내외의 산업체, 학교기관 및 학교기업 등에서 학점으로 인정받는 사회체험활동의 교과목을 운영할",
     "date": null,
     "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
     "source_id": "graduation_curriculum_pdf",
@@ -28,7 +242,14 @@
     "metadata": {
       "parser": "pdf_source_parse",
       "generation_method": "source_parse",
-      "content_type": "application/pdf"
+      "content_type": "application/pdf",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "pdf",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "central curriculum PDF",
+      "source_curriculum_year": "2025"
     }
   },
   {
@@ -36,7 +257,7 @@
     "label": 0,
     "domain": "graduation",
     "title": "graduation source 3",
-    "body": "수 있다. ⑤ 이 학칙에서 규정하지 아니한 교육과정의 편성, 운영 및 이수에 관하여 필요한 사항은 따로 정 한다. (개정 2009.7.1.) 제54조(영역별 소요학점 및 이수학점 [제목개정 2015.2.16.] ) ① 교양 과정의 졸업소요학점 배점기준은 36학점 이상으로 한다. 다만, 교직설치학과의 교직이수자 및 사범대학, 약학대학 약학과(2+4년제), 의과대학 의학 과, 수의과대학 수의학과, 지식융합학부 리더십과조직과학전공(재직자과정)은 36학점 미만으로 정 할 수 있다. (개정 2009.2.23., 2009.7.1., 2011",
+    "body": "을 때에는 따로 정할 수 있다. (개정 2009.7.1.) ③ 특기생으로 입학한 학생의 육성을 위하여 교육과정을 따로 운영할 수 있다. ④ 학생의 실무 적응력을 높이기 위하여 국내외의 산업체, 학교기관 및 학교기업 등에서 학점으로 인정받는 사회체험활동의 교과목을 운영할 수 있다. ⑤ 이 학칙에서 규정하지 아니한 교육과정의 편성, 운영 및 이수에 관하여 필요한 사항은 따로 정 한다. (개정 2009.7.1.) 제54조(영역별 소요학점 및 이수학점 [제목개정 2015.2.16.] ) ① 교양 과정의 졸업소요학점 배점기준은 36학점 이상",
     "date": null,
     "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
     "source_id": "graduation_curriculum_pdf",
@@ -44,7 +265,359 @@
     "metadata": {
       "parser": "pdf_source_parse",
       "generation_method": "source_parse",
-      "content_type": "application/pdf"
+      "content_type": "application/pdf",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "pdf",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "central curriculum PDF",
+      "source_curriculum_year": "2025"
+    }
+  },
+  {
+    "doc_id": "graduation_curriculum_pdf_chunk_4",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 4",
+    "body": "수 있다. ⑤ 이 학칙에서 규정하지 아니한 교육과정의 편성, 운영 및 이수에 관하여 필요한 사항은 따로 정 한다. (개정 2009.7.1.) 제54조(영역별 소요학점 및 이수학점 [제목개정 2015.2.16.] ) ① 교양 과정의 졸업소요학점 배점기준은 36학점 이상으로 한다. 다만, 교직설치학과의 교직이수자 및 사범대학, 약학대학 약학과(2+4년제), 의과대학 의학 과, 수의과대학 수의학과, 지식융합학부 리더십과조직과학전공(재직자과정)은 36학점 미만으로 정 할 수 있다. (개정 2009.2.23., 2009.7.1., 2011",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+    "source_id": "graduation_curriculum_pdf",
+    "section": "chunk_4",
+    "metadata": {
+      "parser": "pdf_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "application/pdf",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "pdf",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "central curriculum PDF",
+      "source_curriculum_year": "2025"
+    }
+  },
+  {
+    "doc_id": "graduation_curriculum_pdf_chunk_5",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 5",
+    "body": ".2.22., 2015.2.16., 2023.6.27., 2024.5.31.) ② 교양과정은 인문･사회･자연과학 및 예체능의 각 계열에 속하는 과목을 균형있게 이수하여야 한다. (개정 2009.7.1.) 제54조의2(기초과정) (삭제 2015.2.16.) 제55조(전공과목) 전공과정의 졸업소요학점은 당해 학과 또는 전공의 졸업소요학점의 100분의 60 이상을 원칙으로 한다. (개정 2009.7.1.) 제56조(융복합창의전공 [재목개정 2016.2.19.] ) ① 학생은 자신의 주전공 외에 다음 각호의 어느 하나에 해당하는 과정을 이",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+    "source_id": "graduation_curriculum_pdf",
+    "section": "chunk_5",
+    "metadata": {
+      "parser": "pdf_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "application/pdf",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "pdf",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "central curriculum PDF",
+      "source_curriculum_year": "2025"
+    }
+  },
+  {
+    "doc_id": "graduation_curriculum_pdf_chunk_6",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 6",
+    "body": ". 자기설계전공 : 학생이 스스로 교육과정을 구성하여 학과장 또는 전공주임교수가 인정하는 전공 4. 산학융복합전공 : 2이상의 학과(부)가 산업체와 교육과정을 설계하여 제공하는 전공 (신설 2016.2.19.) 5. 부전공 : 학생이 소속한 학과(부) 이외의 전공과정을 일정 학점 수 이상 체계적으로 이수하는 전공 (신설 2016.2.19.) (전문개정 2017.2.28.) ② 제1항 제1호･제2호･제3호･제4호 전공의 졸업소요학점은 각 39학점 이상으로 한다. (개정 2009.7.1., 2015.2.16., 2016.2.19.) ③",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+    "source_id": "graduation_curriculum_pdf",
+    "section": "chunk_6",
+    "metadata": {
+      "parser": "pdf_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "application/pdf",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "pdf",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "central curriculum PDF",
+      "source_curriculum_year": "2025"
+    }
+  },
+  {
+    "doc_id": "graduation_curriculum_pdf_chunk_7",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 7",
+    "body": "약학대학 168 약학과(2+4년제) 232 약학과 의과대학 164 의학과 수의과대학 160 수의학과 ② 의예과 및 수의예과 수료에 필요한 학점은 72학점 이상으로 한다. ③ 학생은 이수한 전체 교과목(복수전공･부전공을 포함한다) 성적의 평점평균이 1.75(의예과는 2.0)이고, 따로 정하는 미래설계 상담제 관련 교과목, 인문학 관련 교양 교과목, 소프트웨어 관련 교과목을 반드시 이수하여야 졸업 또는 수료할 수 있다. (개정 2009.2.23., 2009.7.1., ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ●",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+    "source_id": "graduation_curriculum_pdf",
+    "section": "chunk_7",
+    "metadata": {
+      "parser": "pdf_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "application/pdf",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "pdf",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "central curriculum PDF",
+      "source_curriculum_year": "2025"
+    }
+  },
+  {
+    "doc_id": "graduation_curriculum_pdf_chunk_8",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 8",
+    "body": "편입학자의 학점) ① 제49조제3항의 규정에 의하여 편입학한 자가 이미 이수한 학점은 편 입당시 당해 학과(전공)의 교육과정에 따라 사정하여 인정한다. ② 제49조제4항의 규정에 의하여 편입학한 자에 대한 제2학년까지의 수료학점은 당해 학과(부)의 교육과정에 따라 모두 이수한 것으로 인정하고, 제3, 4학년에서 이수하여야 할 교과목 및 학점은 당해 학과(부)의 교육과정표에 따라 제3, 4학년에 배정된 교과목 중에서 영역별 이수기준학점 이 상을 이수하여야 한다. (단서 신설 2007.12.6., 단서삭제 2009.7.1.) ③ 국가고",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+    "source_id": "graduation_curriculum_pdf",
+    "section": "chunk_8",
+    "metadata": {
+      "parser": "pdf_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "application/pdf",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "pdf",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "central curriculum PDF",
+      "source_curriculum_year": "2025"
+    }
+  },
+  {
+    "doc_id": "graduation_curriculum_pdf_chunk_9",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 9",
+    "body": "시 또는 자격취득 등을 위하여 학과(부)장이 특별히 필요하다고 판단되는 경우에는 제2 항의 규정에도 불구하고 제1, 2학년에 배정된 과목을 추가로 이수하게 할 수 있다. 이 경우 추가 이수한 학점은 일반선택과목의 이수로 본다. ④ 정원외 외국인 편입학자의 학점 사정은 제1항 및 제2항에 의하되 학년 판정은 제59조를 따른 다.(신설 2012.12.20.) 제64조(전과한 자의 학점) 전과한 자가 이미 이수한 학점은 당해 학과(전공)의 교육과정에 따라 사 정하여 인정한다. (개정 2009.7.1.) 제65조(학점인정시기) 학점을 인정",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+    "source_id": "graduation_curriculum_pdf",
+    "section": "chunk_9",
+    "metadata": {
+      "parser": "pdf_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "application/pdf",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "pdf",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "central curriculum PDF",
+      "source_curriculum_year": "2025"
+    }
+  },
+  {
+    "doc_id": "graduation_english_requirements_chunk_1",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 1",
+    "body": "육과정 이수학점 및 졸업요건 기준 대학원과정 일반대학원(영어학) 일반대학원(영문학) 교육대학원 이수학점 및 졸업요건 기준 커뮤니티 사진게시판 동문게시판 학습자료실 학생회게시판 COVID-19 모바일 메뉴 닫기 Tradition and Innovation 전통과 혁신을 모색하는 충남대학교 영어영문학과 처음으로 교육과정 홈 학과안내 학부공지 대학원공지 교육대학원공지 입학/취업 교육과정 커뮤니티 학부과정 학부과정 대학원과정 이수학점 및 졸업요건 기준 교육과정 이수학점 및 졸업요건 기준 학부과정 교육과정 이수학점 및 졸업요건 기준 Tab",
+    "date": null,
+    "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+    "source_id": "graduation_english_requirements",
+    "section": "chunk_1",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "English department graduation requirements",
+      "source_department": "영어영문학과"
+    }
+  },
+  {
+    "doc_id": "graduation_english_requirements_chunk_2",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 2",
+    "body": "모색하는 충남대학교 영어영문학과 처음으로 교육과정 홈 학과안내 학부공지 대학원공지 교육대학원공지 입학/취업 교육과정 커뮤니티 학부과정 학부과정 대학원과정 이수학점 및 졸업요건 기준 교육과정 이수학점 및 졸업요건 기준 학부과정 교육과정 이수학점 및 졸업요건 기준 Tab 교육과정 이수학점 및 졸업요건 기준 영어영문학과 졸업 이수 요건 영어영문학과 졸업이수 요건 교육과정 적용년도 세부내용 2015,2016년 *졸업소요학점(130학점) -대학영어1,2(각 2학점) -기초글쓰기2학점 -진로설계1,2: 각각 1학점. 총2학점 -인문대설강핵심교",
+    "date": null,
+    "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+    "source_id": "graduation_english_requirements",
+    "section": "chunk_2",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "English department graduation requirements",
+      "source_department": "영어영문학과"
+    }
+  },
+  {
+    "doc_id": "graduation_english_requirements_chunk_3",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 3",
+    "body": "교육과정 이수학점 및 졸업요건 기준 영어영문학과 졸업 이수 요건 영어영문학과 졸업이수 요건 교육과정 적용년도 세부내용 2015,2016년 *졸업소요학점(130학점) -대학영어1,2(각 2학점) -기초글쓰기2학점 -진로설계1,2: 각각 1학점. 총2학점 -인문대설강핵심교양 6개영역 중 3개 필수이수, 총 9학점 -미래설계상담4회이수 -전기16학점/전핵 23학점/전심39학점 (전심과 전핵은 상호인정이 가능함.) -전문기초교양3학점 → 이 모든 사항을 포함하여 130학점 이수 ※ 단, 교양학점은 36학점은 이수해야 하며 42학점까지만 졸",
+    "date": null,
+    "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+    "source_id": "graduation_english_requirements",
+    "section": "chunk_3",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "English department graduation requirements",
+      "source_department": "영어영문학과"
+    }
+  },
+  {
+    "doc_id": "graduation_english_requirements_chunk_4",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 4",
+    "body": "양 6개영역 중 3개 필수이수, 총 9학점 -미래설계상담4회이수 -전기16학점/전핵 23학점/전심39학점 (전심과 전핵은 상호인정이 가능함.) -전문기초교양3학점 → 이 모든 사항을 포함하여 130학점 이수 ※ 단, 교양학점은 36학점은 이수해야 하며 42학점까지만 졸업소요학점에 포함됨. *일반선택 타과의 전공과목, 평생교육과목, 교육봉사, 사회봉사, 해외체험활동 등이 일반선택에 포함됨. *졸업논문 또는 토익성적표 제출 -토익 성적표: 졸업 시점까지 유효한 토익 800점 이상의 성적표를 제출(충남대 국제언어교육센터가 주관하는 모의토",
+    "date": null,
+    "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+    "source_id": "graduation_english_requirements",
+    "section": "chunk_4",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "English department graduation requirements",
+      "source_department": "영어영문학과"
+    }
+  },
+  {
+    "doc_id": "graduation_english_requirements_chunk_5",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 5",
+    "body": "W관련 교과목 이수 면제 -미래설계상담4회이수 -전기16학점/전핵 23학점/전심39학점 (전심과 전핵은 상호인정이 가능함.) -전문기초교양3학점 → 이 모든 사항을 포함하여 130학점 이수 ※ 단, 교양학점은 36학점은 이수해야 하며 42학점까지만 졸업소요학점에 포함됨. *일반선택 타과의 전공과목, 평생교육과목, 교육봉사, 사회봉사, 백마인턴십, 해외체험활동 등이 일반선택에 포함됨. *졸업논문 또는 토익성적표 제출 -토익 성적표: 졸업 시점까지 유효한 토익 800점 이상의 성적표를 제출(충남대 국제언어교육센터가 주관하는 모의토익 성",
+    "date": null,
+    "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+    "source_id": "graduation_english_requirements",
+    "section": "chunk_5",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "English department graduation requirements",
+      "source_department": "영어영문학과"
+    }
+  },
+  {
+    "doc_id": "graduation_english_requirements_chunk_6",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 6",
+    "body": "-대학글쓰기2학점 -대학생활과 진로설계, 취업과 창업: 각 1학점, 총2학점 -인문대설강핵심교양 6개영역 중 3개 필수이수, 총 9학점 -SW관련 교과목 3학점 이수(예: 컴퓨터 이해와 활용) -미래설계상담4회이수 -전기16학점/전핵 23학점/전심39학점 (전심과 전핵은 상호인정이 가능함.) -전문기초교양3학점 → 이 모든 사항을 포함하여 130학점 이수 ※ 단, 교양학점은 36학점은 이수해야 하며 42학점까지만 졸업소요학점에 포함됨. *일반선택 타과의 전공과목, 평생교육과목, 교육봉사, 사회봉사, 백마인턴십, 해외체험활동 등이",
+    "date": null,
+    "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+    "source_id": "graduation_english_requirements",
+    "section": "chunk_6",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "English department graduation requirements",
+      "source_department": "영어영문학과"
+    }
+  },
+  {
+    "doc_id": "graduation_english_requirements_chunk_7",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 7",
+    "body": "핵은 상호인정이 가능함.) -전문기초교양3학점 → 이 모든 사항을 포함하여 130학점 이수 ※ 단, 교양학점은 36학점은 이수해야 하며 42학점까지만 졸업소요학점에 포함됨. *일반선택 타과의 전공과목, 평생교육과목, 교육봉사, 사회봉사, 백마인턴십, 해외체험활동 등이 일반선택에 포함됨. *졸업논문 또는 토익성적표 제출 -토익 성적표: 졸업 시점까지 유효한 토익 800점 이상의 성적표를 제출(충남대 국제언어교육센터가 주관하는 모의토익 성적도 인정.) -졸업논문: 제출일과 논문 작성방법은 충남대 영어영문학과 홈페이지의 학부 공지사항을",
+    "date": null,
+    "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+    "source_id": "graduation_english_requirements",
+    "section": "chunk_7",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "English department graduation requirements",
+      "source_department": "영어영문학과"
+    }
+  },
+  {
+    "doc_id": "graduation_english_requirements_chunk_8",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 8",
+    "body": "일반선택에 포함됨. *졸업논문 또는 토익성적표 제출 -토익 성적표: 졸업 시점까지 유효한 토익 800점 이상의 성적표를 제출(충남대 국제언어교육센터가 주관하는 모의토익 성적도 인정.) -졸업논문: 제출일과 논문 작성방법은 충남대 영어영문학과 홈페이지의 학부 공지사항을 참고 2025년 및 그 이후 *졸업소요학점(130학점) -(기초교양, 필수)글로벌의사소통1(대학영어) 3학점 -(기초교양, 필수)글로벌의사소통2(영어발표와 의사소통, 기초독일어, 생활프랑스어, 중국어, 생활일본어, 기초한문 중 1과목 이수) 3학점 -(기초교양, 필수)",
+    "date": null,
+    "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+    "source_id": "graduation_english_requirements",
+    "section": "chunk_8",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "English department graduation requirements",
+      "source_department": "영어영문학과"
+    }
+  },
+  {
+    "doc_id": "graduation_english_requirements_chunk_9",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 9",
+    "body": ": 각 1학점, 총2학점 ※. 위 필수과목 포함 최소 36학점 이상, 최대 48학점까지만 교양 인정 -미래설계상담4회이수 -전기16학점/전핵 23학점/전심39학점 (전심과 전핵은 상호인정이 가능함.) → 이 모든 사항을 포함하여 130학점 이수 *일반선택 타과의 전공과목, 평생교육과목, 교육봉사, 사회봉사, 백마인턴십, 해외체험활동 등이 일반선택에 포함됨. *졸업논문 또는 토익성적표 제출 -토익 성적표: 졸업 시점까지 유효한 토익 800점 이상의 성적표를 제출(충남대 국제언어교육센터가 주관하는 모의토익 성적도 인정.) -졸업논문:",
+    "date": null,
+    "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+    "source_id": "graduation_english_requirements",
+    "section": "chunk_9",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "English department graduation requirements",
+      "source_department": "영어영문학과"
     }
   },
   {
@@ -52,7 +625,7 @@
     "label": 1,
     "domain": "notices",
     "title": "notices source 1",
-    "body": "학사정보게시판 목록 번호 제목 작성자 작성일 조회수 공지 2026학년도 하기 계절학기 국내 다른 대학 수학 안내 학사지원과 2026-04-16 4555 공지 2026학년도 제1학기 학생 출석인정 신청 변경 사항 안내 학사지원과 2026-03-05 5662 공지 2026학년도 제1학기 휴학 및 복학 신청 안내 학사지원과 2026-01-14 4805 1814 2026학년도 하기 계절학기 수강신청",
+    "body": "학사정보게시판 목록 번호 제목 작성자 작성일 조회수 공지 2026학년도 하기 계절학기 국내 다른 대학 수학 안내 학사지원과 2026-04-16 4566 공지 2026학년도 제1학기 학생 출석인정 신청 변경 사항 안내 학사지원과 2026-03-05 5667 공지 2026학년도 제1학기 휴학 및 복학 신청 안내 학사지원과 2026-01-14 4805 1814 2026학년도 하기 계절학기 수강신청",
     "date": null,
     "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
     "source_id": "academic_notice_board",
@@ -60,7 +633,13 @@
     "metadata": {
       "parser": "html_source_parse",
       "generation_method": "source_parse",
-      "content_type": "text/html"
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "latest_snapshot",
+      "source_notes": "central academic notice board list"
     }
   },
   {
@@ -68,7 +647,7 @@
     "label": 1,
     "domain": "notices",
     "title": "notices source 2",
-    "body": "청 변경 사항 안내 학사지원과 2026-03-05 5662 공지 2026학년도 제1학기 휴학 및 복학 신청 안내 학사지원과 2026-01-14 4805 1814 2026학년도 하기 계절학기 수강신청 취소(1~3차)기간 안내 학사지원과 2026-06-05 94 1813 [화성시인재육성재단] 2026년 화성 into 테크노폴 11기·12기 해외탐방 장학생 모집 안내 학생과 2026-06-05 1",
+    "body": "청 변경 사항 안내 학사지원과 2026-03-05 5667 공지 2026학년도 제1학기 휴학 및 복학 신청 안내 학사지원과 2026-01-14 4805 1814 2026학년도 하기 계절학기 수강신청 취소(1~3차)기간 안내 학사지원과 2026-06-05 128 1813 [화성시인재육성재단] 2026년 화성 into 테크노폴 11기·12기 해외탐방 장학생 모집 안내 학생과 2026-06-05",
     "date": null,
     "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
     "source_id": "academic_notice_board",
@@ -76,7 +655,13 @@
     "metadata": {
       "parser": "html_source_parse",
       "generation_method": "source_parse",
-      "content_type": "text/html"
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "latest_snapshot",
+      "source_notes": "central academic notice board list"
     }
   },
   {
@@ -84,7 +669,7 @@
     "label": 1,
     "domain": "notices",
     "title": "notices source 3",
-    "body": "취소(1~3차)기간 안내 학사지원과 2026-06-05 94 1813 [화성시인재육성재단] 2026년 화성 into 테크노폴 11기·12기 해외탐방 장학생 모집 안내 학생과 2026-06-05 105 1812 2026년도 학부생 미니 연구 프로젝트 지원사업 실행 계획 안내 융복합과학원 2026-06-04 381 1811 2026학년도 국제하기계절학기(SSIS) 초청학생 도우미 선발 안내 국",
+    "body": "취소(1~3차)기간 안내 학사지원과 2026-06-05 128 1813 [화성시인재육성재단] 2026년 화성 into 테크노폴 11기·12기 해외탐방 장학생 모집 안내 학생과 2026-06-05 116 1812 2026년도 학부생 미니 연구 프로젝트 지원사업 실행 계획 안내 융복합과학원 2026-06-04 396 1811 2026학년도 국제하기계절학기(SSIS) 초청학생 도우미 선발 안내",
     "date": null,
     "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
     "source_id": "academic_notice_board",
@@ -92,7 +677,79 @@
     "metadata": {
       "parser": "html_source_parse",
       "generation_method": "source_parse",
-      "content_type": "text/html"
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "html",
+      "source_priority": 100,
+      "source_freshness_policy": "latest_snapshot",
+      "source_notes": "central academic notice board list"
+    }
+  },
+  {
+    "doc_id": "academic_notice_detail_2511200_chunk_1",
+    "label": 1,
+    "domain": "notices",
+    "title": "notices source 1",
+    "body": "2026학년도 제1학기 휴학 및 복학 신청 안내 작성자 학사지원과 등록일 2026-01-14 15:57:13 조회수 4805 파일 안내문.pdf 붙임1_2026학년도 제1학기 휴학 및 복학 신청 안내_26.01.21._수정.hwp 붙임4_휴학원 등 작성서식(1-8)_26-1학기.zip 내용보기 목록",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2511200&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
+    "source_id": "academic_notice_detail_2511200",
+    "section": "chunk_1",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "board_detail",
+      "source_priority": 100,
+      "source_freshness_policy": "latest_snapshot",
+      "source_notes": "recent academic notice detail"
+    }
+  },
+  {
+    "doc_id": "academic_notice_detail_2512124_chunk_1",
+    "label": 1,
+    "domain": "notices",
+    "title": "notices source 1",
+    "body": "2026학년도 제1학기 학생 출석인정 신청 변경 사항 안내 작성자 학사지원과 등록일 2026-03-05 16:43:54 조회수 5667 파일 안내문.pdf [붙임1] 출석인정 신청 안내용.hwp [붙임2-1] 출석인정 신청 매뉴얼(학생용-수정).pdf 내용보기 목록",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512124&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
+    "source_id": "academic_notice_detail_2512124",
+    "section": "chunk_1",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "board_detail",
+      "source_priority": 100,
+      "source_freshness_policy": "latest_snapshot",
+      "source_notes": "recent academic notice detail"
+    }
+  },
+  {
+    "doc_id": "academic_notice_detail_2512782_chunk_1",
+    "label": 1,
+    "domain": "notices",
+    "title": "notices source 1",
+    "body": "2026학년도 하기 계절학기 국내 다른 대학 수학 안내 작성자 학사지원과 등록일 2026-04-16 17:37:58 조회수 4566 파일 1. 2026학년도 하기 계절학기 국내 다른 대학 수학안내.hwp 2. 개인정보 수집 및 이용사항 고지 안내문.hwp 내용보기 1. 대상 대학: 54개 대학 2. 지원자격 가. 본교에서 1학기 이상을 이수한 재학생으로서 직전 학기의 성적 평균 평점이 1.7",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512782&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
+    "source_id": "academic_notice_detail_2512782",
+    "section": "chunk_1",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "board_detail",
+      "source_priority": 100,
+      "source_freshness_policy": "latest_snapshot",
+      "source_notes": "recent academic notice detail"
     }
   },
   {
@@ -100,7 +757,7 @@
     "label": 2,
     "domain": "academic_calendar",
     "title": "academic_calendar source 1",
-    "body": "제1학기 재학생 등록금 납부 02.25(수) 2025학년도 전기 학위수여식 02.27(금) 입학식(2026학년도) 03월 March 03.01(일) 3ㆍ1절 03.02(월) 대체공휴일 03.03(화) 제1학기 개강일 03.03(화) ~ 03.09(월) 2025학년도 전기 학사학위취득 유예 신청 취소 03.03(화) ~ 03.09(월) 수강신청 확인 및 변경 03.03(화) ~ 03.31(화) 교육과정 적용연도 및 소속 변경 03.03(화) ~ 03.09(월) 수강신청 확인 및 변경 03.16(월) 폐강과목 결정(최종) 03.16(",
+    "body": "01월 January 01.01(목) 신정 01.13(화) 제2학기 성적발표 01.20(화) 동기 계절학기 성적발표 01.21(수) ~ 02.10(화) 2025학년도 특별학기(신입학예정자) 01.26(월) ~ 01.28(수) 2026학년도 제1학기 예비수강신청 01.29(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도",
     "date": null,
     "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
     "source_id": "academic_calendar",
@@ -108,7 +765,13 @@
     "metadata": {
       "parser": "html_source_parse",
       "generation_method": "source_parse",
-      "content_type": "text/html"
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "calendar",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "official academic calendar"
     }
   },
   {
@@ -116,7 +779,7 @@
     "label": 2,
     "domain": "academic_calendar",
     "title": "academic_calendar source 2",
-    "body": "5.07(목) ~ 05.11(월) 하기 계절학기 수강신청 05.13(수) 수업일수 2/3선 05.22(금) 수업일수 3/4선 05.24(일) 부처님오신날 05.25(월) 개교기념일, 대체공휴일 06월 June 06.03(수) 지방선거일 06.06(토) 현충일 06.09(화) ~ 06.12(금) 정기휴업일 수업결손 보충강의 06.22(월) 하기방학 06.22(월) ~ 07.10(금) 하기 계절학기 07월 July 07.10(금) 제1학기 성적발표 07.20(월) 하기 계절학기 성적발표 07.27(월) ~ 07.29(수) 제2학기 예비",
+    "body": "9(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도 제1학기 재학생 등록금 납부 02.25(수) 2025학년도 전기 학위수여식 02.27(금) 입학식(2026학년도) 03월 March 03.01(일) 3ㆍ1절 03.02(월) 대체공휴일 03.03(화) 제1학기 개강일 03.03(화) ~ 03.09(월) 2025학년도",
     "date": null,
     "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
     "source_id": "academic_calendar",
@@ -124,7 +787,13 @@
     "metadata": {
       "parser": "html_source_parse",
       "generation_method": "source_parse",
-      "content_type": "text/html"
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "calendar",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "official academic calendar"
     }
   },
   {
@@ -132,7 +801,7 @@
     "label": 2,
     "domain": "academic_calendar",
     "title": "academic_calendar source 3",
-    "body": "2026학년도 2학기 재학생 등록금 납부 09월 September 09.01(화) 제2학기 개강일 09.01(화) ~ 09.07(월) 2025학년도 후기 학사학위취득 유예 신청 취소 09.01(화) ~ 09.07(월) 수강신청 확인 및 변경 09.01(화) ~ 09.30(수) 교육과정 적용연도 및 소속 변경 09.14(월) 폐강교과목 결정(최종) 09.14(월) ~ 09.18(금) 융복합창의전공 신청.취소 09.21(월) ~ 09.28(월) 수강신청 취소 09.25(금) 추석 09.29(화) 수업일수 1/4선 09.30(수) ~",
+    "body": "제1학기 재학생 등록금 납부 02.25(수) 2025학년도 전기 학위수여식 02.27(금) 입학식(2026학년도) 03월 March 03.01(일) 3ㆍ1절 03.02(월) 대체공휴일 03.03(화) 제1학기 개강일 03.03(화) ~ 03.09(월) 2025학년도 전기 학사학위취득 유예 신청 취소 03.03(화) ~ 03.09(월) 수강신청 확인 및 변경 03.03(화) ~ 03.31(화) 교육과정 적용연도 및 소속 변경 03.03(화) ~ 03.09(월) 수강신청 확인 및 변경 03.16(월) 폐강과목 결정(최종) 03.16(",
     "date": null,
     "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
     "source_id": "academic_calendar",
@@ -140,7 +809,145 @@
     "metadata": {
       "parser": "html_source_parse",
       "generation_method": "source_parse",
-      "content_type": "text/html"
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "calendar",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "official academic calendar"
+    }
+  },
+  {
+    "doc_id": "academic_calendar_chunk_4",
+    "label": 2,
+    "domain": "academic_calendar",
+    "title": "academic_calendar source 4",
+    "body": "월) ~ 03.20(금) 융복합창의전공 신청.취소 03.23(월) ~ 03.26(목) 수강신청 취소 03.27(금) 수업일수 1/4선 03.30(월) ~ 04.03(금) 2025학년도 후기 조기졸업 신청 05월 May 05.01(금) 노동절 05.05(화) 어린이날 05.07(목) ~ 05.11(월) 하기 계절학기 수강신청 05.13(수) 수업일수 2/3선 05.22(금) 수업일수 3/4선 05.24(일) 부처님오신날 05.25(월) 개교기념일, 대체공휴일 06월 June 06.03(수) 지방선거일 06.06(토) 현충일 06.09",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_id": "academic_calendar",
+    "section": "chunk_4",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "calendar",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "official academic calendar"
+    }
+  },
+  {
+    "doc_id": "academic_calendar_chunk_5",
+    "label": 2,
+    "domain": "academic_calendar",
+    "title": "academic_calendar source 5",
+    "body": "5.07(목) ~ 05.11(월) 하기 계절학기 수강신청 05.13(수) 수업일수 2/3선 05.22(금) 수업일수 3/4선 05.24(일) 부처님오신날 05.25(월) 개교기념일, 대체공휴일 06월 June 06.03(수) 지방선거일 06.06(토) 현충일 06.09(화) ~ 06.12(금) 정기휴업일 수업결손 보충강의 06.22(월) 하기방학 06.22(월) ~ 07.10(금) 하기 계절학기 07월 July 07.10(금) 제1학기 성적발표 07.20(월) 하기 계절학기 성적발표 07.27(월) ~ 07.29(수) 제2학기 예비",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_id": "academic_calendar",
+    "section": "chunk_5",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "calendar",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "official academic calendar"
+    }
+  },
+  {
+    "doc_id": "academic_calendar_chunk_6",
+    "label": 2,
+    "domain": "academic_calendar",
+    "title": "academic_calendar source 6",
+    "body": "(화) ~ 06.12(금) 정기휴업일 수업결손 보충강의 06.22(월) 하기방학 06.22(월) ~ 07.10(금) 하기 계절학기 07월 July 07.10(금) 제1학기 성적발표 07.20(월) 하기 계절학기 성적발표 07.27(월) ~ 07.29(수) 제2학기 예비수강신청 08월 August 08.03(월) ~ 08.07(금) 제2학기 수강신청 08.03(월) ~ 08.31(월) 휴학 및 복학 신청 08.15(토) 광복절 08.17(월) 대체공휴일 08.25(화) 2025학년도 후기 학위수여식 08.25(화) ~ 08.28(금)",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_id": "academic_calendar",
+    "section": "chunk_6",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "calendar",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "official academic calendar"
+    }
+  },
+  {
+    "doc_id": "academic_calendar_chunk_7",
+    "label": 2,
+    "domain": "academic_calendar",
+    "title": "academic_calendar source 7",
+    "body": "수강신청 08월 August 08.03(월) ~ 08.07(금) 제2학기 수강신청 08.03(월) ~ 08.31(월) 휴학 및 복학 신청 08.15(토) 광복절 08.17(월) 대체공휴일 08.25(화) 2025학년도 후기 학위수여식 08.25(화) ~ 08.28(금) 2026학년도 2학기 재학생 등록금 납부 09월 September 09.01(화) 제2학기 개강일 09.01(화) ~ 09.07(월) 2025학년도 후기 학사학위취득 유예 신청 취소 09.01(화) ~ 09.07(월) 수강신청 확인 및 변경 09.01(화) ~ 09.",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_id": "academic_calendar",
+    "section": "chunk_7",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "calendar",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "official academic calendar"
+    }
+  },
+  {
+    "doc_id": "academic_calendar_chunk_8",
+    "label": 2,
+    "domain": "academic_calendar",
+    "title": "academic_calendar source 8",
+    "body": "2026학년도 2학기 재학생 등록금 납부 09월 September 09.01(화) 제2학기 개강일 09.01(화) ~ 09.07(월) 2025학년도 후기 학사학위취득 유예 신청 취소 09.01(화) ~ 09.07(월) 수강신청 확인 및 변경 09.01(화) ~ 09.30(수) 교육과정 적용연도 및 소속 변경 09.14(월) 폐강교과목 결정(최종) 09.14(월) ~ 09.18(금) 융복합창의전공 신청.취소 09.21(월) ~ 09.28(월) 수강신청 취소 09.25(금) 추석 09.29(화) 수업일수 1/4선 09.30(수) ~",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_id": "academic_calendar",
+    "section": "chunk_8",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "calendar",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "official academic calendar"
+    }
+  },
+  {
+    "doc_id": "academic_calendar_chunk_9",
+    "label": 2,
+    "domain": "academic_calendar",
+    "title": "academic_calendar source 9",
+    "body": "10.07(수) 2026학년도 전기 조기졸업 신청 10월 October 10.03(토) 개천절 10.05(월) 대체공휴일 10.08(목) 수업일수 1/3선 10.09(금) 한글날 10.28(수) 수업일수 1/2선 11월 November 11.05(목) ~ 11.10(화) 동기 계절학기 수강신청 11.13(금) 수업일수 2/3선 11.24(화) 수업일수 3/4선 12월 December 12.08(화) ~ 12.11(금) 정기휴업일 수업결손 보충강의 12.21(월) 동기방학 12.21(월) ~ 01.12(화) 동기 계절학기 12.25(",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_id": "academic_calendar",
+    "section": "chunk_9",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "calendar",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot",
+      "source_notes": "official academic calendar"
     }
   },
   {
@@ -148,7 +955,7 @@
     "label": 3,
     "domain": "dining",
     "title": "dining source 1",
-    "body": "토요일 2026.06.06 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운",
+    "body": "일요일 2026.06.07 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운",
     "date": null,
     "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
     "source_id": "cnu_mobile_food",
@@ -156,7 +963,13 @@
     "metadata": {
       "parser": "html_source_parse",
       "generation_method": "source_parse",
-      "content_type": "text/html; charset=UTF-8"
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "dining",
+      "source_priority": 100,
+      "source_freshness_policy": "short_ttl",
+      "source_notes": "current mobile dining menu snapshot"
     }
   },
   {
@@ -172,7 +985,13 @@
     "metadata": {
       "parser": "html_source_parse",
       "generation_method": "source_parse",
-      "content_type": "text/html; charset=UTF-8"
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "dining",
+      "source_priority": 100,
+      "source_freshness_policy": "short_ttl",
+      "source_notes": "current mobile dining menu snapshot"
     }
   },
   {
@@ -188,7 +1007,13 @@
     "metadata": {
       "parser": "html_source_parse",
       "generation_method": "source_parse",
-      "content_type": "text/html; charset=UTF-8"
+      "content_type": "text/html; charset=UTF-8",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "dining",
+      "source_priority": 100,
+      "source_freshness_policy": "short_ttl",
+      "source_notes": "current mobile dining menu snapshot"
     }
   },
   {
@@ -204,7 +1029,13 @@
     "metadata": {
       "parser": "html_source_parse",
       "generation_method": "source_parse",
-      "content_type": "text/html"
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "shuttle",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot_with_term_check",
+      "source_notes": "official shuttle timetable page"
     }
   },
   {
@@ -220,7 +1051,13 @@
     "metadata": {
       "parser": "html_source_parse",
       "generation_method": "source_parse",
-      "content_type": "text/html"
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "shuttle",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot_with_term_check",
+      "source_notes": "official shuttle timetable page"
     }
   },
   {
@@ -236,7 +1073,123 @@
     "metadata": {
       "parser": "html_source_parse",
       "generation_method": "source_parse",
-      "content_type": "text/html"
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "shuttle",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot_with_term_check",
+      "source_notes": "official shuttle timetable page"
+    }
+  },
+  {
+    "doc_id": "shuttle_bus_chunk_4",
+    "label": 4,
+    "domain": "shuttle",
+    "title": "shuttle source 4",
+    "body": "0 15:30 16:30 17:30 캠퍼스 순환 (대덕캠퍼스 ↔ 보운캠퍼스) 8:10 (출발, 골프연습장) 8:50 (회차 보운캠퍼스) 미운영 셔틀버스 운행 노선 순환버스 노선 - 구분(등교), 운행시간, 운행노선, 운행횟수 정보제공 구 분(등교) 운행시간 운행 노선(시간) 운행횟수(1일) 첫차 막차 교내 순환 (유성캠퍼스 내) 08:30 17:30 ① 정심화 국제문화회관 ⟶ ② 사회과 학대학 입구(한누리회관 뒤) → ③ 서문( 공동실험실습관 앞) ⟶ ④ 음악 2호관 앞 ⟶ ⑤ 공동동물실험센터(회차) ⟶ ⑥ 체 육관 입구 → ⑦ 예",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "source_id": "shuttle_bus",
+    "section": "chunk_4",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "shuttle",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot_with_term_check",
+      "source_notes": "official shuttle timetable page"
+    }
+  },
+  {
+    "doc_id": "shuttle_bus_chunk_5",
+    "label": 4,
+    "domain": "shuttle",
+    "title": "shuttle source 5",
+    "body": "시간) 운행횟수(1일) 첫차 막차 교내 순환 (유성캠퍼스 내) 08:30 17:30 ① 정심화 국제문화회관 ⟶ ② 사회과 학대학 입구(한누리회관 뒤) → ③ 서문( 공동실험실습관 앞) ⟶ ④ 음악 2호관 앞 ⟶ ⑤ 공동동물실험센터(회차) ⟶ ⑥ 체 육관 입구 → ⑦ 예술대학 앞 ⟶ ⑧ 도서 관 앞(대학본부 옆 농대방향) ⟶ ⑨ 학생 생활관 3거리 ⟶ ⑩ 농업생명과학대학 앞 ⟶ ⑪ 동문주차장 ⟶ ⑫ 농업생명과 학대학 앞 ⟶ ⑬ 도서관 앞(도서관삼거리 방향) ⟶ ⑭ 예술대학 앞 → ⑮ 서문(공동 실험실습관 앞) ⟶ ⑯ 사회과학대학 입",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "source_id": "shuttle_bus",
+    "section": "chunk_5",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "shuttle",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot_with_term_check",
+      "source_notes": "official shuttle timetable page"
+    }
+  },
+  {
+    "doc_id": "shuttle_bus_chunk_6",
+    "label": 4,
+    "domain": "shuttle",
+    "title": "shuttle source 6",
+    "body": "술대학 앞 ⟶ ⑧ 도서 관 앞(대학본부 옆 농대방향) ⟶ ⑨ 학생 생활관 3거리 ⟶ ⑩ 농업생명과학대학 앞 ⟶ ⑪ 동문주차장 ⟶ ⑫ 농업생명과 학대학 앞 ⟶ ⑬ 도서관 앞(도서관삼거리 방향) ⟶ ⑭ 예술대학 앞 → ⑮ 서문(공동 실험실습관 앞) ⟶ ⑯ 사회과학대학 입 구(한누리회관 뒤) → ⑰ 산학연교육연 구관 앞 → ⑱ 정심화 국제문화회관 ※ 오전(등교) 1회만 월평역 출발(정심화 국제문화회관 하차(종점), 시간표 참조) 10회 학기 중 운영 (총 150일) 캠퍼스 순환 (대덕↔보운) 08:10(대덕) 08:50(보운) ①골프연습",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "source_id": "shuttle_bus",
+    "section": "chunk_6",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "shuttle",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot_with_term_check",
+      "source_notes": "official shuttle timetable page"
+    }
+  },
+  {
+    "doc_id": "shuttle_bus_chunk_7",
+    "label": 4,
+    "domain": "shuttle",
+    "title": "shuttle source 7",
+    "body": "구(한누리회관 뒤) → ⑰ 산학연교육연 구관 앞 → ⑱ 정심화 국제문화회관 ※ 오전(등교) 1회만 월평역 출발(정심화 국제문화회관 하차(종점), 시간표 참조) 10회 학기 중 운영 (총 150일) 캠퍼스 순환 (대덕↔보운) 08:10(대덕) 08:50(보운) ①골프연습장 출발(08:10) → ②중앙도 서관(08:11) → ③산학연교육연구관(08: 12) → ④충남대학교입구 버스정류장(홈 플러스유성점방면)(08:13) → ⑤월평역( 08:15) → ⑥보운캠퍼스(회차, 08:50) → ⑦다솔아파트 건너편 → 제2학생회관 → 중앙도서관",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "source_id": "shuttle_bus",
+    "section": "chunk_7",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "shuttle",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot_with_term_check",
+      "source_notes": "official shuttle timetable page"
+    }
+  },
+  {
+    "doc_id": "shuttle_bus_chunk_8",
+    "label": 4,
+    "domain": "shuttle",
+    "title": "shuttle source 8",
+    "body": "장 출발(08:10) → ②중앙도 서관(08:11) → ③산학연교육연구관(08: 12) → ④충남대학교입구 버스정류장(홈 플러스유성점방면)(08:13) → ⑤월평역( 08:15) → ⑥보운캠퍼스(회차, 08:50) → ⑦다솔아파트 건너편 → 제2학생회관 → 중앙도서관 → 골프연습장 도착 1회 (회차) 학기 중 운영 (총 150일)",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "source_id": "shuttle_bus",
+    "section": "chunk_8",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html",
+      "source_stage": "stage0",
+      "source_active": true,
+      "source_parser_type": "shuttle",
+      "source_priority": 100,
+      "source_freshness_policy": "snapshot_with_term_check",
+      "source_notes": "official shuttle timetable page"
     }
   }
 ]

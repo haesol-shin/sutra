@@ -179,6 +179,51 @@ def validate_source_probe(path: Path, *, require_raw_files: bool = False) -> Non
                 raise ValueError(f"{raw.source_id} checksum does not match raw file")
 
 
+def validate_source_stage_coverage(
+    path: Path,
+    *,
+    stage: str,
+    min_stage_sources: int | None = None,
+    max_stage_sources: int | None = None,
+    require_stage_labels: bool = False,
+    require_graduation_departments: int | None = None,
+) -> None:
+    payload = read_json(path)
+    if not isinstance(payload, list):
+        raise ValueError(f"{path} must contain a JSON list")
+    rows = []
+    for row in payload:
+        if not isinstance(row, dict):
+            raise ValueError(f"{path} rows must be objects")
+        raw = RawSource.model_validate(row.get("raw"))
+        inventory = row.get("inventory")
+        if not isinstance(inventory, dict):
+            raise ValueError(f"source-stage: {raw.source_id} lacks inventory metadata")
+        if inventory.get("stage") == stage and inventory.get("active", True):
+            rows.append((raw, inventory))
+    if min_stage_sources is not None and len(rows) < min_stage_sources:
+        raise ValueError(f"source-stage: {stage} has {len(rows)} sources below {min_stage_sources}")
+    if max_stage_sources is not None and len(rows) > max_stage_sources:
+        raise ValueError(f"source-stage: {stage} has {len(rows)} sources above {max_stage_sources}")
+    if require_stage_labels:
+        labels = {raw.label for raw, _ in rows}
+        if labels != {0, 1, 2, 3, 4}:
+            raise ValueError(f"source-stage: {stage} labels {sorted(labels)} do not cover 0-4")
+    if require_graduation_departments is not None:
+        departments = {
+            str(inventory.get("department"))
+            for raw, inventory in rows
+            if raw.label == 0 and inventory.get("department")
+        }
+        if len(departments) < require_graduation_departments:
+            raise ValueError(
+                f"source-stage: {stage} graduation departments {len(departments)} below "
+                f"{require_graduation_departments}"
+            )
+        if not any(raw.source_id == "graduation_curriculum_pdf" for raw, _ in rows):
+            raise ValueError(f"source-stage: {stage} lacks central graduation curriculum PDF")
+
+
 def validate_knowledge_provenance(
     data_dir: Path,
     source_probe_path: Path,
@@ -250,8 +295,11 @@ def validate_knowledge_quality(
     min_docs_per_label: int | None = None,
     min_body_chars: int | None = None,
     min_source_parse_ratio: float | None = None,
+    min_total_docs: int | None = None,
 ) -> None:
     docs = validate_rows(path, KnowledgeDoc, required=True)
+    if min_total_docs is not None and len(docs) < min_total_docs:
+        raise ValueError(f"knowledge-quality: total docs {len(docs)} below {min_total_docs}")
     if source_probe_path:
         payload = read_json(source_probe_path)
         if not isinstance(payload, list):
@@ -618,6 +666,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--inputs-only", action="store_true", help="Only validate required input fixtures.")
     parser.add_argument("--seed-data", action="store_true", help="Validate generated seed datasets.")
     parser.add_argument("--source-probe", type=Path, help="Validate source probe metadata.")
+    parser.add_argument("--source-stage-coverage", type=Path, help="Validate staged source inventory coverage.")
     parser.add_argument("--knowledge-provenance", type=Path, help="Validate knowledge docs against source probe metadata.")
     parser.add_argument("--require-official-chain", action="store_true", help="Require provenance sources to be official-chain verified.")
     parser.add_argument("--model-shortlist", type=Path, help="Validate model shortlist metadata.")
@@ -635,6 +684,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--knowledge", type=Path, help="Knowledge artifact used by runtime or retrieval validators.")
     parser.add_argument("--qa", type=Path, help="QA artifact used by retrieval validators.")
     parser.add_argument("--min-docs-per-label", type=int)
+    parser.add_argument("--min-total-docs", type=int)
     parser.add_argument("--min-body-chars", type=int)
     parser.add_argument("--min-source-parse-ratio", type=float)
     parser.add_argument("--min-cls-rows", type=int)
@@ -652,6 +702,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--min-top1-label-accuracy", type=float)
     parser.add_argument("--min-top3-source-hit-rate", type=float)
     parser.add_argument("--min-answer-chars", type=int)
+    parser.add_argument("--stage", default="stage0")
+    parser.add_argument("--min-stage-sources", type=int)
+    parser.add_argument("--max-stage-sources", type=int)
+    parser.add_argument("--require-stage-labels", action="store_true")
+    parser.add_argument("--require-graduation-departments", type=int)
     parser.add_argument("--require-source-hint", action="store_true")
     parser.add_argument("--data-dir", type=Path, default=Path("data"))
     parser.add_argument("--outputs-dir", type=Path, default=Path("outputs"))
@@ -666,6 +721,7 @@ def main() -> None:
         and not args.inputs_only
         and not args.seed_data
         and not args.source_probe
+        and not args.source_stage_coverage
         and not args.knowledge_provenance
         and not args.model_shortlist
         and not args.knowledge_quality
@@ -692,6 +748,15 @@ def main() -> None:
             validate_seed_data(args.data_dir)
         if args.source_probe:
             validate_source_probe(args.source_probe, require_raw_files=args.require_raw_files)
+        if args.source_stage_coverage:
+            validate_source_stage_coverage(
+                args.source_stage_coverage,
+                stage=args.stage,
+                min_stage_sources=args.min_stage_sources,
+                max_stage_sources=args.max_stage_sources,
+                require_stage_labels=args.require_stage_labels,
+                require_graduation_departments=args.require_graduation_departments,
+            )
         if args.knowledge_provenance:
             validate_knowledge_provenance(
                 args.data_dir,
@@ -707,6 +772,7 @@ def main() -> None:
                 min_docs_per_label=args.min_docs_per_label,
                 min_body_chars=args.min_body_chars,
                 min_source_parse_ratio=args.min_source_parse_ratio,
+                min_total_docs=args.min_total_docs,
             )
         if args.dataset_quality:
             validate_dataset_quality(

@@ -97,7 +97,11 @@ def parse_source(raw: RawSource, *, chunks_per_source: int = 3) -> tuple[list[Kn
         return [], SourceParseFailure(source_id=raw.source_id, raw_path=str(raw_path), reason=str(exc))
 
 
-def build_knowledge_from_probe(source_probe_path: Path) -> tuple[list[KnowledgeDoc], list[SourceParseFailure]]:
+def build_knowledge_from_probe(
+    source_probe_path: Path,
+    *,
+    chunks_per_source: int = 9,
+) -> tuple[list[KnowledgeDoc], list[SourceParseFailure]]:
     payload = read_json(source_probe_path)
     if not isinstance(payload, list):
         raise ValueError(f"{source_probe_path} must contain a JSON list")
@@ -107,7 +111,11 @@ def build_knowledge_from_probe(source_probe_path: Path) -> tuple[list[KnowledgeD
         if not isinstance(row, dict):
             raise ValueError(f"{source_probe_path} rows must be objects")
         raw = RawSource.model_validate(row.get("raw"))
-        parsed_docs, failure = parse_source(raw)
+        parsed_docs, failure = parse_source(raw, chunks_per_source=chunks_per_source)
+        inventory = row.get("inventory")
+        if isinstance(inventory, dict):
+            for doc in parsed_docs:
+                doc.metadata.update({f"source_{key}": value for key, value in inventory.items()})
         docs.extend(parsed_docs)
         if failure:
             failures.append(failure)
@@ -126,9 +134,10 @@ def main() -> None:
     parser.add_argument("--source-probe", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--failures-output", type=Path, default=Path("data/source_parse_failures.json"))
+    parser.add_argument("--chunks-per-source", type=int, default=9)
     args = parser.parse_args()
 
-    docs, failures = build_knowledge_from_probe(args.source_probe)
+    docs, failures = build_knowledge_from_probe(args.source_probe, chunks_per_source=args.chunks_per_source)
     write_payload(args.output, [doc.model_dump() for doc in docs])
     write_payload(args.failures_output, [failure.model_dump() for failure in failures])
     print(f"wrote {len(docs)} knowledge docs to {args.output}")
