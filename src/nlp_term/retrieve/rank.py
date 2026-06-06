@@ -1,10 +1,7 @@
 from __future__ import annotations
 
-import json
-from pathlib import Path
-
-from nlp_term.prepare.knowledge import build_seed_knowledge
 from nlp_term.schemas import KnowledgeDoc, RetrievedDoc
+from nlp_term.retrieve.knowledge import load_knowledge
 
 
 def tokenize(text: str) -> set[str]:
@@ -14,16 +11,8 @@ def tokenize(text: str) -> set[str]:
     return {token for token in tokens if token}
 
 
-def load_knowledge(path: Path | None = None) -> list[KnowledgeDoc]:
-    if path is None or not path.exists():
-        return build_seed_knowledge()
-    with path.open("r", encoding="utf-8") as file:
-        payload = json.load(file)
-    return [KnowledgeDoc.model_validate(row) for row in payload]
-
-
 def rank_docs(question: str, docs: list[KnowledgeDoc] | None = None, *, top_k: int = 3) -> list[RetrievedDoc]:
-    candidates = docs or build_seed_knowledge()
+    candidates = load_knowledge() if docs is None else docs
     query_tokens = tokenize(question)
     ranked: list[RetrievedDoc] = []
     for doc in candidates:
@@ -41,4 +30,3 @@ def rank_docs(question: str, docs: list[KnowledgeDoc] | None = None, *, top_k: i
         )
     ranked.sort(key=lambda row: (row.score, -row.label), reverse=True)
     return ranked[:top_k]
-

@@ -539,11 +539,14 @@ def validate_chat_quality(
 
 def validate_runtime_knowledge_consistency(knowledge_path: Path) -> None:
     from nlp_term.chat import batch, composer
+    from nlp_term.retrieve.knowledge import load_knowledge_with_metadata
     from nlp_term.ui import app
-    from nlp_term.retrieve.rank import load_knowledge
 
     file_docs = validate_rows(knowledge_path, KnowledgeDoc, required=True)
-    runtime_docs = load_knowledge(knowledge_path)
+    runtime_load = load_knowledge_with_metadata(knowledge_path)
+    runtime_docs = runtime_load.docs
+    if runtime_load.fallback_used:
+        raise ValueError("runtime-knowledge-consistency: fallback knowledge was used")
     file_ids = [doc.doc_id for doc in file_docs]
     runtime_ids = [doc.doc_id for doc in runtime_docs]
     if file_ids != runtime_ids:

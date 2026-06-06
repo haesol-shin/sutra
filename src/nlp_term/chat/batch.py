@@ -10,13 +10,13 @@ from nlp_term.schemas import ChatInput, ChatOutput
 from nlp_term.validators import read_json, write_json
 
 
-def run_chat_file(input_path: Path, output_path: Path) -> None:
+def run_chat_file(input_path: Path, output_path: Path, *, knowledge_path: Path | None = None) -> None:
     payload = read_json(input_path)
     inputs = [ChatInput.model_validate(row) for row in payload]
     outputs = []
     for row in inputs:
         route = route_question(row.user)
-        outputs.append(ChatOutput(user=row.user, model=compose_answer(route)))
+        outputs.append(ChatOutput(user=row.user, model=compose_answer(route, knowledge_path=knowledge_path)))
     write_json(output_path, outputs)
 
 
@@ -24,13 +24,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run Task 2 chatbot batch output.")
     parser.add_argument("--input", type=Path, default=default_input_path("test_chat.json"))
     parser.add_argument("--output", type=Path, default=default_output_path("chat_output.json"))
+    parser.add_argument("--knowledge", type=Path, default=default_input_path("knowledge_seed.json"))
     parser.add_argument("--dry-run", action="store_true", help="Use deterministic fallback composer.")
     return parser
 
 
 def main() -> None:
     args = build_parser().parse_args()
-    run_chat_file(args.input, args.output)
+    run_chat_file(args.input, args.output, knowledge_path=args.knowledge)
     print(f"wrote {args.output}")
 
 

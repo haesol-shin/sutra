@@ -231,3 +231,35 @@
   - output labels: `[0, 3]`
 - gate:
   - pass: classifier grading entrypoint produces valid output rows with labels in 0-4
+
+## Phase 4.0 Shared Knowledge Runtime
+
+- status: pass
+- changed_files:
+  - `src/nlp_term/retrieve/knowledge.py`
+  - `src/nlp_term/retrieve/rank.py`
+  - `src/nlp_term/chat/composer.py`
+  - `src/nlp_term/chat/batch.py`
+  - `src/nlp_term/ui/app.py`
+  - `src/nlp_term/validators.py`
+  - `docs/pre_colab_progress.md`
+- command:
+  - `uv run python -m compileall src\nlp_term\retrieve src\nlp_term\chat src\nlp_term\ui src\nlp_term\validators.py`
+  - `uv run ruff check src\nlp_term\retrieve src\nlp_term\chat src\nlp_term\ui src\nlp_term\validators.py`
+  - `uv run python -m nlp_term.validators --runtime-knowledge-consistency --knowledge data/knowledge_seed.json`
+  - `uv run python -m nlp_term.chat.batch --input data/test_chat.json --output outputs/chat_output.json --knowledge data/knowledge_seed.json`
+  - `uv run python -m nlp_term.ui.app --host 127.0.0.1 --port 7860 --knowledge data/knowledge_seed.json --smoke-test`
+- result:
+  - added `nlp_term.retrieve.knowledge` as the shared runtime loader for generated knowledge docs
+  - `rank_docs`, batch composer, and UI answers now use the same loaded `KnowledgeDoc` list
+  - batch and UI expose a `--knowledge` path with `data/knowledge_seed.json` as the local default
+  - runtime consistency validator rejects hardcoded fallback use when the generated knowledge artifact exists
+  - critic requested one code fix: explicit `docs=[]` should not fall back to default knowledge in `rank_docs`
+  - fix applied: `rank_docs` now falls back only when `docs is None`
+  - compileall exited 0
+  - ruff reported `All checks passed!`
+  - runtime consistency validator printed `validation-ok`
+  - batch command wrote `outputs/chat_output.json`
+  - UI smoke printed `ui-smoke-ok`
+- gate:
+  - pass: retrieval, batch, and UI now share the same knowledge-loading boundary
