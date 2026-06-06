@@ -109,3 +109,27 @@
 - suspected_cause: Generic chunking produced too few chunks for shorter dining HTML sources.
 - next_action: Adjust source chunking so each raw source can emit multiple non-overlapping chunks when enough text exists, then regenerate knowledge and rerun quality gates.
 - unresolved_blocker: none until max attempts is reached
+
+## 2026-06-06 step-2.1-conflicting-duplicates-attempt-1
+
+- step_id: `phase-2.1-classification-dataset-generation`
+- phase: `source_backed_classification_and_qa_data`
+- command_or_action: sequential Phase 2.1 critic review.
+- exit_status: request_changes
+- failure_summary: Numeric dataset gates passed, but critic found exact duplicate question texts assigned to conflicting labels and accepted by tautological self-consistency votes.
+- changed_files: `data/cls_train_seed.json`, `data/label_audit_seed.json`, `docs/pre_colab_progress.md`, `src/nlp_term/prepare/cls_data.py`
+- suspected_cause: Generator deduplicated by `(question, label)` instead of normalized question text, raw anchors included boilerplate tokens, and audit votes simply repeated the expected label.
+- next_action: Add global question-label consistency enforcement in generator and validators, filter boilerplate anchors, and make deterministic audit votes rule-based enough to catch conflicts.
+- unresolved_blocker: none until max attempts is reached
+
+## 2026-06-06 step-2.1-row-count-after-dedupe-attempt-2
+
+- step_id: `phase-2.1-classification-dataset-generation`
+- phase: `source_backed_classification_and_qa_data`
+- command_or_action: `uv run python -m nlp_term.validators --dataset-quality --data-dir data --min-cls-rows 250 --min-cls-per-label 40 --min-ambiguous-per-label 5 --no-dry-run --require-validated`
+- exit_status: failed
+- failure_summary: After fixing conflicting duplicate questions, the classification dataset dropped to 201 rows, below the required 250 rows.
+- changed_files: `src/nlp_term/prepare/cls_data.py`, `src/nlp_term/validators.py`, `data/cls_train_seed.json`, `data/label_audit_seed.json`
+- suspected_cause: Global dedupe and stronger anchor filtering removed low-quality rows faster than template variants replaced them.
+- next_action: Add safe domain-specific template variants that include label hints and do not create cross-label duplicate questions.
+- unresolved_blocker: none until max attempts is reached

@@ -113,3 +113,31 @@
   - ruff reported `All checks passed!`
 - gate:
   - pass: each label has at least 3 docs, each doc is source-backed, and no parse failures were recorded
+
+## Phase 2.1 Classification Dataset Generation
+
+- status: pass
+- changed_files:
+  - `src/nlp_term/prepare/cls_data.py`
+  - `data/cls_train_seed.json`
+  - `data/label_audit_seed.json`
+  - `data/qa_seed.json`
+- command:
+  - `uv run python -m nlp_term.prepare.build_all --output-dir data`
+  - `uv run python -m nlp_term.validators --dataset-quality --data-dir data --min-cls-rows 250 --min-cls-per-label 40 --min-ambiguous-per-label 5 --no-dry-run --require-validated`
+  - `uv run python -m compileall src\nlp_term\prepare`
+  - `uv run ruff check src\nlp_term\prepare`
+  - `uv run python -m nlp_term.validators --seed-data --data-dir data`
+- result:
+  - initial numeric gate passed, but critic found conflicting duplicate questions; generator and validator were strengthened and data was regenerated
+  - generated 476 classification rows
+  - label distribution: `{0: 91, 1: 88, 2: 94, 3: 115, 4: 88}`
+  - sample type distribution includes 25 ambiguous rows
+  - ambiguous rows per label: `{0: 5, 1: 5, 2: 5, 3: 5, 4: 5}`
+  - unique normalized questions: 476 of 476
+  - conflicting normalized question labels: 0
+  - dataset-quality and seed-data validators printed `validation-ok`
+  - compileall exited 0
+  - ruff reported `All checks passed!`
+- gate:
+  - pass: classification data exceeds row, per-label, ambiguity, no-dry-run, and validation thresholds

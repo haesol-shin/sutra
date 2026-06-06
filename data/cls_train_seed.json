@@ -1,51 +1,1095 @@
 [
   {
-    "question": "졸업하려면 몇 학점을 들어야 하나요?",
+    "question": "졸업하려면 어떤 요건을 확인해야 하나요?",
     "label": 0,
     "source_doc_id": "graduation_curriculum_pdf_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 0
+    }
   },
   {
-    "question": "전공 학점 졸업요건을 알고 싶어요.",
+    "question": "졸업요건 범위에서 졸업하려면 어떤 요건을 확인해야 하나요?",
     "label": 0,
     "source_doc_id": "graduation_curriculum_pdf_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 1
+    }
   },
   {
-    "question": "졸업하려면 몇 학점을 들어야 하나요?",
+    "question": "전공 학점과 교양 학점 기준을 알고 싶어요.",
     "label": 0,
-    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 2
+    }
   },
   {
-    "question": "전공 학점 졸업요건을 알고 싶어요.",
+    "question": "졸업요건 범위에서 전공 학점과 교양 학점 기준을 알고 싶어요.",
     "label": 0,
-    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 3
+    }
   },
   {
-    "question": "졸업하려면 몇 학점을 들어야 하나요?",
+    "question": "수료와 졸업 가능 여부는 어디서 확인하나요?",
     "label": 0,
-    "source_doc_id": "graduation_curriculum_pdf_chunk_3",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 4
+    }
   },
   {
-    "question": "전공 학점 졸업요건을 알고 싶어요.",
+    "question": "졸업요건 범위에서 수료와 졸업 가능 여부는 어디서 확인하나요?",
     "label": 0,
-    "source_doc_id": "graduation_curriculum_pdf_chunk_3",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 5
+    }
+  },
+  {
+    "question": "입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 6
+    }
+  },
+  {
+    "question": "졸업요건 범위에서 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 7
+    }
+  },
+  {
+    "question": "복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 8
+    }
+  },
+  {
+    "question": "졸업요건 범위에서 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 9
+    }
+  },
+  {
+    "question": "충남대 기준으로 졸업하려면 어떤 요건을 확인해야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 10
+    }
+  },
+  {
+    "question": "충남대 기준으로 졸업요건 범위에서 졸업하려면 어떤 요건을 확인해야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 11
+    }
+  },
+  {
+    "question": "충남대 기준으로 전공 학점과 교양 학점 기준을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 12
+    }
+  },
+  {
+    "question": "충남대 기준으로 졸업요건 범위에서 전공 학점과 교양 학점 기준을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 13
+    }
+  },
+  {
+    "question": "충남대 기준으로 수료와 졸업 가능 여부는 어디서 확인하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 14
+    }
+  },
+  {
+    "question": "충남대 기준으로 졸업요건 범위에서 수료와 졸업 가능 여부는 어디서 확인하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 15
+    }
+  },
+  {
+    "question": "충남대 기준으로 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 16
+    }
+  },
+  {
+    "question": "충남대 기준으로 졸업요건 범위에서 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 17
+    }
+  },
+  {
+    "question": "충남대 기준으로 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 18
+    }
+  },
+  {
+    "question": "충남대 기준으로 졸업요건 범위에서 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 19
+    }
+  },
+  {
+    "question": "학생 입장에서 졸업하려면 어떤 요건을 확인해야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 20
+    }
+  },
+  {
+    "question": "학생 입장에서 졸업요건 범위에서 졸업하려면 어떤 요건을 확인해야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 21
+    }
+  },
+  {
+    "question": "학생 입장에서 전공 학점과 교양 학점 기준을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 22
+    }
+  },
+  {
+    "question": "학생 입장에서 졸업요건 범위에서 전공 학점과 교양 학점 기준을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 23
+    }
+  },
+  {
+    "question": "학생 입장에서 수료와 졸업 가능 여부는 어디서 확인하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 24
+    }
+  },
+  {
+    "question": "학생 입장에서 졸업요건 범위에서 수료와 졸업 가능 여부는 어디서 확인하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 25
+    }
+  },
+  {
+    "question": "학생 입장에서 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 26
+    }
+  },
+  {
+    "question": "학생 입장에서 졸업요건 범위에서 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 27
+    }
+  },
+  {
+    "question": "학생 입장에서 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 28
+    }
+  },
+  {
+    "question": "학생 입장에서 졸업요건 범위에서 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 29
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 졸업하려면 어떤 요건을 확인해야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 30
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 졸업요건 범위에서 졸업하려면 어떤 요건을 확인해야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 31
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 전공 학점과 교양 학점 기준을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 32
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 졸업요건 범위에서 전공 학점과 교양 학점 기준을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 33
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 수료와 졸업 가능 여부는 어디서 확인하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 34
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 졸업요건 범위에서 수료와 졸업 가능 여부는 어디서 확인하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 35
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 36
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 졸업요건 범위에서 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 37
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 38
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 졸업요건 범위에서 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 39
+    }
+  },
+  {
+    "question": "이번 학기에 졸업하려면 어떤 요건을 확인해야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 40
+    }
+  },
+  {
+    "question": "이번 학기에 졸업요건 범위에서 졸업하려면 어떤 요건을 확인해야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 41
+    }
+  },
+  {
+    "question": "이번 학기에 전공 학점과 교양 학점 기준을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 42
+    }
+  },
+  {
+    "question": "이번 학기에 졸업요건 범위에서 전공 학점과 교양 학점 기준을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 43
+    }
+  },
+  {
+    "question": "이번 학기에 수료와 졸업 가능 여부는 어디서 확인하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 44
+    }
+  },
+  {
+    "question": "이번 학기에 졸업요건 범위에서 수료와 졸업 가능 여부는 어디서 확인하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 45
+    }
+  },
+  {
+    "question": "이번 학기에 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 46
+    }
+  },
+  {
+    "question": "이번 학기에 졸업요건 범위에서 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 47
+    }
+  },
+  {
+    "question": "이번 학기에 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 48
+    }
+  },
+  {
+    "question": "이번 학기에 졸업요건 범위에서 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 49
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 졸업하려면 어떤 요건을 확인해야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 50
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 졸업요건 범위에서 졸업하려면 어떤 요건을 확인해야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 51
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 전공 학점과 교양 학점 기준을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 52
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 졸업요건 범위에서 전공 학점과 교양 학점 기준을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 53
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 수료와 졸업 가능 여부는 어디서 확인하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 54
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 졸업요건 범위에서 수료와 졸업 가능 여부는 어디서 확인하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 55
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 56
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 졸업요건 범위에서 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 57
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 58
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 졸업요건 범위에서 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 59
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 졸업하려면 어떤 요건을 확인해야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 60
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 졸업요건 범위에서 졸업하려면 어떤 요건을 확인해야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 61
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 전공 학점과 교양 학점 기준을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 62
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 졸업요건 범위에서 전공 학점과 교양 학점 기준을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 63
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 수료와 졸업 가능 여부는 어디서 확인하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 64
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 졸업요건 범위에서 수료와 졸업 가능 여부는 어디서 확인하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 65
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 66
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 졸업요건 범위에서 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 67
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 68
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 졸업요건 범위에서 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 69
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 졸업하려면 어떤 요건을 확인해야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 70
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 졸업요건 범위에서 졸업하려면 어떤 요건을 확인해야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 71
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 전공 학점과 교양 학점 기준을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 72
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 졸업요건 범위에서 전공 학점과 교양 학점 기준을 알고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 73
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 수료와 졸업 가능 여부는 어디서 확인하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 74
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 졸업요건 범위에서 수료와 졸업 가능 여부는 어디서 확인하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 75
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 76
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 졸업요건 범위에서 입학년도별 졸업 기준이 궁금해요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 77
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 78
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 졸업요건 범위에서 복수전공을 하면 졸업요건이 달라지나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 79
+    }
+  },
+  {
+    "question": "졸업요건에서 교양 관련 내용은 어떻게 확인해?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 80
+    }
+  },
+  {
+    "question": "졸업요건 자료의 교양 정보를 어디서 봐야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 81
+    }
+  },
+  {
+    "question": "졸업요건 질문으로 교양 내용을 물어보면 돼?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 82
+    }
+  },
+  {
+    "question": "졸업요건에서 이수 관련 내용은 어떻게 확인해?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 83
+    }
+  },
+  {
+    "question": "졸업요건 자료의 이수 정보를 어디서 봐야 하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 84
+    }
+  },
+  {
+    "question": "졸업요건 질문으로 이수 내용을 물어보면 돼?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 85
+    }
+  },
+  {
+    "question": "학점 기준을 충족했는지 확인하려면 어느 자료를 봐야 해?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "graduation",
+      "template_index": 86
+    }
+  },
+  {
+    "question": "전공을 바꿨을 때 끝까지 이수해야 하는 조건이 뭐야?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "graduation",
+      "template_index": 87
+    }
+  },
+  {
+    "question": "졸업 가능 여부와 수료 여부가 헷갈려.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "graduation",
+      "template_index": 88
+    }
+  },
+  {
+    "question": "교양과 전공 이수구분을 같이 확인하고 싶어.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "graduation",
+      "template_index": 89
+    }
+  },
+  {
+    "question": "입학년도에 따라 달라지는 기준을 어디서 봐?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "graduation",
+      "template_index": 90
+    }
   },
   {
     "question": "최근 학사 공지는 어디서 확인하나요?",
@@ -53,7 +1097,23 @@
     "source_doc_id": "academic_notice_board_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 0
+    }
+  },
+  {
+    "question": "학사공지 범위에서 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 1
+    }
   },
   {
     "question": "장학 관련 공지사항이 올라왔나요?",
@@ -61,39 +1121,1031 @@
     "source_doc_id": "academic_notice_board_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 2
+    }
   },
   {
-    "question": "최근 학사 공지는 어디서 확인하나요?",
+    "question": "학사공지 범위에서 장학 관련 공지사항이 올라왔나요?",
     "label": 1,
-    "source_doc_id": "academic_notice_board_chunk_2",
+    "source_doc_id": "academic_notice_board_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 3
+    }
   },
   {
-    "question": "장학 관련 공지사항이 올라왔나요?",
+    "question": "모집 안내 공지는 어느 게시판을 보면 되나요?",
     "label": 1,
-    "source_doc_id": "academic_notice_board_chunk_2",
+    "source_doc_id": "academic_notice_board_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 4
+    }
   },
   {
-    "question": "최근 학사 공지는 어디서 확인하나요?",
+    "question": "학사공지 범위에서 모집 안내 공지는 어느 게시판을 보면 되나요?",
     "label": 1,
-    "source_doc_id": "academic_notice_board_chunk_3",
+    "source_doc_id": "academic_notice_board_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 5
+    }
   },
   {
-    "question": "장학 관련 공지사항이 올라왔나요?",
+    "question": "학교에서 올린 안내문을 찾고 싶어요.",
     "label": 1,
-    "source_doc_id": "academic_notice_board_chunk_3",
+    "source_doc_id": "academic_notice_board_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 6
+    }
+  },
+  {
+    "question": "학사공지 범위에서 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 7
+    }
+  },
+  {
+    "question": "학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 8
+    }
+  },
+  {
+    "question": "학사공지 범위에서 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 9
+    }
+  },
+  {
+    "question": "충남대 기준으로 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 10
+    }
+  },
+  {
+    "question": "충남대 기준으로 학사공지 범위에서 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 11
+    }
+  },
+  {
+    "question": "충남대 기준으로 장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 12
+    }
+  },
+  {
+    "question": "충남대 기준으로 학사공지 범위에서 장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 13
+    }
+  },
+  {
+    "question": "충남대 기준으로 모집 안내 공지는 어느 게시판을 보면 되나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 14
+    }
+  },
+  {
+    "question": "충남대 기준으로 학사공지 범위에서 모집 안내 공지는 어느 게시판을 보면 되나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 15
+    }
+  },
+  {
+    "question": "충남대 기준으로 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 16
+    }
+  },
+  {
+    "question": "충남대 기준으로 학사공지 범위에서 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 17
+    }
+  },
+  {
+    "question": "충남대 기준으로 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 18
+    }
+  },
+  {
+    "question": "충남대 기준으로 학사공지 범위에서 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 19
+    }
+  },
+  {
+    "question": "학생 입장에서 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 20
+    }
+  },
+  {
+    "question": "학생 입장에서 학사공지 범위에서 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 21
+    }
+  },
+  {
+    "question": "학생 입장에서 장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 22
+    }
+  },
+  {
+    "question": "학생 입장에서 학사공지 범위에서 장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 23
+    }
+  },
+  {
+    "question": "학생 입장에서 모집 안내 공지는 어느 게시판을 보면 되나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 24
+    }
+  },
+  {
+    "question": "학생 입장에서 학사공지 범위에서 모집 안내 공지는 어느 게시판을 보면 되나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 25
+    }
+  },
+  {
+    "question": "학생 입장에서 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 26
+    }
+  },
+  {
+    "question": "학생 입장에서 학사공지 범위에서 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 27
+    }
+  },
+  {
+    "question": "학생 입장에서 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 28
+    }
+  },
+  {
+    "question": "학생 입장에서 학사공지 범위에서 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 29
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 30
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 학사공지 범위에서 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 31
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 32
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 학사공지 범위에서 장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 33
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 모집 안내 공지는 어느 게시판을 보면 되나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 34
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 학사공지 범위에서 모집 안내 공지는 어느 게시판을 보면 되나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 35
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 36
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 학사공지 범위에서 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 37
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 38
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 학사공지 범위에서 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 39
+    }
+  },
+  {
+    "question": "이번 학기에 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 40
+    }
+  },
+  {
+    "question": "이번 학기에 학사공지 범위에서 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 41
+    }
+  },
+  {
+    "question": "이번 학기에 장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 42
+    }
+  },
+  {
+    "question": "이번 학기에 학사공지 범위에서 장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 43
+    }
+  },
+  {
+    "question": "이번 학기에 모집 안내 공지는 어느 게시판을 보면 되나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 44
+    }
+  },
+  {
+    "question": "이번 학기에 학사공지 범위에서 모집 안내 공지는 어느 게시판을 보면 되나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 45
+    }
+  },
+  {
+    "question": "이번 학기에 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 46
+    }
+  },
+  {
+    "question": "이번 학기에 학사공지 범위에서 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 47
+    }
+  },
+  {
+    "question": "이번 학기에 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 48
+    }
+  },
+  {
+    "question": "이번 학기에 학사공지 범위에서 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 49
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 50
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 학사공지 범위에서 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 51
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 52
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 학사공지 범위에서 장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 53
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 모집 안내 공지는 어느 게시판을 보면 되나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 54
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 학사공지 범위에서 모집 안내 공지는 어느 게시판을 보면 되나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 55
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 56
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 학사공지 범위에서 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 57
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 58
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 학사공지 범위에서 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 59
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 60
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 학사공지 범위에서 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 61
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 62
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 학사공지 범위에서 장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 63
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 모집 안내 공지는 어느 게시판을 보면 되나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 64
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 학사공지 범위에서 모집 안내 공지는 어느 게시판을 보면 되나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 65
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 66
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 학사공지 범위에서 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 67
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 68
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 학사공지 범위에서 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 69
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 70
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 학사공지 범위에서 최근 학사 공지는 어디서 확인하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 71
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 72
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 학사공지 범위에서 장학 관련 공지사항이 올라왔나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 73
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 모집 안내 공지는 어느 게시판을 보면 되나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 74
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 학사공지 범위에서 모집 안내 공지는 어느 게시판을 보면 되나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 75
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 76
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 학사공지 범위에서 학교에서 올린 안내문을 찾고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 77
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 78
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 학사공지 범위에서 학사정보 게시판의 새 공지를 알려줘.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 79
+    }
+  },
+  {
+    "question": "학사공지에서 학사정보 관련 내용은 어떻게 확인해?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 80
+    }
+  },
+  {
+    "question": "학사공지 자료의 학사정보 정보를 어디서 봐야 하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 81
+    }
+  },
+  {
+    "question": "학사공지 질문으로 학사정보 내용을 물어보면 돼?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 82
+    }
+  },
+  {
+    "question": "학교에서 새로 올린 안내가 있는지 보고 싶어.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "notices",
+      "template_index": 83
+    }
+  },
+  {
+    "question": "장학이랑 모집 안내가 섞여 있는데 공지로 분류해도 돼?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "notices",
+      "template_index": 84
+    }
+  },
+  {
+    "question": "게시판에 올라온 학사 관련 안내문을 찾고 있어.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "notices",
+      "template_index": 85
+    }
+  },
+  {
+    "question": "특정 부서 공지가 아니라 전체 학사 공지를 보고 싶어.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "notices",
+      "template_index": 86
+    }
+  },
+  {
+    "question": "최근 안내 제목만 보고 어디에 해당하는지 모르겠어.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "notices",
+      "template_index": 87
+    }
   },
   {
     "question": "이번 학기 수강신청은 언제 시작하나요?",
@@ -101,7 +2153,23 @@
     "source_doc_id": "academic_calendar_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 0
+    }
+  },
+  {
+    "question": "학사일정 범위에서 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 1
+    }
   },
   {
     "question": "수강정정 기간을 알려줘.",
@@ -109,39 +2177,1103 @@
     "source_doc_id": "academic_calendar_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 2
+    }
   },
   {
-    "question": "이번 학기 수강신청은 언제 시작하나요?",
+    "question": "학사일정 범위에서 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 3
+    }
+  },
+  {
+    "question": "개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 4
+    }
+  },
+  {
+    "question": "학사일정 범위에서 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 5
+    }
+  },
+  {
+    "question": "휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 6
+    }
+  },
+  {
+    "question": "학사일정 범위에서 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 7
+    }
+  },
+  {
+    "question": "복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 8
+    }
+  },
+  {
+    "question": "학사일정 범위에서 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 9
+    }
+  },
+  {
+    "question": "충남대 기준으로 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 10
+    }
+  },
+  {
+    "question": "충남대 기준으로 학사일정 범위에서 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 11
+    }
+  },
+  {
+    "question": "충남대 기준으로 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 12
+    }
+  },
+  {
+    "question": "충남대 기준으로 학사일정 범위에서 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 13
+    }
+  },
+  {
+    "question": "충남대 기준으로 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 14
+    }
+  },
+  {
+    "question": "충남대 기준으로 학사일정 범위에서 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 15
+    }
+  },
+  {
+    "question": "충남대 기준으로 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 16
+    }
+  },
+  {
+    "question": "충남대 기준으로 학사일정 범위에서 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 17
+    }
+  },
+  {
+    "question": "충남대 기준으로 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 18
+    }
+  },
+  {
+    "question": "충남대 기준으로 학사일정 범위에서 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 19
+    }
+  },
+  {
+    "question": "학생 입장에서 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 20
+    }
+  },
+  {
+    "question": "학생 입장에서 학사일정 범위에서 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 21
+    }
+  },
+  {
+    "question": "학생 입장에서 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 22
+    }
+  },
+  {
+    "question": "학생 입장에서 학사일정 범위에서 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 23
+    }
+  },
+  {
+    "question": "학생 입장에서 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 24
+    }
+  },
+  {
+    "question": "학생 입장에서 학사일정 범위에서 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 25
+    }
+  },
+  {
+    "question": "학생 입장에서 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 26
+    }
+  },
+  {
+    "question": "학생 입장에서 학사일정 범위에서 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 27
+    }
+  },
+  {
+    "question": "학생 입장에서 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 28
+    }
+  },
+  {
+    "question": "학생 입장에서 학사일정 범위에서 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 29
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 30
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 학사일정 범위에서 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 31
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 32
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 학사일정 범위에서 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 33
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 34
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 학사일정 범위에서 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 35
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 36
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 학사일정 범위에서 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 37
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 38
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 학사일정 범위에서 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 39
+    }
+  },
+  {
+    "question": "이번 학기에 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 40
+    }
+  },
+  {
+    "question": "이번 학기에 학사일정 범위에서 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 41
+    }
+  },
+  {
+    "question": "이번 학기에 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 42
+    }
+  },
+  {
+    "question": "이번 학기에 학사일정 범위에서 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 43
+    }
+  },
+  {
+    "question": "이번 학기에 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 44
+    }
+  },
+  {
+    "question": "이번 학기에 학사일정 범위에서 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 45
+    }
+  },
+  {
+    "question": "이번 학기에 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 46
+    }
+  },
+  {
+    "question": "이번 학기에 학사일정 범위에서 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 47
+    }
+  },
+  {
+    "question": "이번 학기에 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 48
+    }
+  },
+  {
+    "question": "이번 학기에 학사일정 범위에서 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 49
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 50
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 학사일정 범위에서 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 51
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 52
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 학사일정 범위에서 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 53
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 54
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 학사일정 범위에서 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 55
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 56
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 학사일정 범위에서 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 57
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 58
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 학사일정 범위에서 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 59
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 60
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 학사일정 범위에서 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 61
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 62
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 학사일정 범위에서 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 63
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 64
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 학사일정 범위에서 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 65
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 66
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 학사일정 범위에서 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 67
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 68
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 학사일정 범위에서 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 69
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 70
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 학사일정 범위에서 이번 학기 수강신청은 언제 시작하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 71
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 72
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 학사일정 범위에서 수강정정 기간을 알려줘.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 73
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 74
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 학사일정 범위에서 개강일과 종강일이 언제인지 궁금해요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 75
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 76
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 학사일정 범위에서 휴학 신청 기간은 학사일정에서 확인하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 77
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 78
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 학사일정 범위에서 복학 일정은 어디서 볼 수 있나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 79
+    }
+  },
+  {
+    "question": "학사일정에서 일정 관련 내용은 어떻게 확인해?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 80
+    }
+  },
+  {
+    "question": "학사일정 자료의 일정 정보를 어디서 봐야 하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 81
+    }
+  },
+  {
+    "question": "학사일정 질문으로 일정 내용을 물어보면 돼?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 82
+    }
+  },
+  {
+    "question": "학사일정에서 학사일정 관련 내용은 어떻게 확인해?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 83
+    }
+  },
+  {
+    "question": "학사일정 자료의 학사일정 정보를 어디서 봐야 하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 84
+    }
+  },
+  {
+    "question": "학사일정 질문으로 학사일정 내용을 물어보면 돼?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 85
+    }
+  },
+  {
+    "question": "신청 기간과 정정 기간이 달라서 헷갈려.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "academic_calendar",
+      "template_index": 86
+    }
+  },
+  {
+    "question": "학기 중 주요 날짜를 한 번에 확인하고 싶어.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "academic_calendar",
+      "template_index": 87
+    }
+  },
+  {
+    "question": "휴학과 복학 날짜가 같은 표에 있는지 궁금해.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "academic_calendar",
+      "template_index": 88
+    }
+  },
+  {
+    "question": "개강 전후 일정을 확인하려면 어디로 가야 해?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "academic_calendar",
+      "template_index": 89
+    }
+  },
+  {
+    "question": "수업 일정인지 공지사항인지 헷갈리는 질문이야.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "academic_calendar",
+      "template_index": 90
+    }
+  },
+  {
+    "question": "학사일정에서 우수강의 관련 내용은 어떻게 확인해?",
     "label": 2,
     "source_doc_id": "academic_calendar_chunk_2",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 80
+    }
   },
   {
-    "question": "수강정정 기간을 알려줘.",
+    "question": "학사일정 자료의 우수강의 정보를 어디서 봐야 하나요?",
     "label": 2,
     "source_doc_id": "academic_calendar_chunk_2",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 81
+    }
   },
   {
-    "question": "이번 학기 수강신청은 언제 시작하나요?",
+    "question": "학사일정 질문으로 우수강의 내용을 물어보면 돼?",
     "label": 2,
-    "source_doc_id": "academic_calendar_chunk_3",
+    "source_doc_id": "academic_calendar_chunk_2",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
-  },
-  {
-    "question": "수강정정 기간을 알려줘.",
-    "label": 2,
-    "source_doc_id": "academic_calendar_chunk_3",
-    "generation_method": "template",
-    "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 82
+    }
   },
   {
     "question": "오늘 학생식당 점심 메뉴가 뭐야?",
@@ -149,7 +3281,23 @@
     "source_doc_id": "cnu_mobile_food_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 0
+    }
+  },
+  {
+    "question": "식단 범위에서 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 1
+    }
   },
   {
     "question": "이번 주 학식 식단을 알려줘.",
@@ -157,71 +3305,1355 @@
     "source_doc_id": "cnu_mobile_food_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 2
+    }
   },
   {
-    "question": "오늘 학생식당 점심 메뉴가 뭐야?",
+    "question": "식단 범위에서 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 3
+    }
+  },
+  {
+    "question": "교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 4
+    }
+  },
+  {
+    "question": "식단 범위에서 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 5
+    }
+  },
+  {
+    "question": "아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 6
+    }
+  },
+  {
+    "question": "식단 범위에서 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 7
+    }
+  },
+  {
+    "question": "식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 8
+    }
+  },
+  {
+    "question": "식단 범위에서 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 9
+    }
+  },
+  {
+    "question": "충남대 기준으로 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 10
+    }
+  },
+  {
+    "question": "충남대 기준으로 식단 범위에서 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 11
+    }
+  },
+  {
+    "question": "충남대 기준으로 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 12
+    }
+  },
+  {
+    "question": "충남대 기준으로 식단 범위에서 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 13
+    }
+  },
+  {
+    "question": "충남대 기준으로 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 14
+    }
+  },
+  {
+    "question": "충남대 기준으로 식단 범위에서 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 15
+    }
+  },
+  {
+    "question": "충남대 기준으로 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 16
+    }
+  },
+  {
+    "question": "충남대 기준으로 식단 범위에서 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 17
+    }
+  },
+  {
+    "question": "충남대 기준으로 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 18
+    }
+  },
+  {
+    "question": "충남대 기준으로 식단 범위에서 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 19
+    }
+  },
+  {
+    "question": "학생 입장에서 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 20
+    }
+  },
+  {
+    "question": "학생 입장에서 식단 범위에서 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 21
+    }
+  },
+  {
+    "question": "학생 입장에서 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 22
+    }
+  },
+  {
+    "question": "학생 입장에서 식단 범위에서 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 23
+    }
+  },
+  {
+    "question": "학생 입장에서 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 24
+    }
+  },
+  {
+    "question": "학생 입장에서 식단 범위에서 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 25
+    }
+  },
+  {
+    "question": "학생 입장에서 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 26
+    }
+  },
+  {
+    "question": "학생 입장에서 식단 범위에서 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 27
+    }
+  },
+  {
+    "question": "학생 입장에서 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 28
+    }
+  },
+  {
+    "question": "학생 입장에서 식단 범위에서 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 29
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 30
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 식단 범위에서 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 31
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 32
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 식단 범위에서 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 33
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 34
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 식단 범위에서 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 35
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 36
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 식단 범위에서 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 37
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 38
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 식단 범위에서 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 39
+    }
+  },
+  {
+    "question": "이번 학기에 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 40
+    }
+  },
+  {
+    "question": "이번 학기에 식단 범위에서 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 41
+    }
+  },
+  {
+    "question": "이번 학기에 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 42
+    }
+  },
+  {
+    "question": "이번 학기에 식단 범위에서 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 43
+    }
+  },
+  {
+    "question": "이번 학기에 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 44
+    }
+  },
+  {
+    "question": "이번 학기에 식단 범위에서 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 45
+    }
+  },
+  {
+    "question": "이번 학기에 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 46
+    }
+  },
+  {
+    "question": "이번 학기에 식단 범위에서 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 47
+    }
+  },
+  {
+    "question": "이번 학기에 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 48
+    }
+  },
+  {
+    "question": "이번 학기에 식단 범위에서 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 49
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 50
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 식단 범위에서 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 51
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 52
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 식단 범위에서 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 53
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 54
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 식단 범위에서 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 55
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 56
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 식단 범위에서 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 57
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 58
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 식단 범위에서 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 59
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 60
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 식단 범위에서 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 61
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 62
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 식단 범위에서 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 63
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 64
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 식단 범위에서 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 65
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 66
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 식단 범위에서 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 67
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 68
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 식단 범위에서 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 69
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 70
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 식단 범위에서 오늘 학생식당 점심 메뉴가 뭐야?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 71
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 72
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 식단 범위에서 이번 주 학식 식단을 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 73
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 74
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 식단 범위에서 교내 식당 저녁 메뉴를 확인하고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 75
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 76
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 식단 범위에서 아침 식단이 있는지 알려줘.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 77
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 78
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 식단 범위에서 식당별 메뉴표는 어디서 확인하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 79
+    }
+  },
+  {
+    "question": "식단에서 식당메뉴 관련 내용은 어떻게 확인해?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 80
+    }
+  },
+  {
+    "question": "식단 자료의 식당메뉴 정보를 어디서 봐야 하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 81
+    }
+  },
+  {
+    "question": "식단 질문으로 식당메뉴 내용을 물어보면 돼?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 82
+    }
+  },
+  {
+    "question": "식단에서 식단 관련 내용은 어떻게 확인해?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 83
+    }
+  },
+  {
+    "question": "식단 자료의 식단 정보를 어디서 봐야 하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 84
+    }
+  },
+  {
+    "question": "식단 질문으로 식단 내용을 물어보면 돼?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 85
+    }
+  },
+  {
+    "question": "식단에서 식당별 관련 내용은 어떻게 확인해?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 86
+    }
+  },
+  {
+    "question": "식단 자료의 식당별 정보를 어디서 봐야 하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 87
+    }
+  },
+  {
+    "question": "식단 질문으로 식당별 내용을 물어보면 돼?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 88
+    }
+  },
+  {
+    "question": "식단에서 식단메뉴에 관련 내용은 어떻게 확인해?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 89
+    }
+  },
+  {
+    "question": "식단 자료의 식단메뉴에 정보를 어디서 봐야 하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 90
+    }
+  },
+  {
+    "question": "식단 질문으로 식단메뉴에 내용을 물어보면 돼?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 91
+    }
+  },
+  {
+    "question": "식단에서 메뉴운영내역 관련 내용은 어떻게 확인해?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 92
+    }
+  },
+  {
+    "question": "식단 자료의 메뉴운영내역 정보를 어디서 봐야 하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 93
+    }
+  },
+  {
+    "question": "식단 질문으로 메뉴운영내역 내용을 물어보면 돼?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 94
+    }
+  },
+  {
+    "question": "오늘 먹을 수 있는 메뉴가 있는지 알고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "dining",
+      "template_index": 95
+    }
+  },
+  {
+    "question": "식당 운영 정보와 메뉴가 섞여 있는데 식단으로 보면 돼?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "dining",
+      "template_index": 96
+    }
+  },
+  {
+    "question": "점심이랑 저녁 중 어떤 메뉴가 나오는지 궁금해.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "dining",
+      "template_index": 97
+    }
+  },
+  {
+    "question": "교내에서 밥 먹을 곳의 메뉴표를 보고 싶어.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "dining",
+      "template_index": 98
+    }
+  },
+  {
+    "question": "날짜별 메뉴를 확인하는 질문이야.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "dining",
+      "template_index": 99
+    }
+  },
+  {
+    "question": "식단에서 학생 관련 내용은 어떻게 확인해?",
     "label": 3,
     "source_doc_id": "cnu_mobile_food_chunk_2",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 80
+    }
   },
   {
-    "question": "이번 주 학식 식단을 알려줘.",
+    "question": "식단 자료의 학생 정보를 어디서 봐야 하나요?",
     "label": 3,
     "source_doc_id": "cnu_mobile_food_chunk_2",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 81
+    }
   },
   {
-    "question": "오늘 학생식당 점심 메뉴가 뭐야?",
+    "question": "식단 질문으로 학생 내용을 물어보면 돼?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 82
+    }
+  },
+  {
+    "question": "식단에서 구내식당 관련 내용은 어떻게 확인해?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 83
+    }
+  },
+  {
+    "question": "식단 자료의 구내식당 정보를 어디서 봐야 하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 84
+    }
+  },
+  {
+    "question": "식단 질문으로 구내식당 내용을 물어보면 돼?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 85
+    }
+  },
+  {
+    "question": "식단에서 메뉴의 관련 내용은 어떻게 확인해?",
     "label": 3,
     "source_doc_id": "cnu_mobile_food_chunk_3",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 80
+    }
   },
   {
-    "question": "이번 주 학식 식단을 알려줘.",
+    "question": "식단 자료의 메뉴의 정보를 어디서 봐야 하나요?",
     "label": 3,
     "source_doc_id": "cnu_mobile_food_chunk_3",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 81
+    }
   },
   {
-    "question": "오늘 학생식당 점심 메뉴가 뭐야?",
+    "question": "식단 질문으로 메뉴의 내용을 물어보면 돼?",
     "label": 3,
-    "source_doc_id": "cnucoop_discovery_chunk_1",
+    "source_doc_id": "cnu_mobile_food_chunk_3",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 82
+    }
   },
   {
-    "question": "이번 주 학식 식단을 알려줘.",
+    "question": "식단에서 저염식단을 관련 내용은 어떻게 확인해?",
     "label": 3,
-    "source_doc_id": "cnucoop_discovery_chunk_1",
+    "source_doc_id": "cnu_mobile_food_chunk_3",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 83
+    }
   },
   {
-    "question": "오늘 학생식당 점심 메뉴가 뭐야?",
+    "question": "식단 자료의 저염식단을 정보를 어디서 봐야 하나요?",
     "label": 3,
-    "source_doc_id": "cnucoop_discovery_chunk_2",
+    "source_doc_id": "cnu_mobile_food_chunk_3",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 84
+    }
   },
   {
-    "question": "이번 주 학식 식단을 알려줘.",
+    "question": "식단 질문으로 저염식단을 내용을 물어보면 돼?",
     "label": 3,
-    "source_doc_id": "cnucoop_discovery_chunk_2",
+    "source_doc_id": "cnu_mobile_food_chunk_3",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 85
+    }
+  },
+  {
+    "question": "식단에서 잡곡식단으로 관련 내용은 어떻게 확인해?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 86
+    }
+  },
+  {
+    "question": "식단 자료의 잡곡식단으로 정보를 어디서 봐야 하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 87
+    }
+  },
+  {
+    "question": "식단 질문으로 잡곡식단으로 내용을 물어보면 돼?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 88
+    }
   },
   {
     "question": "셔틀버스 시간표를 알려줘.",
@@ -229,7 +4661,23 @@
     "source_doc_id": "shuttle_bus_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 0
+    }
+  },
+  {
+    "question": "셔틀버스 범위에서 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 1
+    }
   },
   {
     "question": "통학버스 정류장은 어디인가요?",
@@ -237,38 +4685,1030 @@
     "source_doc_id": "shuttle_bus_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 2
+    }
   },
   {
-    "question": "셔틀버스 시간표를 알려줘.",
+    "question": "셔틀버스 범위에서 통학버스 정류장은 어디인가요?",
     "label": 4,
-    "source_doc_id": "shuttle_bus_chunk_2",
+    "source_doc_id": "shuttle_bus_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 3
+    }
   },
   {
-    "question": "통학버스 정류장은 어디인가요?",
+    "question": "버스 노선별 운행 시간을 확인하고 싶어요.",
     "label": 4,
-    "source_doc_id": "shuttle_bus_chunk_2",
+    "source_doc_id": "shuttle_bus_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 4
+    }
   },
   {
-    "question": "셔틀버스 시간표를 알려줘.",
+    "question": "셔틀버스 범위에서 버스 노선별 운행 시간을 확인하고 싶어요.",
     "label": 4,
-    "source_doc_id": "shuttle_bus_chunk_3",
+    "source_doc_id": "shuttle_bus_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 5
+    }
   },
   {
-    "question": "통학버스 정류장은 어디인가요?",
+    "question": "학교 셔틀이 오늘 운행하나요?",
     "label": 4,
-    "source_doc_id": "shuttle_bus_chunk_3",
+    "source_doc_id": "shuttle_bus_chunk_1",
     "generation_method": "template",
     "validated": true,
-    "metadata": {}
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 6
+    }
+  },
+  {
+    "question": "셔틀버스 범위에서 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 7
+    }
+  },
+  {
+    "question": "등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 8
+    }
+  },
+  {
+    "question": "셔틀버스 범위에서 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 9
+    }
+  },
+  {
+    "question": "충남대 기준으로 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 10
+    }
+  },
+  {
+    "question": "충남대 기준으로 셔틀버스 범위에서 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 11
+    }
+  },
+  {
+    "question": "충남대 기준으로 통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 12
+    }
+  },
+  {
+    "question": "충남대 기준으로 셔틀버스 범위에서 통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 13
+    }
+  },
+  {
+    "question": "충남대 기준으로 버스 노선별 운행 시간을 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 14
+    }
+  },
+  {
+    "question": "충남대 기준으로 셔틀버스 범위에서 버스 노선별 운행 시간을 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 15
+    }
+  },
+  {
+    "question": "충남대 기준으로 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 16
+    }
+  },
+  {
+    "question": "충남대 기준으로 셔틀버스 범위에서 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 17
+    }
+  },
+  {
+    "question": "충남대 기준으로 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 18
+    }
+  },
+  {
+    "question": "충남대 기준으로 셔틀버스 범위에서 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 19
+    }
+  },
+  {
+    "question": "학생 입장에서 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 20
+    }
+  },
+  {
+    "question": "학생 입장에서 셔틀버스 범위에서 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 21
+    }
+  },
+  {
+    "question": "학생 입장에서 통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 22
+    }
+  },
+  {
+    "question": "학생 입장에서 셔틀버스 범위에서 통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 23
+    }
+  },
+  {
+    "question": "학생 입장에서 버스 노선별 운행 시간을 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 24
+    }
+  },
+  {
+    "question": "학생 입장에서 셔틀버스 범위에서 버스 노선별 운행 시간을 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 25
+    }
+  },
+  {
+    "question": "학생 입장에서 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 26
+    }
+  },
+  {
+    "question": "학생 입장에서 셔틀버스 범위에서 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 27
+    }
+  },
+  {
+    "question": "학생 입장에서 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 28
+    }
+  },
+  {
+    "question": "학생 입장에서 셔틀버스 범위에서 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 29
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 30
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 셔틀버스 범위에서 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 31
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 32
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 셔틀버스 범위에서 통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 33
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 버스 노선별 운행 시간을 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 34
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 셔틀버스 범위에서 버스 노선별 운행 시간을 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 35
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 36
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 셔틀버스 범위에서 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 37
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 38
+    }
+  },
+  {
+    "question": "공식 자료 기준으로 셔틀버스 범위에서 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 39
+    }
+  },
+  {
+    "question": "이번 학기에 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 40
+    }
+  },
+  {
+    "question": "이번 학기에 셔틀버스 범위에서 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 41
+    }
+  },
+  {
+    "question": "이번 학기에 통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 42
+    }
+  },
+  {
+    "question": "이번 학기에 셔틀버스 범위에서 통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 43
+    }
+  },
+  {
+    "question": "이번 학기에 버스 노선별 운행 시간을 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 44
+    }
+  },
+  {
+    "question": "이번 학기에 셔틀버스 범위에서 버스 노선별 운행 시간을 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 45
+    }
+  },
+  {
+    "question": "이번 학기에 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 46
+    }
+  },
+  {
+    "question": "이번 학기에 셔틀버스 범위에서 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 47
+    }
+  },
+  {
+    "question": "이번 학기에 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 48
+    }
+  },
+  {
+    "question": "이번 학기에 셔틀버스 범위에서 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 49
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 50
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 셔틀버스 범위에서 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 51
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 52
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 셔틀버스 범위에서 통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 53
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 버스 노선별 운행 시간을 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 54
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 셔틀버스 범위에서 버스 노선별 운행 시간을 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 55
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 56
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 셔틀버스 범위에서 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 57
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 58
+    }
+  },
+  {
+    "question": "충남대학교 공식 안내에서 셔틀버스 범위에서 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 59
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 60
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 셔틀버스 범위에서 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 61
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 62
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 셔틀버스 범위에서 통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 63
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 버스 노선별 운행 시간을 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 64
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 셔틀버스 범위에서 버스 노선별 운행 시간을 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 65
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 66
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 셔틀버스 범위에서 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 67
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 68
+    }
+  },
+  {
+    "question": "챗봇에게 물어볼 때 셔틀버스 범위에서 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 69
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 70
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 셔틀버스 범위에서 셔틀버스 시간표를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 71
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 72
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 셔틀버스 범위에서 통학버스 정류장은 어디인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 73
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 버스 노선별 운행 시간을 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 74
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 셔틀버스 범위에서 버스 노선별 운행 시간을 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 75
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 76
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 셔틀버스 범위에서 학교 셔틀이 오늘 운행하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 77
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 78
+    }
+  },
+  {
+    "question": "분류 기준을 정하려고 셔틀버스 범위에서 등교 버스와 하교 버스 안내를 알려줘.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 79
+    }
+  },
+  {
+    "question": "셔틀버스에서 학교셔틀버스 관련 내용은 어떻게 확인해?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 80
+    }
+  },
+  {
+    "question": "셔틀버스 자료의 학교셔틀버스 정보를 어디서 봐야 하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 81
+    }
+  },
+  {
+    "question": "셔틀버스 질문으로 학교셔틀버스 내용을 물어보면 돼?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 82
+    }
+  },
+  {
+    "question": "등하교 이동 시간표를 어디서 봐야 해?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "shuttle",
+      "template_index": 83
+    }
+  },
+  {
+    "question": "노선과 정류장 정보가 같이 필요한 질문이야.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "shuttle",
+      "template_index": 84
+    }
+  },
+  {
+    "question": "버스 운행 여부와 시간을 같이 확인하고 싶어.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "shuttle",
+      "template_index": 85
+    }
+  },
+  {
+    "question": "캠퍼스 이동용 차량 안내를 찾고 있어.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "shuttle",
+      "template_index": 86
+    }
+  },
+  {
+    "question": "시간표인지 노선도인지 헷갈리지만 버스 관련 질문이야.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "augmented",
+    "validated": true,
+    "metadata": {
+      "sample_type": "ambiguous",
+      "source_domain": "shuttle",
+      "template_index": 87
+    }
   }
 ]

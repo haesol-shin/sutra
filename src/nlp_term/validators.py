@@ -6,6 +6,7 @@ from hashlib import sha256
 import inspect
 import json
 from pathlib import Path
+import re
 from typing import TypeVar
 
 from pydantic import BaseModel, ValidationError
@@ -28,6 +29,7 @@ from nlp_term.schemas import (
 
 ModelT = TypeVar("ModelT", bound=BaseModel)
 BANNED_OUTPUT_TERMS = ("dry-run", "dry_run", "stub", "parser 미구현", "제출 구현에서는")
+QUESTION_NORMALIZE_RE = re.compile(r"\s+")
 
 
 def read_json(path: Path) -> object:
@@ -207,7 +209,10 @@ def validate_dataset_quality(
     require_qa_source: bool = False,
 ) -> None:
     cls_rows = validate_rows(data_dir / "cls_train_seed.json", ClassificationExample, required=True)
+    audits = validate_rows(data_dir / "label_audit_seed.json", LabelAudit, required=True)
     qa_rows = validate_rows(data_dir / "qa_seed.json", QAExample, required=True)
+    _validate_question_label_consistency(cls_rows)
+    _validate_audit_consistency(cls_rows, audits)
     if min_cls_rows is not None and len(cls_rows) < min_cls_rows:
         raise ValueError(f"dataset-quality: cls rows {len(cls_rows)} below {min_cls_rows}")
     if min_cls_per_label is not None:
@@ -239,6 +244,38 @@ def validate_dataset_quality(
             has_source_text = "http" in row.model.lower() or "출처" in row.model
             if not row.source_url or not has_source_text:
                 raise ValueError(f"dataset-quality: QA row lacks source evidence: {row.user}")
+
+
+def _normalize_question(text: str) -> str:
+    return QUESTION_NORMALIZE_RE.sub(" ", text.strip().lower())
+
+
+def _validate_question_label_consistency(rows: list[ClassificationExample]) -> None:
+    labels_by_question: dict[str, int] = {}
+    for row in rows:
+        normalized = _normalize_question(row.question)
+        existing = labels_by_question.get(normalized)
+        if existing is not None and existing != row.label:
+            raise ValueError(
+                f"dataset-quality: conflicting labels for question {row.question!r}: {existing} vs {row.label}"
+            )
+        labels_by_question[normalized] = row.label
+
+
+def _validate_audit_consistency(rows: list[ClassificationExample], audits: list[LabelAudit]) -> None:
+    audit_by_key = {
+        (_normalize_question(row.question), row.source_doc_id): row
+        for row in audits
+    }
+    for example in rows:
+        key = (_normalize_question(example.question), example.source_doc_id or "")
+        audit = audit_by_key.get(key)
+        if audit is None:
+            raise ValueError(f"dataset-quality: missing audit for question {example.question!r}")
+        if audit.final_label != example.label:
+            raise ValueError(f"dataset-quality: audit/example label mismatch for {example.question!r}")
+        if audit.decision != "accept" and example.validated:
+            raise ValueError(f"dataset-quality: validated example has non-accepted audit for {example.question!r}")
 
 
 def _metric_value(metrics: dict[str, object], names: tuple[str, ...]) -> float:
