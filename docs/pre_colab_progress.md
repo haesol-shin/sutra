@@ -293,3 +293,22 @@
   - the score is high because QA seed questions include source-title cues
 - gate:
   - pass: retrieval metrics are checksum-bound and exceed the advisory top-k thresholds
+
+## Phase 4.2 Chat Batch Quality Gate
+
+- status: pass
+- changed_files:
+  - `docs/pre_colab_progress.md`
+- command:
+  - `bash chatbot.sh batch`
+  - `uv run python -m nlp_term.validators --check-all --data-dir data --outputs-dir outputs`
+  - `uv run python -m nlp_term.validators --chat-quality outputs/chat_output.json --input data/test_chat.json --min-answer-chars 80 --require-source-hint`
+- result:
+  - `chatbot.sh batch` wrote `outputs/chat_output.json`
+  - `data/test_chat.json` rows: 2
+  - `outputs/chat_output.json` rows: 2
+  - answer lengths: `159`, `131`
+  - every answer includes a source hint
+  - check-all and chat-quality validators printed `validation-ok`
+- gate:
+  - pass: Task 2 batch output satisfies row-count, minimum answer length, and source-hint gates
