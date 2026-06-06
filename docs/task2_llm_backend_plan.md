@@ -27,7 +27,9 @@ Task 2의 기본 응답 생성 후보는 로컬 LLM이다. 목표 설정은 다�
 - Transformers/runtime stack: `uv sync --extra xpu --extra llm` 후 `transformers 5.10.2`, `accelerate 1.13.0` 설치 확인
 - Qwen3.5 tokenizer smoke: `AutoConfig`와 `AutoTokenizer`는 `Qwen/Qwen3.5-9B`를 읽고 chat template을 렌더링한다.
 - Multimodal processor note: `AutoProcessor`는 video/image processor 경로에서 `torchvision`을 요구한다. Task 2는 text-only QA이므로 현재 smoke는 `AutoTokenizer` 기준으로 둔다.
-- 아직 미설치: `bitsandbytes`, `vllm`, `llama_cpp`, `llama-cli`, `llama-server`, `ollama`
+- llama.cpp: `winget install ggml.llamacpp`로 b9538 Windows x64 Vulkan build 설치 확인. `llama-server --version`은 `9538 (5343f4502)`를 반환한다.
+- llama.cpp KV cache options: `llama-cli --help` 기준 `--cache-type-k`/`--cache-type-v` allowed values는 `f32`, `f16`, `bf16`, `q8_0`, `q4_0`, `q4_1`, `iq4_nl`, `q5_0`, `q5_1`이다. `fp8`은 없다.
+- 아직 미설치: `bitsandbytes`, `vllm`, `llama_cpp`, `ollama`
 - Level Zero SDK: `LEVEL_ZERO_V1_SDK_PATH` 존재
 
 따라서 로컬 검증 기준에서는 CUDA 전용 경로를 기본 백엔드로 둘 수 없다. 우선순위는 `PyTorch XPU + Transformers` smoke, 그 다음 `vLLM XPU` 또는 Intel GPU 지원 GGUF runner 검증이다.

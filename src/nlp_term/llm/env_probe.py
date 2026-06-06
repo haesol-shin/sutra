@@ -43,7 +43,21 @@ def package_available(name: str) -> bool:
 
 
 def executable_path(name: str) -> str | None:
-    return shutil.which(name)
+    found = shutil.which(name)
+    if found is not None:
+        return found
+    bin_dir = os.environ.get("LLAMA_CPP_BIN_DIR")
+    if bin_dir:
+        candidate = Path(bin_dir) / f"{name}.exe"
+        if candidate.exists():
+            return str(candidate)
+    local_app_data = os.environ.get("LOCALAPPDATA")
+    if name.startswith("llama-") and local_app_data:
+        package_root = Path(local_app_data) / "Microsoft" / "WinGet" / "Packages"
+        matches = list(package_root.glob(f"ggml.llamacpp_*/*{name}.exe"))
+        if matches:
+            return str(matches[0])
+    return None
 
 
 def run_command(command: list[str], *, timeout: int = 5) -> dict[str, Any]:
@@ -184,6 +198,7 @@ def build_probe() -> dict[str, Any]:
             "LEVEL_ZERO_V1_SDK_PATH": os.environ.get("LEVEL_ZERO_V1_SDK_PATH"),
             "ONEAPI_ROOT": os.environ.get("ONEAPI_ROOT"),
             "VLLM_ATTENTION_BACKEND": os.environ.get("VLLM_ATTENTION_BACKEND"),
+            "LLAMA_CPP_BIN_DIR": os.environ.get("LLAMA_CPP_BIN_DIR"),
         },
         "packages": {name: package_available(name) for name in PACKAGE_NAMES},
         "executables": {name: executable_path(name) for name in EXECUTABLE_NAMES},
