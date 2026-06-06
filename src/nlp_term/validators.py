@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import argparse
-from collections import Counter
+from collections import Counter, defaultdict
 from hashlib import sha256
 import inspect
 import json
@@ -39,6 +39,17 @@ UNSUPPORTED_REALTIME_CLAIMS = (
     "실시간 조회가",
 )
 QUESTION_NORMALIZE_RE = re.compile(r"\s+")
+QUESTION_TOKEN_RE = re.compile(r"[0-9A-Za-z가-힣]+")
+GENERIC_TITLE_TOKENS = {
+    "chunk",
+    "source",
+    "공지",
+    "안내",
+    "자료",
+    "학사",
+    "충남대학교",
+    "cnu",
+}
 QA_BOILERPLATE_TERMS = (
     "본문 바로가기",
     "사이드메뉴",
@@ -617,6 +628,151 @@ def validate_classifier_metrics(
                 raise ValueError(f"classifier-metrics: class {label} f1 below threshold")
 
 
+def _title_tokens(title: str) -> set[str]:
+    tokens = set()
+    for token in QUESTION_TOKEN_RE.findall(title.casefold()):
+        if len(token) < 3 or token in GENERIC_TITLE_TOKENS:
+            continue
+        tokens.add(token)
+    return tokens
+
+
+def build_task1_hard_gate_report(data_dir: Path) -> dict[str, object]:
+    docs = validate_rows(data_dir / "knowledge_seed.json", KnowledgeDoc, required=True)
+    rows = validate_rows(data_dir / "cls_train_seed.json", ClassificationExample, required=True)
+    docs_by_id = {doc.doc_id: doc for doc in docs}
+    normalized_rows: dict[str, list[ClassificationExample]] = defaultdict(list)
+    label_source_counts: dict[int, Counter[str]] = defaultdict(Counter)
+    missing_source_rows: list[str] = []
+    source_label_mismatch_rows: list[dict[str, object]] = []
+    title_cue_rows: list[dict[str, object]] = []
+    for row in rows:
+        normalized_rows[_normalize_question(row.question)].append(row)
+        if not row.source_doc_id:
+            missing_source_rows.append(row.question)
+            continue
+        doc = docs_by_id.get(row.source_doc_id)
+        if doc is None:
+            missing_source_rows.append(row.question)
+            continue
+        if doc.label != row.label:
+            source_label_mismatch_rows.append(
+                {
+                    "question": row.question,
+                    "row_label": row.label,
+                    "source_doc_id": row.source_doc_id,
+                    "source_doc_label": doc.label,
+                }
+            )
+            continue
+        label_source_counts[row.label][row.source_doc_id] += 1
+        question = row.question.casefold()
+        cue_hits = sorted(token for token in _title_tokens(doc.title) if token in question)
+        if cue_hits:
+            title_cue_rows.append(
+                {
+                    "question": row.question,
+                    "label": row.label,
+                    "source_doc_id": row.source_doc_id,
+                    "cue_tokens": cue_hits,
+                }
+            )
+    duplicate_groups = {
+        question: group
+        for question, group in normalized_rows.items()
+        if len(group) > 1
+    }
+    conflicting_duplicate_groups = {
+        question: group
+        for question, group in duplicate_groups.items()
+        if len({row.label for row in group}) > 1
+    }
+    cross_source_duplicate_groups = {
+        question: group
+        for question, group in duplicate_groups.items()
+        if len({row.source_doc_id for row in group}) > 1
+    }
+    source_docs_per_label = {
+        str(label): len(label_source_counts.get(label, {}))
+        for label in range(5)
+    }
+    source_concentration_by_label: dict[str, float] = {}
+    for label in range(5):
+        counts = label_source_counts.get(label, Counter())
+        total = sum(counts.values())
+        source_concentration_by_label[str(label)] = max(counts.values(), default=0) / max(total, 1)
+    return {
+        "evaluation_scope": "task1_generated_data_hard_gates",
+        "input_path": str(data_dir / "cls_train_seed.json"),
+        "input_checksum": file_checksum(data_dir / "cls_train_seed.json"),
+        "row_count": len(rows),
+        "label_distribution": dict(sorted(Counter(row.label for row in rows).items())),
+        "normalized_unique_questions": len(normalized_rows),
+        "normalized_duplicate_count": sum(len(group) - 1 for group in duplicate_groups.values()),
+        "conflicting_duplicate_count": len(conflicting_duplicate_groups),
+        "cross_source_duplicate_count": len(cross_source_duplicate_groups),
+        "missing_source_doc_count": len(missing_source_rows),
+        "missing_source_doc_examples": missing_source_rows[:10],
+        "source_label_mismatch_count": len(source_label_mismatch_rows),
+        "source_label_mismatch_examples": source_label_mismatch_rows[:10],
+        "source_docs_per_label": source_docs_per_label,
+        "source_concentration_by_label": source_concentration_by_label,
+        "title_cue_row_count": len(title_cue_rows),
+        "title_cue_ratio": len(title_cue_rows) / max(len(rows), 1),
+        "title_cue_examples": title_cue_rows[:10],
+    }
+
+
+def validate_task1_hard_gates(
+    data_dir: Path,
+    *,
+    report_output: Path | None = None,
+    require_cls_source_docs: bool = False,
+    max_normalized_duplicate_count: int | None = None,
+    max_conflicting_duplicate_count: int | None = None,
+    max_title_cue_ratio: float | None = None,
+    min_source_docs_per_label: int | None = None,
+    max_source_concentration_ratio: float | None = None,
+) -> None:
+    report = build_task1_hard_gate_report(data_dir)
+    if report_output is not None:
+        report_output.parent.mkdir(parents=True, exist_ok=True)
+        with report_output.open("w", encoding="utf-8") as file:
+            json.dump(report, file, ensure_ascii=False, indent=2)
+            file.write("\n")
+    if require_cls_source_docs and report["missing_source_doc_count"]:
+        raise ValueError("task1-hard-gates: classification rows have missing or unknown source_doc_id")
+    if require_cls_source_docs and report["source_label_mismatch_count"]:
+        raise ValueError("task1-hard-gates: classification rows have mismatched source labels")
+    if (
+        max_conflicting_duplicate_count is not None
+        and int(report["conflicting_duplicate_count"]) > max_conflicting_duplicate_count
+    ):
+        raise ValueError("task1-hard-gates: conflicting duplicate count above threshold")
+    if (
+        max_normalized_duplicate_count is not None
+        and int(report["normalized_duplicate_count"]) > max_normalized_duplicate_count
+    ):
+        raise ValueError("task1-hard-gates: normalized duplicate count above threshold")
+    if max_title_cue_ratio is not None and float(report["title_cue_ratio"]) > max_title_cue_ratio:
+        raise ValueError("task1-hard-gates: source title cue ratio above threshold")
+    if min_source_docs_per_label is not None:
+        source_docs = report["source_docs_per_label"]
+        if not isinstance(source_docs, dict):
+            raise ValueError("task1-hard-gates: source_docs_per_label report is malformed")
+        for label in range(5):
+            count = source_docs.get(str(label))
+            if not isinstance(count, int) or count < min_source_docs_per_label:
+                raise ValueError(f"task1-hard-gates: label {label} source docs below threshold")
+    if max_source_concentration_ratio is not None:
+        concentration = report["source_concentration_by_label"]
+        if not isinstance(concentration, dict):
+            raise ValueError("task1-hard-gates: source_concentration_by_label report is malformed")
+        for label, ratio in concentration.items():
+            if not isinstance(ratio, int | float) or float(ratio) > max_source_concentration_ratio:
+                raise ValueError(f"task1-hard-gates: label {label} source concentration above threshold")
+
+
 def validate_retrieval_metrics(
     path: Path,
     *,
@@ -764,6 +920,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--knowledge-quality", type=Path, help="Validate source-backed knowledge quality gates.")
     parser.add_argument("--dataset-quality", action="store_true", help="Validate generated classification/QA quality gates.")
     parser.add_argument("--classifier-metrics", type=Path, help="Validate classifier metric gates.")
+    parser.add_argument("--task1-hard-gates", action="store_true", help="Validate Task 1 generated-data hard gates.")
+    parser.add_argument("--task1-hard-report-output", type=Path, help="Write a Task 1 hard-gate report.")
     parser.add_argument("--retrieval-metrics", type=Path, help="Validate retrieval metric gates.")
     parser.add_argument("--chat-quality", type=Path, help="Validate chat output quality gates.")
     parser.add_argument("--realtime-provenance", type=Path, help="Validate realtime output against source provenance.")
@@ -787,6 +945,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--require-validated", action="store_true")
     parser.add_argument("--require-qa-source", action="store_true")
     parser.add_argument("--require-source-disjoint", action="store_true")
+    parser.add_argument("--require-cls-source-docs", action="store_true")
+    parser.add_argument("--max-normalized-duplicate-count", type=int)
+    parser.add_argument("--max-conflicting-duplicate-count", type=int)
+    parser.add_argument("--max-title-cue-ratio", type=float)
+    parser.add_argument("--min-source-docs-per-label", type=int)
+    parser.add_argument("--max-source-concentration-ratio", type=float)
     parser.add_argument("--min-macro-f1", type=float)
     parser.add_argument("--min-weighted-f1", type=float)
     parser.add_argument("--min-class-f1", type=float)
@@ -824,6 +988,7 @@ def main() -> None:
         and not args.knowledge_quality
         and not args.dataset_quality
         and not args.classifier_metrics
+        and not args.task1_hard_gates
         and not args.retrieval_metrics
         and not args.chat_quality
         and not args.realtime_provenance
@@ -902,6 +1067,17 @@ def main() -> None:
                 min_macro_f1=args.min_macro_f1,
                 min_weighted_f1=args.min_weighted_f1,
                 min_class_f1=args.min_class_f1,
+            )
+        if args.task1_hard_gates:
+            validate_task1_hard_gates(
+                args.data_dir,
+                report_output=args.task1_hard_report_output,
+                require_cls_source_docs=args.require_cls_source_docs,
+                max_normalized_duplicate_count=args.max_normalized_duplicate_count,
+                max_conflicting_duplicate_count=args.max_conflicting_duplicate_count,
+                max_title_cue_ratio=args.max_title_cue_ratio,
+                min_source_docs_per_label=args.min_source_docs_per_label,
+                max_source_concentration_ratio=args.max_source_concentration_ratio,
             )
         if args.retrieval_metrics:
             validate_retrieval_metrics(
