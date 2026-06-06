@@ -192,6 +192,14 @@ def _questions_for_doc(doc: KnowledgeDoc) -> list[str]:
                 f"{_label_hint(doc.label)} 질문으로 {anchor} 내용을 물어보면 돼?",
             ]
         )
+    for phrase in _source_phrases(doc):
+        questions.extend(
+            [
+                f"{phrase} 내용을 묻는다면 어떤 질문 유형인가요?",
+                f"{_label_hint(doc.label)} 기준으로 {phrase} 정보를 확인하고 싶어요.",
+                f"공식 자료의 {phrase} 부분은 어디에 해당하나요?",
+            ]
+        )
     questions.extend(AMBIGUOUS_TEMPLATES[doc.label])
     return questions
 
@@ -212,6 +220,26 @@ def _anchors(doc: KnowledgeDoc, *, limit: int = 5) -> list[str]:
         if len(anchors) >= limit:
             break
     return anchors
+
+
+def _source_phrases(doc: KnowledgeDoc, *, limit: int = 5) -> list[str]:
+    phrases: list[str] = []
+    keywords = LABEL_KEYWORDS[doc.label]
+    tokens = ANCHOR_RE.findall(doc.body)
+    for index, token in enumerate(tokens):
+        if not any(keyword in token or token in keyword for keyword in keywords):
+            continue
+        start = max(index - 2, 0)
+        end = min(index + 5, len(tokens))
+        phrase = " ".join(tokens[start:end])
+        if len(phrase) < 8 or len(phrase) > 60:
+            continue
+        if phrase in phrases:
+            continue
+        phrases.append(phrase)
+        if len(phrases) >= limit:
+            break
+    return phrases
 
 
 def _vote_labels(question: str, expected_label: int) -> list[int]:

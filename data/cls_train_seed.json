@@ -1140,6 +1140,186 @@
     }
   },
   {
+    "question": "대학의 교육과정은 교양과정 전공과정 일반선택과정으로 구분하여 운영함을 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 95
+    }
+  },
+  {
+    "question": "졸업요건 기준으로 대학의 교육과정은 교양과정 전공과정 일반선택과정으로 구분하여 운영함을 정보를 확인하고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 96
+    }
+  },
+  {
+    "question": "공식 자료의 대학의 교육과정은 교양과정 전공과정 일반선택과정으로 구분하여 운영함을 부분은 어디에 해당하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 97
+    }
+  },
+  {
+    "question": "교육과정은 교양과정 전공과정 일반선택과정으로 구분하여 운영함을 원칙으로 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 98
+    }
+  },
+  {
+    "question": "졸업요건 기준으로 교육과정은 교양과정 전공과정 일반선택과정으로 구분하여 운영함을 원칙으로 정보를 확인하고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 99
+    }
+  },
+  {
+    "question": "공식 자료의 교육과정은 교양과정 전공과정 일반선택과정으로 구분하여 운영함을 원칙으로 부분은 어디에 해당하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 100
+    }
+  },
+  {
+    "question": "16 교과목 이수단위는 학점으로 하고 1학점은 학기당 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 101
+    }
+  },
+  {
+    "question": "졸업요건 기준으로 16 교과목 이수단위는 학점으로 하고 1학점은 학기당 정보를 확인하고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 102
+    }
+  },
+  {
+    "question": "공식 자료의 16 교과목 이수단위는 학점으로 하고 1학점은 학기당 부분은 어디에 해당하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 103
+    }
+  },
+  {
+    "question": "교과목 이수단위는 학점으로 하고 1학점은 학기당 15시간 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 104
+    }
+  },
+  {
+    "question": "졸업요건 기준으로 교과목 이수단위는 학점으로 하고 1학점은 학기당 15시간 정보를 확인하고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 105
+    }
+  },
+  {
+    "question": "공식 자료의 교과목 이수단위는 학점으로 하고 1학점은 학기당 15시간 부분은 어디에 해당하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 106
+    }
+  },
+  {
+    "question": "학점으로 하고 1학점은 학기당 15시간 평가시험시간을 포함 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 107
+    }
+  },
+  {
+    "question": "졸업요건 기준으로 학점으로 하고 1학점은 학기당 15시간 평가시험시간을 포함 정보를 확인하고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 108
+    }
+  },
+  {
+    "question": "공식 자료의 학점으로 하고 1학점은 학기당 15시간 평가시험시간을 포함 부분은 어디에 해당하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 109
+    }
+  },
+  {
     "question": "학점 기준을 충족했는지 확인하려면 어느 자료를 봐야 해?",
     "label": 0,
     "source_doc_id": "graduation_curriculum_pdf_chunk_1",
@@ -1148,7 +1328,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "graduation",
-      "template_index": 95
+      "template_index": 110
     }
   },
   {
@@ -1160,7 +1340,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "graduation",
-      "template_index": 96
+      "template_index": 111
     }
   },
   {
@@ -1172,7 +1352,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "graduation",
-      "template_index": 97
+      "template_index": 112
     }
   },
   {
@@ -1184,7 +1364,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "graduation",
-      "template_index": 98
+      "template_index": 113
     }
   },
   {
@@ -1196,7 +1376,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "graduation",
-      "template_index": 99
+      "template_index": 114
     }
   },
   {
@@ -1344,6 +1524,186 @@
     }
   },
   {
+    "question": "학교기업 등에서 학점으로 인정받는 사회체험활동의 교과목을 운영할 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 95
+    }
+  },
+  {
+    "question": "졸업요건 기준으로 학교기업 등에서 학점으로 인정받는 사회체험활동의 교과목을 운영할 정보를 확인하고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 96
+    }
+  },
+  {
+    "question": "공식 자료의 학교기업 등에서 학점으로 인정받는 사회체험활동의 교과목을 운영할 부분은 어디에 해당하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 97
+    }
+  },
+  {
+    "question": "편성 운영 이수에 관하여 필요한 사항은 따로 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 98
+    }
+  },
+  {
+    "question": "졸업요건 기준으로 편성 운영 이수에 관하여 필요한 사항은 따로 정보를 확인하고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 99
+    }
+  },
+  {
+    "question": "공식 자료의 편성 운영 이수에 관하여 필요한 사항은 따로 부분은 어디에 해당하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 100
+    }
+  },
+  {
+    "question": "제54조 영역별 소요학점 이수학점 제목개정 2015 16 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 101
+    }
+  },
+  {
+    "question": "졸업요건 기준으로 제54조 영역별 소요학점 이수학점 제목개정 2015 16 정보를 확인하고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 102
+    }
+  },
+  {
+    "question": "공식 자료의 제54조 영역별 소요학점 이수학점 제목개정 2015 16 부분은 어디에 해당하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 103
+    }
+  },
+  {
+    "question": "영역별 소요학점 이수학점 제목개정 2015 16 교양 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 104
+    }
+  },
+  {
+    "question": "졸업요건 기준으로 영역별 소요학점 이수학점 제목개정 2015 16 교양 정보를 확인하고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 105
+    }
+  },
+  {
+    "question": "공식 자료의 영역별 소요학점 이수학점 제목개정 2015 16 교양 부분은 어디에 해당하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 106
+    }
+  },
+  {
+    "question": "2015 16 교양 과정의 졸업소요학점 배점기준은 36학점 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 107
+    }
+  },
+  {
+    "question": "졸업요건 기준으로 2015 16 교양 과정의 졸업소요학점 배점기준은 36학점 정보를 확인하고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 108
+    }
+  },
+  {
+    "question": "공식 자료의 2015 16 교양 과정의 졸업소요학점 배점기준은 36학점 부분은 어디에 해당하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 109
+    }
+  },
+  {
     "question": "졸업요건에서 졸업소요학점 관련 내용은 어떻게 확인해?",
     "label": 0,
     "source_doc_id": "graduation_curriculum_pdf_chunk_3",
@@ -1377,6 +1737,42 @@
       "sample_type": "template",
       "source_domain": "graduation",
       "template_index": 94
+    }
+  },
+  {
+    "question": "교양 과정의 졸업소요학점 배점기준은 36학점 이상으로 한다 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 107
+    }
+  },
+  {
+    "question": "졸업요건 기준으로 교양 과정의 졸업소요학점 배점기준은 36학점 이상으로 한다 정보를 확인하고 싶어요.",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 108
+    }
+  },
+  {
+    "question": "공식 자료의 교양 과정의 졸업소요학점 배점기준은 36학점 이상으로 한다 부분은 어디에 해당하나요?",
+    "label": 0,
+    "source_doc_id": "graduation_curriculum_pdf_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "graduation",
+      "template_index": 109
     }
   },
   {
@@ -2448,6 +2844,186 @@
     }
   },
   {
+    "question": "학사정보게시판 목록 번호 제목 작성자 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 89
+    }
+  },
+  {
+    "question": "학사공지 기준으로 학사정보게시판 목록 번호 제목 작성자 정보를 확인하고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 90
+    }
+  },
+  {
+    "question": "공식 자료의 학사정보게시판 목록 번호 제목 작성자 부분은 어디에 해당하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 91
+    }
+  },
+  {
+    "question": "작성일 조회수 공지 2026학년도 하기 계절학기 국내 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 92
+    }
+  },
+  {
+    "question": "학사공지 기준으로 작성일 조회수 공지 2026학년도 하기 계절학기 국내 정보를 확인하고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 93
+    }
+  },
+  {
+    "question": "공식 자료의 작성일 조회수 공지 2026학년도 하기 계절학기 국내 부분은 어디에 해당하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 94
+    }
+  },
+  {
+    "question": "대학 수학 안내 학사지원과 2026 04 16 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 95
+    }
+  },
+  {
+    "question": "학사공지 기준으로 대학 수학 안내 학사지원과 2026 04 16 정보를 확인하고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 96
+    }
+  },
+  {
+    "question": "공식 자료의 대학 수학 안내 학사지원과 2026 04 16 부분은 어디에 해당하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 97
+    }
+  },
+  {
+    "question": "16 4548 공지 2026학년도 제1학기 학생 출석인정 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 98
+    }
+  },
+  {
+    "question": "학사공지 기준으로 16 4548 공지 2026학년도 제1학기 학생 출석인정 정보를 확인하고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 99
+    }
+  },
+  {
+    "question": "공식 자료의 16 4548 공지 2026학년도 제1학기 학생 출석인정 부분은 어디에 해당하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 100
+    }
+  },
+  {
+    "question": "변경 사항 안내 학사지원과 2026 03 05 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 101
+    }
+  },
+  {
+    "question": "학사공지 기준으로 변경 사항 안내 학사지원과 2026 03 05 정보를 확인하고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 102
+    }
+  },
+  {
+    "question": "공식 자료의 변경 사항 안내 학사지원과 2026 03 05 부분은 어디에 해당하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 103
+    }
+  },
+  {
     "question": "학교에서 새로 올린 안내가 있는지 보고 싶어.",
     "label": 1,
     "source_doc_id": "academic_notice_board_chunk_1",
@@ -2456,7 +3032,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "notices",
-      "template_index": 89
+      "template_index": 104
     }
   },
   {
@@ -2468,7 +3044,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "notices",
-      "template_index": 90
+      "template_index": 105
     }
   },
   {
@@ -2480,7 +3056,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "notices",
-      "template_index": 91
+      "template_index": 106
     }
   },
   {
@@ -2492,7 +3068,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "notices",
-      "template_index": 92
+      "template_index": 107
     }
   },
   {
@@ -2504,7 +3080,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "notices",
-      "template_index": 93
+      "template_index": 108
     }
   },
   {
@@ -2577,6 +3153,198 @@
       "sample_type": "template",
       "source_domain": "notices",
       "template_index": 91
+    }
+  },
+  {
+    "question": "학사공지 기준으로 복학 신청 안내 학사지원과 2026 01 14 정보를 확인하고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 99
+    }
+  },
+  {
+    "question": "3차 기간 안내 학사지원과 2026 06 05 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 101
+    }
+  },
+  {
+    "question": "학사공지 기준으로 3차 기간 안내 학사지원과 2026 06 05 정보를 확인하고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 102
+    }
+  },
+  {
+    "question": "공식 자료의 3차 기간 안내 학사지원과 2026 06 05 부분은 어디에 해당하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 103
+    }
+  },
+  {
+    "question": "12기 해외탐방 장학생 모집 안내 학생과 2026 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 104
+    }
+  },
+  {
+    "question": "학사공지 기준으로 12기 해외탐방 장학생 모집 안내 학생과 2026 정보를 확인하고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 105
+    }
+  },
+  {
+    "question": "공식 자료의 12기 해외탐방 장학생 모집 안내 학생과 2026 부분은 어디에 해당하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 106
+    }
+  },
+  {
+    "question": "해외탐방 장학생 모집 안내 학생과 2026 06 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 95
+    }
+  },
+  {
+    "question": "학사공지 기준으로 해외탐방 장학생 모집 안내 학생과 2026 06 정보를 확인하고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 96
+    }
+  },
+  {
+    "question": "공식 자료의 해외탐방 장학생 모집 안내 학생과 2026 06 부분은 어디에 해당하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 97
+    }
+  },
+  {
+    "question": "장학생 모집 안내 학생과 2026 06 05 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 98
+    }
+  },
+  {
+    "question": "학사공지 기준으로 장학생 모집 안내 학생과 2026 06 05 정보를 확인하고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 99
+    }
+  },
+  {
+    "question": "공식 자료의 장학생 모집 안내 학생과 2026 06 05 부분은 어디에 해당하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 100
+    }
+  },
+  {
+    "question": "실행 계획 안내 융복합과학원 2026 06 04 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 101
+    }
+  },
+  {
+    "question": "학사공지 기준으로 실행 계획 안내 융복합과학원 2026 06 04 정보를 확인하고 싶어요.",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 102
+    }
+  },
+  {
+    "question": "공식 자료의 실행 계획 안내 융복합과학원 2026 06 04 부분은 어디에 해당하나요?",
+    "label": 1,
+    "source_doc_id": "academic_notice_board_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "notices",
+      "template_index": 103
     }
   },
   {
@@ -3612,6 +4380,114 @@
     }
   },
   {
+    "question": "03 제1학기 개강일 03 03 03 09 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 86
+    }
+  },
+  {
+    "question": "학사일정 기준으로 03 제1학기 개강일 03 03 03 09 정보를 확인하고 싶어요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 87
+    }
+  },
+  {
+    "question": "공식 자료의 03 제1학기 개강일 03 03 03 09 부분은 어디에 해당하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 88
+    }
+  },
+  {
+    "question": "03 09 수강신청 확인 변경 03 03 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 89
+    }
+  },
+  {
+    "question": "학사일정 기준으로 03 09 수강신청 확인 변경 03 03 정보를 확인하고 싶어요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 90
+    }
+  },
+  {
+    "question": "공식 자료의 03 09 수강신청 확인 변경 03 03 부분은 어디에 해당하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 91
+    }
+  },
+  {
+    "question": "03 09 수강신청 확인 변경 03 16 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 92
+    }
+  },
+  {
+    "question": "학사일정 기준으로 03 09 수강신청 확인 변경 03 16 정보를 확인하고 싶어요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 93
+    }
+  },
+  {
+    "question": "공식 자료의 03 09 수강신청 확인 변경 03 16 부분은 어디에 해당하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 94
+    }
+  },
+  {
     "question": "신청 기간과 정정 기간이 달라서 헷갈려.",
     "label": 2,
     "source_doc_id": "academic_calendar_chunk_1",
@@ -3620,7 +4496,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "academic_calendar",
-      "template_index": 86
+      "template_index": 95
     }
   },
   {
@@ -3632,7 +4508,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "academic_calendar",
-      "template_index": 87
+      "template_index": 96
     }
   },
   {
@@ -3644,7 +4520,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "academic_calendar",
-      "template_index": 88
+      "template_index": 97
     }
   },
   {
@@ -3656,7 +4532,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "academic_calendar",
-      "template_index": 89
+      "template_index": 98
     }
   },
   {
@@ -3668,7 +4544,151 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "academic_calendar",
+      "template_index": 99
+    }
+  },
+  {
+    "question": "하기 계절학기 수강신청 05 13 수업일수 3선 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 83
+    }
+  },
+  {
+    "question": "학사일정 기준으로 하기 계절학기 수강신청 05 13 수업일수 3선 정보를 확인하고 싶어요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 84
+    }
+  },
+  {
+    "question": "공식 자료의 하기 계절학기 수강신청 05 13 수업일수 3선 부분은 어디에 해당하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 85
+    }
+  },
+  {
+    "question": "01 제2학기 개강일 09 01 09 07 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 86
+    }
+  },
+  {
+    "question": "학사일정 기준으로 01 제2학기 개강일 09 01 09 07 정보를 확인하고 싶어요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 87
+    }
+  },
+  {
+    "question": "공식 자료의 01 제2학기 개강일 09 01 09 07 부분은 어디에 해당하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 88
+    }
+  },
+  {
+    "question": "09 07 수강신청 확인 변경 09 01 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 89
+    }
+  },
+  {
+    "question": "학사일정 기준으로 09 07 수강신청 확인 변경 09 01 정보를 확인하고 싶어요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
       "template_index": 90
+    }
+  },
+  {
+    "question": "공식 자료의 09 07 수강신청 확인 변경 09 01 부분은 어디에 해당하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 91
+    }
+  },
+  {
+    "question": "09 28 수강신청 취소 09 25 추석 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 92
+    }
+  },
+  {
+    "question": "학사일정 기준으로 09 28 수강신청 취소 09 25 추석 정보를 확인하고 싶어요.",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 93
+    }
+  },
+  {
+    "question": "공식 자료의 09 28 수강신청 취소 09 25 추석 부분은 어디에 해당하나요?",
+    "label": 2,
+    "source_doc_id": "academic_calendar_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "academic_calendar",
+      "template_index": 94
     }
   },
   {
@@ -4740,6 +5760,186 @@
     }
   },
   {
+    "question": "06 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 89
+    }
+  },
+  {
+    "question": "식단 기준으로 06 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 정보를 확인하고 싶어요.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 90
+    }
+  },
+  {
+    "question": "공식 자료의 06 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 부분은 어디에 해당하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 91
+    }
+  },
+  {
+    "question": "조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 92
+    }
+  },
+  {
+    "question": "식단 기준으로 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 정보를 확인하고 싶어요.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 93
+    }
+  },
+  {
+    "question": "공식 자료의 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 부분은 어디에 해당하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 94
+    }
+  },
+  {
+    "question": "운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 95
+    }
+  },
+  {
+    "question": "식단 기준으로 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 정보를 확인하고 싶어요.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 96
+    }
+  },
+  {
+    "question": "공식 자료의 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 부분은 어디에 해당하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 97
+    }
+  },
+  {
+    "question": "운영안함 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 98
+    }
+  },
+  {
+    "question": "식단 기준으로 운영안함 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 정보를 확인하고 싶어요.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 99
+    }
+  },
+  {
+    "question": "공식 자료의 운영안함 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 부분은 어디에 해당하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 100
+    }
+  },
+  {
+    "question": "조식 직원 메뉴운영내역 운영안함 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 101
+    }
+  },
+  {
+    "question": "식단 기준으로 조식 직원 메뉴운영내역 운영안함 정보를 확인하고 싶어요.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 102
+    }
+  },
+  {
+    "question": "공식 자료의 조식 직원 메뉴운영내역 운영안함 부분은 어디에 해당하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 103
+    }
+  },
+  {
     "question": "오늘 먹을 수 있는 메뉴가 있는지 알고 싶어.",
     "label": 3,
     "source_doc_id": "cnu_mobile_food_chunk_1",
@@ -4748,7 +5948,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "dining",
-      "template_index": 89
+      "template_index": 104
     }
   },
   {
@@ -4760,7 +5960,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "dining",
-      "template_index": 90
+      "template_index": 105
     }
   },
   {
@@ -4772,7 +5972,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "dining",
-      "template_index": 91
+      "template_index": 106
     }
   },
   {
@@ -4784,7 +5984,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "dining",
-      "template_index": 92
+      "template_index": 107
     }
   },
   {
@@ -4796,7 +5996,43 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "dining",
-      "template_index": 93
+      "template_index": 108
+    }
+  },
+  {
+    "question": "안함 학생 운영안함 운영안함 운영안함 운영안함 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 89
+    }
+  },
+  {
+    "question": "식단 기준으로 안함 학생 운영안함 운영안함 운영안함 운영안함 정보를 확인하고 싶어요.",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 90
+    }
+  },
+  {
+    "question": "공식 자료의 안함 학생 운영안함 운영안함 운영안함 운영안함 부분은 어디에 해당하나요?",
+    "label": 3,
+    "source_doc_id": "cnu_mobile_food_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "dining",
+      "template_index": 91
     }
   },
   {
@@ -5940,6 +7176,186 @@
     }
   },
   {
+    "question": "2026학년도 학교셔틀버스 운영 안내 운영기준 학기 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 95
+    }
+  },
+  {
+    "question": "셔틀버스 기준으로 2026학년도 학교셔틀버스 운영 안내 운영기준 학기 정보를 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 96
+    }
+  },
+  {
+    "question": "공식 자료의 2026학년도 학교셔틀버스 운영 안내 운영기준 학기 부분은 어디에 해당하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 97
+    }
+  },
+  {
+    "question": "이전 미운영 운행 시간표는 학교 사정에 따라 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 98
+    }
+  },
+  {
+    "question": "셔틀버스 기준으로 이전 미운영 운행 시간표는 학교 사정에 따라 정보를 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 99
+    }
+  },
+  {
+    "question": "공식 자료의 이전 미운영 운행 시간표는 학교 사정에 따라 부분은 어디에 해당하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 100
+    }
+  },
+  {
+    "question": "미운영 운행 시간표는 학교 사정에 따라 변경될 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 101
+    }
+  },
+  {
+    "question": "셔틀버스 기준으로 미운영 운행 시간표는 학교 사정에 따라 변경될 정보를 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 102
+    }
+  },
+  {
+    "question": "공식 자료의 미운영 운행 시간표는 학교 사정에 따라 변경될 부분은 어디에 해당하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 103
+    }
+  },
+  {
+    "question": "학사일정 변경 운행 기간 변경될 있음 총학생회 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 104
+    }
+  },
+  {
+    "question": "셔틀버스 기준으로 학사일정 변경 운행 기간 변경될 있음 총학생회 정보를 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 105
+    }
+  },
+  {
+    "question": "공식 자료의 학사일정 변경 운행 기간 변경될 있음 총학생회 부분은 어디에 해당하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 106
+    }
+  },
+  {
+    "question": "등과 협의 운행시간은 천재지변 학교행사 교통상황 탑승 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 107
+    }
+  },
+  {
+    "question": "셔틀버스 기준으로 등과 협의 운행시간은 천재지변 학교행사 교통상황 탑승 정보를 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 108
+    }
+  },
+  {
+    "question": "공식 자료의 등과 협의 운행시간은 천재지변 학교행사 교통상황 탑승 부분은 어디에 해당하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 109
+    }
+  },
+  {
     "question": "등하교 이동 시간표를 어디서 봐야 해?",
     "label": 4,
     "source_doc_id": "shuttle_bus_chunk_1",
@@ -5948,7 +7364,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "shuttle",
-      "template_index": 95
+      "template_index": 110
     }
   },
   {
@@ -5960,7 +7376,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "shuttle",
-      "template_index": 96
+      "template_index": 111
     }
   },
   {
@@ -5972,7 +7388,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "shuttle",
-      "template_index": 97
+      "template_index": 112
     }
   },
   {
@@ -5984,7 +7400,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "shuttle",
-      "template_index": 98
+      "template_index": 113
     }
   },
   {
@@ -5996,7 +7412,7 @@
     "metadata": {
       "sample_type": "ambiguous",
       "source_domain": "shuttle",
-      "template_index": 99
+      "template_index": 114
     }
   },
   {
@@ -6072,6 +7488,150 @@
     }
   },
   {
+    "question": "사전 대기 운행 주체 학교버스 운행 내용 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 98
+    }
+  },
+  {
+    "question": "셔틀버스 기준으로 사전 대기 운행 주체 학교버스 운행 내용 정보를 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 99
+    }
+  },
+  {
+    "question": "공식 자료의 사전 대기 운행 주체 학교버스 운행 내용 부분은 어디에 해당하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 100
+    }
+  },
+  {
+    "question": "운행 주체 학교버스 운행 내용 운행 시간표 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 101
+    }
+  },
+  {
+    "question": "셔틀버스 기준으로 운행 주체 학교버스 운행 내용 운행 시간표 정보를 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 102
+    }
+  },
+  {
+    "question": "공식 자료의 운행 주체 학교버스 운행 내용 운행 시간표 부분은 어디에 해당하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 103
+    }
+  },
+  {
+    "question": "주체 학교버스 운행 내용 운행 시간표 운행 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 104
+    }
+  },
+  {
+    "question": "셔틀버스 기준으로 주체 학교버스 운행 내용 운행 시간표 운행 정보를 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 105
+    }
+  },
+  {
+    "question": "공식 자료의 주체 학교버스 운행 내용 운행 시간표 운행 부분은 어디에 해당하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 106
+    }
+  },
+  {
+    "question": "운행 내용 운행 시간표 운행 노선 참고 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 107
+    }
+  },
+  {
+    "question": "셔틀버스 기준으로 운행 내용 운행 시간표 운행 노선 참고 정보를 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 108
+    }
+  },
+  {
+    "question": "공식 자료의 운행 내용 운행 시간표 운행 노선 참고 부분은 어디에 해당하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 109
+    }
+  },
+  {
     "question": "셔틀버스에서 셔틀버스 관련 내용은 어떻게 확인해?",
     "label": 4,
     "source_doc_id": "shuttle_bus_chunk_3",
@@ -6141,6 +7701,186 @@
       "sample_type": "template",
       "source_domain": "shuttle",
       "template_index": 94
+    }
+  },
+  {
+    "question": "대덕캠퍼스 보운캠퍼스 셔틀버스 운행 시간표 셔틀버스 운행 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 95
+    }
+  },
+  {
+    "question": "셔틀버스 기준으로 대덕캠퍼스 보운캠퍼스 셔틀버스 운행 시간표 셔틀버스 운행 정보를 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 96
+    }
+  },
+  {
+    "question": "공식 자료의 대덕캠퍼스 보운캠퍼스 셔틀버스 운행 시간표 셔틀버스 운행 부분은 어디에 해당하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 97
+    }
+  },
+  {
+    "question": "보운캠퍼스 셔틀버스 운행 시간표 셔틀버스 운행 시간표 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 98
+    }
+  },
+  {
+    "question": "셔틀버스 기준으로 보운캠퍼스 셔틀버스 운행 시간표 셔틀버스 운행 시간표 정보를 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 99
+    }
+  },
+  {
+    "question": "공식 자료의 보운캠퍼스 셔틀버스 운행 시간표 셔틀버스 운행 시간표 부분은 어디에 해당하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 100
+    }
+  },
+  {
+    "question": "셔틀버스 운행 시간표 셔틀버스 운행 시간표 구분 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 101
+    }
+  },
+  {
+    "question": "셔틀버스 기준으로 셔틀버스 운행 시간표 셔틀버스 운행 시간표 구분 정보를 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 102
+    }
+  },
+  {
+    "question": "공식 자료의 셔틀버스 운행 시간표 셔틀버스 운행 시간표 구분 부분은 어디에 해당하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 103
+    }
+  },
+  {
+    "question": "운행 시간표 셔틀버스 운행 시간표 구분 오전 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 104
+    }
+  },
+  {
+    "question": "셔틀버스 기준으로 운행 시간표 셔틀버스 운행 시간표 구분 오전 정보를 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 105
+    }
+  },
+  {
+    "question": "공식 자료의 운행 시간표 셔틀버스 운행 시간표 구분 오전 부분은 어디에 해당하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 106
+    }
+  },
+  {
+    "question": "시간표 셔틀버스 운행 시간표 구분 오전 오후 내용을 묻는다면 어떤 질문 유형인가요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 107
+    }
+  },
+  {
+    "question": "셔틀버스 기준으로 시간표 셔틀버스 운행 시간표 구분 오전 오후 정보를 확인하고 싶어요.",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 108
+    }
+  },
+  {
+    "question": "공식 자료의 시간표 셔틀버스 운행 시간표 구분 오전 오후 부분은 어디에 해당하나요?",
+    "label": 4,
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "generation_method": "template",
+    "validated": true,
+    "metadata": {
+      "sample_type": "template",
+      "source_domain": "shuttle",
+      "template_index": 109
     }
   }
 ]

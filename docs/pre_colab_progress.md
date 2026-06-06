@@ -178,3 +178,38 @@
   - ruff reported `All checks passed!`
 - gate:
   - pass: QA data meets row, per-label, source grounding, no-dry-run, validation, page-chrome, and all-row Source/Data critic gates
+
+## Phase 3.1 Source-Disjoint Classifier Evaluation
+
+- status: pass
+- changed_files:
+  - `src/nlp_term/prepare/cls_data.py`
+  - `src/nlp_term/classify/train.py`
+  - `data/cls_train_seed.json`
+  - `data/label_audit_seed.json`
+  - `data/qa_seed.json`
+  - `model/classifier.joblib`
+  - `model/classifier_metrics.json`
+- command:
+  - `uv run python -m compileall src\nlp_term\prepare\cls_data.py src\nlp_term\classify\train.py`
+  - `uv run ruff check src\nlp_term\prepare\cls_data.py src\nlp_term\classify\train.py`
+  - `uv run python -m nlp_term.prepare.build_all --output-dir data`
+  - `uv run python -m nlp_term.validators --dataset-quality --data-dir data --min-cls-rows 250 --min-cls-per-label 40 --min-ambiguous-per-label 5 --no-dry-run --require-validated --min-qa-rows 50 --min-qa-per-label 8 --require-qa-source`
+  - `uv run python -m nlp_term.classify.train --input data/cls_train_seed.json --model-output model/classifier.joblib --metrics-output model/classifier_metrics.json`
+  - `uv run python -m nlp_term.validators --classifier-metrics model/classifier_metrics.json --input data/cls_train_seed.json --require-source-disjoint --min-macro-f1 0.70 --min-weighted-f1 0.70 --min-class-f1 0.55`
+- result:
+  - classification generation now adds source phrase questions so each label has at least two source docs represented in `cls_train_seed.json`
+  - generated 657 classification rows
+  - label distribution: `{0: 148, 1: 131, 2: 112, 3: 112, 4: 154}`
+  - source-disjoint split used 618 train rows and 39 eval rows
+  - eval sources: `academic_calendar_chunk_2`, `academic_notice_board_chunk_3`, `cnu_mobile_food_chunk_2`, `graduation_curriculum_pdf_chunk_3`, `shuttle_bus_chunk_2`
+  - `source_overlap_count=0`
+  - `input_checksum` in `model/classifier_metrics.json` matches `data/cls_train_seed.json`
+  - macro F1: `1.0`
+  - weighted F1: `1.0`
+  - class F1: `{0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0}`
+- interpretation:
+  - this is a source-disjoint generated-data sanity baseline, not final held-out real-user performance
+  - the score is high because the current generated seed contains strong label cues; later Task 1 performance work should add harder human-like questions before making any final performance claim
+- gate:
+  - pass: classifier metrics are source-disjoint, checksum-bound, cover all labels, and exceed the advisory F1 thresholds
