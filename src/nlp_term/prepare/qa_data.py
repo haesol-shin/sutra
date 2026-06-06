@@ -92,14 +92,14 @@ QUESTION_VARIANTS: dict[int, list[str]] = {
 
 
 def build_qa_seed(docs: list[KnowledgeDoc]) -> list[QAExample]:
-    evidence_by_label: dict[int, list[tuple[KnowledgeDoc, str]]] = defaultdict(list)
+    evidence_by_label_doc: dict[int, dict[str, list[tuple[KnowledgeDoc, str]]]] = defaultdict(lambda: defaultdict(list))
     for doc in docs:
         for span in _evidence_spans(doc):
-            evidence_by_label[doc.label].append((doc, span))
+            evidence_by_label_doc[doc.label][doc.doc_id].append((doc, span))
 
     rows: list[QAExample] = []
     for label in range(5):
-        evidence_pool = evidence_by_label[label]
+        evidence_pool = _diversified_evidence_pool(evidence_by_label_doc[label])
         for index in range(TARGET_QA_PER_LABEL):
             if not evidence_pool:
                 break
@@ -107,7 +107,7 @@ def build_qa_seed(docs: list[KnowledgeDoc]) -> list[QAExample]:
             question = QUESTION_VARIANTS[label][index % len(QUESTION_VARIANTS[label])]
             rows.append(
                 QAExample(
-                    user=f"{doc.title}: {question}",
+                    user=f"{_source_context(doc)}: {question}",
                     model=_answer_for_doc(doc, excerpt=excerpt, variant=index),
                     source_doc_id=doc.doc_id,
                     source_url=doc.source_url,
@@ -116,6 +116,30 @@ def build_qa_seed(docs: list[KnowledgeDoc]) -> list[QAExample]:
                 )
             )
     return rows
+
+
+def _diversified_evidence_pool(
+    evidence_by_doc: dict[str, list[tuple[KnowledgeDoc, str]]],
+) -> list[tuple[KnowledgeDoc, str]]:
+    ordered_docs = sorted(evidence_by_doc)
+    max_spans = max((len(rows) for rows in evidence_by_doc.values()), default=0)
+    pool: list[tuple[KnowledgeDoc, str]] = []
+    for span_index in range(max_spans):
+        for doc_id in ordered_docs:
+            rows = evidence_by_doc[doc_id]
+            if span_index < len(rows):
+                pool.append(rows[span_index])
+    return pool
+
+
+def _source_context(doc: KnowledgeDoc) -> str:
+    department = doc.metadata.get("source_department")
+    curriculum_year = doc.metadata.get("source_curriculum_year")
+    if doc.label == 0 and isinstance(department, str) and department:
+        return f"{department} 졸업요건"
+    if doc.label == 0 and isinstance(curriculum_year, str) and curriculum_year:
+        return f"{curriculum_year} 충남대학교 교육과정 졸업요건"
+    return doc.title
 
 
 def _answer_for_doc(doc: KnowledgeDoc, *, excerpt: str, variant: int) -> str:

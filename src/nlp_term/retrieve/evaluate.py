@@ -59,14 +59,17 @@ def evaluate_retrieval(knowledge_path: Path, qa_path: Path) -> dict[str, object]
     qa_rows = load_qa(qa_path)
     top1_label_hits = 0
     top3_source_hits = 0
+    top3_doc_id_hits = 0
     retrieved_evidence_hits = 0
     expected_evidence_hits = 0
     per_label_totals: Counter[int] = Counter()
     per_label_top1_label_hits: Counter[int] = Counter()
     per_label_top3_source_hits: Counter[int] = Counter()
+    per_label_top3_doc_id_hits: Counter[int] = Counter()
     per_label_failure_counts: Counter[int] = Counter()
     graduation_total = 0
     graduation_top3_source_hits = 0
+    graduation_top3_doc_id_hits = 0
     graduation_curriculum_total = 0
     graduation_curriculum_hits = 0
     alignment_failures: list[dict[str, object]] = []
@@ -79,7 +82,12 @@ def evaluate_retrieval(knowledge_path: Path, qa_path: Path) -> dict[str, object]
         top3_docs = [docs_by_id[doc.doc_id] for doc in ranked if doc.doc_id in docs_by_id]
         expected_doc = docs_by_id.get(row.source_doc_id)
         label_hit = top1 is not None and top1.label == row.label
-        source_hit = row.source_doc_id in top3_doc_ids
+        doc_id_hit = row.source_doc_id in top3_doc_ids
+        source_hit = expected_doc is not None and any(
+            docs_by_id[doc.doc_id].source_id == expected_doc.source_id
+            for doc in ranked
+            if doc.doc_id in docs_by_id
+        )
         retrieved_evidence_hit = _best_evidence_hit(row, top3_docs)
         expected_evidence_hit = _best_evidence_hit(row, [expected_doc] if expected_doc else [])
         retrieved_evidence_aligned = retrieved_evidence_hit >= 6
@@ -87,13 +95,16 @@ def evaluate_retrieval(knowledge_path: Path, qa_path: Path) -> dict[str, object]
         per_label_totals[row.label] += 1
         top1_label_hits += int(label_hit)
         top3_source_hits += int(source_hit)
+        top3_doc_id_hits += int(doc_id_hit)
         retrieved_evidence_hits += int(retrieved_evidence_aligned)
         expected_evidence_hits += int(expected_evidence_aligned)
         per_label_top1_label_hits[row.label] += int(label_hit)
         per_label_top3_source_hits[row.label] += int(source_hit)
+        per_label_top3_doc_id_hits[row.label] += int(doc_id_hit)
         if row.label == 0:
             graduation_total += 1
             graduation_top3_source_hits += int(source_hit)
+            graduation_top3_doc_id_hits += int(doc_id_hit)
             if _is_curriculum_doc(row.source_doc_id):
                 graduation_curriculum_total += 1
                 graduation_curriculum_hits += int(any(_is_curriculum_doc(doc_id) for doc_id in top3_doc_ids))
@@ -105,9 +116,9 @@ def evaluate_retrieval(knowledge_path: Path, qa_path: Path) -> dict[str, object]
                     "user": row.user,
                     "label": row.label,
                     "source_doc_id": row.source_doc_id,
-                    "top3_doc_ids": _doc_ids(ranked),
-                    "retrieved_evidence_token_hits": retrieved_evidence_hit,
-                    "expected_evidence_token_hits": expected_evidence_hit,
+                "top3_doc_ids": _doc_ids(ranked),
+                "retrieved_evidence_token_hits": retrieved_evidence_hit,
+                "expected_evidence_token_hits": expected_evidence_hit,
                 }
             )
         examples.append(
@@ -120,6 +131,7 @@ def evaluate_retrieval(knowledge_path: Path, qa_path: Path) -> dict[str, object]
                 "top3_doc_ids": _doc_ids(ranked),
                 "top1_label_hit": label_hit,
                 "top3_source_hit": source_hit,
+                "top3_doc_id_hit": doc_id_hit,
                 "retrieved_evidence_aligned": retrieved_evidence_aligned,
                 "expected_evidence_aligned": expected_evidence_aligned,
                 "retrieved_evidence_token_hits": retrieved_evidence_hit,
@@ -139,12 +151,15 @@ def evaluate_retrieval(knowledge_path: Path, qa_path: Path) -> dict[str, object]
         "row_count": len(qa_rows),
         "top1_label_accuracy": top1_label_hits / total,
         "top3_source_hit_rate": top3_source_hits / total,
+        "top3_doc_id_hit_rate": top3_doc_id_hits / total,
         "retrieved_evidence_alignment_rate": retrieved_evidence_hits / total,
         "expected_evidence_alignment_rate": expected_evidence_hits / total,
         "per_label_row_counts": {str(label): per_label_totals[label] for label in range(5)},
         "per_label_top1_label_accuracy": _per_label_rates(per_label_top1_label_hits, per_label_totals),
         "per_label_top3_source_hit_rate": _per_label_rates(per_label_top3_source_hits, per_label_totals),
+        "per_label_top3_doc_id_hit_rate": _per_label_rates(per_label_top3_doc_id_hits, per_label_totals),
         "graduation_top3_source_hit_rate": _count_rate(graduation_top3_source_hits, graduation_total),
+        "graduation_top3_doc_id_hit_rate": _count_rate(graduation_top3_doc_id_hits, graduation_total),
         "graduation_curriculum_pdf_hit_rate": _count_rate(graduation_curriculum_hits, graduation_curriculum_total),
         "graduation_row_count": graduation_total,
         "graduation_curriculum_row_count": graduation_curriculum_total,

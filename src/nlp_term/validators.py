@@ -780,9 +780,12 @@ def validate_retrieval_metrics(
     qa_path: Path | None = None,
     min_top1_label_accuracy: float | None = None,
     min_top3_source_hit_rate: float | None = None,
+    min_top3_doc_id_hit_rate: float | None = None,
     min_per_label_top1_label_accuracy: float | None = None,
     min_per_label_top3_source_hit_rate: float | None = None,
+    min_per_label_top3_doc_id_hit_rate: float | None = None,
     min_graduation_top3_source_hit_rate: float | None = None,
+    min_graduation_top3_doc_id_hit_rate: float | None = None,
     min_graduation_curriculum_pdf_hit_rate: float | None = None,
     min_retrieved_evidence_alignment_rate: float | None = None,
     max_alignment_failures: int | None = None,
@@ -815,9 +818,12 @@ def validate_retrieval_metrics(
     if require_diagnostics:
         for field in (
             "per_label_row_counts",
+            "top3_doc_id_hit_rate",
             "per_label_top1_label_accuracy",
             "per_label_top3_source_hit_rate",
+            "per_label_top3_doc_id_hit_rate",
             "graduation_top3_source_hit_rate",
+            "graduation_top3_doc_id_hit_rate",
             "graduation_curriculum_pdf_hit_rate",
             "retrieved_evidence_alignment_rate",
             "expected_evidence_alignment_rate",
@@ -837,10 +843,24 @@ def validate_retrieval_metrics(
             "per_label_top3_source_hit_rate",
             min_per_label_top3_source_hit_rate,
         )
+    if min_top3_doc_id_hit_rate is not None:
+        value = _metric_value(payload, ("top3_doc_id_hit_rate",))
+        if value < min_top3_doc_id_hit_rate:
+            raise ValueError("retrieval-metrics: top3 doc-id hit rate below threshold")
+    if min_per_label_top3_doc_id_hit_rate is not None:
+        _validate_per_label_rate(
+            payload,
+            "per_label_top3_doc_id_hit_rate",
+            min_per_label_top3_doc_id_hit_rate,
+        )
     if min_graduation_top3_source_hit_rate is not None:
         value = _metric_value(payload, ("graduation_top3_source_hit_rate",))
         if value < min_graduation_top3_source_hit_rate:
             raise ValueError("retrieval-metrics: graduation top3 source hit rate below threshold")
+    if min_graduation_top3_doc_id_hit_rate is not None:
+        value = _metric_value(payload, ("graduation_top3_doc_id_hit_rate",))
+        if value < min_graduation_top3_doc_id_hit_rate:
+            raise ValueError("retrieval-metrics: graduation top3 doc-id hit rate below threshold")
     if min_graduation_curriculum_pdf_hit_rate is not None:
         value = _metric_value(payload, ("graduation_curriculum_pdf_hit_rate",))
         if value < min_graduation_curriculum_pdf_hit_rate:
@@ -1018,9 +1038,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--min-class-f1", type=float)
     parser.add_argument("--min-top1-label-accuracy", type=float)
     parser.add_argument("--min-top3-source-hit-rate", type=float)
+    parser.add_argument("--min-top3-doc-id-hit-rate", type=float)
     parser.add_argument("--min-per-label-top1-label-accuracy", type=float)
     parser.add_argument("--min-per-label-top3-source-hit-rate", type=float)
+    parser.add_argument("--min-per-label-top3-doc-id-hit-rate", type=float)
     parser.add_argument("--min-graduation-top3-source-hit-rate", type=float)
+    parser.add_argument("--min-graduation-top3-doc-id-hit-rate", type=float)
     parser.add_argument("--min-graduation-curriculum-pdf-hit-rate", type=float)
     parser.add_argument("--min-retrieved-evidence-alignment-rate", type=float)
     parser.add_argument("--max-alignment-failures", type=int)
@@ -1155,9 +1178,12 @@ def main() -> None:
                 qa_path=args.qa,
                 min_top1_label_accuracy=args.min_top1_label_accuracy,
                 min_top3_source_hit_rate=args.min_top3_source_hit_rate,
+                min_top3_doc_id_hit_rate=args.min_top3_doc_id_hit_rate,
                 min_per_label_top1_label_accuracy=args.min_per_label_top1_label_accuracy,
                 min_per_label_top3_source_hit_rate=args.min_per_label_top3_source_hit_rate,
+                min_per_label_top3_doc_id_hit_rate=args.min_per_label_top3_doc_id_hit_rate,
                 min_graduation_top3_source_hit_rate=args.min_graduation_top3_source_hit_rate,
+                min_graduation_top3_doc_id_hit_rate=args.min_graduation_top3_doc_id_hit_rate,
                 min_graduation_curriculum_pdf_hit_rate=args.min_graduation_curriculum_pdf_hit_rate,
                 min_retrieved_evidence_alignment_rate=args.min_retrieved_evidence_alignment_rate,
                 max_alignment_failures=args.max_alignment_failures,

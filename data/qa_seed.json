@@ -1,6 +1,6 @@
 [
   {
-    "user": "graduation source 1: 졸업요건 근거를 요약해줘.",
+    "user": "생화학과 졸업요건: 졸업요건 근거를 요약해줘.",
     "model": "졸업요건은 학과와 입학연도에 따라 달라질 수 있어 공식 졸업요건 자료를 기준으로 확인해야 합니다. 출처 제목: graduation source 1. 핵심 근거는 '메뉴 닫기 학사정보 학사일정표 학부교육과정 졸업요건 재이수 대학원교육과정 학과내규 장학제도 졸업요건 Home 학사정보 졸업요건 졸업학점 자가 진단법 본인의 교육과정 년도를 먼저 확인합니다. 교육과정에 따라 이수해야 과목이 많이 다릅니다.'입니다. 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
     "source_doc_id": "graduation_biochemistry_requirements_chunk_1",
     "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
@@ -8,74 +8,74 @@
     "validated": true
   },
   {
-    "user": "graduation source 1: 졸업 관련 기준은 어떤 자료를 봐야 해?",
-    "model": "graduation source 1 자료의 핵심 근거는 '앞자리이지만 변경한 경우 학번과 다를 있습니다. F학점은 제외하고 확인합니다. 이수구분이 바르게 표시 되었는지 먼저 확인하세요! 13학년도 교육과정 이전학생은 교양에서 국어 관련3학점 영어 관련 6학점이상 이수하여 교양이 합계 24학점이'입니다. 졸업요건은 학과와 입학연도에 따라 달라질 수 있어 공식 졸업요건 자료를 기준으로 확인해야 합니다. 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
-    "source_doc_id": "graduation_biochemistry_requirements_chunk_1",
-    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
-    "label": 0,
-    "validated": true
-  },
-  {
-    "user": "graduation source 1: 이 자료에서 졸업 질문에 쓸 근거가 뭐야?",
-    "model": "질문 범위는 graduation source 1와 연결됩니다. 자료 내용 일부는 '졸업요건 Home 학사정보 졸업요건 졸업학점 자가 진단법 본인의 교육과정 년도를 먼저 확인합니다. 교육과정에 따라 이수해야 과목이 많이 다릅니다. 보통은 학번 앞자리이지만 변경한 경우 학번과 다를 있습니다. F학점은 제외하고'이며, 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
-    "source_doc_id": "graduation_biochemistry_requirements_chunk_1",
-    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
-    "label": 0,
-    "validated": true
-  },
-  {
-    "user": "graduation source 2: 졸업요건 답변에 인용할 부분을 알려줘.",
-    "model": "졸업요건은 학과와 입학연도에 따라 달라질 수 있어 공식 졸업요건 자료를 기준으로 확인해야 합니다. 출처 제목: graduation source 2. 핵심 근거는 '과목 이상 이수해야합니다. 전과학생은 전적과에서 이수한 미래설계상담이 일선으로 인정되더라도 다시 들을 필요는 없습니다. 졸업이 얼마 남지 않았는데 전공학점이 부족하고 시간표가 겹쳐서 수업듣기가 어렵다면 전공선택 인정과목을 활용하세요. 전공선택과목은 타과'입니다. 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "user": "생화학과 졸업요건: 졸업 관련 기준은 어떤 자료를 봐야 해?",
+    "model": "graduation source 2 자료의 핵심 근거는 '과목 이상 이수해야합니다. 전과학생은 전적과에서 이수한 미래설계상담이 일선으로 인정되더라도 다시 들을 필요는 없습니다. 졸업이 얼마 남지 않았는데 전공학점이 부족하고 시간표가 겹쳐서 수업듣기가 어렵다면 전공선택 인정과목을 활용하세요. 전공선택과목은 타과'입니다. 졸업요건은 학과와 입학연도에 따라 달라질 수 있어 공식 졸업요건 자료를 기준으로 확인해야 합니다. 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
     "source_doc_id": "graduation_biochemistry_requirements_chunk_2",
     "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
     "label": 0,
     "validated": true
   },
   {
-    "user": "graduation source 2: 졸업 기준 확인에 필요한 핵심 문구가 뭐야?",
-    "model": "graduation source 2 자료의 핵심 근거는 '들을 필요는 없습니다. 졸업이 얼마 남지 않았는데 전공학점이 부족하고 시간표가 겹쳐서 수업듣기가 어렵다면 전공선택 인정과목을 활용하세요. 전공선택과목은 타과 전공과목이지만 우리과 전공으로 인정해주는 과목입니다. 교육과정))을 적용받는 학생들은'입니다. 졸업요건은 학과와 입학연도에 따라 달라질 수 있어 공식 졸업요건 자료를 기준으로 확인해야 합니다. 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
-    "source_doc_id": "graduation_biochemistry_requirements_chunk_2",
-    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
-    "label": 0,
-    "validated": true
-  },
-  {
-    "user": "graduation source 2: 졸업요건 근거를 요약해줘.",
-    "model": "질문 범위는 graduation source 2와 연결됩니다. 자료 내용 일부는 '채우면 됩니다. 09학점 이후 학생들은 미래설계상담 5개 과목이상 편입생들은 2개 과목 이상 이수해야합니다. 전과학생은 전적과에서 이수한 미래설계상담이 일선으로 인정되더라도 다시 들을 필요는 없습니다. 졸업이 얼마 남지 않았는데 전공학점이'이며, 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
-    "source_doc_id": "graduation_biochemistry_requirements_chunk_2",
-    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
-    "label": 0,
-    "validated": true
-  },
-  {
-    "user": "graduation source 3: 졸업 관련 기준은 어떤 자료를 봐야 해?",
-    "model": "졸업요건은 학과와 입학연도에 따라 달라질 수 있어 공식 졸업요건 자료를 기준으로 확인해야 합니다. 출처 제목: graduation source 3. 핵심 근거는 '시간표가 겹쳐서 수업듣기가 어렵다면 전공선택 인정과목을 활용하세요. 전공선택과목은 타과 전공과목이지만 우리과 전공으로 인정해주는 과목입니다. 교육과정))을 적용받는 학생들은 기초교양필수 13학점 균형교양(인문학3학점/사회과학3학점/자연과학3학점/균형교양필수(물리학개론,실험통계학)을 필수로 이수하고 나머지를 소양교양으로 채워 최소 36학점 이상'입니다. 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "user": "생화학과 졸업요건: 이 자료에서 졸업 질문에 쓸 근거가 뭐야?",
+    "model": "질문 범위는 graduation source 3와 연결됩니다. 자료 내용 일부는 '시간표가 겹쳐서 수업듣기가 어렵다면 전공선택 인정과목을 활용하세요. 전공선택과목은 타과 전공과목이지만 우리과 전공으로 인정해주는 과목입니다. 교육과정))을 적용받는 학생들은 기초교양필수 13학점 균형교양(인문학3학점/사회과학3학점/자연과학3학점/균형교양필수(물리학개론,실험통계학)을 필수로 이수하고 나머지를 소양교양으로 채워 최소 36학점 이상'이며, 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
     "source_doc_id": "graduation_biochemistry_requirements_chunk_3",
     "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
     "label": 0,
     "validated": true
   },
   {
-    "user": "graduation source 3: 이 자료에서 졸업 질문에 쓸 근거가 뭐야?",
-    "model": "graduation source 3 자료의 핵심 근거는 '우리과 전공으로 인정해주는 과목입니다. 교육과정))을 적용받는 학생들은 기초교양필수 13학점 균형교양(인문학3학점/사회과학3학점/자연과학3학점/균형교양필수(물리학개론,실험통계학)을 필수로 이수하고 나머지를 소양교양으로 채워 최소 36학점 이상 최대 48학점까지 채우세요. 48학점 이상은 인정되지 않습니다. 전공(기초16학점,핵심+심화=62'입니다. 졸업요건은 학과와 입학연도에 따라 달라질 수 있어 공식 졸업요건 자료를 기준으로 확인해야 합니다. 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
-    "source_doc_id": "graduation_biochemistry_requirements_chunk_3",
-    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
-    "label": 0,
-    "validated": true
-  },
-  {
-    "user": "graduation source 3: 졸업요건 답변에 인용할 부분을 알려줘.",
-    "model": "질문 범위는 graduation source 3와 연결됩니다. 자료 내용 일부는 '다시 들을 필요는 없습니다. 졸업이 얼마 남지 않았는데 전공학점이 부족하고 시간표가 겹쳐서 수업듣기가 어렵다면 전공선택 인정과목을 활용하세요. 전공선택과목은 타과 전공과목이지만 우리과 전공으로 인정해주는 과목입니다. 교육과정))을 적용받는 학생들은 기초교양필수'이며, 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
-    "source_doc_id": "graduation_biochemistry_requirements_chunk_3",
-    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
-    "label": 0,
-    "validated": true
-  },
-  {
-    "user": "graduation source 4: 졸업 기준 확인에 필요한 핵심 문구가 뭐야?",
+    "user": "생화학과 졸업요건: 졸업요건 답변에 인용할 부분을 알려줘.",
     "model": "졸업요건은 학과와 입학연도에 따라 달라질 수 있어 공식 졸업요건 자료를 기준으로 확인해야 합니다. 출처 제목: graduation source 4. 핵심 근거는 '초교양필수 13학점 균형교양(인문학3학점/사회과학3학점/자연과학3학점/균형교양필수(물리학개론,실험통계학)을 필수로 이수하고 나머지를 소양교양으로 채워 최소 36학점 이상 최대 48학점까지 채우세요. 48학점 이상은 인정되지 않습니다. 전공(기초16학점,핵심+심화=62)은 78학점 필수로 채우면 됩니다.따라서 교양 전공의 최소학점을 채우고 나머지를'입니다. 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
     "source_doc_id": "graduation_biochemistry_requirements_chunk_4",
     "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "label": 0,
+    "validated": true
+  },
+  {
+    "user": "생화학과 졸업요건: 졸업 기준 확인에 필요한 핵심 문구가 뭐야?",
+    "model": "graduation source 5 자료의 핵심 근거는 '초과로 제적 처리됩니다. 졸업장도 받을 없습니다. 기존 실험과목이 없어진 경우 폐지재이수 신청하고 다른 전공과목으로 이수하면 됩니다. 2013학번이후 교육과정을 적용받은 학생의 경우 교양을 42이상 초과해서 이수하면 초과한 학점은 졸업이수학점에'입니다. 졸업요건은 학과와 입학연도에 따라 달라질 수 있어 공식 졸업요건 자료를 기준으로 확인해야 합니다. 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "source_doc_id": "graduation_biochemistry_requirements_chunk_5",
+    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "label": 0,
+    "validated": true
+  },
+  {
+    "user": "생화학과 졸업요건: 졸업요건 근거를 요약해줘.",
+    "model": "질문 범위는 graduation source 6와 연결됩니다. 자료 내용 일부는 '적용받은 학생의 경우 교양을 42이상 초과해서 이수하면 초과한 학점은 졸업이수학점에 포함되지 않습니다. 그래서 특히 2015학번이후 교육과정을 적용받는 학생들은 일선학점에 주의해야합니다. 교양42+전공78=120학점이므로 졸업이수학점 130에서 10학점이 부족하죠? 부족한 10학점은 일반선택으로'이며, 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "source_doc_id": "graduation_biochemistry_requirements_chunk_6",
+    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "label": 0,
+    "validated": true
+  },
+  {
+    "user": "생화학과 졸업요건: 졸업 관련 기준은 어떤 자료를 봐야 해?",
+    "model": "졸업요건은 학과와 입학연도에 따라 달라질 수 있어 공식 졸업요건 자료를 기준으로 확인해야 합니다. 출처 제목: graduation source 7. 핵심 근거는 '포함되지 않습니다. 그래서 특히 2015학번이후 교육과정을 적용받는 학생들은 일선학점에 주의해야합니다. 교양42+전공78=120학점이므로 졸업이수학점 130에서 10학점이 부족하죠? 부족한 10학점은 일반선택으로 채우거나 전공을 초과해서 들어야 합니다. 일선으로 구분된 교과목을 찾아서 이수하거나'입니다. 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "source_doc_id": "graduation_biochemistry_requirements_chunk_7",
+    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "label": 0,
+    "validated": true
+  },
+  {
+    "user": "생화학과 졸업요건: 이 자료에서 졸업 질문에 쓸 근거가 뭐야?",
+    "model": "graduation source 8 자료의 핵심 근거는 '교과목을 찾아서 이수하거나 타과 교과목(전선과목 아니라도 괜찮습니다. 전선과목이 아닌 타과 전공은 일선입니다.)을 듣거나 우리과 전공 심화나 핵심 과목을 초과하여 들어서 130학점이상 이수하면 됩니다. 반면 2014학번 이전학생들은 교양42 기초(9/12'입니다. 졸업요건은 학과와 입학연도에 따라 달라질 수 있어 공식 졸업요건 자료를 기준으로 확인해야 합니다. 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "source_doc_id": "graduation_biochemistry_requirements_chunk_8",
+    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "label": 0,
+    "validated": true
+  },
+  {
+    "user": "생화학과 졸업요건: 졸업요건 답변에 인용할 부분을 알려줘.",
+    "model": "질문 범위는 graduation source 9와 연결됩니다. 자료 내용 일부는 '전공 130이상이 되므로 일선은 신경 쓰지 말고 원하는 과목으로 이수구분 상관없이 추가로 수강하여 130이상이 되도록 이수하면 됩니다. 초과된 학점은 일선으로 넘어간다고 생각하면 쉽습니다. 이수학점은 졸업직전 계절 학기까지 인정됩니다.'이며, 참고 출처: https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "source_doc_id": "graduation_biochemistry_requirements_chunk_9",
+    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+    "label": 0,
+    "validated": true
+  },
+  {
+    "user": "2025 충남대학교 교육과정 졸업요건: 졸업 기준 확인에 필요한 핵심 문구가 뭐야?",
+    "model": "졸업요건은 학과와 입학연도에 따라 달라질 수 있어 공식 졸업요건 자료를 기준으로 확인해야 합니다. 출처 제목: graduation source 1. 핵심 근거는 '충남대학교 교육과정 제3절 교육과정 제53조(교육과정의 구분 제목개정 2015.2.16. 대학의 교육과정은 교양과정 전공과정 일반선택과정으로 구분하여 운영함을 원칙으로 한다. 개정 2007.12.6. 2009.7.1. 2015.2.16. 교과목 이수단위는 학점으로 하고 1학점은 학기당 15시간(평가시험시간을'입니다. 참고 출처: https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
     "label": 0,
     "validated": true
   },
@@ -88,58 +88,58 @@
     "validated": true
   },
   {
-    "user": "notices source 1: 공지사항 확인은 어떤 자료를 봐야 해?",
-    "model": "notices source 1 자료의 핵심 근거는 '제1학기 학생 출석인정 신청 변경 사항 안내 학사지원과 2026-03-05 공지 2026학년도 제1학기 휴학 복학 신청 안내 학사지원과 2026-01-14 2026학년도 하기 계절학기 수강신청'입니다. 공지사항은 충남대학교 공식 학사정보 게시판 기준으로 확인하는 것이 안전합니다. 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
-    "source_doc_id": "academic_notice_board_chunk_1",
-    "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
-    "label": 1,
-    "validated": true
-  },
-  {
-    "user": "notices source 1: 이 자료에서 공지 질문에 쓸 근거가 뭐야?",
-    "model": "질문 범위는 notices source 1와 연결됩니다. 자료 내용 일부는 '계절학기 국내 다른 대학 수학 안내 학사지원과 2026-04-16 공지 2026학년도 제1학기 학생 출석인정 신청 변경 사항 안내 학사지원과 2026-03-05 공지 2026학년도 제1학기 휴학 복학 신청 안내 학사지원과 2026-01-14'이며, 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
-    "source_doc_id": "academic_notice_board_chunk_1",
-    "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
-    "label": 1,
-    "validated": true
-  },
-  {
-    "user": "notices source 2: 학사 공지 답변에 쓸 출처 내용을 알려줘.",
-    "model": "공지사항은 충남대학교 공식 학사정보 게시판 기준으로 확인하는 것이 안전합니다. 출처 제목: notices source 2. 핵심 근거는 '변경 사항 안내 학사지원과 2026-03-05 공지 2026학년도 제1학기 휴학 복학 신청 안내 학사지원과 2026-01-14 2026학년도 하기 계절학기 수강신청 취소(1~3차)기간 안내 학사지원과 2026-06-05 화성시인재육성재단 2026년 화성 into 테크노폴 11기·12기'입니다. 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+    "user": "notices source 2: 공지사항 확인은 어떤 자료를 봐야 해?",
+    "model": "notices source 2 자료의 핵심 근거는 '변경 사항 안내 학사지원과 2026-03-05 공지 2026학년도 제1학기 휴학 복학 신청 안내 학사지원과 2026-01-14 2026학년도 하기 계절학기 수강신청 취소(1~3차)기간 안내 학사지원과 2026-06-05 화성시인재육성재단 2026년 화성 into 테크노폴 11기·12기'입니다. 공지사항은 충남대학교 공식 학사정보 게시판 기준으로 확인하는 것이 안전합니다. 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
     "source_doc_id": "academic_notice_board_chunk_2",
     "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
     "label": 1,
     "validated": true
   },
   {
-    "user": "notices source 2: 공지 확인 질문에 인용할 부분이 뭐야?",
-    "model": "notices source 2 자료의 핵심 근거는 '신청 안내 학사지원과 2026-01-14 2026학년도 하기 계절학기 수강신청 취소(1~3차)기간 안내 학사지원과 2026-06-05 화성시인재육성재단 2026년 화성 into 테크노폴 11기·12기 해외탐방 장학생 모집 안내 학생과 2026-06-05'입니다. 공지사항은 충남대학교 공식 학사정보 게시판 기준으로 확인하는 것이 안전합니다. 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
-    "source_doc_id": "academic_notice_board_chunk_2",
-    "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
-    "label": 1,
-    "validated": true
-  },
-  {
-    "user": "notices source 2: 학사 공지 근거를 요약해줘.",
-    "model": "질문 범위는 notices source 2와 연결됩니다. 자료 내용 일부는 '학사지원과 2026-06-05 화성시인재육성재단 2026년 화성 into 테크노폴 11기·12기 해외탐방 장학생 모집 안내 학생과 2026-06-05'이며, 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
-    "source_doc_id": "academic_notice_board_chunk_2",
-    "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
-    "label": 1,
-    "validated": true
-  },
-  {
-    "user": "notices source 3: 공지사항 확인은 어떤 자료를 봐야 해?",
-    "model": "공지사항은 충남대학교 공식 학사정보 게시판 기준으로 확인하는 것이 안전합니다. 출처 제목: notices source 3. 핵심 근거는 '취소(1~3차)기간 안내 학사지원과 2026-06-05 화성시인재육성재단 2026년 화성 into 테크노폴 11기·12기 해외탐방 장학생 모집 안내 학생과 2026-06-05 2026년도 학부생 미니 연구 프로젝트 지원사업 실행 계획 안내 융복합과학원 2026-06-04 2026학년도'입니다. 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+    "user": "notices source 3: 이 자료에서 공지 질문에 쓸 근거가 뭐야?",
+    "model": "질문 범위는 notices source 3와 연결됩니다. 자료 내용 일부는 '취소(1~3차)기간 안내 학사지원과 2026-06-05 화성시인재육성재단 2026년 화성 into 테크노폴 11기·12기 해외탐방 장학생 모집 안내 학생과 2026-06-05 2026년도 학부생 미니 연구 프로젝트 지원사업 실행 계획 안내 융복합과학원 2026-06-04 2026학년도'이며, 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
     "source_doc_id": "academic_notice_board_chunk_3",
     "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
     "label": 1,
     "validated": true
   },
   {
-    "user": "notices source 1: 이 자료에서 공지 질문에 쓸 근거가 뭐야?",
-    "model": "notices source 1 자료의 핵심 근거는 '2026학년도 제1학기 휴학 복학 신청 안내 작성자 학사지원과 등록일 2026-01-14 15:57:13 조회수 파일 안내문.pdf 붙임1_2026학년도 제1학기 휴학 복학 신청 안내_26.01.21._수정.hwp 붙임4_휴학원 작성서식(1-8)_26-1학기.zip 내용보기 목록'입니다. 공지사항은 충남대학교 공식 학사정보 게시판 기준으로 확인하는 것이 안전합니다. 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2511200&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
+    "user": "notices source 1: 학사 공지 답변에 쓸 출처 내용을 알려줘.",
+    "model": "공지사항은 충남대학교 공식 학사정보 게시판 기준으로 확인하는 것이 안전합니다. 출처 제목: notices source 1. 핵심 근거는 '2026학년도 제1학기 휴학 복학 신청 안내 작성자 학사지원과 등록일 2026-01-14 15:57:13 조회수 파일 안내문.pdf 붙임1_2026학년도 제1학기 휴학 복학 신청 안내_26.01.21._수정.hwp 붙임4_휴학원 작성서식(1-8)_26-1학기.zip 내용보기 목록'입니다. 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2511200&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
     "source_doc_id": "academic_notice_detail_2511200_chunk_1",
     "source_url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2511200&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
+    "label": 1,
+    "validated": true
+  },
+  {
+    "user": "notices source 1: 공지 확인 질문에 인용할 부분이 뭐야?",
+    "model": "notices source 1 자료의 핵심 근거는 '2026학년도 제1학기 학생 출석인정 신청 변경 사항 안내 작성자 학사지원과 등록일 2026-03-05 16:43:54 조회수 파일 안내문.pdf 붙임1 출석인정 신청 안내용.hwp 붙임2-1 출석인정 신청 매뉴얼(학생용-수정).pdf 내용보기 목록'입니다. 공지사항은 충남대학교 공식 학사정보 게시판 기준으로 확인하는 것이 안전합니다. 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512124&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
+    "source_doc_id": "academic_notice_detail_2512124_chunk_1",
+    "source_url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512124&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
+    "label": 1,
+    "validated": true
+  },
+  {
+    "user": "notices source 1: 학사 공지 근거를 요약해줘.",
+    "model": "질문 범위는 notices source 1와 연결됩니다. 자료 내용 일부는 '2026학년도 하기 계절학기 국내 다른 대학 수학 안내 작성자 학사지원과 등록일 2026-04-16 17:37:58 조회수 파일 1. 2026학년도 하기 계절학기 국내 다른 대학 수학안내.hwp 2. 개인정보 수집 이용사항 고지'이며, 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512782&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
+    "source_doc_id": "academic_notice_detail_2512782_chunk_1",
+    "source_url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512782&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
+    "label": 1,
+    "validated": true
+  },
+  {
+    "user": "notices source 1: 공지사항 확인은 어떤 자료를 봐야 해?",
+    "model": "공지사항은 충남대학교 공식 학사정보 게시판 기준으로 확인하는 것이 안전합니다. 출처 제목: notices source 1. 핵심 근거는 '제1학기 학생 출석인정 신청 변경 사항 안내 학사지원과 2026-03-05 공지 2026학년도 제1학기 휴학 복학 신청 안내 학사지원과 2026-01-14 2026학년도 하기 계절학기 수강신청'입니다. 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+    "label": 1,
+    "validated": true
+  },
+  {
+    "user": "notices source 2: 이 자료에서 공지 질문에 쓸 근거가 뭐야?",
+    "model": "notices source 2 자료의 핵심 근거는 '신청 안내 학사지원과 2026-01-14 2026학년도 하기 계절학기 수강신청 취소(1~3차)기간 안내 학사지원과 2026-06-05 화성시인재육성재단 2026년 화성 into 테크노폴 11기·12기 해외탐방 장학생 모집 안내 학생과 2026-06-05'입니다. 공지사항은 충남대학교 공식 학사정보 게시판 기준으로 확인하는 것이 안전합니다. 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
     "label": 1,
     "validated": true
   },
@@ -153,7 +153,7 @@
   },
   {
     "user": "notices source 1: 공지 확인 질문에 인용할 부분이 뭐야?",
-    "model": "공지사항은 충남대학교 공식 학사정보 게시판 기준으로 확인하는 것이 안전합니다. 출처 제목: notices source 1. 핵심 근거는 '2026학년도 제1학기 학생 출석인정 신청 변경 사항 안내 작성자 학사지원과 등록일 2026-03-05 16:43:54 조회수 파일 안내문.pdf 붙임1 출석인정 신청 안내용.hwp 붙임2-1 출석인정 신청 매뉴얼(학생용-수정).pdf 내용보기 목록'입니다. 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512124&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
+    "model": "공지사항은 충남대학교 공식 학사정보 게시판 기준으로 확인하는 것이 안전합니다. 출처 제목: notices source 1. 핵심 근거는 '등록일 2026-03-05 16:43:54 조회수 파일 안내문.pdf 붙임1 출석인정 신청 안내용.hwp 붙임2-1 출석인정 신청 매뉴얼(학생용-수정).pdf 내용보기 목록'입니다. 참고 출처: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512124&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
     "source_doc_id": "academic_notice_detail_2512124_chunk_1",
     "source_url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512124&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
     "label": 1,
@@ -168,56 +168,16 @@
     "validated": true
   },
   {
-    "user": "academic_calendar source 1: 일정 확인은 어떤 자료를 봐야 해?",
-    "model": "academic_calendar source 1 자료의 핵심 근거는 '01월 January 01.01(목 신정 01.13(화 제2학기 성적발표 01.20(화 동기 계절학기 성적발표 01.21(수 02.10(화 2025학년도 특별학기(신입학예정자 01.26(월 01.28(수 2026학년도 제1학기 예비수강신청 01.29(목 02.04(수 학사학위취득 유예 신청 02월 February 02.02(월'입니다. 학사일정은 공식 학사일정 페이지의 해당 학기 일정을 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
-    "source_doc_id": "academic_calendar_chunk_1",
-    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
-    "label": 2,
-    "validated": true
-  },
-  {
-    "user": "academic_calendar source 1: 이 자료에서 일정 질문에 쓸 근거가 뭐야?",
-    "model": "질문 범위는 academic_calendar source 1와 연결됩니다. 자료 내용 일부는 '01.29(목 02.04(수 학사학위취득 유예 신청 02월 February 02.02(월 02.27(금 휴학 복학 신청 02.02(월 02.06(금 2026학년도 제1학기 수강신청 02.17(화 설날 02.24(화 02.27(금 2026학년도'이며, 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
-    "source_doc_id": "academic_calendar_chunk_1",
-    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
-    "label": 2,
-    "validated": true
-  },
-  {
-    "user": "academic_calendar source 2: 학사일정 답변에 필요한 출처 문구를 알려줘.",
-    "model": "학사일정은 공식 학사일정 페이지의 해당 학기 일정을 기준으로 확인해야 합니다. 출처 제목: academic_calendar source 2. 핵심 근거는 '복학 신청 02.02(월 02.06(금 2026학년도 제1학기 수강신청 02.17(화 설날 02.24(화 02.27(금 2026학년도 제1학기 재학생 등록금 납부 02.25(수 2025학년도 전기 학위수여식 02.27(금 입학식(2026학년도 03월 March 03.01(일 3ㆍ1절 03.02(월 대체공휴일'입니다. 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "user": "academic_calendar source 2: 일정 확인은 어떤 자료를 봐야 해?",
+    "model": "academic_calendar source 2 자료의 핵심 근거는 '복학 신청 02.02(월 02.06(금 2026학년도 제1학기 수강신청 02.17(화 설날 02.24(화 02.27(금 2026학년도 제1학기 재학생 등록금 납부 02.25(수 2025학년도 전기 학위수여식 02.27(금 입학식(2026학년도 03월 March 03.01(일 3ㆍ1절 03.02(월 대체공휴일'입니다. 학사일정은 공식 학사일정 페이지의 해당 학기 일정을 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
     "source_doc_id": "academic_calendar_chunk_2",
-    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
-    "label": 2,
-    "validated": true
-  },
-  {
-    "user": "academic_calendar source 2: 학기 일정 확인에 인용할 내용이 뭐야?",
-    "model": "academic_calendar source 2 자료의 핵심 근거는 '9(목 02.04(수 학사학위취득 유예 신청 02월 February 02.02(월 02.27(금 휴학 복학 신청 02.02(월 02.06(금 2026학년도 제1학기 수강신청 02.17(화 설날 02.24(화 02.27(금 2026학년도 제1학기 재학생 등록금 납부 02.25(수 2025학년도'입니다. 학사일정은 공식 학사일정 페이지의 해당 학기 일정을 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
-    "source_doc_id": "academic_calendar_chunk_2",
-    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
-    "label": 2,
-    "validated": true
-  },
-  {
-    "user": "academic_calendar source 2: 학사일정 근거를 요약해줘.",
-    "model": "질문 범위는 academic_calendar source 2와 연결됩니다. 자료 내용 일부는 '02.27(금 2026학년도 제1학기 재학생 등록금 납부 02.25(수 2025학년도 전기 학위수여식 02.27(금 입학식(2026학년도 03월 March 03.01(일 3ㆍ1절 03.02(월 대체공휴일 03.03(화 제1학기 개강일 03.03(화 03.09(월 2025학년도'이며, 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
-    "source_doc_id": "academic_calendar_chunk_2",
-    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
-    "label": 2,
-    "validated": true
-  },
-  {
-    "user": "academic_calendar source 3: 일정 확인은 어떤 자료를 봐야 해?",
-    "model": "학사일정은 공식 학사일정 페이지의 해당 학기 일정을 기준으로 확인해야 합니다. 출처 제목: academic_calendar source 3. 핵심 근거는 '제1학기 재학생 등록금 납부 02.25(수 2025학년도 전기 학위수여식 02.27(금 입학식(2026학년도 03월 March 03.01(일 3ㆍ1절 03.02(월 대체공휴일 03.03(화 제1학기 개강일 03.03(화 03.09(월 2025학년도 전기 학사학위취득 유예 신청 취소 03.03(화'입니다. 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
-    "source_doc_id": "academic_calendar_chunk_3",
     "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
     "label": 2,
     "validated": true
   },
   {
     "user": "academic_calendar source 3: 이 자료에서 일정 질문에 쓸 근거가 뭐야?",
-    "model": "academic_calendar source 3 자료의 핵심 근거는 '03월 March 03.01(일 3ㆍ1절 03.02(월 대체공휴일 03.03(화 제1학기 개강일 03.03(화 03.09(월 2025학년도 전기 학사학위취득 유예 신청 취소 03.03(화 03.09(월 수강신청 확인 변경 03.03(화 03.31(화 교육과정 적용연도 소속 변경'입니다. 학사일정은 공식 학사일정 페이지의 해당 학기 일정을 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "model": "질문 범위는 academic_calendar source 3와 연결됩니다. 자료 내용 일부는 '제1학기 재학생 등록금 납부 02.25(수 2025학년도 전기 학위수여식 02.27(금 입학식(2026학년도 03월 March 03.01(일 3ㆍ1절 03.02(월 대체공휴일 03.03(화 제1학기 개강일 03.03(화 03.09(월 2025학년도 전기 학사학위취득 유예 신청 취소 03.03(화'이며, 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
     "source_doc_id": "academic_calendar_chunk_3",
     "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
     "label": 2,
@@ -225,16 +185,56 @@
   },
   {
     "user": "academic_calendar source 4: 학사일정 답변에 필요한 출처 문구를 알려줘.",
-    "model": "질문 범위는 academic_calendar source 4와 연결됩니다. 자료 내용 일부는 '03.30(월 04.03(금 2025학년도 후기 조기졸업 신청 05월 May 05.01(금 노동절 05.05(화 어린이날 05.07(목 05.11(월 하기 계절학기 수강신청 05.13(수 수업일수 2/3선 05.22(금 수업일수 3/4선 05.24(일 부처님오신날 05.25(월 개교기념일 대체공휴일'이며, 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "model": "학사일정은 공식 학사일정 페이지의 해당 학기 일정을 기준으로 확인해야 합니다. 출처 제목: academic_calendar source 4. 핵심 근거는 '03.30(월 04.03(금 2025학년도 후기 조기졸업 신청 05월 May 05.01(금 노동절 05.05(화 어린이날 05.07(목 05.11(월 하기 계절학기 수강신청 05.13(수 수업일수 2/3선 05.22(금 수업일수 3/4선 05.24(일 부처님오신날 05.25(월 개교기념일 대체공휴일'입니다. 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
     "source_doc_id": "academic_calendar_chunk_4",
     "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
     "label": 2,
     "validated": true
   },
   {
-    "user": "academic_calendar source 4: 학기 일정 확인에 인용할 내용이 뭐야?",
-    "model": "학사일정은 공식 학사일정 페이지의 해당 학기 일정을 기준으로 확인해야 합니다. 출처 제목: academic_calendar source 4. 핵심 근거는 '03.20(금 융복합창의전공 신청.취소 03.23(월 03.26(목 수강신청 취소 03.27(금 수업일수 1/4선 03.30(월 04.03(금 2025학년도 후기 조기졸업 신청 05월 May 05.01(금 노동절 05.05(화 어린이날 05.07(목 05.11(월 하기 계절학기 수강신청 05.13(수'입니다. 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
-    "source_doc_id": "academic_calendar_chunk_4",
+    "user": "academic_calendar source 5: 학기 일정 확인에 인용할 내용이 뭐야?",
+    "model": "academic_calendar source 5 자료의 핵심 근거는 '5.07(목 05.11(월 하기 계절학기 수강신청 05.13(수 수업일수 2/3선 05.22(금 수업일수 3/4선 05.24(일 부처님오신날 05.25(월 개교기념일 대체공휴일 06월 June 06.03(수 지방선거일 06.06(토 현충일 06.09(화 06.12(금 정기휴업일 수업결손 보충강의 06.22(월'입니다. 학사일정은 공식 학사일정 페이지의 해당 학기 일정을 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_doc_id": "academic_calendar_chunk_5",
+    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "label": 2,
+    "validated": true
+  },
+  {
+    "user": "academic_calendar source 6: 학사일정 근거를 요약해줘.",
+    "model": "질문 범위는 academic_calendar source 6와 연결됩니다. 자료 내용 일부는 '06.12(금 정기휴업일 수업결손 보충강의 06.22(월 하기방학 06.22(월 07.10(금 하기 계절학기 07월 July 07.10(금 제1학기 성적발표 07.20(월 하기 계절학기 성적발표 07.27(월 07.29(수 제2학기 예비수강신청 08월 August 08.03(월 08.07(금 제2학기'이며, 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_doc_id": "academic_calendar_chunk_6",
+    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "label": 2,
+    "validated": true
+  },
+  {
+    "user": "academic_calendar source 7: 일정 확인은 어떤 자료를 봐야 해?",
+    "model": "학사일정은 공식 학사일정 페이지의 해당 학기 일정을 기준으로 확인해야 합니다. 출처 제목: academic_calendar source 7. 핵심 근거는 '복학 신청 08.15(토 광복절 08.17(월 대체공휴일 08.25(화 2025학년도 후기 학위수여식 08.25(화 08.28(금 2026학년도 2학기 재학생 등록금 납부 09월 September 09.01(화 제2학기 개강일 09.01(화 09.07(월 2025학년도 후기 학사학위취득 유예'입니다. 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_doc_id": "academic_calendar_chunk_7",
+    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "label": 2,
+    "validated": true
+  },
+  {
+    "user": "academic_calendar source 8: 이 자료에서 일정 질문에 쓸 근거가 뭐야?",
+    "model": "academic_calendar source 8 자료의 핵심 근거는 '2026학년도 2학기 재학생 등록금 납부 09월 September 09.01(화 제2학기 개강일 09.01(화 09.07(월 2025학년도 후기 학사학위취득 유예 신청 취소 09.01(화 09.07(월 수강신청 확인 변경 09.01(화 09.30(수 교육과정 적용연도 소속'입니다. 학사일정은 공식 학사일정 페이지의 해당 학기 일정을 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_doc_id": "academic_calendar_chunk_8",
+    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "label": 2,
+    "validated": true
+  },
+  {
+    "user": "academic_calendar source 9: 학사일정 답변에 필요한 출처 문구를 알려줘.",
+    "model": "질문 범위는 academic_calendar source 9와 연결됩니다. 자료 내용 일부는 '대체공휴일 10.08(목 수업일수 1/3선 10.09(금 한글날 10.28(수 수업일수 1/2선 11월 November 11.05(목 11.10(화 동기 계절학기 수강신청 11.13(금 수업일수 2/3선 11.24(화 수업일수 3/4선 12월 December 12.08(화 12.11(금 정기휴업일 수업결손'이며, 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_doc_id": "academic_calendar_chunk_9",
+    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "label": 2,
+    "validated": true
+  },
+  {
+    "user": "academic_calendar source 1: 학기 일정 확인에 인용할 내용이 뭐야?",
+    "model": "학사일정은 공식 학사일정 페이지의 해당 학기 일정을 기준으로 확인해야 합니다. 출처 제목: academic_calendar source 1. 핵심 근거는 '01월 January 01.01(목 신정 01.13(화 제2학기 성적발표 01.20(화 동기 계절학기 성적발표 01.21(수 02.10(화 2025학년도 특별학기(신입학예정자 01.26(월 01.28(수 2026학년도 제1학기 예비수강신청 01.29(목 02.04(수 학사학위취득 유예 신청 02월 February 02.02(월'입니다. 참고 출처: https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_doc_id": "academic_calendar_chunk_1",
     "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
     "label": 2,
     "validated": true
@@ -248,25 +248,25 @@
     "validated": true
   },
   {
-    "user": "dining source 1: 메뉴 확인은 어떤 자료를 봐야 해?",
-    "model": "dining source 1 자료의 핵심 근거는 '일요일 2026.06.07 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함'입니다. 식단은 교내 식단 페이지의 날짜별 메뉴를 기준으로 확인해야 합니다. 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
-    "source_doc_id": "cnu_mobile_food_chunk_1",
-    "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
-    "label": 3,
-    "validated": true
-  },
-  {
-    "user": "dining source 1: 이 자료에서 식단 질문에 쓸 근거가 뭐야?",
-    "model": "질문 범위는 dining source 1와 연결됩니다. 자료 내용 일부는 '제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함'이며, 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
-    "source_doc_id": "cnu_mobile_food_chunk_1",
-    "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
-    "label": 3,
-    "validated": true
-  },
-  {
-    "user": "dining source 2: 식단 답변에 인용할 메뉴 관련 내용을 알려줘.",
-    "model": "식단은 교내 식단 페이지의 날짜별 메뉴를 기준으로 확인해야 합니다. 출처 제목: dining source 2. 핵심 근거는 '안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식'입니다. 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "user": "dining source 2: 메뉴 확인은 어떤 자료를 봐야 해?",
+    "model": "dining source 2 자료의 핵심 근거는 '안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식'입니다. 식단은 교내 식단 페이지의 날짜별 메뉴를 기준으로 확인해야 합니다. 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
     "source_doc_id": "cnu_mobile_food_chunk_2",
+    "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "label": 3,
+    "validated": true
+  },
+  {
+    "user": "dining source 3: 이 자료에서 식단 질문에 쓸 근거가 뭐야?",
+    "model": "질문 범위는 dining source 3와 연결됩니다. 자료 내용 일부는 '영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함'이며, 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "source_doc_id": "cnu_mobile_food_chunk_3",
+    "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "label": 3,
+    "validated": true
+  },
+  {
+    "user": "dining source 1: 식단 답변에 인용할 메뉴 관련 내용을 알려줘.",
+    "model": "식단은 교내 식단 페이지의 날짜별 메뉴를 기준으로 확인해야 합니다. 출처 제목: dining source 1. 핵심 근거는 '일요일 2026.06.07 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함'입니다. 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "source_doc_id": "cnu_mobile_food_chunk_1",
     "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
     "label": 3,
     "validated": true
@@ -280,25 +280,25 @@
     "validated": true
   },
   {
-    "user": "dining source 2: 식단 근거를 요약해줘.",
-    "model": "질문 범위는 dining source 2와 연결됩니다. 자료 내용 일부는 '안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함'이며, 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "user": "dining source 3: 식단 근거를 요약해줘.",
+    "model": "질문 범위는 dining source 3와 연결됩니다. 자료 내용 일부는 '운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함'이며, 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "source_doc_id": "cnu_mobile_food_chunk_3",
+    "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "label": 3,
+    "validated": true
+  },
+  {
+    "user": "dining source 1: 메뉴 확인은 어떤 자료를 봐야 해?",
+    "model": "식단은 교내 식단 페이지의 날짜별 메뉴를 기준으로 확인해야 합니다. 출처 제목: dining source 1. 핵심 근거는 '제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함'입니다. 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "label": 3,
+    "validated": true
+  },
+  {
+    "user": "dining source 2: 이 자료에서 식단 질문에 쓸 근거가 뭐야?",
+    "model": "dining source 2 자료의 핵심 근거는 '안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함'입니다. 식단은 교내 식단 페이지의 날짜별 메뉴를 기준으로 확인해야 합니다. 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
     "source_doc_id": "cnu_mobile_food_chunk_2",
-    "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
-    "label": 3,
-    "validated": true
-  },
-  {
-    "user": "dining source 3: 메뉴 확인은 어떤 자료를 봐야 해?",
-    "model": "식단은 교내 식단 페이지의 날짜별 메뉴를 기준으로 확인해야 합니다. 출처 제목: dining source 3. 핵심 근거는 '영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함'입니다. 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
-    "source_doc_id": "cnu_mobile_food_chunk_3",
-    "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
-    "label": 3,
-    "validated": true
-  },
-  {
-    "user": "dining source 3: 이 자료에서 식단 질문에 쓸 근거가 뭐야?",
-    "model": "dining source 3 자료의 핵심 근거는 '운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함'입니다. 식단은 교내 식단 페이지의 날짜별 메뉴를 기준으로 확인해야 합니다. 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
-    "source_doc_id": "cnu_mobile_food_chunk_3",
     "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
     "label": 3,
     "validated": true
@@ -312,9 +312,9 @@
     "validated": true
   },
   {
-    "user": "dining source 1: 교내 식당 질문에 필요한 출처 문구가 뭐야?",
-    "model": "식단은 교내 식단 페이지의 날짜별 메뉴를 기준으로 확인해야 합니다. 출처 제목: dining source 1. 핵심 근거는 '일요일 2026.06.07 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함'입니다. 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
-    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "user": "dining source 2: 교내 식당 질문에 필요한 출처 문구가 뭐야?",
+    "model": "식단은 교내 식단 페이지의 날짜별 메뉴를 기준으로 확인해야 합니다. 출처 제목: dining source 2. 핵심 근거는 '안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식'입니다. 참고 출처: https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "source_doc_id": "cnu_mobile_food_chunk_2",
     "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
     "label": 3,
     "validated": true
@@ -328,73 +328,73 @@
     "validated": true
   },
   {
-    "user": "shuttle source 1: 버스 시간 확인은 어떤 자료를 봐야 해?",
-    "model": "shuttle source 1 자료의 핵심 근거는 '변경 가능 교통상황 등으로 인해 구간에서 5분 내외 오차가 발생할 있으니 탑승자 사전 대기 운행 주체 학교버스 운행 내용 운행 시간표 운행 노선 참고 운행 노선 교내순환'입니다. 셔틀과 통학버스 정보는 공식 시간표와 운행 안내를 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
-    "source_doc_id": "shuttle_bus_chunk_1",
-    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
-    "label": 4,
-    "validated": true
-  },
-  {
-    "user": "shuttle source 1: 이 자료에서 셔틀 질문에 쓸 근거가 뭐야?",
-    "model": "질문 범위는 shuttle source 1와 연결됩니다. 자료 내용 일부는 '주말 공휴일 방학 수학능력시험일(10시 이전 미운영 운행 시간표는 학교 사정에 따라 변경될 있음 학사일정 변경 운행 기간 변경될 있음(총학생회 총무과 등과 협의 운행시간은 천재지변 학교행사 교통상황 탑승 인원'이며, 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
-    "source_doc_id": "shuttle_bus_chunk_1",
-    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
-    "label": 4,
-    "validated": true
-  },
-  {
-    "user": "shuttle source 2: 셔틀버스 답변에 인용할 운행 내용을 알려줘.",
-    "model": "셔틀과 통학버스 정보는 공식 시간표와 운행 안내를 기준으로 확인해야 합니다. 출처 제목: shuttle source 2. 핵심 근거는 '있으니 탑승자 사전 대기 운행 주체 학교버스 운행 내용 운행 시간표 운행 노선 참고 운행 노선 교내순환(대덕캠퍼스 캠퍼스 순환(대덕캠퍼스⇄보운캠퍼스 셔틀버스 운행 시간표 셔틀버스 운행 시간표 구분 오전 오후'입니다. 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "user": "shuttle source 2: 버스 시간 확인은 어떤 자료를 봐야 해?",
+    "model": "shuttle source 2 자료의 핵심 근거는 '있으니 탑승자 사전 대기 운행 주체 학교버스 운행 내용 운행 시간표 운행 노선 참고 운행 노선 교내순환(대덕캠퍼스 캠퍼스 순환(대덕캠퍼스⇄보운캠퍼스 셔틀버스 운행 시간표 셔틀버스 운행 시간표 구분 오전 오후'입니다. 셔틀과 통학버스 정보는 공식 시간표와 운행 안내를 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
     "source_doc_id": "shuttle_bus_chunk_2",
-    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
-    "label": 4,
-    "validated": true
-  },
-  {
-    "user": "shuttle source 2: 통학버스 질문에 필요한 출처 문구가 뭐야?",
-    "model": "shuttle source 2 자료의 핵심 근거는 '시간표 운행 노선 참고 운행 노선 교내순환(대덕캠퍼스 캠퍼스 순환(대덕캠퍼스⇄보운캠퍼스 셔틀버스 운행 시간표 셔틀버스 운행 시간표 구분 오전 오후 정보제공 구분 오전 오후 교내 순환 대덕캠퍼스 08:20 월평역 등교'입니다. 셔틀과 통학버스 정보는 공식 시간표와 운행 안내를 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
-    "source_doc_id": "shuttle_bus_chunk_2",
-    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
-    "label": 4,
-    "validated": true
-  },
-  {
-    "user": "shuttle source 2: 셔틀버스 근거를 요약해줘.",
-    "model": "질문 범위는 shuttle source 2와 연결됩니다. 자료 내용 일부는 '변경 가능 교통상황 등으로 인해 구간에서 5분 내외 오차가 발생할 있으니 탑승자 사전 대기 운행 주체 학교버스 운행 내용 운행 시간표 운행 노선 참고 운행 노선 교내순환(대덕캠퍼스 캠퍼스'이며, 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
-    "source_doc_id": "shuttle_bus_chunk_2",
-    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
-    "label": 4,
-    "validated": true
-  },
-  {
-    "user": "shuttle source 3: 버스 시간 확인은 어떤 자료를 봐야 해?",
-    "model": "셔틀과 통학버스 정보는 공식 시간표와 운행 안내를 기준으로 확인해야 합니다. 출처 제목: shuttle source 3. 핵심 근거는 '대덕캠퍼스 캠퍼스 순환(대덕캠퍼스⇄보운캠퍼스 셔틀버스 운행 시간표 셔틀버스 운행 시간표 구분 오전 오후 정보제공 구분 오전 오후 교내 순환 대덕캠퍼스 08:20 월평역 등교 8:30 9:30 9:40 10:30 11:30 13:30'입니다. 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
-    "source_doc_id": "shuttle_bus_chunk_3",
     "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
     "label": 4,
     "validated": true
   },
   {
     "user": "shuttle source 3: 이 자료에서 셔틀 질문에 쓸 근거가 뭐야?",
-    "model": "shuttle source 3 자료의 핵심 근거는 '16:30 17:30 캠퍼스 순환 대덕캠퍼스 보운캠퍼스 8:10 출발 골프연습장 8:50 회차 보운캠퍼스 미운영 셔틀버스 운행 노선 순환버스 노선 구분(등교 운행시간 운행노선 운행횟수 정보제공 분(등교 운행시간 운행 노선'입니다. 셔틀과 통학버스 정보는 공식 시간표와 운행 안내를 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "model": "질문 범위는 shuttle source 3와 연결됩니다. 자료 내용 일부는 '대덕캠퍼스 캠퍼스 순환(대덕캠퍼스⇄보운캠퍼스 셔틀버스 운행 시간표 셔틀버스 운행 시간표 구분 오전 오후 정보제공 구분 오전 오후 교내 순환 대덕캠퍼스 08:20 월평역 등교 8:30 9:30 9:40 10:30 11:30 13:30'이며, 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
     "source_doc_id": "shuttle_bus_chunk_3",
     "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
     "label": 4,
     "validated": true
   },
   {
-    "user": "shuttle source 3: 셔틀버스 답변에 인용할 운행 내용을 알려줘.",
-    "model": "질문 범위는 shuttle source 3와 연결됩니다. 자료 내용 일부는 '회차 보운캠퍼스 미운영 셔틀버스 운행 노선 순환버스 노선 구분(등교 운행시간 운행노선 운행횟수 정보제공 분(등교 운행시간 운행 노선'이며, 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
-    "source_doc_id": "shuttle_bus_chunk_3",
-    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
-    "label": 4,
-    "validated": true
-  },
-  {
-    "user": "shuttle source 4: 통학버스 질문에 필요한 출처 문구가 뭐야?",
+    "user": "shuttle source 4: 셔틀버스 답변에 인용할 운행 내용을 알려줘.",
     "model": "셔틀과 통학버스 정보는 공식 시간표와 운행 안내를 기준으로 확인해야 합니다. 출처 제목: shuttle source 4. 핵심 근거는 '8:50 회차 보운캠퍼스 미운영 셔틀버스 운행 노선 순환버스 노선 구분(등교 운행시간 운행노선 운행횟수 정보제공 분(등교 운행시간 운행 노선(시간 운행횟수(1일 첫차 막차 교내 순환 유성캠퍼스 08:30 17:30 정심화 국제문화회관'입니다. 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
     "source_doc_id": "shuttle_bus_chunk_4",
+    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "label": 4,
+    "validated": true
+  },
+  {
+    "user": "shuttle source 5: 통학버스 질문에 필요한 출처 문구가 뭐야?",
+    "model": "shuttle source 5 자료의 핵심 근거는 '시간 운행횟수(1일 첫차 막차 교내 순환 유성캠퍼스 08:30 17:30 정심화 국제문화회관 사회과 학대학 입구(한누리회관 서문 공동실험실습관 음악 2호관 공동동물실험센터(회차 육관 입구 예술대학 도서 앞(대학본부 농대방향 학생 생활관 3거리'입니다. 셔틀과 통학버스 정보는 공식 시간표와 운행 안내를 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "source_doc_id": "shuttle_bus_chunk_5",
+    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "label": 4,
+    "validated": true
+  },
+  {
+    "user": "shuttle source 6: 셔틀버스 근거를 요약해줘.",
+    "model": "질문 범위는 shuttle source 6와 연결됩니다. 자료 내용 일부는 '학대학 도서관 앞(도서관삼거리 방향 예술대학 서문(공동 실험실습관 사회과학대학 구(한누리회관 산학연교육연 구관 정심화 국제문화회관 오전(등교 1회만 월평역 출발(정심화 국제문화회관 하차(종점 시간표 참조 10회 학기 운영 150일 캠퍼스 순환 대덕↔보운'이며, 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "source_doc_id": "shuttle_bus_chunk_6",
+    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "label": 4,
+    "validated": true
+  },
+  {
+    "user": "shuttle source 7: 버스 시간 확인은 어떤 자료를 봐야 해?",
+    "model": "셔틀과 통학버스 정보는 공식 시간표와 운행 안내를 기준으로 확인해야 합니다. 출처 제목: shuttle source 7. 핵심 근거는 '하차(종점 시간표 참조 10회 학기 운영 150일 캠퍼스 순환 대덕↔보운 08:10(대덕 08:50(보운 ①골프연습장 출발(08:10 ②중앙도 서관(08:11 ③산학연교육연구관(08 ④충남대학교입구 버스정류장(홈 플러스유성점방면)(08:13 ⑤월평역 08:15 ⑥보운캠퍼스(회차 08:50 ⑦다솔아파트 건너편 제2학생회관 중앙도서관'입니다. 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "source_doc_id": "shuttle_bus_chunk_7",
+    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "label": 4,
+    "validated": true
+  },
+  {
+    "user": "shuttle source 8: 이 자료에서 셔틀 질문에 쓸 근거가 뭐야?",
+    "model": "shuttle source 8 자료의 핵심 근거는 '출발(08:10 ②중앙도 서관(08:11 ③산학연교육연구관(08 ④충남대학교입구 버스정류장(홈 플러스유성점방면)(08:13 ⑤월평역 08:15 ⑥보운캠퍼스(회차 08:50 ⑦다솔아파트 건너편 제2학생회관 중앙도서관 골프연습장 도착 1회 회차 학기 운영 150일'입니다. 셔틀과 통학버스 정보는 공식 시간표와 운행 안내를 기준으로 확인해야 합니다. 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "source_doc_id": "shuttle_bus_chunk_8",
+    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "label": 4,
+    "validated": true
+  },
+  {
+    "user": "shuttle source 1: 셔틀버스 답변에 인용할 운행 내용을 알려줘.",
+    "model": "질문 범위는 shuttle source 1와 연결됩니다. 자료 내용 일부는 '변경 가능 교통상황 등으로 인해 구간에서 5분 내외 오차가 발생할 있으니 탑승자 사전 대기 운행 주체 학교버스 운행 내용 운행 시간표 운행 노선 참고 운행 노선 교내순환'이며, 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "label": 4,
+    "validated": true
+  },
+  {
+    "user": "shuttle source 2: 통학버스 질문에 필요한 출처 문구가 뭐야?",
+    "model": "셔틀과 통학버스 정보는 공식 시간표와 운행 안내를 기준으로 확인해야 합니다. 출처 제목: shuttle source 2. 핵심 근거는 '시간표 운행 노선 참고 운행 노선 교내순환(대덕캠퍼스 캠퍼스 순환(대덕캠퍼스⇄보운캠퍼스 셔틀버스 운행 시간표 셔틀버스 운행 시간표 구분 오전 오후 정보제공 구분 오전 오후 교내 순환 대덕캠퍼스 08:20 월평역 등교'입니다. 참고 출처: https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "source_doc_id": "shuttle_bus_chunk_2",
     "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
     "label": 4,
     "validated": true
