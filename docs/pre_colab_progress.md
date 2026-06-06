@@ -312,3 +312,19 @@
   - check-all and chat-quality validators printed `validation-ok`
 - gate:
   - pass: Task 2 batch output satisfies row-count, minimum answer length, and source-hint gates
+
+## Phase 4.3 UI Smoke
+
+- status: pass
+- changed_files:
+  - `docs/pre_colab_progress.md`
+- command:
+  - `uv run python -m nlp_term.ui.app --host 127.0.0.1 --port 7860 --knowledge data/knowledge_seed.json --smoke-test`
+  - `uv run python -m compileall src\nlp_term\ui src\nlp_term\chat src\nlp_term\retrieve`
+  - `uv run ruff check src\nlp_term\ui src\nlp_term\chat src\nlp_term\retrieve`
+- result:
+  - UI smoke printed `ui-smoke-ok`
+  - compileall exited 0
+  - ruff reported `All checks passed!`
+- gate:
+  - pass: UI answer path runs with the shared generated knowledge artifact
