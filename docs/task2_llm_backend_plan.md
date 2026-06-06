@@ -126,6 +126,8 @@ llama-server `
      - deterministic composer보다 자연스러운 문장성이 낮으면 안 된다.
      - fallback output 사용률은 최소화한다.
 
+현재 llama.cpp smoke 결과는 `docs/task2_llm_backend_results.md`에 기록한다.
+
 ## 참고 source
 
 - [Qwen/Qwen3.5-9B model card](https://huggingface.co/Qwen/Qwen3.5-9B)
