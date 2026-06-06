@@ -1,7 +1,7 @@
 [
   {
     "question": "졸업하려면 몇 학점을 들어야 하나요?",
-    "source_doc_id": "graduation_curriculum_scope",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
     "vote_labels": [
       0,
       0,
@@ -16,7 +16,67 @@
   },
   {
     "question": "전공 학점 졸업요건을 알고 싶어요.",
-    "source_doc_id": "graduation_curriculum_scope",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_1",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업하려면 몇 학점을 들어야 하나요?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "전공 학점 졸업요건을 알고 싶어요.",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_2",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "졸업하려면 몇 학점을 들어야 하나요?",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_3",
+    "vote_labels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_label": 0,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "전공 학점 졸업요건을 알고 싶어요.",
+    "source_doc_id": "graduation_curriculum_pdf_chunk_3",
     "vote_labels": [
       0,
       0,
@@ -31,7 +91,7 @@
   },
   {
     "question": "최근 학사 공지는 어디서 확인하나요?",
-    "source_doc_id": "academic_notice_scope",
+    "source_doc_id": "academic_notice_board_chunk_1",
     "vote_labels": [
       1,
       1,
@@ -46,7 +106,67 @@
   },
   {
     "question": "장학 관련 공지사항이 올라왔나요?",
-    "source_doc_id": "academic_notice_scope",
+    "source_doc_id": "academic_notice_board_chunk_1",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "최근 학사 공지는 어디서 확인하나요?",
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "장학 관련 공지사항이 올라왔나요?",
+    "source_doc_id": "academic_notice_board_chunk_2",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "최근 학사 공지는 어디서 확인하나요?",
+    "source_doc_id": "academic_notice_board_chunk_3",
+    "vote_labels": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "final_label": 1,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "장학 관련 공지사항이 올라왔나요?",
+    "source_doc_id": "academic_notice_board_chunk_3",
     "vote_labels": [
       1,
       1,
@@ -61,7 +181,7 @@
   },
   {
     "question": "이번 학기 수강신청은 언제 시작하나요?",
-    "source_doc_id": "academic_calendar_scope",
+    "source_doc_id": "academic_calendar_chunk_1",
     "vote_labels": [
       2,
       2,
@@ -76,7 +196,67 @@
   },
   {
     "question": "수강정정 기간을 알려줘.",
-    "source_doc_id": "academic_calendar_scope",
+    "source_doc_id": "academic_calendar_chunk_1",
+    "vote_labels": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "final_label": 2,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "이번 학기 수강신청은 언제 시작하나요?",
+    "source_doc_id": "academic_calendar_chunk_2",
+    "vote_labels": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "final_label": 2,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "수강정정 기간을 알려줘.",
+    "source_doc_id": "academic_calendar_chunk_2",
+    "vote_labels": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "final_label": 2,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "이번 학기 수강신청은 언제 시작하나요?",
+    "source_doc_id": "academic_calendar_chunk_3",
+    "vote_labels": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "final_label": 2,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "수강정정 기간을 알려줘.",
+    "source_doc_id": "academic_calendar_chunk_3",
     "vote_labels": [
       2,
       2,
@@ -91,7 +271,7 @@
   },
   {
     "question": "오늘 학생식당 점심 메뉴가 뭐야?",
-    "source_doc_id": "dining_scope",
+    "source_doc_id": "cnu_mobile_food_chunk_1",
     "vote_labels": [
       3,
       3,
@@ -106,7 +286,127 @@
   },
   {
     "question": "이번 주 학식 식단을 알려줘.",
-    "source_doc_id": "dining_scope",
+    "source_doc_id": "cnu_mobile_food_chunk_1",
+    "vote_labels": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "final_label": 3,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "오늘 학생식당 점심 메뉴가 뭐야?",
+    "source_doc_id": "cnu_mobile_food_chunk_2",
+    "vote_labels": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "final_label": 3,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "이번 주 학식 식단을 알려줘.",
+    "source_doc_id": "cnu_mobile_food_chunk_2",
+    "vote_labels": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "final_label": 3,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "오늘 학생식당 점심 메뉴가 뭐야?",
+    "source_doc_id": "cnu_mobile_food_chunk_3",
+    "vote_labels": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "final_label": 3,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "이번 주 학식 식단을 알려줘.",
+    "source_doc_id": "cnu_mobile_food_chunk_3",
+    "vote_labels": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "final_label": 3,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "오늘 학생식당 점심 메뉴가 뭐야?",
+    "source_doc_id": "cnucoop_discovery_chunk_1",
+    "vote_labels": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "final_label": 3,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "이번 주 학식 식단을 알려줘.",
+    "source_doc_id": "cnucoop_discovery_chunk_1",
+    "vote_labels": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "final_label": 3,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "오늘 학생식당 점심 메뉴가 뭐야?",
+    "source_doc_id": "cnucoop_discovery_chunk_2",
+    "vote_labels": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "final_label": 3,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "이번 주 학식 식단을 알려줘.",
+    "source_doc_id": "cnucoop_discovery_chunk_2",
     "vote_labels": [
       3,
       3,
@@ -121,7 +421,7 @@
   },
   {
     "question": "셔틀버스 시간표를 알려줘.",
-    "source_doc_id": "shuttle_scope",
+    "source_doc_id": "shuttle_bus_chunk_1",
     "vote_labels": [
       4,
       4,
@@ -136,7 +436,67 @@
   },
   {
     "question": "통학버스 정류장은 어디인가요?",
-    "source_doc_id": "shuttle_scope",
+    "source_doc_id": "shuttle_bus_chunk_1",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 시간표를 알려줘.",
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "통학버스 정류장은 어디인가요?",
+    "source_doc_id": "shuttle_bus_chunk_2",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "셔틀버스 시간표를 알려줘.",
+    "source_doc_id": "shuttle_bus_chunk_3",
+    "vote_labels": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "final_label": 4,
+    "confidence": 1.0,
+    "decision": "accept",
+    "reviewer_override": null
+  },
+  {
+    "question": "통학버스 정류장은 어디인가요?",
+    "source_doc_id": "shuttle_bus_chunk_3",
     "vote_labels": [
       4,
       4,

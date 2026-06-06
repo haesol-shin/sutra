@@ -78,3 +78,38 @@
   - graduation PDF extraction returned 1,497,628 normalized characters
 - gate:
   - pass: parser utilities exist for HTML/PDF/HWP/HWPX, and the known graduation PDF extracts more than 1,000 characters
+
+## Phase 1.2 Domain Parser Coverage
+
+- status: pass
+- changed_files:
+  - `src/nlp_term/prepare/from_sources.py`
+  - `src/nlp_term/prepare/build_all.py`
+  - `data/knowledge_seed.json`
+  - `data/cls_train_seed.json`
+  - `data/label_audit_seed.json`
+  - `data/qa_seed.json`
+  - `data/source_parse_failures.json`
+- command:
+  - `uv run python -m nlp_term.collect.run_collect --fetch --output data/sources/source_probe.json`
+  - `uv run python -m nlp_term.validators --source-probe data/sources/source_probe.json --require-raw-files`
+  - `uv run python -m nlp_term.prepare.from_sources --source-probe data/sources/source_probe.json --output data/knowledge_seed.json`
+  - `uv run python -m nlp_term.prepare.build_all --output-dir data`
+  - `uv run python -m nlp_term.validators --knowledge-provenance data/sources/source_probe.json --data-dir data`
+  - `uv run python -m nlp_term.validators --knowledge-quality data/knowledge_seed.json --source-probe data/sources/source_probe.json --min-docs-per-label 3 --min-body-chars 80 --min-source-parse-ratio 0.8`
+  - `uv run python -m compileall src\nlp_term\prepare`
+  - `uv run ruff check src\nlp_term\prepare`
+- failure_notes:
+  - first source fetch attempt timed out on the graduation PDF; retry succeeded
+  - first knowledge quality attempt produced only 2 dining docs; chunk size was reduced and regeneration passed
+- result:
+  - source probe/raw file validation printed `validation-ok`
+  - generated 17 source-backed knowledge docs
+  - label distribution: `{0: 3, 1: 3, 2: 3, 3: 5, 4: 3}`
+  - `metadata.generation_method="source_parse"` rows: 17 of 17
+  - `data/source_parse_failures.json` contains `[]`
+  - provenance and knowledge-quality validators printed `validation-ok`
+  - compileall exited 0
+  - ruff reported `All checks passed!`
+- gate:
+  - pass: each label has at least 3 docs, each doc is source-backed, and no parse failures were recorded

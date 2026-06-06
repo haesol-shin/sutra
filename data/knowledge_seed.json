@@ -1,72 +1,274 @@
 [
   {
-    "doc_id": "graduation_curriculum_scope",
+    "doc_id": "graduation_curriculum_pdf_chunk_1",
     "label": 0,
     "domain": "graduation",
-    "title": "졸업요건 안내",
-    "body": "졸업요건 질문은 졸업학점, 전공/교양 이수구분, 수료와 졸업 가능 여부를 확인하는 범위로 분류한다.",
+    "title": "graduation source 1",
+    "body": "2025 충 남 대 학 교 2025 교육과정 목 차 2025학년도 학사일정 학사관련 규정 충남대학교 학칙····································································································· 5 충남대학교 학사운영규정··················································································· 142 충남대학교 교양 교육과정 편성·이수 및 운영 등에 관한 지침···",
     "date": null,
     "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
     "source_id": "graduation_curriculum_pdf",
-    "section": "seed_scope",
+    "section": "chunk_1",
     "metadata": {
-      "parser": "seed"
+      "parser": "pdf_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "application/pdf"
     }
   },
   {
-    "doc_id": "academic_notice_scope",
+    "doc_id": "graduation_curriculum_pdf_chunk_2",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 2",
+    "body": "···················· 190 대학 교육과정 교육과정 해설···································································································· 211 교양 교육과정···································································································· 270 마이크로디그리과정··································",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+    "source_id": "graduation_curriculum_pdf",
+    "section": "chunk_2",
+    "metadata": {
+      "parser": "pdf_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "application/pdf"
+    }
+  },
+  {
+    "doc_id": "graduation_curriculum_pdf_chunk_3",
+    "label": 0,
+    "domain": "graduation",
+    "title": "graduation source 3",
+    "body": "·························································· 283 학과별 교육목표 및 인재상··············································································· 304 인문대학 교육과정····························································································· 365 사회과학대학 교육과정·····················",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+    "source_id": "graduation_curriculum_pdf",
+    "section": "chunk_3",
+    "metadata": {
+      "parser": "pdf_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "application/pdf"
+    }
+  },
+  {
+    "doc_id": "academic_notice_board_chunk_1",
     "label": 1,
     "domain": "notices",
-    "title": "학사 공지 안내",
-    "body": "학교 공지사항 질문은 장학, 모집, 학사정보 게시판, 학교에서 게시한 안내문과 최신 공지 확인 요청을 포함한다.",
+    "title": "notices source 1",
+    "body": "목록 > 학사정보 > 백마광장 > 충남대학교 본문 바로가기 사이드메뉴 바로가기 주요메뉴 바로가기 The Strong CNU 코러스시스템 웹메일 CNU포털 충남대학교 로고 Login ENG 통합검색 열기 버튼 통합검색 검색 통합검색 닫기버튼 사이트맵 CNU 미래 사회를 선도할 강한 대학 THE STRONG CNU CNU 홍보브로슈어 사이버투어 이념비전 교육이념 70년사 연혁 총장실 인사말 열린총장실 동정 역대총장 학교현황 교육연구현황 학교상징 교기·교시·교가 상징물 UI소개 CNU Calendar 대학조직도 조직도 대외협력추진위원회",
     "date": null,
     "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
     "source_id": "academic_notice_board",
-    "section": "seed_scope",
+    "section": "chunk_1",
     "metadata": {
-      "parser": "seed"
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html"
     }
   },
   {
-    "doc_id": "academic_calendar_scope",
+    "doc_id": "academic_notice_board_chunk_2",
+    "label": 1,
+    "domain": "notices",
+    "title": "notices source 2",
+    "body": "CNU홍보 홍보동영상 홍보브로슈어 홍보대사 현수막/전광판 신청 뉴스레터 언론속CNU Korea NU10 MAGAZINE CNU 갤러리 CNU 명예의 전당 CNU 우수강의 캠퍼스안내 찾아오시는길 캠퍼스 안내도 캠퍼스투어신청 대학/대학원 미래 사회를 선도할 강한 대학 THE STRONG CNU 대학/대학원 홍보동영상 사이버투어 대학 단과대학소개 인문대학 사회과학대학 자연과학대학 경상대학 공과대학 농업생명과학대학 약학대학 의과대학 생활과학대학 예술대학 수의과대학 사범대학 간호대학 생명시스템과학대학 지식융합학부 국가안보융합학부 국제학부 창",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+    "source_id": "academic_notice_board",
+    "section": "chunk_2",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html"
+    }
+  },
+  {
+    "doc_id": "academic_notice_board_chunk_3",
+    "label": 1,
+    "domain": "notices",
+    "title": "notices source 3",
+    "body": "의융합대학 기술경영건설학부 대학원 대학원 소개 대학원 홈페이지 전문대학원 전문대학원소개 법학전문대학원 분석과학기술대학원 에너지과학기술대학원 신약전문대학원 국가정책전문대학원 특수대학원 특수대학원소개 경영대학원 교육대학원 행정대학원 보건대학원 산업대학원 특허법무대학원 평화안보대학원 국가정책대학원 스마트농업대학원 입학/취업 미래 사회를 선도할 강한 대학 THE STRONG CNU 입학/취업 입학 홈페이지 캠퍼스투어 신청 입학정보 취업(인재개발원) CNU With U+ (학사지원시스템) 연구/산학/창업 미래 사회를 선도할 강한 대학 THE",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+    "source_id": "academic_notice_board",
+    "section": "chunk_3",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html"
+    }
+  },
+  {
+    "doc_id": "academic_calendar_chunk_1",
     "label": 2,
     "domain": "academic_calendar",
-    "title": "학사일정 안내",
-    "body": "학사일정 질문은 수강신청, 수강정정, 개강, 종강, 휴학, 복학, 학기 주요 일정을 확인하는 범위다.",
+    "title": "academic_calendar source 1",
+    "body": "대학 일정 > 학사일정 > 학사안내 > 대학생활 > 충남대학교 본문 바로가기 사이드메뉴 바로가기 주요메뉴 바로가기 The Strong CNU 코러스시스템 웹메일 CNU포털 충남대학교 로고 Login ENG 통합검색 열기 버튼 통합검색 검색 통합검색 닫기버튼 사이트맵 CNU 미래 사회를 선도할 강한 대학 THE STRONG CNU CNU 홍보브로슈어 사이버투어 이념비전 교육이념 70년사 연혁 총장실 인사말 열린총장실 동정 역대총장 학교현황 교육연구현황 학교상징 교기·교시·교가 상징물 UI소개 CNU Calendar 대학조직도 조직도",
     "date": null,
     "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
     "source_id": "academic_calendar",
-    "section": "seed_scope",
+    "section": "chunk_1",
     "metadata": {
-      "parser": "seed"
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html"
     }
   },
   {
-    "doc_id": "dining_scope",
+    "doc_id": "academic_calendar_chunk_2",
+    "label": 2,
+    "domain": "academic_calendar",
+    "title": "academic_calendar source 2",
+    "body": "대외협력추진위원회 CNU홍보 홍보동영상 홍보브로슈어 홍보대사 현수막/전광판 신청 뉴스레터 언론속CNU Korea NU10 MAGAZINE CNU 갤러리 CNU 명예의 전당 CNU 우수강의 캠퍼스안내 찾아오시는길 캠퍼스 안내도 캠퍼스투어신청 대학/대학원 미래 사회를 선도할 강한 대학 THE STRONG CNU 대학/대학원 홍보동영상 사이버투어 대학 단과대학소개 인문대학 사회과학대학 자연과학대학 경상대학 공과대학 농업생명과학대학 약학대학 의과대학 생활과학대학 예술대학 수의과대학 사범대학 간호대학 생명시스템과학대학 지식융합학부 국가안보융",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_id": "academic_calendar",
+    "section": "chunk_2",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html"
+    }
+  },
+  {
+    "doc_id": "academic_calendar_chunk_3",
+    "label": 2,
+    "domain": "academic_calendar",
+    "title": "academic_calendar source 3",
+    "body": "합학부 국제학부 창의융합대학 기술경영건설학부 대학원 대학원 소개 대학원 홈페이지 전문대학원 전문대학원소개 법학전문대학원 분석과학기술대학원 에너지과학기술대학원 신약전문대학원 국가정책전문대학원 특수대학원 특수대학원소개 경영대학원 교육대학원 행정대학원 보건대학원 산업대학원 특허법무대학원 평화안보대학원 국가정책대학원 스마트농업대학원 입학/취업 미래 사회를 선도할 강한 대학 THE STRONG CNU 입학/취업 입학 홈페이지 캠퍼스투어 신청 입학정보 취업(인재개발원) CNU With U+ (학사지원시스템) 연구/산학/창업 미래 사회를 선도할",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_id": "academic_calendar",
+    "section": "chunk_3",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html"
+    }
+  },
+  {
+    "doc_id": "cnu_mobile_food_chunk_1",
     "label": 3,
     "domain": "dining",
-    "title": "식단 안내",
-    "body": "식단 질문은 학생식당, 교내 식당, 아침, 점심, 저녁 메뉴와 특정 날짜의 학식 확인 요청을 포함한다.",
+    "title": "dining source 1",
+    "body": "충남대학교 식당메뉴 요일별 식단 식당별 식단 한국어(Kor) 영어(Eng) 중국어(Chn) 요일선택 2026.06.01(월) 2026.06.02(화) 2026.06.03(수) 2026.06.04(목) 2026.06.05(금) 2026.06.06(토) 토요일 2026.06.06 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함",
     "date": null,
     "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
     "source_id": "cnu_mobile_food",
-    "section": "seed_scope",
+    "section": "chunk_1",
     "metadata": {
-      "parser": "seed"
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8"
     }
   },
   {
-    "doc_id": "shuttle_scope",
+    "doc_id": "cnu_mobile_food_chunk_2",
+    "label": 3,
+    "domain": "dining",
+    "title": "dining source 2",
+    "body": "운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 하나. 구내식당 식재료 원산지입니다. 쌀:(국내산), 김치:배추(국내산),고추가루(국내산), 소고기:(호주산), 소사골 및 소뼈:국내산, 돈육 및 닭고기,오리고기:국내산, 고춧가루:(국내산), 낙지:(중국산), 고등어:(국내산), 갈치:(남아공산),동태:(러시아산) 둘. [ 맛 정성 위생 친절 ] ☞ Up, 교직원과 학생 여러분들의 건강식사를 위하여 최선을 다하겠습니다 . 교직원과 학생들의 건강을 위하여 저희가 제공하",
+    "date": null,
+    "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "source_id": "cnu_mobile_food",
+    "section": "chunk_2",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8"
+    }
+  },
+  {
+    "doc_id": "cnu_mobile_food_chunk_3",
+    "label": 3,
+    "domain": "dining",
+    "title": "dining source 3",
+    "body": "는 식사는 신선한 식재료를 사용하고 있으며, MSG가 없는 조미료나 천연양념위주로 맛 을내고 있습니다. 또한 그날의 메뉴의 염미도를 알리고 저염식단을 제공하며, 잡곡식단으로 건강을 최우선으로 식사를 준비하므로 믿고 드셔도 좋습니다. 식사에 대한 건의사항이 있으시면 영양사실에 언제든지 문의 주시기 바랍니다. 전화(821-5075,5085) 즐거운 식사시간 되시길 바랍니다. 셋. 학회및 행사 등으로 인하여 단체예약을 하실때는 미리 담당영양사(T.821-5062)로 연락주시길 바랍니다.",
+    "date": null,
+    "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+    "source_id": "cnu_mobile_food",
+    "section": "chunk_3",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html; charset=UTF-8"
+    }
+  },
+  {
+    "doc_id": "cnucoop_discovery_chunk_1",
+    "label": 3,
+    "domain": "dining",
+    "title": "dining source 1",
+    "body": "泲бȰ 湮 ȯմϴ!!! HOME | տα | øũ | 泲б 泲 湮 ȯմϴ. Ұ ȳ ְĴ տȳ Ŀ´Ƽ Ұ ̻λ縻 ãƿô ȳ Ĵ Ŀ ü̿ û žȦ ̿ȳ ȳ Ĵ ٷΰ տ Ծȳ տ Խû տ Ȯ տ Խ Ϲڷ ڷ øũ 042-821-5061 2026⵵ ȸ ȳ [2026.03.24] 泲бҺڻȰ ... [2026.03.10] 泲бҺڻȰ ... [2025.11.25] Ǹ ... [2026.05.16] 3 Ĵ ʹ ſ [2026.05.06] 2л  ޴ ö [2026.04.15] ܻ󱸸ſ䱸 [2015.05.27] տԼŸ ̵ [2014.12.31] HO",
+    "date": null,
+    "source_url": "https://www.cnucoop.co.kr/",
+    "source_id": "cnucoop_discovery",
+    "section": "chunk_1",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html"
+    }
+  },
+  {
+    "doc_id": "cnucoop_discovery_chunk_2",
+    "label": 3,
+    "domain": "dining",
+    "title": "dining source 2",
+    "body": "ME | Ұ | ̿ | óħ | 泲б ּ : з 99 泲б, 泲бȰ ̻ : ȭ : 042-821-5061, ѽ : 042-823-1445, ̸ : general@cnu.ac.kr Copyright 2026 泲бȰ , All Rights Reserved.",
+    "date": null,
+    "source_url": "https://www.cnucoop.co.kr/",
+    "source_id": "cnucoop_discovery",
+    "section": "chunk_2",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html"
+    }
+  },
+  {
+    "doc_id": "shuttle_bus_chunk_1",
     "label": 4,
     "domain": "shuttle",
-    "title": "통학 및 셔틀버스 안내",
-    "body": "통학과 셔틀버스 질문은 운행 시간표, 정류장 위치, 노선, 운행 여부와 버스 관련 안내를 포함한다.",
+    "title": "shuttle source 1",
+    "body": "학교셔틀버스 > 학생생활서비스 > 대학생활 > 충남대학교 본문 바로가기 사이드메뉴 바로가기 주요메뉴 바로가기 The Strong CNU 코러스시스템 웹메일 CNU포털 충남대학교 로고 Login ENG 통합검색 열기 버튼 통합검색 검색 통합검색 닫기버튼 사이트맵 CNU 미래 사회를 선도할 강한 대학 THE STRONG CNU CNU 홍보브로슈어 사이버투어 이념비전 교육이념 70년사 연혁 총장실 인사말 열린총장실 동정 역대총장 학교현황 교육연구현황 학교상징 교기·교시·교가 상징물 UI소개 CNU Calendar 대학조직도 조직도 대외협",
     "date": null,
     "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
     "source_id": "shuttle_bus",
-    "section": "seed_scope",
+    "section": "chunk_1",
     "metadata": {
-      "parser": "seed"
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html"
+    }
+  },
+  {
+    "doc_id": "shuttle_bus_chunk_2",
+    "label": 4,
+    "domain": "shuttle",
+    "title": "shuttle source 2",
+    "body": "력추진위원회 CNU홍보 홍보동영상 홍보브로슈어 홍보대사 현수막/전광판 신청 뉴스레터 언론속CNU Korea NU10 MAGAZINE CNU 갤러리 CNU 명예의 전당 CNU 우수강의 캠퍼스안내 찾아오시는길 캠퍼스 안내도 캠퍼스투어신청 대학/대학원 미래 사회를 선도할 강한 대학 THE STRONG CNU 대학/대학원 홍보동영상 사이버투어 대학 단과대학소개 인문대학 사회과학대학 자연과학대학 경상대학 공과대학 농업생명과학대학 약학대학 의과대학 생활과학대학 예술대학 수의과대학 사범대학 간호대학 생명시스템과학대학 지식융합학부 국가안보융합학부",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "source_id": "shuttle_bus",
+    "section": "chunk_2",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html"
+    }
+  },
+  {
+    "doc_id": "shuttle_bus_chunk_3",
+    "label": 4,
+    "domain": "shuttle",
+    "title": "shuttle source 3",
+    "body": "국제학부 창의융합대학 기술경영건설학부 대학원 대학원 소개 대학원 홈페이지 전문대학원 전문대학원소개 법학전문대학원 분석과학기술대학원 에너지과학기술대학원 신약전문대학원 국가정책전문대학원 특수대학원 특수대학원소개 경영대학원 교육대학원 행정대학원 보건대학원 산업대학원 특허법무대학원 평화안보대학원 국가정책대학원 스마트농업대학원 입학/취업 미래 사회를 선도할 강한 대학 THE STRONG CNU 입학/취업 입학 홈페이지 캠퍼스투어 신청 입학정보 취업(인재개발원) CNU With U+ (학사지원시스템) 연구/산학/창업 미래 사회를 선도할 강한",
+    "date": null,
+    "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+    "source_id": "shuttle_bus",
+    "section": "chunk_3",
+    "metadata": {
+      "parser": "html_source_parse",
+      "generation_method": "source_parse",
+      "content_type": "text/html"
     }
   }
 ]

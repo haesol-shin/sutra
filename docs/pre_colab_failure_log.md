@@ -85,3 +85,27 @@
 - suspected_cause: The first validator-hardening pass checked threshold names but did not fully prevent self-reported metrics from passing without artifact consistency checks.
 - next_action: Bind metric validators to original artifacts and define `generation_method` as `KnowledgeDoc.metadata.generation_method`.
 - unresolved_blocker: none after plan revision
+
+## 2026-06-06 step-1.2-fetch-timeout-attempt-1
+
+- step_id: `phase-1.2-domain-parser-coverage`
+- phase: `source_parsers_and_knowledge_docs`
+- command_or_action: `uv run python -m nlp_term.collect.run_collect --fetch --output data/sources/source_probe.json`
+- exit_status: failed
+- failure_summary: Graduation PDF fetch from `plus.cnu.ac.kr` timed out at the current 20 second read timeout.
+- changed_files: none intentionally changed by the failed command
+- suspected_cause: Remote server/network latency during large PDF download.
+- next_action: Retry the fetch once before changing collector behavior; existing raw snapshots remain available for parser validation.
+- unresolved_blocker: none until max attempts is reached
+
+## 2026-06-06 step-1.2-knowledge-quality-attempt-1
+
+- step_id: `phase-1.2-domain-parser-coverage`
+- phase: `source_parsers_and_knowledge_docs`
+- command_or_action: `uv run python -m nlp_term.validators --knowledge-quality data/knowledge_seed.json --source-probe data/sources/source_probe.json --min-docs-per-label 3 --min-body-chars 80 --min-source-parse-ratio 0.8`
+- exit_status: failed
+- failure_summary: Dining label 3 produced only 2 `KnowledgeDoc` rows, below the required minimum of 3 per label.
+- changed_files: `data/knowledge_seed.json`, `data/cls_train_seed.json`, `data/label_audit_seed.json`, `data/qa_seed.json`
+- suspected_cause: Generic chunking produced too few chunks for shorter dining HTML sources.
+- next_action: Adjust source chunking so each raw source can emit multiple non-overlapping chunks when enough text exists, then regenerate knowledge and rerun quality gates.
+- unresolved_blocker: none until max attempts is reached
