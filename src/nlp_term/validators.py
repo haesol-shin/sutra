@@ -927,6 +927,63 @@ def validate_chat_quality(
         _validate_chat_evidence_alignment(rows, knowledge_path)
 
 
+def validate_chat_provenance(
+    path: Path,
+    *,
+    input_path: Path | None = None,
+    output_path: Path | None = None,
+    knowledge_path: Path | None = None,
+    require_backend: str | None = None,
+    max_fallback_used: int | None = None,
+    require_retrieved_docs: bool = False,
+    require_model_checksum: bool = False,
+) -> None:
+    payload = read_json(path)
+    if not isinstance(payload, dict):
+        raise ValueError(f"{path} must contain a provenance object")
+    if payload.get("evaluation_scope") != "task2_chat_batch_provenance":
+        raise ValueError("chat-provenance: evaluation_scope is invalid")
+    rows = payload.get("rows")
+    if not isinstance(rows, list):
+        raise ValueError("chat-provenance: rows must be a list")
+    if input_path is not None:
+        inputs = validate_rows(input_path, ChatInput, required=True)
+        if payload.get("input_checksum") != file_checksum(input_path):
+            raise ValueError("chat-provenance: input_checksum does not match input file")
+        if len(rows) != len(inputs):
+            raise ValueError("chat-provenance: row count does not match input")
+    if output_path is not None:
+        outputs = validate_rows(output_path, ChatOutput, required=True)
+        if payload.get("output_checksum") != file_checksum(output_path):
+            raise ValueError("chat-provenance: output_checksum does not match output file")
+        if payload.get("row_count") != len(outputs):
+            raise ValueError("chat-provenance: row_count does not match output")
+    if knowledge_path is not None and payload.get("knowledge_checksum") != file_checksum(knowledge_path):
+        raise ValueError("chat-provenance: knowledge_checksum does not match knowledge file")
+    if require_backend is not None and payload.get("backend_used") != require_backend:
+        raise ValueError("chat-provenance: backend_used does not match required backend")
+    fallback_used = bool(payload.get("fallback_used"))
+    fallback_count = int(fallback_used)
+    if max_fallback_used is not None and fallback_count > max_fallback_used:
+        raise ValueError("chat-provenance: fallback_used exceeds threshold")
+    if fallback_used and not payload.get("fallback_reason"):
+        raise ValueError("chat-provenance: fallback_reason is required when fallback is used")
+    if require_model_checksum and not payload.get("model_checksum"):
+        raise ValueError("chat-provenance: model_checksum is required")
+    if require_retrieved_docs:
+        for index, row in enumerate(rows):
+            if not isinstance(row, dict):
+                raise ValueError(f"chat-provenance: row {index} must be an object")
+            retrieved = row.get("retrieved")
+            if not isinstance(retrieved, list) or not retrieved:
+                raise ValueError(f"chat-provenance: row {index} lacks retrieved docs")
+            for item in retrieved:
+                if not isinstance(item, dict):
+                    raise ValueError(f"chat-provenance: row {index} retrieved item must be an object")
+                if not item.get("doc_id") or not item.get("source_url"):
+                    raise ValueError(f"chat-provenance: row {index} retrieved item lacks source evidence")
+
+
 def _validate_chat_evidence_alignment(rows: list[ChatOutput], knowledge_path: Path) -> None:
     from nlp_term.chat.router import route_question
     from nlp_term.retrieve.knowledge import load_knowledge
@@ -1006,12 +1063,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--task1-hard-report-output", type=Path, help="Write a Task 1 hard-gate report.")
     parser.add_argument("--retrieval-metrics", type=Path, help="Validate retrieval metric gates.")
     parser.add_argument("--chat-quality", type=Path, help="Validate chat output quality gates.")
+    parser.add_argument("--chat-provenance", type=Path, help="Validate Task 2 chat backend provenance.")
     parser.add_argument("--realtime-provenance", type=Path, help="Validate realtime output against source provenance.")
     parser.add_argument("--runtime-knowledge-consistency", action="store_true", help="Validate runtime knowledge loader consistency.")
     parser.add_argument("--final-readiness", action="store_true", help="Reject placeholder terms in final-facing outputs.")
     parser.add_argument("--require-raw-files", action="store_true", help="Require source probe raw files to exist.")
     parser.add_argument("--require-realtime", action="store_true", help="Require realtime input/output files.")
     parser.add_argument("--input", type=Path, help="Input artifact used by a metric or output validator.")
+    parser.add_argument("--output", type=Path, help="Output artifact used by a provenance validator.")
     parser.add_argument("--knowledge", type=Path, help="Knowledge artifact used by runtime or retrieval validators.")
     parser.add_argument("--qa", type=Path, help="QA artifact used by retrieval validators.")
     parser.add_argument("--min-docs-per-label", type=int)
@@ -1051,6 +1110,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--require-retrieval-diagnostics", action="store_true")
     parser.add_argument("--min-answer-chars", type=int)
     parser.add_argument("--require-evidence-alignment", action="store_true")
+    parser.add_argument("--require-backend", choices=["llama", "deterministic"])
+    parser.add_argument("--max-fallback-used", type=int)
+    parser.add_argument("--require-retrieved-docs", action="store_true")
+    parser.add_argument("--require-model-checksum", action="store_true")
     parser.add_argument("--stage", default="stage0")
     parser.add_argument("--min-stage-sources", type=int)
     parser.add_argument("--max-stage-sources", type=int)
@@ -1083,6 +1146,7 @@ def main() -> None:
         and not args.task1_hard_gates
         and not args.retrieval_metrics
         and not args.chat_quality
+        and not args.chat_provenance
         and not args.realtime_provenance
         and not args.runtime_knowledge_consistency
         and not args.final_readiness
@@ -1198,6 +1262,17 @@ def main() -> None:
                 min_answer_chars=args.min_answer_chars,
                 require_source_hint=args.require_source_hint,
                 require_evidence_alignment=args.require_evidence_alignment,
+            )
+        if args.chat_provenance:
+            validate_chat_provenance(
+                args.chat_provenance,
+                input_path=args.input,
+                output_path=args.output,
+                knowledge_path=args.knowledge,
+                require_backend=args.require_backend,
+                max_fallback_used=args.max_fallback_used,
+                require_retrieved_docs=args.require_retrieved_docs,
+                require_model_checksum=args.require_model_checksum,
             )
         if args.realtime_provenance:
             validate_realtime_provenance(args.realtime_provenance, source_probe_path=args.source_probe)
