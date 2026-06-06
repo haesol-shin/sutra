@@ -76,7 +76,7 @@ def windows_gpu_info() -> list[dict[str, Any]]:
         "Get-CimInstance Win32_VideoController | "
         "Select-Object Name,AdapterRAM,DriverVersion | ConvertTo-Json",
     ]
-    result = run_command(command)
+    result = run_command(command, timeout=10)
     if not result.get("ok") or not result.get("stdout"):
         return [{"probe_error": result}]
     payload = json.loads(result["stdout"])
@@ -122,8 +122,10 @@ def torch_info() -> dict[str, Any]:
 def infer_capabilities(payload: dict[str, Any]) -> dict[str, Any]:
     packages = payload["packages"]
     executables = payload["executables"]
-    gpu_names = " ".join(str(gpu.get("Name", "")) for gpu in payload["windows_gpu_info"]).lower()
     torch_payload = payload["torch"]
+    gpu_name_parts = [str(gpu.get("Name", "")) for gpu in payload["windows_gpu_info"]]
+    gpu_name_parts.extend(str(device.get("get_device_name", "")) for device in torch_payload.get("xpu_devices", []))
+    gpu_names = " ".join(gpu_name_parts).lower()
     has_cuda = bool(torch_payload.get("cuda_available"))
     has_xpu = bool(torch_payload.get("xpu_available"))
     has_gguf_runner = any(executables[name] for name in ("llama-cli", "llama-server", "ollama")) or packages[
@@ -206,6 +208,7 @@ def main() -> None:
     print(f"wrote {args.output}")
     print(f"local_gpu_family={capabilities['local_gpu_family']}")
     print(f"pytorch_xpu_stack_available={capabilities['pytorch_xpu_stack_available']}")
+    print(f"vllm_xpu_fp8_kv_candidate={capabilities['vllm_xpu_fp8_kv_candidate']}")
     print(f"gguf_runner_available={capabilities['gguf_runner_available']}")
     print(f"exact_int4_weight_fp8_kv_supported_locally={capabilities['exact_int4_weight_fp8_kv_supported_locally']}")
     if args.pretty:

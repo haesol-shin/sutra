@@ -28,6 +28,10 @@ xpu = [
   "torch==2.9.1",
   "pytorch-triton-xpu==3.5.0",
 ]
+llm = [
+  "accelerate>=1.13.0",
+  "transformers>=5.10.2",
+]
 
 [dependency-groups]
 dev = [

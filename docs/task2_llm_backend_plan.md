@@ -24,7 +24,10 @@ Task 2의 기본 응답 생성 후보는 로컬 LLM이다. 목표 설정은 다�
 - Driver: 32.0.101.8826
 - CUDA/NVIDIA backend: `nvidia-smi` 없음
 - PyTorch XPU: `uv sync --extra xpu` 후 `torch 2.9.1+xpu`, `torch.xpu.is_available() == True`, XPU total memory 약 16837MB 확인
-- Transformers/runtime stack: 현재 `uv` 환경에는 `transformers`, `accelerate`, `bitsandbytes`, `vllm`, `llama_cpp`가 설치되어 있지 않음
+- Transformers/runtime stack: `uv sync --extra xpu --extra llm` 후 `transformers 5.10.2`, `accelerate 1.13.0` 설치 확인
+- Qwen3.5 tokenizer smoke: `AutoConfig`와 `AutoTokenizer`는 `Qwen/Qwen3.5-9B`를 읽고 chat template을 렌더링한다.
+- Multimodal processor note: `AutoProcessor`는 video/image processor 경로에서 `torchvision`을 요구한다. Task 2는 text-only QA이므로 현재 smoke는 `AutoTokenizer` 기준으로 둔다.
+- 아직 미설치: `bitsandbytes`, `vllm`, `llama_cpp`, `llama-cli`, `llama-server`, `ollama`
 - Level Zero SDK: `LEVEL_ZERO_V1_SDK_PATH` 존재
 
 따라서 로컬 검증 기준에서는 CUDA 전용 경로를 기본 백엔드로 둘 수 없다. 우선순위는 `PyTorch XPU + Transformers` smoke, 그 다음 `vLLM XPU` 또는 Intel GPU 지원 GGUF runner 검증이다.
@@ -73,12 +76,25 @@ Hub metadata scan 결과, Qwen3.5-9B 계열 실행 후보는 base model이 아�
 - INT4 weight 모델을 다루기 좋다.
 - `llama.cpp`는 Intel GPU용 SYCL backend를 지원한다.
 - Python 의존성보다 독립 실행형 검증이 쉬울 수 있다.
+- `llama.cpp`에서 model weight quantization은 GGUF 파일 선택으로 결정된다. 예: `Q4_K_M`, `IQ4_XS`, `Q5_K_M`.
+- KV cache는 `--cache-type-k`, `--cache-type-v`로 별도 설정한다. 일반적으로 `f16`, `q8_0`, `q4_0` 같은 ggml type을 사용하며, 이는 vLLM의 FP8 KV cache와 동일한 옵션이 아니다.
 
 검증 필요:
 
 - Qwen3.5-9B quantized artifact가 텍스트 QA에 충분히 안정적인가.
 - runner가 정확한 FP8 KV cache를 지원하는지, 아니면 Q8/Q4 등 다른 KV cache quantization만 지원하는지 확인한다.
 - exact FP8 KV가 아니면 `nearest_supported_kv_cache`로 기록하고, INT4 weight + nearest KV 기준으로 별도 비교한다.
+
+예상 smoke command:
+
+```powershell
+llama-server `
+  -m models/Qwen3.5-9B-Q4_K_M.gguf `
+  -c 4096 `
+  -ngl 999 `
+  --cache-type-k q8_0 `
+  --cache-type-v q8_0
+```
 
 ## 검증 기준
 
@@ -88,13 +104,17 @@ Hub metadata scan 결과, Qwen3.5-9B 계열 실행 후보는 base model이 아�
    - command: `uv run python -m nlp_term.llm.env_probe --output model/llm_backend_probe.json`
    - pass: GPU, driver, installed packages, available runner, quantization support 판단이 JSON으로 기록된다.
 
-2. Load probe
+2. Prompt preflight
+   - command: `uv run python -m nlp_term.llm.prompt_eval --output model/task2_prompt_preflight.json`
+   - pass: no-context, retrieval-context, deterministic composer baseline이 같은 입력 set에서 비교되고, retrieval-context prompt가 context 2048/4096 budget 안에 들어오는지 기록된다.
+
+3. Load probe
    - target: Qwen3.5-9B INT4 weight + FP8 KV cache.
    - pass: context 2048, batch 1에서 로딩 및 1개 질문 생성 성공.
    - memory: peak GPU memory 15GB 이하.
    - if exact FP8 KV unsupported: nearest supported KV cache setting을 기록하고 계속 비교한다.
 
-3. Quality probe
+4. Quality probe
    - compare:
      - no-context LLM generation
      - retrieval-context LLM generation
