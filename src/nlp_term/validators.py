@@ -780,7 +780,14 @@ def validate_retrieval_metrics(
     qa_path: Path | None = None,
     min_top1_label_accuracy: float | None = None,
     min_top3_source_hit_rate: float | None = None,
+    min_per_label_top1_label_accuracy: float | None = None,
+    min_per_label_top3_source_hit_rate: float | None = None,
+    min_graduation_top3_source_hit_rate: float | None = None,
+    min_graduation_curriculum_pdf_hit_rate: float | None = None,
+    min_retrieved_evidence_alignment_rate: float | None = None,
+    max_alignment_failures: int | None = None,
     require_metadata_aware: bool = False,
+    require_diagnostics: bool = False,
 ) -> None:
     payload = read_json(path)
     if not isinstance(payload, dict):
@@ -805,6 +812,49 @@ def validate_retrieval_metrics(
         value = _metric_value(payload, ("top3_source_hit_rate", "top_3_source_hit_rate"))
         if value < min_top3_source_hit_rate:
             raise ValueError("retrieval-metrics: top3 source hit rate below threshold")
+    if require_diagnostics:
+        for field in (
+            "per_label_row_counts",
+            "per_label_top1_label_accuracy",
+            "per_label_top3_source_hit_rate",
+            "graduation_top3_source_hit_rate",
+            "graduation_curriculum_pdf_hit_rate",
+            "retrieved_evidence_alignment_rate",
+            "expected_evidence_alignment_rate",
+            "alignment_failures",
+        ):
+            if field not in payload:
+                raise ValueError(f"retrieval-metrics: {field} is required")
+    if min_per_label_top1_label_accuracy is not None:
+        _validate_per_label_rate(
+            payload,
+            "per_label_top1_label_accuracy",
+            min_per_label_top1_label_accuracy,
+        )
+    if min_per_label_top3_source_hit_rate is not None:
+        _validate_per_label_rate(
+            payload,
+            "per_label_top3_source_hit_rate",
+            min_per_label_top3_source_hit_rate,
+        )
+    if min_graduation_top3_source_hit_rate is not None:
+        value = _metric_value(payload, ("graduation_top3_source_hit_rate",))
+        if value < min_graduation_top3_source_hit_rate:
+            raise ValueError("retrieval-metrics: graduation top3 source hit rate below threshold")
+    if min_graduation_curriculum_pdf_hit_rate is not None:
+        value = _metric_value(payload, ("graduation_curriculum_pdf_hit_rate",))
+        if value < min_graduation_curriculum_pdf_hit_rate:
+            raise ValueError("retrieval-metrics: graduation curriculum PDF hit rate below threshold")
+    if min_retrieved_evidence_alignment_rate is not None:
+        value = _metric_value(payload, ("retrieved_evidence_alignment_rate",))
+        if value < min_retrieved_evidence_alignment_rate:
+            raise ValueError("retrieval-metrics: retrieved evidence alignment rate below threshold")
+    if max_alignment_failures is not None:
+        failures = payload.get("alignment_failures")
+        if not isinstance(failures, list):
+            raise ValueError("retrieval-metrics: alignment_failures must be a list")
+        if len(failures) > max_alignment_failures:
+            raise ValueError("retrieval-metrics: alignment failures above threshold")
     failure_counts = payload.get("per_label_failure_counts")
     if not isinstance(failure_counts, dict):
         raise ValueError("retrieval-metrics: per_label_failure_counts is required")
@@ -817,6 +867,18 @@ def validate_retrieval_metrics(
     row_count = payload.get("row_count")
     if isinstance(row_count, int) and sum(failure_counts.values()) > row_count:
         raise ValueError("retrieval-metrics: failure counts exceed row_count")
+
+
+def _validate_per_label_rate(payload: dict[str, object], field: str, threshold: float) -> None:
+    rates = payload.get(field)
+    if not isinstance(rates, dict):
+        raise ValueError(f"retrieval-metrics: {field} is required")
+    for label in range(5):
+        value = rates.get(str(label))
+        if not isinstance(value, int | float):
+            raise ValueError(f"retrieval-metrics: {field} missing label {label}")
+        if float(value) < threshold:
+            raise ValueError(f"retrieval-metrics: {field} label {label} below threshold")
 
 
 def validate_chat_quality(
@@ -956,7 +1018,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--min-class-f1", type=float)
     parser.add_argument("--min-top1-label-accuracy", type=float)
     parser.add_argument("--min-top3-source-hit-rate", type=float)
+    parser.add_argument("--min-per-label-top1-label-accuracy", type=float)
+    parser.add_argument("--min-per-label-top3-source-hit-rate", type=float)
+    parser.add_argument("--min-graduation-top3-source-hit-rate", type=float)
+    parser.add_argument("--min-graduation-curriculum-pdf-hit-rate", type=float)
+    parser.add_argument("--min-retrieved-evidence-alignment-rate", type=float)
+    parser.add_argument("--max-alignment-failures", type=int)
     parser.add_argument("--require-metadata-aware", action="store_true")
+    parser.add_argument("--require-retrieval-diagnostics", action="store_true")
     parser.add_argument("--min-answer-chars", type=int)
     parser.add_argument("--require-evidence-alignment", action="store_true")
     parser.add_argument("--stage", default="stage0")
@@ -1086,7 +1155,14 @@ def main() -> None:
                 qa_path=args.qa,
                 min_top1_label_accuracy=args.min_top1_label_accuracy,
                 min_top3_source_hit_rate=args.min_top3_source_hit_rate,
+                min_per_label_top1_label_accuracy=args.min_per_label_top1_label_accuracy,
+                min_per_label_top3_source_hit_rate=args.min_per_label_top3_source_hit_rate,
+                min_graduation_top3_source_hit_rate=args.min_graduation_top3_source_hit_rate,
+                min_graduation_curriculum_pdf_hit_rate=args.min_graduation_curriculum_pdf_hit_rate,
+                min_retrieved_evidence_alignment_rate=args.min_retrieved_evidence_alignment_rate,
+                max_alignment_failures=args.max_alignment_failures,
                 require_metadata_aware=args.require_metadata_aware,
+                require_diagnostics=args.require_retrieval_diagnostics,
             )
         if args.chat_quality:
             validate_chat_quality(
