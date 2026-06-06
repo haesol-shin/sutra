@@ -58,7 +58,7 @@ fi
 
 case "$COMMAND" in
   batch|--batch-only)
-    "${RUNNER[@]}" -m nlp_term.chat.batch --input "$DATA_DIR/test_chat.json" --output "$OUTPUTS_DIR/chat_output.json"
+    "${RUNNER[@]}" -m nlp_term.chat.batch --input "$DATA_DIR/test_chat.json" --output "$OUTPUTS_DIR/chat_output.json" --backend "${NLP_TERM_CHAT_BACKEND:-auto}"
     ;;
   ui|--ui)
     "${RUNNER[@]}" -m nlp_term.ui.app --host "${CHATBOT_HOST:-127.0.0.1}" --port "${CHATBOT_PORT:-7860}"
@@ -67,7 +67,7 @@ case "$COMMAND" in
     "${RUNNER[@]}" -m nlp_term.chat.realtime --input "$DATA_DIR/test_realtime.json" --output "$OUTPUTS_DIR/realtime_output.json"
     ;;
   all)
-    "${RUNNER[@]}" -m nlp_term.chat.batch --input "$DATA_DIR/test_chat.json" --output "$OUTPUTS_DIR/chat_output.json"
+    "${RUNNER[@]}" -m nlp_term.chat.batch --input "$DATA_DIR/test_chat.json" --output "$OUTPUTS_DIR/chat_output.json" --backend "${NLP_TERM_CHAT_BACKEND:-auto}"
     "${RUNNER[@]}" -m nlp_term.chat.realtime --input "$DATA_DIR/test_realtime.json" --output "$OUTPUTS_DIR/realtime_output.json"
     ;;
   *)

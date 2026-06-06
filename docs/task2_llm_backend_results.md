@@ -9,6 +9,7 @@ Task 2의 다음 구현 backend는 `llama.cpp + Qwen3.5-9B Q4_K_M GGUF`를 현�
 - 목표였던 `INT4 weight + FP8 KV cache` 중 weight 쪽은 Q4_K_M GGUF로 충족한다.
 - llama.cpp b9538의 KV cache options에는 `fp8`이 없으므로, `q8_0`을 nearest 8-bit KV cache로 사용한다.
 - exact `FP8 KV`는 vLLM XPU 후보에 남긴다. 다만 현재 로컬 Windows 환경에서는 vLLM XPU보다 llama.cpp Vulkan 경로가 먼저 실측 가능하다.
+- `chatbot.sh batch`는 `NLP_TERM_CHAT_BACKEND`가 지정되지 않으면 `auto` backend를 사용한다. 현재 로컬에서는 model file과 `llama-cli`가 있으므로 llama.cpp 경로가 우선 실행된다.
 
 ## Local Smoke Evidence
 
@@ -68,6 +69,6 @@ Observed quality:
 ## Next Work
 
 1. Clean retrieval evidence chunks further before feeding the LLM.
-2. Add a Task 2 runtime wrapper that can call llama.cpp when the model file is present.
-3. Keep deterministic composer as a controlled emergency path, not the preferred generator.
-4. Run a larger source-backed QA set once available, because the current comparison only covers the small `data/test_chat.json` smoke input.
+2. Keep deterministic composer as a controlled emergency path, not the preferred generator.
+3. Run a larger source-backed QA set once available, because the current comparison only covers the small `data/test_chat.json` smoke input.
+4. Revisit exact FP8 KV through vLLM XPU only after the llama.cpp path is stable enough for Task 2 scoring.
