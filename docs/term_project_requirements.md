@@ -264,16 +264,18 @@ pip freeze > requirements.txt
 - Task 3는 최소 구현으로 진행한다.
 - 최종 제출 환경은 Colab 기준 Python 3.10.12와 과제 문서의 `torch 2.5.1`을 우선한다.
 - 로컬 Windows XPU의 `torch 2.9.1+xpu`는 개발용 환경으로만 유지한다.
-- Task 2/3의 기본 generator 목표는 Qwen3.5-9B로 두되, Colab T4 실측 실패 또는 batch 안정성 부족 시 deterministic composer fallback을 사용한다.
+- Task 2의 기본 generator 목표는 로컬 LLM이다. 1차 후보는 Qwen3.5-9B이며, 목표 quantization은 INT4 weight + FP8 KV cache다.
+- deterministic composer는 기본 generator가 아니라 비교 기준, 디버그 기준, 비상 경로로 둔다.
+- Goal 2에서는 Colab/T4 직접 구동을 제외하고, 로컬 Intel Arc/XPU 16GB 환경에서 backend 가능성을 간접 점검한다.
 - 최종 inference time에는 외부 LLM API, MCP, full tool-call agent를 사용하지 않는다.
 
 ## 8. 미확정 질문
 
 다음 조건은 아직 명확하지 않으며, 추후 확인 또는 설계 시 결정이 필요하다.
 
-1. Qwen3.5-9B가 Colab T4에서 안정적으로 동작하는가?
-   - `context 4096`, peak VRAM 14.5GB 이하, 10개 대표 질문 batch 10분 이내를 1차 기준으로 본다.
-   - 통과하지 못하면 deterministic composer fallback을 제출 기본 경로로 유지한다.
+1. Qwen3.5-9B가 로컬 backend에서 INT4 weight + FP8 KV cache 목표로 안정적으로 동작하는가?
+   - `context 2048` smoke, `context 4096` 제출 후보, peak VRAM 15GB 이하, 10개 대표 질문 batch 10분 이내를 1차 기준으로 본다.
+   - 정확한 FP8 KV cache가 지원되지 않으면 nearest supported KV cache 설정을 기록하고 품질/VRAM 차이를 비교한다.
 
 2. 식단 source의 parser와 공식 연결고리는 충분히 검증되는가?
    - `mobileadmin.cnu.ac.kr/food/index.jsp`와 `cnucoop.co.kr`를 후보 source로 둔다.

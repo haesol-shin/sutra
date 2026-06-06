@@ -21,9 +21,12 @@
 
 - 최종 inference runtime에서 외부 LLM API, MCP, full tool-call agent를 쓰지 않는다.
 - 15GB VRAM 제약 때문에 primary/candidate는 9B 이하만 허용한다.
-- `Qwen/Qwen3.5-9B`를 primary candidate로 둔다. Hugging Face model card는 9B parameter와 Transformers/vLLM/SGLang 호환성을 명시한다.
+- Task 2의 기본 응답 생성 후보는 로컬 LLM이다. `deterministic composer`는 비교 기준, 디버그 기준, 비상 경로로만 둔다.
+- 목표 quantization은 INT4 weight + FP8 KV cache다. 정확한 FP8 KV cache가 로컬 backend에서 지원되지 않으면 nearest supported KV cache 설정을 별도로 기록하고 비교한다.
+- `Qwen/Qwen3.5-9B`를 primary candidate로 둔다. Hugging Face model card는 Transformers/vLLM/SGLang 호환성을 명시하고, quantized artifact 탐색 경로도 제공한다.
 - `Gemma4 E4B`는 9B 이하 대안 후보지만 Korean campus QA 실험이 필요하다.
 - `EXAONE-4.0-1.2B`는 Korean-relevant reference로 남긴다. 너무 작으면 generation 품질이 낮을 수 있다.
 - `EXAONE-4.5-33B`는 한국어/문서 이해 측면에서 관심 후보지만 9B/15GB VRAM 제약을 넘어 cut 처리한다.
 
 Model metadata는 `data/model_shortlist.json`에 기록하고 `validators --model-shortlist`로 검사한다.
+Backend 결정과 검증 기준은 `docs/task2_llm_backend_plan.md`에 기록한다.

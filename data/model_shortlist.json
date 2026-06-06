@@ -4,7 +4,7 @@
     "task": "task2",
     "max_params_b": 9.0,
     "status": "primary",
-    "reason": "9B upper-bound generator candidate for source-grounded Korean campus QA; requires T4 quantization proof before final runtime use.",
+    "reason": "Primary local LLM generator target for Task 2; must pass INT4 weight + FP8 KV cache target or record the nearest supported KV setting under the 15GB VRAM gate.",
     "source_url": "https://huggingface.co/Qwen/Qwen3.5-9B"
   },
   {
@@ -12,7 +12,7 @@
     "task": "task2",
     "max_params_b": 4.0,
     "status": "candidate",
-    "reason": "Smaller fallback candidate if Qwen3.5-9B fails 15GB VRAM or latency checks.",
+    "reason": "Smaller local LLM candidate if Qwen3.5-9B fails the 15GB VRAM, latency, or quantization-support gates.",
     "source_url": "https://huggingface.co/docs/transformers/model_doc/qwen3_5"
   },
   {
@@ -38,5 +38,13 @@
     "status": "cut",
     "reason": "Recent Korean-relevant model, but exceeds the 9B and 15GB VRAM constraints for this project.",
     "source_url": "https://huggingface.co/docs/transformers/main/en/model_doc/exaone4_5"
+  },
+  {
+    "name": "deterministic extractive composer",
+    "task": "task2",
+    "max_params_b": 0.0,
+    "status": "reference",
+    "reason": "Control and emergency path for comparison; not the primary Task 2 natural-language generation backend.",
+    "source_url": null
   }
 ]

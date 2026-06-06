@@ -16,8 +16,8 @@
 - 로컬 Windows XPU 개발 환경은 `torch 2.9.1+xpu`를 개발용으로 유지하되, 최종 제출 runtime 기준으로 삼지 않는다.
 - 최종 inference time에는 외부 LLM API를 사용하지 않는다.
 - MCP나 full LLM tool-call agent는 제출 runtime 핵심 경로에 넣지 않는다.
-- Qwen3.5-9B를 Task 2/3 기본 generator 목표로 둔다.
-- Qwen3.5-9B가 Colab T4 검증을 통과하지 못하거나 batch 안정성이 부족하면 deterministic composer fallback으로 제출 가능해야 한다.
+- Task 2의 기본 generator 목표는 로컬 LLM이다. 1차 후보는 Qwen3.5-9B이며, 목표 quantization은 INT4 weight + FP8 KV cache다.
+- deterministic composer는 Task 2의 비교 기준, 디버그 기준, 비상 경로로 유지한다. 기본 제출 경로로 승격하려면 로컬 LLM 경로가 모델 로딩 또는 품질 gate를 통과하지 못했다는 증거가 필요하다.
 
 ## 2. 전체 데이터 흐름
 
@@ -46,8 +46,8 @@ chatbot.sh batch
   -> nlp_term.chat.batch.run_chat_file()
   -> classify.predict_label()
   -> retrieve.rank_docs()
-  -> chat.composer.compose_answer()
-  -> optional Qwen3.5-9B generator
+  -> local Qwen3.5-9B generator target
+  -> deterministic composer reference/emergency path
   -> outputs/chat_output.json
 
 Task 2 UI:
@@ -221,22 +221,24 @@ Task 2는 Gradio UI와 batch JSON 출력을 모두 지원한다.
 question
   -> classifier/router
   -> label/domain별 retrieval
-  -> deterministic template composer
-  -> optional Qwen3.5-9B generator
+  -> local Qwen3.5-9B generator target
+  -> deterministic composer reference/emergency path
   -> ChatOutput
 ```
 
-Qwen3.5-9B는 기본 generator 목표다. 다만 제출 안정성을 위해 composer fallback은 항상 유지한다.
+Qwen3.5-9B는 기본 generator 목표다. composer는 자연스러운 응답 생성기의 대체재가 아니라 품질 비교 기준과 비상 경로로 유지한다.
 
 Generator gate:
 
 - 모델 크기 9B 이하.
 - 외부 API 사용 금지.
-- Colab T4에서 load 성공.
-- context 4096 기준 peak VRAM이 14.5GB 이하.
+- INT4 weight + FP8 KV cache 목표. backend가 정확한 FP8 KV cache를 지원하지 않으면 nearest supported KV cache 설정을 기록하고 별도 비교한다.
+- 로컬 Arc/XPU 또는 Intel GPU backend에서 load 성공.
+- context 2048 smoke, context 4096 제출 후보 기준 peak VRAM이 15GB 이하.
 - 10개 대표 질문 batch가 10분 안에 완료.
-- deterministic composer보다 factual error가 늘지 않음.
-- 실패 시 자동으로 deterministic composer 출력 사용.
+- no-context generation보다 retrieval-context generation의 source/domain alignment가 높음.
+- deterministic composer보다 문장 자연성이 낮지 않음.
+- fallback output 사용률을 최소화함.
 
 ## 8. Task 3 최소 구현
 
@@ -314,7 +316,7 @@ uv run python -m nlp_term.chat.realtime --input data/test_realtime.json --output
 ## 11. 남은 리스크
 
 - 과제 문서의 `torch 2.5.1`과 로컬 XPU 개발용 `torch 2.9.1+xpu`가 다르다.
-- Qwen3.5-9B는 Colab T4에서 실측 전까지 안정성을 보장할 수 없다.
+- Qwen3.5-9B INT4 + FP8 KV target은 로컬 backend 실측 전까지 안정성을 보장할 수 없다.
 - CNU 사이트 HTML 구조가 바뀌면 crawler가 깨질 수 있다.
 - 식단 endpoint의 date parameter와 공식 chain 검증이 필요하다.
 - 졸업요건은 학과별 차이가 있으므로 답변 scope를 명시해야 한다.
