@@ -49,13 +49,52 @@ Interpretation:
 
 Project-specific target:
 
-| Artifact | Current | Stage 1 minimum | Stage 2 stable target |
-| --- | ---: | ---: | ---: |
-| raw source URL/file | 6 | 50 | 120 |
-| source-backed knowledge chunks | 15 | 300 | 800 |
-| Task 2 eval QA | 50 | 150 | 300 |
-| Task 1 classification rows | 657 | 1,500 | 2,500 |
-| graduation departments | 1 central PDF | 6 departments | 10 departments |
+| Artifact | Current | Stage 0 serial gate | Stage 1 minimum | Stage 2 stable target |
+| --- | ---: | ---: | ---: | ---: |
+| raw source URL/file | 6 | 8-12 | 50 | 120 |
+| source-backed knowledge chunks | 15 | 50 | 300 | 800 |
+| Task 2 eval QA | 50 | 50 source-checked | 150 | 300 |
+| Task 1 classification rows | 657 | 700 source-checked | 1,500 | 2,500 |
+| graduation departments | 1 central PDF | 1-2 departments | 6 departments | 10 departments |
+
+## Execution Strategy: Serial First, Parallel Later
+
+The first execution stage must prove the whole pipeline on a very small source set before broad crawling begins.
+
+Stage 0 is deliberately small:
+
+- graduation: central curriculum PDF plus 1-2 representative department sources.
+- notices: board list plus 3-5 detail pages.
+- academic calendar: one official calendar page.
+- dining: one current official or official-chain menu source.
+- shuttle: one official timetable source.
+
+Stage 0 pass means:
+
+- raw source snapshots are saved with checksums.
+- parsed text is clean enough to produce accepted chunks.
+- chunks preserve metadata needed by the task, such as department, year, date, meal, route, or source URL.
+- QA/evidence rows can be generated deterministically from the chunks.
+- lexical retrieval can find the intended label/source on the small QA set.
+- local LLM generation produces valid JSON and does not contradict the retrieved evidence in sampled checks.
+- every failure is logged and can be retried without manual state cleanup.
+
+Only after Stage 0 passes should the project move to Stage 1 broad source discovery. Only after Stage 1 passes should source collection be parallelized by domain.
+
+Parallelization rule:
+
+- Do not parallelize a parser or crawler family until one source in the same family has passed fetch, parse, chunk, QA, retrieval, and answer-generation checks.
+- Parallel workers may expand different domains only after their shared schema and validator gates are fixed.
+- If parallel expansion introduces repeated parse failures or page-chrome contamination, return to the serial loop for that domain.
+
+RAG engineering order:
+
+1. crawl and parse official sources.
+2. create clean chunks and evidence-bearing QA rows.
+3. run metadata-aware lexical retrieval as the first baseline.
+4. compare embedding retriever on the same QA set.
+5. compare embedding retriever plus reranker only after baseline retrieval metrics exist.
+6. adopt embedder/reranker only if measured source hit rate or answer critic pass rate improves enough to justify latency and dependency cost.
 
 ## Source Scope
 
@@ -286,6 +325,8 @@ Work:
 
 - Extend source inventory from five hardcoded source modules to a declarative inventory.
 - Inventory rows include label, domain, URL, source type, freshness policy, parser type, priority, official-chain status, and notes.
+- Mark each source with `stage`: `stage0`, `stage1`, or `stage2`.
+- Mark whether a source is active for the current serial loop or only a later expansion candidate.
 
 Files:
 
@@ -295,17 +336,37 @@ Files:
 
 Gate:
 
-- at least 50 Stage 1 source candidates are listed.
-- graduation has at least 6 departments.
+- at least 8 and at most 12 Stage 0 active source candidates are listed.
+- Stage 0 includes all five labels.
+- Stage 0 graduation includes the central curriculum PDF plus 1-2 department sources.
+- Stage 1 may list at least 50 later source candidates, but Stage 1 candidates are not fetched until Stage 0 passes.
 - every source has parser type among `html`, `board_detail`, `pdf`, `hwp`, `hwpx`, `calendar`, `dining`, `shuttle`.
 
 ## Phase 1: Source Discovery And Fetching
 
-### Step 1.1 Graduation Source Expansion
+### Step 1.1 Stage 0 Serial Source Loop
 
 Work:
 
-- Discover and register central curriculum docs and representative department graduation pages/files.
+- Fetch and parse only the Stage 0 active source set.
+- Run the full loop serially: fetch, parse, chunk, QA generation, retrieval smoke, and LLM batch smoke.
+- Fix parser/schema problems before adding more sources.
+
+Gate:
+
+- source probe contains 8-12 active Stage 0 sources.
+- all five labels are represented.
+- graduation contains central curriculum PDF plus 1-2 department sources.
+- total source-backed knowledge docs >= 50.
+- every active source either produces at least one accepted chunk or appears in the parse-failure log with a concrete reason.
+- retrieval smoke over Stage 0 QA records top-3 source hit rate.
+- `chatbot.sh batch` produces valid JSON on Stage 0 test prompts.
+
+### Step 1.2 Graduation Source Expansion
+
+Work:
+
+- After Stage 0 passes, discover and register central curriculum docs and representative department graduation pages/files.
 - Include PDF/HWP/HWPX when linked by official department pages.
 
 Gate:
@@ -315,7 +376,7 @@ Gate:
 - at least one PDF source remains.
 - HWP/HWPX attachments are either downloaded or recorded as unsupported/failure with reason.
 
-### Step 1.2 Notices Detail Expansion
+### Step 1.3 Notices Detail Expansion
 
 Work:
 
@@ -328,7 +389,7 @@ Gate:
 - at least 80% have parsed date.
 - list-only pages are not counted as detail content chunks.
 
-### Step 1.3 Calendar Structured Fetch
+### Step 1.4 Calendar Structured Fetch
 
 Work:
 
@@ -340,7 +401,7 @@ Gate:
 - every row has valid `start_date`.
 - event rows can be converted into knowledge chunks.
 
-### Step 1.4 Dining Freshness Fetch
+### Step 1.5 Dining Freshness Fetch
 
 Work:
 
@@ -354,7 +415,7 @@ Gate:
 - all rows have `fetched_at`.
 - rows older than TTL are flagged stale.
 
-### Step 1.5 Shuttle Structured Fetch
+### Step 1.6 Shuttle Structured Fetch
 
 Work:
 
@@ -489,11 +550,27 @@ Gate:
 
 ## Phase 5: Retrieval And RAG Evaluation
 
+### Step 5.0 Retrieval Basis Decision
+
+Decision:
+
+- Initial RAG retrieval basis is metadata-aware lexical retrieval.
+- Use character n-gram TF-IDF or BM25-style scoring as the first baseline because it is deterministic, fast, and easy to debug.
+- Apply metadata filters/boosts for label, department, curriculum year, date, freshness, cafeteria, route, and source type when those fields exist.
+- Do not introduce a vector database before Stage 0 passes.
+- Do not introduce a reranker before baseline retrieval metrics exist.
+
+Adoption gate for embedding/reranker:
+
+- embedding retrieval must improve top-3 source hit rate by at least 5 percentage points, or materially reduce per-label failures, on the same QA set.
+- reranker must improve source hit rate or source-alignment critic pass rate enough to justify added latency.
+- if lexical retrieval already passes gates and embedding/reranker adds complexity without clear gain, keep lexical for the next milestone.
+
 ### Step 5.1 Retrieval Metrics
 
 Work:
 
-- Evaluate retrieval using the expanded QA set.
+- Evaluate retrieval using the Stage 0 QA set first, then the expanded QA set.
 
 Command:
 
@@ -520,6 +597,21 @@ Gate:
 - best chunker improves or matches top-3 source hit rate.
 - no selected chunker increases page-chrome hits.
 - selected chunker is deterministic.
+
+### Step 5.3 Embedder And Reranker Experiment
+
+Work:
+
+- Compare lexical baseline, embedding retriever, and embedding retriever plus reranker on the same QA/evidence set.
+- Keep this as an experiment until the measured improvement justifies the dependency and latency.
+
+Gate:
+
+- metrics file contains all compared retrieval modes.
+- every mode uses the same knowledge checksum and QA checksum.
+- embedding mode improves top-3 source hit rate by at least 5 percentage points or documents why it is not adopted.
+- reranker mode records candidate count, latency, and source hit rate change.
+- adopted mode is documented as the Task 2 retrieval default; rejected modes remain documented as experiments.
 
 ## Phase 6: Task 1 Performance Recheck
 
@@ -666,14 +758,61 @@ Reason:
 - Each phase has machine-checkable acceptance criteria or an explicit new validator requirement.
 - Failure handling and re-review loops are defined.
 
+## Round 3 Planner Review
+
+Verdict: `REVISE`
+
+New discussion input:
+
+- Do not begin with broad crawling.
+- First prove a minimal serial loop works end to end.
+- After the structure is trusted, expand and parallelize by domain.
+- Decide the RAG basis explicitly.
+- Keep embedder/reranker as measured experiments, not default complexity.
+
+Findings:
+
+- The previous Stage 1 target was useful as a scale target, but it appeared too early in the execution handoff.
+- A large source inventory before parser confidence can hide bugs and duplicate page-chrome noise.
+- RAG engineering before clean source/evidence data would make retrieval failures hard to diagnose.
+
+Applied changes:
+
+- Added Stage 0 serial gate.
+- Added serial-first, parallel-later execution strategy.
+- Changed first source work unit from broad graduation expansion to Stage 0 serial source loop.
+- Added retrieval basis decision and embedder/reranker adoption gates.
+
+## Round 3 Architect Review
+
+Verdict: `PASS`
+
+Reason:
+
+- The revised sequence reduces architectural risk by proving one source family before multiplying it.
+- The collector/parser boundary remains deterministic.
+- Metadata-aware lexical retrieval is an appropriate first runtime because it preserves debuggability.
+- Embedding and reranking are still included, but only after a stable QA/evidence benchmark exists.
+
+## Round 3 Critic Review
+
+Verdict: `PASS`
+
+Reason:
+
+- The revised plan has a smaller first gate and clearer stop conditions.
+- The plan now prevents premature parallelization.
+- The plan avoids declaring RAG quality before source coverage, evidence spans, and retrieval metrics exist.
+- The plan includes an explicit measurement threshold for adopting embedder/reranker.
+
 ## Execution Handoff
 
 Recommended next command is not a shell command; it is the next implementation goal:
 
-> Implement Phase 0 and Phase 1.1 first: reset source inventory, add declarative source candidates, expand graduation source discovery to at least 6 representative departments, and verify source probe coverage.
+> Implement Phase 0 and Phase 1.1 first: reset source inventory, add declarative stage-aware source candidates, run the small Stage 0 serial source loop across all five labels, and verify fetch/parse/chunk/QA/retrieval/chat smoke before broad expansion.
 
 First passing work unit should commit with:
 
 ```text
-feat: expand source inventory for data growth
+feat: add stage-aware source inventory
 ```
