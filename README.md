@@ -38,6 +38,19 @@ Current local note:
 uv sync --extra xpu
 ```
 
+Run Task 2 batch output:
+
+```powershell
+bash ./chatbot.sh batch
+```
+
+Force a backend explicitly when crossing from PowerShell into bash:
+
+```powershell
+bash ./chatbot.sh batch deterministic
+bash ./chatbot.sh batch llama
+```
+
 Generate a submission-oriented package list near the end of the project:
 
 ```powershell
