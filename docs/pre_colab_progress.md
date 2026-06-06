@@ -56,3 +56,25 @@
   - after critic feedback, runtime knowledge consistency now fails unless composer, batch, and UI expose the planned shared knowledge path boundary
 - gate:
   - pass: validator CLI now exposes machine-checkable quality modes for later phases
+
+## Phase 1.1 Parser Utilities
+
+- status: pass
+- changed_files:
+  - `pyproject.toml`
+  - `uv.lock`
+  - `src/nlp_term/prepare/normalize.py`
+  - `src/nlp_term/prepare/parsers.py`
+  - `src/nlp_term/prepare/document_parsers.py`
+- command:
+  - `uv sync`
+  - `uv run python -m compileall src\nlp_term\prepare`
+  - `uv run ruff check src\nlp_term\prepare`
+  - `uv run python -c "from pathlib import Path; from nlp_term.prepare.document_parsers import pdf_to_text; text=pdf_to_text(Path('data/raw/graduation/graduation_curriculum_pdf.pdf')); print(len(text)); raise SystemExit(0 if len(text) >= 1000 else 1)"`
+- result:
+  - `olefile==0.47` and `pymupdf==1.27.2.3` installed by `uv sync`
+  - compileall exited 0
+  - ruff reported `All checks passed!`
+  - graduation PDF extraction returned 1,497,628 normalized characters
+- gate:
+  - pass: parser utilities exist for HTML/PDF/HWP/HWPX, and the known graduation PDF extracts more than 1,000 characters

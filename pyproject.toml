@@ -14,6 +14,8 @@ dependencies = [
   "numpy",
   "pandas",
   "pydantic",
+  "pymupdf",
+  "olefile",
   "python-dateutil",
   "pyyaml",
   "requests",
