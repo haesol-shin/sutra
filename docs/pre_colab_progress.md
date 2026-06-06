@@ -213,3 +213,21 @@
   - the score is high because the current generated seed contains strong label cues; later Task 1 performance work should add harder human-like questions before making any final performance claim
 - gate:
   - pass: classifier metrics are source-disjoint, checksum-bound, cover all labels, and exceed the advisory F1 thresholds
+
+## Phase 3.2 Grading Entrypoint Check
+
+- status: pass
+- changed_files:
+  - `src/classifier.ipynb`
+  - `docs/pre_colab_progress.md`
+- command:
+  - `uv run jupyter nbconvert --execute src/classifier.ipynb --to notebook --inplace`
+  - `uv run python -m nlp_term.validators --check-all --data-dir data --outputs-dir outputs`
+- result:
+  - notebook execution completed and wrote `outputs/cls_output.json`
+  - Windows emitted a ZMQ selector-thread runtime warning during nbconvert, but the command exited 0
+  - `data/test_cls.json` rows: 2
+  - `outputs/cls_output.json` rows: 2
+  - output labels: `[0, 3]`
+- gate:
+  - pass: classifier grading entrypoint produces valid output rows with labels in 0-4
