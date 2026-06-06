@@ -263,3 +263,33 @@
   - UI smoke printed `ui-smoke-ok`
 - gate:
   - pass: retrieval, batch, and UI now share the same knowledge-loading boundary
+
+## Phase 4.1 Retrieval Evaluation
+
+- status: pass
+- changed_files:
+  - `src/nlp_term/retrieve/evaluate.py`
+  - `docs/pre_colab_progress.md`
+- command:
+  - `uv run python -m compileall src\nlp_term\retrieve\evaluate.py`
+  - `uv run ruff check src\nlp_term\retrieve\evaluate.py`
+  - `uv run python -m nlp_term.retrieve.evaluate --knowledge data/knowledge_seed.json --qa data/qa_seed.json --output model/retrieval_metrics.json`
+  - `uv run python -m nlp_term.validators --retrieval-metrics model/retrieval_metrics.json --knowledge data/knowledge_seed.json --qa data/qa_seed.json --min-top1-label-accuracy 0.80 --min-top3-source-hit-rate 0.70`
+- result:
+  - retrieval evaluator uses the shared `rank_docs` path over `data/knowledge_seed.json`
+  - metrics include `knowledge_checksum` and `qa_checksum`
+  - critic requested validator hardening because retrieval metric validation could be run without `--knowledge` and `--qa`
+  - fix applied: retrieval metrics validation now requires both artifacts and enforces labels `0`-`4` in `per_label_failure_counts`
+  - QA rows evaluated: 50
+  - top-1 label accuracy: `1.0`
+  - top-3 source hit rate: `1.0`
+  - per-label failure counts: `{0: 0, 1: 0, 2: 0, 3: 0, 4: 0}`
+  - compileall exited 0
+  - ruff reported `All checks passed!`
+  - retrieval metrics validator printed `validation-ok`
+  - negative check without `--knowledge`/`--qa` now fails with `retrieval-metrics: --knowledge and --qa are required`
+- interpretation:
+  - this is a generated QA retrieval sanity metric, not final open-ended chatbot quality
+  - the score is high because QA seed questions include source-title cues
+- gate:
+  - pass: retrieval metrics are checksum-bound and exceed the advisory top-k thresholds

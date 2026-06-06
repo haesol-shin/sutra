@@ -501,9 +501,11 @@ def validate_retrieval_metrics(
     payload = read_json(path)
     if not isinstance(payload, dict):
         raise ValueError(f"{path} must contain a metrics object")
-    if knowledge_path and payload.get("knowledge_checksum") != file_checksum(knowledge_path):
+    if knowledge_path is None or qa_path is None:
+        raise ValueError("retrieval-metrics: --knowledge and --qa are required")
+    if payload.get("knowledge_checksum") != file_checksum(knowledge_path):
         raise ValueError("retrieval-metrics: knowledge_checksum does not match knowledge file")
-    if qa_path and payload.get("qa_checksum") != file_checksum(qa_path):
+    if payload.get("qa_checksum") != file_checksum(qa_path):
         raise ValueError("retrieval-metrics: qa_checksum does not match QA file")
     if min_top1_label_accuracy is not None:
         value = _metric_value(payload, ("top1_label_accuracy", "top_1_label_accuracy"))
@@ -513,8 +515,18 @@ def validate_retrieval_metrics(
         value = _metric_value(payload, ("top3_source_hit_rate", "top_3_source_hit_rate"))
         if value < min_top3_source_hit_rate:
             raise ValueError("retrieval-metrics: top3 source hit rate below threshold")
-    if "per_label_failure_counts" not in payload:
+    failure_counts = payload.get("per_label_failure_counts")
+    if not isinstance(failure_counts, dict):
         raise ValueError("retrieval-metrics: per_label_failure_counts is required")
+    expected_labels = {str(label) for label in range(5)}
+    if set(failure_counts) != expected_labels:
+        raise ValueError("retrieval-metrics: per_label_failure_counts must cover labels 0-4")
+    for label, count in failure_counts.items():
+        if not isinstance(count, int) or count < 0:
+            raise ValueError(f"retrieval-metrics: failure count for label {label} must be a non-negative integer")
+    row_count = payload.get("row_count")
+    if isinstance(row_count, int) and sum(failure_counts.values()) > row_count:
+        raise ValueError("retrieval-metrics: failure counts exceed row_count")
 
 
 def validate_chat_quality(
