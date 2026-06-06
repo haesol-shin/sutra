@@ -1,0 +1,109 @@
+{
+  "run_id": "stage0-recert-2026-06-07",
+  "created_at": "2026-06-07",
+  "evidence_scope": "stage0_smoke",
+  "claim_boundary": "This recertifies current source-backed generated artifacts and smoke metrics. It is not a real-user generalization claim.",
+  "artifact_status": {
+    "classifier_metrics": "recertified_current_checksum",
+    "retrieval_stage0_gate": "pass_at_0.75",
+    "retrieval_promotion_gate_0.80": "fail_currently"
+  },
+  "commands": [
+    {
+      "command": "uv run python -m nlp_term.prepare.build_all --output-dir data",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run python -m nlp_term.classify.train --input data/cls_train_seed.json --model-output model/classifier.joblib --metrics-output model/classifier_metrics.json",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run python -m nlp_term.retrieve.evaluate --knowledge data/knowledge_seed.json --qa data/qa_seed.json --output model/retrieval_metrics.json",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run python -m nlp_term.validators --classifier-metrics model/classifier_metrics.json --input data/cls_train_seed.json --require-source-disjoint --min-macro-f1 0.70 --min-weighted-f1 0.70 --min-class-f1 0.55",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run python -m nlp_term.validators --retrieval-metrics model/retrieval_metrics.json --knowledge data/knowledge_seed.json --qa data/qa_seed.json --require-metadata-aware --min-top1-label-accuracy 0.80 --min-top3-source-hit-rate 0.75",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run python -m nlp_term.validators --retrieval-metrics model/retrieval_metrics.json --knowledge data/knowledge_seed.json --qa data/qa_seed.json --require-metadata-aware --min-top1-label-accuracy 0.80 --min-top3-source-hit-rate 0.80",
+      "exit_code": 1,
+      "stdout_summary": "validation failed: retrieval-metrics: top3 source hit rate below threshold"
+    },
+    {
+      "command": "uv run python -m nlp_term.validators --seed-data --data-dir data",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run python -m nlp_term.validators --dataset-quality --data-dir data --min-cls-rows 700 --min-cls-per-label 40 --min-qa-rows 50 --min-qa-per-label 8 --require-qa-source --require-validated --no-dry-run",
+      "exit_code": 0
+    }
+  ],
+  "committed_artifacts": {
+    "data/cls_train_seed.json": {
+      "sha256": "eb5dfdd71541e707e80539dee3c23dda10ad153e4d2c7245a43d65d3a40b2ffb",
+      "bytes": 530001
+    },
+    "data/knowledge_seed.json": {
+      "sha256": "9ec8e51bbf263fef8ad430eb5e34ab74975f32c316c8823c17fedc48b52da7c3",
+      "bytes": 100586,
+      "doc_count": 53
+    },
+    "data/qa_seed.json": {
+      "sha256": "a5e4072f955b22bc7b34c7a599583ec44aea01f73cef50fbd5293d10529ea713",
+      "bytes": 41770,
+      "row_count": 50
+    },
+    "data/label_audit_seed.json": {
+      "sha256": "ab6757e8ab7a4e275702ec4c2e2f3a05e8322d6af34c8cda746184bcd28a6bb2",
+      "bytes": 501793
+    },
+    "data/source_parse_failures.json": {
+      "sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+      "bytes": 4
+    }
+  },
+  "local_ignored_artifacts": {
+    "model/classifier_metrics.json": {
+      "sha256": "757f7d9183fbf26243f0e5fa33b3f84440149cea33626750fa756fc5b43e0dd7",
+      "bytes": 4996,
+      "evaluation_scope": "source_disjoint",
+      "input_checksum": "eb5dfdd71541e707e80539dee3c23dda10ad153e4d2c7245a43d65d3a40b2ffb",
+      "macro_f1": 1.0,
+      "weighted_f1": 1.0,
+      "source_overlap_count": 0,
+      "class_f1": {
+        "0": 1.0,
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0
+      }
+    },
+    "model/retrieval_metrics.json": {
+      "sha256": "815c3d86ce0ea66e5357d0d3baab648dc9a18f883eaee9f7adbcfeea22e00c4b",
+      "bytes": 24453,
+      "evaluation_scope": "qa_seed_retrieval_sanity",
+      "knowledge_checksum": "9ec8e51bbf263fef8ad430eb5e34ab74975f32c316c8823c17fedc48b52da7c3",
+      "qa_checksum": "a5e4072f955b22bc7b34c7a599583ec44aea01f73cef50fbd5293d10529ea713",
+      "top1_label_accuracy": 1.0,
+      "top3_source_hit_rate": 0.78,
+      "per_label_failure_counts": {
+        "0": 9,
+        "1": 0,
+        "2": 2,
+        "3": 0,
+        "4": 0
+      },
+      "row_count": 50
+    }
+  },
+  "next_stage_inputs": [
+    "Task 1 metrics are checksum-current but synthetic/source-generated; add hard eval and leakage gates before generalization claims.",
+    "Retrieval passes Stage 0 .75 smoke gate but fails .80 promotion gate; prioritize per-label and graduation-specific retrieval diagnostics."
+  ]
+}

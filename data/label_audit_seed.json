@@ -12510,7 +12510,7 @@
     "reviewer_override": null
   },
   {
-    "question": "16 4566 공지 2026학년도 제1학기 학생 출석인정 내용을 묻는다면 어떤 질문 유형인가요?",
+    "question": "16 4567 공지 2026학년도 제1학기 학생 출석인정 내용을 묻는다면 어떤 질문 유형인가요?",
     "source_doc_id": "academic_notice_board_chunk_1",
     "vote_labels": [
       1,
@@ -12525,7 +12525,7 @@
     "reviewer_override": null
   },
   {
-    "question": "학사공지 기준으로 16 4566 공지 2026학년도 제1학기 학생 출석인정 정보를 확인하고 싶어요.",
+    "question": "학사공지 기준으로 16 4567 공지 2026학년도 제1학기 학생 출석인정 정보를 확인하고 싶어요.",
     "source_doc_id": "academic_notice_board_chunk_1",
     "vote_labels": [
       1,
@@ -12540,7 +12540,7 @@
     "reviewer_override": null
   },
   {
-    "question": "공식 자료의 16 4566 공지 2026학년도 제1학기 학생 출석인정 부분은 어디에 해당하나요?",
+    "question": "공식 자료의 16 4567 공지 2026학년도 제1학기 학생 출석인정 부분은 어디에 해당하나요?",
     "source_doc_id": "academic_notice_board_chunk_1",
     "vote_labels": [
       1,
@@ -13065,7 +13065,7 @@
     "reviewer_override": null
   },
   {
-    "question": "4805 파일 안내문 pdf 붙임1 2026학년도 제1학기 내용을 묻는다면 어떤 질문 유형인가요?",
+    "question": "4806 파일 안내문 pdf 붙임1 2026학년도 제1학기 내용을 묻는다면 어떤 질문 유형인가요?",
     "source_doc_id": "academic_notice_detail_2511200_chunk_1",
     "vote_labels": [
       1,
@@ -13080,7 +13080,7 @@
     "reviewer_override": null
   },
   {
-    "question": "학사공지 기준으로 4805 파일 안내문 pdf 붙임1 2026학년도 제1학기 정보를 확인하고 싶어요.",
+    "question": "학사공지 기준으로 4806 파일 안내문 pdf 붙임1 2026학년도 제1학기 정보를 확인하고 싶어요.",
     "source_doc_id": "academic_notice_detail_2511200_chunk_1",
     "vote_labels": [
       1,
@@ -13095,7 +13095,7 @@
     "reviewer_override": null
   },
   {
-    "question": "공식 자료의 4805 파일 안내문 pdf 붙임1 2026학년도 제1학기 부분은 어디에 해당하나요?",
+    "question": "공식 자료의 4806 파일 안내문 pdf 붙임1 2026학년도 제1학기 부분은 어디에 해당하나요?",
     "source_doc_id": "academic_notice_detail_2511200_chunk_1",
     "vote_labels": [
       1,
@@ -13170,7 +13170,7 @@
     "reviewer_override": null
   },
   {
-    "question": "5667 파일 안내문 pdf 붙임1 출석인정 신청 내용을 묻는다면 어떤 질문 유형인가요?",
+    "question": "5668 파일 안내문 pdf 붙임1 출석인정 신청 내용을 묻는다면 어떤 질문 유형인가요?",
     "source_doc_id": "academic_notice_detail_2512124_chunk_1",
     "vote_labels": [
       1,
@@ -13185,7 +13185,7 @@
     "reviewer_override": null
   },
   {
-    "question": "학사공지 기준으로 5667 파일 안내문 pdf 붙임1 출석인정 신청 정보를 확인하고 싶어요.",
+    "question": "학사공지 기준으로 5668 파일 안내문 pdf 붙임1 출석인정 신청 정보를 확인하고 싶어요.",
     "source_doc_id": "academic_notice_detail_2512124_chunk_1",
     "vote_labels": [
       1,
@@ -13200,7 +13200,7 @@
     "reviewer_override": null
   },
   {
-    "question": "공식 자료의 5667 파일 안내문 pdf 붙임1 출석인정 신청 부분은 어디에 해당하나요?",
+    "question": "공식 자료의 5668 파일 안내문 pdf 붙임1 출석인정 신청 부분은 어디에 해당하나요?",
     "source_doc_id": "academic_notice_detail_2512124_chunk_1",
     "vote_labels": [
       1,
