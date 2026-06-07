@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -331,3 +332,35 @@ def test_harness_prompt_contains_user_safe_temporal_context(tmp_path: Path) -> N
     assert "2026-06-16" in captured["prompt"]
     assert "TemporalIntent" not in captured["prompt"]
     assert "confidence" not in captured["prompt"]
+
+
+def test_temporal_questions_can_send_more_than_three_evidence_items(tmp_path: Path) -> None:
+    knowledge_path = tmp_path / "knowledge.json"
+    docs = [
+        {
+            "doc_id": f"calendar_doc_{index}",
+            "label": 2,
+            "domain": "academic_calendar",
+            "title": f"학사일정 {index}",
+            "body": f"이번 학기 학사일정 참고 자료 {index}. 2026년 6월 19일 종강일 관련 자료입니다.",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "source_id": "academic_calendar",
+            "metadata": {"date_span": "2026-06-19", "source_name": f"학사일정 {index}"},
+        }
+        for index in range(5)
+    ]
+    knowledge_path.write_text(json.dumps(docs, ensure_ascii=False), encoding="utf-8")
+    captured: dict[str, str] = {}
+
+    def writer(prompt: str) -> str:
+        captured["prompt"] = prompt
+        return "이번 학기 종강일은 2026년 6월 19일입니다."
+
+    answer_with_harness(
+        "이번 학기 종강일이 언제인가요?",
+        knowledge_path=knowledge_path,
+        generator=writer,
+        question_time=datetime(2026, 6, 8, tzinfo=timezone.utc),
+    )
+
+    assert captured["prompt"].count("핵심 사실:") >= 5

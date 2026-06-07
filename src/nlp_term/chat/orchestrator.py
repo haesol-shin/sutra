@@ -56,15 +56,16 @@ def answer_with_harness(
         reference_time=resolved_question_time,
     )
     answer_kind = _infer_answer_kind(question, route_domain=route_domain, mode=mode)
+    evidence_pack_size = _evidence_pack_size(temporal_intent)
 
     knowledge = load_knowledge_with_metadata(knowledge_path)
-    retrieved = rank_docs(question, knowledge.docs, top_k=6)
+    retrieved = rank_docs(question, knowledge.docs, top_k=max(6, evidence_pack_size))
     docs_by_id = {doc.doc_id: doc for doc in knowledge.docs}
     retrieved_pairs = [
         (docs_by_id[row.doc_id], row.score)
         for row in retrieved
         if row.doc_id in docs_by_id and docs_by_id[row.doc_id].label == route.label
-    ][:3]
+    ][:evidence_pack_size]
     retrieved_docs = [doc for doc, _score in retrieved_pairs]
     retrieved_scores = [score for _doc, score in retrieved_pairs]
     source_statuses = [build_source_status(doc) for doc in retrieved_docs]
@@ -114,6 +115,8 @@ def answer_with_harness(
         label=route.label,
         domain=route_domain,
         docs=retrieved_docs,
+        max_items=evidence_pack_size,
+        max_fact_chars=500,
         temporal_context=_render_temporal_context(temporal_intent),
     )
     if not pack.items:
@@ -236,6 +239,14 @@ def _candidate_specs(allowed_stages: set[Stage]) -> list[SourceSpec]:
     for stage in allowed_stages:
         specs.extend(iter_specs(stage=stage, active_only=True))
     return specs
+
+
+def _evidence_pack_size(temporal_intent) -> int:
+    if temporal_intent.temporal_type in {"period_summary", "changed_since"}:
+        return 8
+    if temporal_intent.freshness_required or temporal_intent.temporal_type != "none":
+        return 5
+    return 3
 
 
 def _generate_answer(
