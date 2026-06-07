@@ -264,3 +264,34 @@ def test_harness_trace_records_next_week_temporal_intent(tmp_path: Path) -> None
     assert result.trace.target_start == "2026-06-16"
     assert result.trace.target_end == "2026-06-16"
     assert "date_filtered_evidence_needed" in result.trace.retrieval_requirements
+
+
+def test_harness_blocks_dining_evidence_for_wrong_target_date(tmp_path: Path) -> None:
+    knowledge_path = tmp_path / "knowledge.json"
+    knowledge_path.write_text(
+        "["
+        "{"
+        '"doc_id":"dining_doc",'
+        '"label":3,'
+        '"domain":"dining",'
+        '"title":"식단",'
+        '"body":"2026년 6월 9일 2학생회관 점심 메뉴는 백반입니다.",'
+        '"source_url":"https://mobileadmin.cnu.ac.kr/food/index.jsp",'
+        '"source_id":"cnu_mobile_food",'
+        '"metadata":{"menu_date":"2026-06-09","location":"2학생회관","raw_fetched_at":"2026-06-08T00:00:00+09:00"}'
+        "}"
+        "]",
+        encoding="utf-8",
+    )
+
+    result = answer_with_harness(
+        "다음주 화요일 2학생회관 메뉴가 어떻게 되나요?",
+        knowledge_path=knowledge_path,
+        generator=lambda prompt: "2026년 6월 9일 2학생회관 점심은 백반입니다.",
+        question_time=datetime(2026, 6, 8, tzinfo=timezone.utc),
+    )
+
+    assert result.output_status == OutputStatus.FAIL_CLOSED
+    assert result.trace.target_start == "2026-06-16"
+    assert result.trace.evidence_sufficiency_status == EvidenceSufficiencyStatus.INSUFFICIENT
+    assert "백반" not in result.output.model

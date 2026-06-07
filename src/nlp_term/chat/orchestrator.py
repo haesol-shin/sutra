@@ -79,6 +79,7 @@ def answer_with_harness(
         route_domain=route_domain,
         min_top_score=min_top_score,
         question_time=question_time,
+        temporal_intent=temporal_intent,
     )
 
     if sufficiency.status != EvidenceSufficiencyStatus.SUFFICIENT:

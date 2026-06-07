@@ -11,7 +11,9 @@ from nlp_term.chat.state_contract import (
     EvidenceSufficiencyStatus,
     FetchDecision,
     FreshnessStatus,
+    RetrievalRequirement,
     SourceStatus,
+    TemporalIntent,
 )
 from nlp_term.collect.source_inventory import SourceSpec
 from nlp_term.schemas import Domain, KnowledgeDoc
@@ -27,6 +29,7 @@ def evaluate_evidence_sufficiency(
     route_domain: Domain,
     min_top_score: float = 0.20,
     question_time: datetime | None = None,
+    temporal_intent: TemporalIntent | None = None,
 ) -> EvidenceSufficiencyDecision:
     candidates = [spec for spec in candidate_specs if spec.active and spec.domain == route_domain]
     supported_candidates = fetchable_specs(candidates, route_domain=route_domain)
@@ -96,6 +99,15 @@ def evaluate_evidence_sufficiency(
             reasons=["current_fact_requires_structured_fields"],
         )
 
+    if temporal_intent and RetrievalRequirement.DATE_FILTERED_EVIDENCE_NEEDED in temporal_intent.retrieval_requirements:
+        if not _docs_match_temporal_target(docs, temporal_intent=temporal_intent):
+            return EvidenceSufficiencyDecision(
+                status=EvidenceSufficiencyStatus.INSUFFICIENT,
+                fetch_decision=FetchDecision.FETCH_REQUIRED_BUT_NOT_IMPLEMENTED,
+                freshness_status=FreshnessStatus.UNKNOWN,
+                reasons=["date_filtered_evidence_missing_or_mismatched"],
+            )
+
     return EvidenceSufficiencyDecision(
         status=EvidenceSufficiencyStatus.SUFFICIENT,
         fetch_decision=FetchDecision.SKIPPED_RAG_SUFFICIENT,
@@ -149,6 +161,18 @@ def _current_fact_blocking_status(
 def _has_structured_current_fact(docs: list[KnowledgeDoc]) -> bool:
     required_any = ("structured_fields", "valid_at", "effective_date", "menu_date", "operation_date")
     return any(any(key in doc.metadata for key in required_any) for doc in docs)
+
+
+def _docs_match_temporal_target(docs: list[KnowledgeDoc], *, temporal_intent: TemporalIntent) -> bool:
+    if temporal_intent.target_start is None:
+        return True
+    target = temporal_intent.target_start.isoformat()
+    date_keys = ("menu_date", "operation_date", "valid_at", "effective_date", "date_span", "posted_date")
+    for doc in docs:
+        values = [doc.date or "", *(str(doc.metadata.get(key, "")) for key in date_keys), doc.body]
+        if any(target in value for value in values if value):
+            return True
+    return False
 
 
 def _static_freshness(answer_kind: AnswerKind, source_statuses: list[SourceStatus]) -> FreshnessStatus:
