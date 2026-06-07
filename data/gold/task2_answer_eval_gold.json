@@ -1,0 +1,177 @@
+[
+  {
+    "user": "생화학과 졸업요건은 어디서부터 확인하면 돼?",
+    "expected_fact_ids": ["grad_biochem_curriculum_year"],
+    "must_not_claim": ["확인되지 않은 최신 정보"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "생화학과 전공 학점 기준 간단히 알려줘",
+    "expected_fact_ids": ["grad_biochem_major_core"],
+    "must_not_claim": ["학과 공지가 아닌 내용"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "편입생도 미래설계상담을 들어야 해?",
+    "expected_fact_ids": ["grad_biochem_future_design"],
+    "must_not_claim": ["모든 편입생 면제"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "2025 교육과정이면 교양 기준 뭐 봐야 해?",
+    "expected_fact_ids": ["grad_biochem_liberal_2025"],
+    "must_not_claim": ["임의 학점 기준"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "생화학과 졸업하려면 총 이수학점도 맞춰야 하지?",
+    "expected_fact_ids": ["grad_biochem_total_credit"],
+    "must_not_claim": ["출처 없는 학점 계산"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "학사정보게시판에는 어떤 항목들이 보여?",
+    "expected_fact_ids": ["notice_board_list"],
+    "must_not_claim": ["실시간 최신 목록 확정"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "휴학 복학 신청 안내는 어디서 확인해?",
+    "expected_fact_ids": ["notice_leave_return"],
+    "must_not_claim": ["신청 완료 가능"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "출석인정 신청 변경 사항 공지 있었어?",
+    "expected_fact_ids": ["notice_attendance_change"],
+    "must_not_claim": ["개인별 승인 여부"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "다른 대학 계절학기 수학 안내 찾고 싶어",
+    "expected_fact_ids": ["notice_other_university"],
+    "must_not_claim": ["지원 자격 단정"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "계절학기 수강취소 기간 안내도 게시판에 있어?",
+    "expected_fact_ids": ["notice_course_cancel"],
+    "must_not_claim": ["마감일 임의 생성"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "성적발표일은 학사일정에서 볼 수 있어?",
+    "expected_fact_ids": ["calendar_grade_release"],
+    "must_not_claim": ["개인 성적 확인 가능"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "휴복학 신청 기간이 어느 정도로 잡혀 있어?",
+    "expected_fact_ids": ["calendar_leave_return"],
+    "must_not_claim": ["지금 신청 가능 단정"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "제1학기 수강신청 기간 알려줘",
+    "expected_fact_ids": ["calendar_course_registration"],
+    "must_not_claim": ["개인 시간표 생성"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "개강일은 언제로 되어 있어?",
+    "expected_fact_ids": ["calendar_semester_start"],
+    "must_not_claim": ["비공식 일정"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "하기방학이랑 계절학기 기간 같이 확인하고 싶어",
+    "expected_fact_ids": ["calendar_summer_vacation"],
+    "must_not_claim": ["개인별 수강 상태"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "식단 페이지는 어떤 정보를 보여줘?",
+    "expected_fact_ids": ["dining_weekly_menu"],
+    "must_not_claim": ["현재 먹을 수 있는 메뉴 확정"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "학생회관별 식단도 구분돼?",
+    "expected_fact_ids": ["dining_halls"],
+    "must_not_claim": ["모든 식당 운영 확정"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "조식 운영 여부도 식단에서 볼 수 있어?",
+    "expected_fact_ids": ["dining_breakfast_status"],
+    "must_not_claim": ["실시간 배식 상태"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "중식 운영 상태 확인해줘",
+    "expected_fact_ids": ["dining_lunch_status"],
+    "must_not_claim": ["오늘 메뉴명 임의 생성"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "석식도 운영 여부가 나와?",
+    "expected_fact_ids": ["dining_dinner_status"],
+    "must_not_claim": ["운영 시간 임의 생성"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "셔틀은 학기 중 평일에만 운영되는 거야?",
+    "expected_fact_ids": ["shuttle_semester_weekday"],
+    "must_not_claim": ["매일 운행"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "방학이나 주말에도 셔틀 다녀?",
+    "expected_fact_ids": ["shuttle_not_operating"],
+    "must_not_claim": ["방학 운행 확정"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "셔틀 시간표는 바뀔 수도 있어?",
+    "expected_fact_ids": ["shuttle_schedule_change"],
+    "must_not_claim": ["시간표 영구 고정"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "셔틀이 조금 늦을 수도 있는지 궁금해",
+    "expected_fact_ids": ["shuttle_delay"],
+    "must_not_claim": ["정시 도착 보장"],
+    "naturalness_score": null,
+    "factuality_score": null
+  },
+  {
+    "user": "학교 셔틀 운행 주체는 어디야?",
+    "expected_fact_ids": ["shuttle_operator"],
+    "must_not_claim": ["외부 업체 단정"],
+    "naturalness_score": null,
+    "factuality_score": null
+  }
+]

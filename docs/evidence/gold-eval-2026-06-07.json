@@ -1,0 +1,74 @@
+{
+  "run_id": "gold-eval-2026-06-07",
+  "created_at": "2026-06-07",
+  "evidence_scope": "task1_task2_gold_contract_and_task1_gold_eval",
+  "claim_boundary": "This records a small human-style gold evaluation contract and current Task 1 classifier result. The gold set is intentionally small and should not be treated as final generalization evidence.",
+  "commands": [
+    {
+      "command": "uv run python -m nlp_term.validators --gold-data data/gold --min-task1-gold-rows 50 --min-task1-gold-per-label 10 --min-task2-facts-per-label 5 --min-task2-answer-rows 25",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run pytest tests/test_classify_gold_eval.py tests/test_gold_contracts.py",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run python -m nlp_term.classify.evaluate_gold --input data/gold/task1_human_gold.json --output model/metrics/gold_classifier_metrics.json",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run python -m nlp_term.validators --metric-claim model/metrics/gold_classifier_metrics.json --input data/gold/task1_human_gold.json --require-dataset-origin human_gold --require-claim-level heldout_eval",
+      "exit_code": 0
+    }
+  ],
+  "committed_artifacts": {
+    "data/gold/task1_human_gold.json": {
+      "sha256": "af130130513b8111ffd6b5fcd3b49ec0a9ef26a970de07456d8dc4194475f402",
+      "row_count": 50,
+      "labels": {
+        "0": 10,
+        "1": 10,
+        "2": 10,
+        "3": 10,
+        "4": 10
+      }
+    },
+    "data/gold/task2_fact_gold.json": {
+      "sha256": "5fec5710f4e8bd9e06c1389c9956a1a7b18ea7778f4779cc3de65dd810dacd17",
+      "row_count": 25,
+      "facts_per_label": 5
+    },
+    "data/gold/task2_answer_eval_gold.json": {
+      "sha256": "585557348654865ca77b74394b19ad904048dfc57d4bebfe397aed1eaefabef7",
+      "row_count": 25
+    }
+  },
+  "local_ignored_artifacts": {
+    "model/metrics/gold_classifier_metrics.json": {
+      "sha256": "ab03944e8fc140d0061c910ddc067f0c79d0563d70e6bf06b84b446222a266df",
+      "evaluation_set_type": "human_gold",
+      "dataset_origin": "human_gold",
+      "claim_level": "heldout_eval",
+      "evaluation_scope": "task1_human_gold",
+      "input_checksum": "af130130513b8111ffd6b5fcd3b49ec0a9ef26a970de07456d8dc4194475f402",
+      "row_count": 50,
+      "macro_f1": 0.8385026737967914,
+      "weighted_f1": 0.8385026737967913,
+      "accuracy": 0.84,
+      "class_f1": {
+        "0": 0.9090909090909091,
+        "1": 0.8235294117647058,
+        "2": 0.7272727272727273,
+        "3": 0.9090909090909091,
+        "4": 0.8235294117647058
+      }
+    }
+  },
+  "interpretation": {
+    "seed_metric_inflation_confirmed": true,
+    "current_gold_macro_f1": 0.8385026737967914,
+    "current_gold_weighted_f1": 0.8385026737967913,
+    "weakest_label": "2",
+    "next_action": "Expand and harden gold data before using metrics as final Task 1 evidence."
+  }
+}

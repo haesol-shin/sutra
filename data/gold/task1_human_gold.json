@@ -1,0 +1,452 @@
+[
+  {
+    "question": "생화학과 졸업하려면 뭘 먼저 확인해야 해?",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "전공 학점 부족하면 졸업 못 해?",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "short",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "교양을 너무 많이 들으면 졸업학점에 다 들어가?",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "boundary",
+    "ambiguous_reason": "학점 계산과 졸업요건 경계 질문",
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "미래설계상담 안 들으면 졸업에 문제 있어?",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "교육과정 연도는 졸업 기준 볼 때 왜 중요해?",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "전공선택 인정과목은 졸업요건에 어떻게 반영돼?",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "졸업 전에 총 몇 학점 채워야 하는지 알고 싶어",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "편입생도 상담 과목 이수해야 돼?",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "ambiguous",
+    "ambiguous_reason": "상담 과목만 언급하지만 졸업요건 맥락",
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "졸업 사정 전에 교양 영역 확인하고 싶어",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "기초교양이랑 균형교양 기준 좀 알려줘",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "boundary",
+    "ambiguous_reason": "교육과정 질문이지만 졸업요건 기준 확인",
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "휴학 신청 공지 어디서 봐?",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "이번 학기 출석인정 신청 바뀐 거 있어?",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "계절학기 수강취소 안내 올라왔는지 확인하고 싶어",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "다른 대학 수학 신청 안내문 찾고 있어",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "장학생 모집 글은 어디에 떠?",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "boundary",
+    "ambiguous_reason": "장학 정보와 일반 공지 경계",
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "학사지원과에서 올린 안내 확인하고 싶어",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "ambiguous",
+    "ambiguous_reason": "안내 종류가 넓지만 게시글 확인 의도",
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "최근 올라온 학교 안내문 목록 보여줄 수 있어?",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "복학 신청 관련 글 찾는 중이야",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "short",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "첨부파일 있는 학사 안내 어디서 받아?",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "boundary",
+    "ambiguous_reason": "파일 다운로드 질문이지만 공지 확인 의도",
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "수강 관련 안내 게시글 좀 찾아줘",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "이번 학기 개강일 언제야?",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "수강신청 기간 알려줘",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "short",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "등록금 납부 일정은 어디서 확인해?",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "boundary",
+    "ambiguous_reason": "납부 안내와 학사일정 경계",
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "수업일수 사분의 일선 날짜가 궁금해",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "하기 계절학기는 언제 시작해?",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "학위수여식 날짜 알려줘",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "휴복학 신청 기간이 언제까지야?",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "ambiguous",
+    "ambiguous_reason": "휴복학 공지와 일정 경계",
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "성적발표일 확인하고 싶어",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "보충강의 기간 언제 잡혀 있어?",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "종강하고 방학 시작하는 날 알려줘",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "오늘 학식 운영해?",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "short",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "학생회관 점심 메뉴 뭐 나와?",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "제이학생회관 식단 확인하고 싶어",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "typo",
+    "ambiguous_reason": "숫자 표기를 말소리처럼 쓴 질문",
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "저녁에 학생식당 문 여는지 알려줘",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "생활과학대학 쪽 밥 메뉴 볼 수 있어?",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "조식 운영안함인지 확인해줘",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "오늘 메뉴가 다 운영안함으로 뜨는지 궁금해",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "boundary",
+    "ambiguous_reason": "메뉴 내용과 운영 여부가 함께 있는 질문",
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "점심 뭐 먹을 수 있나?",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "ambiguous",
+    "ambiguous_reason": "식단이라고 직접 말하지 않는 구어체 질문",
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "학식 메뉴표 어디서 봐?",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "학생회관별 중식 운영 현황 알려줘",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "학교 셔틀 평일에만 다녀?",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "통학버스 시간표 보고 싶어",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "월평역에서 학교 가는 차 있어?",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "방학에도 버스 운행해?",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "boundary",
+    "ambiguous_reason": "운행 기준과 일정 경계",
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "주말 셔틀 있는지 알려줘",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "short",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "정류장별 도착 시간이 조금씩 밀릴 수 있어?",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "ambiguous",
+    "ambiguous_reason": "교통상황 질문이지만 셔틀 운행 정보",
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "학교버스 어디서 타야 하는지 궁금해",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "공휴일에도 통학 차가 다니나?",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "수업 끝나고 야간 셔틀 탈 수 있어?",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "boundary",
+    "ambiguous_reason": "수업 시간과 운행 기준 경계",
+    "annotator": "human",
+    "validated": true
+  },
+  {
+    "question": "버스가 오분 정도 늦어질 수도 있는 거야?",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "human",
+    "validated": true
+  }
+]
