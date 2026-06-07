@@ -74,3 +74,27 @@
   - `uv run python -m nlp_term.classify.analyze_gold_errors --input data/gold/task1_human_gold.json --output model/metrics/task1_gold_error_analysis.json`
   - `uv run ruff check src tests`
 - closed_at: `2026-06-07`
+
+## goal-2.3-step-02-to-03-2026-06-07
+
+- meeting_id: `goal-2.3-step-02-to-03-2026-06-07`
+- opened_at: `2026-06-07`
+- trigger_type: `mandatory_step_transition`
+- phase: `Goal 2.3 Evaluation Diagnostics`
+- step_id: `step-02-to-step-03`
+- verdict_before_transition: `pass_no_reject`
+- roles_present:
+  - Facilitator/Planner
+  - Source/Data Steward
+  - Runtime/Architecture Engineer
+  - Evaluation/Validator Engineer
+  - Red-Team Critic
+- status: `closed`
+- selected_option: proceed to Task 1 improvement-candidate separation
+- evidence_path: `docs/meetings/goal-2.3-step-02-evidence.md`
+- meeting_path: `docs/meetings/goal-2.3-step-02-meeting.md`
+- handoff_path: `docs/meetings/goal-2.3-step-02-handoff.md`
+- commands_to_run:
+  - `rg -n "label 2|학사일정|no model improvement|data coverage|boundary|classifier" docs/task1_error_improvement_candidates.md`
+  - `uv run ruff check src tests`
+- closed_at: `2026-06-07`
