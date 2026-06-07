@@ -4,7 +4,7 @@
 
 **Goal:** Expand retrieval candidates and trace pre/post domain filtering so Task 2 can diagnose whether failures come from ranking, label filtering, or evidence pack compression.
 
-**Prerequisite:** Run `docs/superpowers/plans/2026-06-08-structure-aware-chunking.md` first. Retrieval candidate expansion assumes `data/knowledge_seed.json` has been regenerated with atomic chunking metadata, every generated knowledge row has `metadata.chunking_strategy` and `metadata.boundary_type`, and retrieval/public-probe non-regression checks passed.
+**Prerequisite:** Run `docs/superpowers/plans/2026-06-08-structure-aware-chunking.md` first. Retrieval candidate expansion assumes `data/knowledge_seed.json` has been regenerated with atomic-aware chunking metadata, every generated knowledge row has `metadata.chunking_strategy`, `metadata.boundary_type`, and `metadata.chunk_confidence`, and retrieval/public-probe non-regression checks passed.
 
 **Architecture:** Keep the current lexical ranker for this goal, but stop treating `top_k=6` and final pack size as the same decision. Retrieve a larger candidate pool, preserve pre-filter trace rows, then select route-domain evidence for sufficiency and pack building.
 

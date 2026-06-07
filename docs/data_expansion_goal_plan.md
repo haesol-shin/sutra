@@ -444,8 +444,9 @@ Source-specific parser contract:
 Chunking policy:
 
 - Prefer source-specific structured rows when the source is naturally tabular or time-sensitive.
-- Preserve domain-specific atomic units before recursive splitting. Recursive section-aware text splitting is preferred only for prose documents.
+- Preserve obvious domain-specific atomic units before recursive splitting when the pattern is clear. Recursive section-aware text splitting remains the default for prose documents until source-specific parsers are implemented.
 - Use fixed-size sliding windows only as a fallback when no paragraph, heading, row, or sentence boundary can be detected.
+- Mark fixed-size fallback chunks as low-confidence preservation chunks; do not treat them as structured current-fact evidence.
 - Preserve tables by row or logical block before applying character limits.
 - Keep deterministic provenance in every `KnowledgeDoc`: `chunking_strategy`, `chunk_index`, `char_start`, `char_end`, and source checksum when available.
 - A source-specific parser is not considered ready until one source in that family passes fetch, parse, chunk, QA, retrieval, and answer-generation smoke.
