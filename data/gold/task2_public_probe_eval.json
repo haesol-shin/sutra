@@ -1,0 +1,100 @@
+[
+  {
+    "id": "public_probe_01",
+    "question": "졸업까지 몇 학점 들어야 하나요?",
+    "expected_label": 0,
+    "expected_temporal_type": "none",
+    "expected_behavior": "Answer generally, mention department/admission-year differences, do not cite an unrelated department as if universal."
+  },
+  {
+    "id": "public_probe_02",
+    "question": "이번 학기 수강신청은 언제 시작하나요?",
+    "expected_label": 2,
+    "expected_temporal_type": "date_lookup",
+    "expected_behavior": "Return the matching course registration start date if calendar evidence supports it."
+  },
+  {
+    "id": "public_probe_03",
+    "question": "오늘 학식 뭐 나와요?",
+    "expected_label": 3,
+    "expected_temporal_type": "current_snapshot",
+    "expected_behavior": "Resolve today from runtime context and use only same-date dining evidence or controlled fetch."
+  },
+  {
+    "id": "public_probe_04",
+    "question": "다음주에 셔틀버스는 정상 운행하나요?",
+    "expected_label": 4,
+    "expected_temporal_type": "ongoing_status",
+    "expected_behavior": "Resolve next ISO week and avoid normal-operation claims without timetable or effective-date evidence."
+  },
+  {
+    "id": "public_probe_05",
+    "question": "이번에 올라온 공지사항 어디서 볼 수 있어요?",
+    "expected_label": 1,
+    "expected_temporal_type": "latest_item",
+    "expected_behavior": "Provide official notice board location or latest item source when available."
+  },
+  {
+    "id": "public_probe_06",
+    "question": "새로 업데이트된 셔틀버스 정류장이 있을까요?",
+    "expected_label": 4,
+    "expected_temporal_type": "changed_since",
+    "expected_behavior": "Use a declared recent-change window and report verified stop changes only."
+  },
+  {
+    "id": "public_probe_07",
+    "question": "5월 이후로 변동된 학사일정이 있을까요?",
+    "expected_label": 2,
+    "expected_temporal_type": "changed_since",
+    "expected_behavior": "Search calendar or notice evidence since May and summarize verified changes."
+  },
+  {
+    "id": "public_probe_08",
+    "question": "다음주 학식 뭐 나와요?",
+    "expected_label": 3,
+    "expected_temporal_type": "period_summary",
+    "expected_behavior": "Resolve next ISO week and summarize date-matched dining evidence, fetching if needed."
+  },
+  {
+    "id": "public_probe_09",
+    "question": "가장 최근에 올라온 공지사항은 언제 게시되었나요?",
+    "expected_label": 1,
+    "expected_temporal_type": "latest_item",
+    "expected_behavior": "Use posted_date evidence and include the latest verified posted date."
+  },
+  {
+    "id": "public_probe_10",
+    "question": "충남대학교 인공지능학과 24학번의 경우 프로젝트 수업을 몇 개 들어야 하나요?",
+    "expected_label": 0,
+    "expected_temporal_type": "none",
+    "expected_behavior": "Require department and admission-year matched curriculum evidence; do not answer from unrelated departments."
+  },
+  {
+    "id": "public_probe_11",
+    "question": "이번 학기 종강일이 언제인가요?",
+    "expected_label": 2,
+    "expected_temporal_type": "date_lookup",
+    "expected_behavior": "Return the semester end date from academic calendar evidence."
+  },
+  {
+    "id": "public_probe_12",
+    "question": "이번 여름 계절학기 종강일이 언제인 가요?",
+    "expected_label": 2,
+    "expected_temporal_type": "date_lookup",
+    "expected_behavior": "Return the summer session end date, not grade announcement date."
+  },
+  {
+    "id": "public_probe_13",
+    "question": "다음주 화요일 2학생회관 메뉴가 어떻게 되나요?",
+    "expected_label": 3,
+    "expected_temporal_type": "future_schedule",
+    "expected_behavior": "Resolve next ISO week Tuesday and use same-date same-location dining evidence or fetch."
+  },
+  {
+    "id": "public_probe_14",
+    "question": "토익 장학금을 받으려면 성적이 몇 점 이상이어야 하나요?",
+    "expected_label": 1,
+    "expected_temporal_type": "none",
+    "expected_behavior": "Answer only from scholarship evidence; do not reuse graduation TOEIC requirements."
+  }
+]
