@@ -69,6 +69,14 @@ Evidence pack은 각 chunk를 첫 문장으로 줄이지 않는다. 작은 chunk
 
 기본 pack 크기는 static 질문 3개, 날짜/current/freshness 질문 5개, 기간 요약 또는 변경사항 요약 질문 8개다. 이는 Qwen3.5-9B가 근거를 조립할 재료를 충분히 받도록 하기 위한 Phase A 기본값이며, 이후 retrieval 품질과 context budget 실험에 따라 조정할 수 있다.
 
+## Atomic-Aware Chunk Boundary Policy
+
+Chunking은 prompt 길이 최적화만이 아니라 evidence correctness boundary다. 명확한 학사일정 row, 식단 row, 셔틀 시간 row, 공지 제목/작성일/body block, 졸업요건 heading+requirement line은 recursive prose splitting 전에 보호한다.
+
+일반 설명문은 `recursive_prose`를 기본으로 처리한다. 의미 경계가 감지되지 않아 고정 길이 window로 보존한 chunk는 `chunking_strategy="fallback_window"`와 `chunk_confidence="low"`를 기록하며, structured current-fact evidence로 강하게 취급하지 않는다.
+
+QA seed의 evidence alignment metric은 기존 긴 window chunk에서 생성된 excerpt에 민감하다. Atomic chunk가 짧은 row 단위로 바뀌면 source hit와 public probe가 유지되어도 excerpt token alignment가 하락할 수 있으므로, retrieval candidate expansion 이후 QA/evidence metric 재생성을 별도 판단한다.
+
 ## 3. Phase A Target Modules
 
 Phase A는 production switch가 아니라 실험용 harness다.
