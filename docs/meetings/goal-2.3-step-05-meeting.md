@@ -34,7 +34,7 @@ Runtime/Architecture Engineer:
 Evaluation/Validator Engineer:
 
 - Report hit@1, hit@3, missing source-doc IDs, and label-level misses.
-- Keep the claim boundary as retrieval diagnostics only.
+- Keep the claim boundary as retrieval diagnostics only, with validator-compatible `claim_level=sanity`.
 
 Red-Team Critic:
 
