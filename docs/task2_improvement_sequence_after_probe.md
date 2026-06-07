@@ -4,7 +4,7 @@
 
 이 문서는 14개 public probe trace 진단 이후의 개선 순서를 고정한다. 현재 진단 결과는 [`docs/task2_public_probe_harness_diagnosis_2026_06_08.md`](task2_public_probe_harness_diagnosis_2026_06_08.md)에 기록되어 있다.
 
-## 즉시 실행할 Goal 3개
+## 즉시 실행할 Goal
 
 1. Validator 정책 완화
    - 계획: [`docs/superpowers/plans/2026-06-08-validator-policy-softening.md`](superpowers/plans/2026-06-08-validator-policy-softening.md)
@@ -14,11 +14,15 @@
    - 계획: [`docs/superpowers/plans/2026-06-08-evidence-pack-context-expansion.md`](superpowers/plans/2026-06-08-evidence-pack-context-expansion.md)
    - 목적: chunk의 첫 문장만 Qwen에게 넘기는 정보 손실을 줄이고, temporal/current 질문은 더 많은 bounded context를 전달한다.
 
-3. Retrieval candidate 확장
+3. Structure-aware chunking 선행
+   - 계획: [`docs/superpowers/plans/2026-06-08-structure-aware-chunking.md`](superpowers/plans/2026-06-08-structure-aware-chunking.md)
+   - 목적: 단순 fixed-window chunking이 제목/표/날짜/조건을 끊는 문제를 줄이고, 재귀적 텍스트 분할과 표/목록 보존 규칙을 도입한다.
+
+4. Retrieval candidate 확장
    - 계획: [`docs/superpowers/plans/2026-06-08-retrieval-candidate-expansion.md`](superpowers/plans/2026-06-08-retrieval-candidate-expansion.md)
    - 목적: retrieval 후보 수와 final evidence pack 크기를 분리하고, domain filter 전후 후보를 trace에 남긴다.
 
-이 세 goal은 데이터 확장 전에 실행한다. 이유는 추가 데이터를 넣더라도 validator, evidence pack, retrieval 후보 정책이 과도하게 정보를 버리면 Qwen baseline 평가가 왜곡되기 때문이다.
+이 goal들은 데이터 확장 전에 실행한다. 이유는 추가 데이터를 넣더라도 validator, evidence pack, chunking, retrieval 후보 정책이 과도하게 정보를 버리거나 구조를 깨면 Qwen baseline 평가가 왜곡되기 때문이다.
 
 ## 나중에 처리할 항목
 
@@ -50,11 +54,15 @@
 
 ### Qwen Baseline
 
-위 3개 goal이 끝난 뒤 14개 public probe를 Qwen writer로 재실행한다. 현재 deterministic trace 진단은 Qwen 성능 claim이 아니며, Qwen baseline은 validator/evidence/retrieval 손실을 줄인 뒤 수행해야 한다.
+위 즉시 goal들이 끝난 뒤 14개 public probe를 Qwen writer로 재실행한다. 현재 deterministic trace 진단은 Qwen 성능 claim이 아니며, Qwen baseline은 validator/evidence/chunking/retrieval 손실을 줄인 뒤 수행해야 한다.
 
 ### Data Expansion
 
-데이터 확장은 Qwen baseline 이후 실행한다. 우선순위는 다음과 같다.
+데이터 확장은 Qwen baseline 이후 실행한다. 단, source-specific parser 설계는 chunking goal 전에 문서로 고정한다. 구현은 source별 최소 serial loop가 통과한 뒤 넓힌다.
+
+Source-specific parser 방향은 [`docs/data_expansion_goal_plan.md`](data_expansion_goal_plan.md)의 Phase 2를 기준으로 한다. 핵심 원칙은 structured rows와 natural-language knowledge chunks를 함께 만든다는 것이다. 학사일정, 식단, 셔틀처럼 날짜/장소/행 단위가 중요한 source는 text chunk만으로 처리하지 않는다.
+
+우선순위는 다음과 같다.
 
 1. 졸업/교육과정: 2023, 2024, 2025, 2026 교육과정과 2026년 기준 대표 학과 top5
 2. 학사일정: 날짜/행사명/date_span 구조화
@@ -86,6 +94,7 @@ Controlled fetch는 Qwen이 자유롭게 tool-call하는 방식이 아니다. so
 ```text
 validator
 -> evidence pack
+-> structure-aware chunking
 -> retrieval candidate policy
 -> temporal extractor 확장
 -> Task1 boundary 보강

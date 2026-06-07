@@ -429,6 +429,27 @@ Gate:
 
 ## Phase 2: Parser And Normalization Hardening
 
+Phase 2의 핵심은 source별 parser가 structured rows와 natural-language knowledge chunks를 함께 만들도록 고정하는 것이다. fixed-window chunk만으로는 표 행, 날짜 범위, 학과/입학연도 조건, 식당/끼니 정보가 서로 다른 chunk로 갈라질 수 있다.
+
+Source-specific parser contract:
+
+| Source family | Primary output | Knowledge chunk policy | Required metadata |
+| --- | --- | --- | --- |
+| Graduation HTML/PDF/HWP/HWPX | requirement rows when possible; otherwise section text | heading/section-aware chunks; preserve department, curriculum year, admission year, requirement type, and nearby credit values together | `department`, `curriculum_year`, `admission_year`, `requirement_type`, `source_file_type`, `page_span` or `section_title` |
+| Academic calendar | event rows | one event or adjacent related events per chunk; never split event name from date range | `event_name`, `start_date`, `end_date`, `academic_year`, `semester` |
+| Notice board list/detail | notice detail rows | one notice detail per chunk; list pages are navigation evidence only unless titles/dates are parsed into rows | `notice_title`, `posted_date`, `department_or_office`, `board_name`, `detail_url`, `attachment_urls` |
+| Dining | menu rows | one date/location/meal snapshot per chunk generated from structured rows | `meal_date`, `cafeteria`, `meal_type`, `menu_items`, `price`, `fetched_at` |
+| Shuttle | route/stop/time rows | one route or timetable block per chunk; keep stop names and departure times together | `route_or_stop`, `departure_time`, `operation_date` or `effective_date`, `timetable_url` |
+
+Chunking policy:
+
+- Prefer source-specific structured rows when the source is naturally tabular or time-sensitive.
+- Prefer recursive section-aware text splitting for prose documents.
+- Use fixed-size sliding windows only as a fallback when no paragraph, heading, row, or sentence boundary can be detected.
+- Preserve tables by row or logical block before applying character limits.
+- Keep deterministic provenance in every `KnowledgeDoc`: `chunking_strategy`, `chunk_index`, `char_start`, `char_end`, and source checksum when available.
+- A source-specific parser is not considered ready until one source in that family passes fetch, parse, chunk, QA, retrieval, and answer-generation smoke.
+
 ### Step 2.1 Document Parser Coverage
 
 Work:
