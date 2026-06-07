@@ -85,3 +85,7 @@ def test_public_probe_experiment_records_trace_diagnosis(tmp_path: Path) -> None
     assert by_id["public_probe_13"]["actual_temporal_type"] == "future_schedule"
     assert by_id["public_probe_13"]["target_start"] == "2026-06-16"
     assert "bottleneck" in by_id["public_probe_13"]
+    assert "prefilter_retrieved_doc_ids" in by_id["public_probe_13"]
+    assert "postfilter_retrieved_doc_ids" in by_id["public_probe_13"]
+    assert "prefilter_retrieved_candidates" in by_id["public_probe_13"]
+    assert isinstance(by_id["public_probe_13"]["prefilter_retrieved_candidates"], list)

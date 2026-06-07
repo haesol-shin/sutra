@@ -103,6 +103,10 @@ def run_public_probe_experiment(
                 "answer_validation_status": str(trace.answer_validation_status),
                 "retrieved_doc_ids": trace.retrieved_doc_ids,
                 "retrieved_scores": trace.retrieved_scores,
+                "prefilter_retrieved_doc_ids": [candidate.doc_id for candidate in trace.prefilter_retrieved_candidates],
+                "postfilter_retrieved_doc_ids": [candidate.doc_id for candidate in trace.postfilter_retrieved_candidates],
+                "prefilter_retrieved_candidates": _candidate_rows(trace.prefilter_retrieved_candidates),
+                "postfilter_retrieved_candidates": _candidate_rows(trace.postfilter_retrieved_candidates),
                 "failure_reason": trace.failure_reason,
                 "bottleneck": bottleneck,
                 "expected_behavior": case.expected_behavior,
@@ -199,6 +203,22 @@ def _load_cases(path: Path) -> list[PublicProbeCase]:
     if not isinstance(payload, list):
         raise ValueError(f"{path} must contain a JSON list")
     return [PublicProbeCase.model_validate(row) for row in payload]
+
+
+def _candidate_rows(candidates) -> list[dict[str, object]]:
+    return [
+        {
+            "doc_id": candidate.doc_id,
+            "score": candidate.score,
+            "label": candidate.label,
+            "domain": str(candidate.domain),
+            "source_id": candidate.source_id,
+            "chunking_strategy": candidate.chunking_strategy,
+            "boundary_type": candidate.boundary_type,
+            "chunk_confidence": candidate.chunk_confidence,
+        }
+        for candidate in candidates
+    ]
 
 
 def _classify_bottleneck(
