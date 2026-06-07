@@ -148,3 +148,28 @@
   - `uv run python -m nlp_term.chat.compare_backends --gold data/gold/task2_answer_eval_gold.json --facts data/gold/task2_fact_gold.json --knowledge data/knowledge_seed.json --output model/metrics/task2_backend_comparison.json`
   - `uv run ruff check src tests`
 - closed_at: `2026-06-07`
+
+## goal-2.3-step-05-to-06-2026-06-07
+
+- meeting_id: `goal-2.3-step-05-to-06-2026-06-07`
+- opened_at: `2026-06-07`
+- trigger_type: `mandatory_step_transition`
+- phase: `Goal 2.3 Evaluation Diagnostics`
+- step_id: `step-05-to-step-06`
+- verdict_before_transition: `pass_no_reject`
+- roles_present:
+  - Facilitator/Planner
+  - Source/Data Steward
+  - Runtime/Architecture Engineer
+  - Evaluation/Validator Engineer
+  - Red-Team Critic
+- status: `closed`
+- selected_option: proceed to retrieval bottleneck diagnosis
+- evidence_path: `docs/meetings/goal-2.3-step-05-evidence.md`
+- meeting_path: `docs/meetings/goal-2.3-step-05-meeting.md`
+- handoff_path: `docs/meetings/goal-2.3-step-05-handoff.md`
+- commands_to_run:
+  - `uv run pytest tests/test_retrieval_bottleneck_report.py tests/test_retrieval_diagnostics.py`
+  - `uv run python -m nlp_term.retrieve.diagnose --facts data/gold/task2_fact_gold.json --knowledge data/knowledge_seed.json --output model/metrics/retrieval_bottleneck_diagnosis.json`
+  - `uv run ruff check src tests`
+- closed_at: `2026-06-07`
