@@ -1,0 +1,78 @@
+{
+  "run_id": "task2-gold-answer-eval-2026-06-07",
+  "created_at": "2026-06-07",
+  "goal_id": "2.3",
+  "step_id": "task2-gold-answer-eval",
+  "evidence_scope": "task2_gold_answer_qualitative_precheck",
+  "claim_boundary": "This evaluates deterministic Task 2 answers against the current small Task 2 gold answer set. It is a qualitative precheck, not final chatbot naturalness or generalization evidence.",
+  "commands": [
+    {
+      "command": "uv run pytest tests/test_task2_answer_eval_artifact.py tests/test_chat_provenance.py tests/test_gold_contracts.py",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run python -m nlp_term.chat.evaluate_gold --gold data/gold/task2_answer_eval_gold.json --facts data/gold/task2_fact_gold.json --knowledge data/knowledge_seed.json --output model/metrics/task2_gold_answer_eval.json --backend deterministic",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run python -m nlp_term.validators --metric-claim model/metrics/task2_gold_answer_eval.json --input data/gold/task2_answer_eval_gold.json --require-dataset-origin task2_gold --require-claim-level qualitative_check",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run ruff check src tests",
+      "exit_code": 0
+    }
+  ],
+  "committed_artifacts": {
+    "data/gold/task2_answer_eval_gold.json": {
+      "sha256": "585557348654865ca77b74394b19ad904048dfc57d4bebfe397aed1eaefabef7",
+      "row_count": 25
+    },
+    "data/gold/task2_fact_gold.json": {
+      "sha256": "5fec5710f4e8bd9e06c1389c9956a1a7b18ea7778f4779cc3de65dd810dacd17"
+    },
+    "data/knowledge_seed.json": {
+      "sha256": "9ec8e51bbf263fef8ad430eb5e34ab74975f32c316c8823c17fedc48b52da7c3"
+    }
+  },
+  "local_ignored_artifacts": {
+    "model/metrics/task2_gold_answer_eval.json": {
+      "sha256": "1f8b16ad6269836519388a77e56b4c0e6e721d8971645835ed22b44143f6ff32",
+      "evaluation_set_type": "task2_gold",
+      "dataset_origin": "task2_gold",
+      "claim_level": "qualitative_check",
+      "evaluation_scope": "task2_answer_gold_eval",
+      "backend_used": "deterministic",
+      "fallback_used": false,
+      "row_count": 25,
+      "expected_fact_count": 25,
+      "matched_fact_count": 20,
+      "fact_recall": 0.8,
+      "must_not_claim_violation_count": 0,
+      "source_hint_rate": 0.76,
+      "naturalness_heuristic_pass_rate": 0.24,
+      "answer_length_stats": {
+        "min": 39,
+        "max": 292,
+        "mean": 217.28
+      },
+      "naturalness_failure_counts": {
+        "internal_id_exposed": 19
+      },
+      "top_missing_fact_ids": {
+        "grad_biochem_liberal_2025": 1,
+        "grad_biochem_total_credit": 1,
+        "notice_course_cancel": 1,
+        "calendar_leave_return": 1,
+        "calendar_course_registration": 1
+      }
+    }
+  },
+  "diagnostic_summary": {
+    "primary_signal": "The current deterministic backend covers 20 of 25 expected facts, but only 6 of 25 answers pass the naturalness heuristic.",
+    "main_naturalness_failure": "Internal document IDs or source-like identifiers are exposed in 19 answers.",
+    "risk": "Task 2 can look factually grounded while still failing naturalness expectations, so backend quality and answer formatting must be evaluated separately from retrieval hit rate.",
+    "next_action": "Separate deterministic and llama backend evidence without fallback masking before changing retrieval or answer style."
+  },
+  "final_performance_claim_allowed": false
+}
