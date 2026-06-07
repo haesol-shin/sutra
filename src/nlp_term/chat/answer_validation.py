@@ -7,6 +7,10 @@ from pydantic import BaseModel, Field
 
 
 INTERNAL_ID_RE = re.compile(r"(chunk[_\s-]*\d+|doc[_\s-]*\d+|source\s+\d+|source[_-]\d+)", re.IGNORECASE)
+INTERNAL_TRACE_RE = re.compile(
+    r"(TemporalIntent|temporal_type|confidence|retrieval_requirement|evidence_status)",
+    re.IGNORECASE,
+)
 HANGUL_RE = re.compile(r"[가-힣]")
 URL_RE = re.compile(r"https?://[^\s)>\]]+")
 NUMERIC_CLAIM_RE = re.compile(r"\d+(?:[.,]\d+)?\s*(?:학점|점|월|일|년|명|개|회|%)")
@@ -42,6 +46,8 @@ def validate_task2_answer(
         failures.append("raw_json_or_template_text")
     if INTERNAL_ID_RE.search(stripped):
         failures.append("internal_id_exposed")
+    if INTERNAL_TRACE_RE.search(stripped):
+        failures.append("internal_trace_leak")
     if "fallback" in stripped.lower() or "system prompt" in stripped.lower():
         failures.append("system_or_fallback_leak")
 

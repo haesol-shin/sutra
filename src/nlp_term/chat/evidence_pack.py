@@ -29,6 +29,7 @@ class EvidencePack(BaseModel):
     question: str
     intent_label: int = Field(ge=0, le=4)
     intent_domain: Domain
+    temporal_context: str | None = None
     items: list[EvidenceItem] = Field(default_factory=list)
 
     def to_prompt_text(self) -> str:
@@ -36,8 +37,10 @@ class EvidencePack(BaseModel):
             f"질문: {self.question}",
             f"의도 라벨: {self.intent_label}",
             f"의도 도메인: {self.intent_domain}",
-            "근거:",
         ]
+        if self.temporal_context:
+            lines.extend(["시간 기준:", self.temporal_context])
+        lines.append("근거:")
         for index, item in enumerate(self.items, start=1):
             lines.append(f"- 근거 {index}: {item.source_name}")
             for fact in item.facts:
@@ -55,6 +58,7 @@ def build_evidence_pack(
     domain: Domain,
     docs: list[KnowledgeDoc],
     max_items: int = 3,
+    temporal_context: str | None = None,
 ) -> EvidencePack:
     items = [
         EvidenceItem(
@@ -66,7 +70,13 @@ def build_evidence_pack(
         for doc in docs[:max_items]
         if doc.body.strip()
     ]
-    return EvidencePack(question=question, intent_label=label, intent_domain=domain, items=items)
+    return EvidencePack(
+        question=question,
+        intent_label=label,
+        intent_domain=domain,
+        temporal_context=temporal_context,
+        items=items,
+    )
 
 
 def _source_name(doc: KnowledgeDoc) -> str:

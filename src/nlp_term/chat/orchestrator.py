@@ -109,7 +109,13 @@ def answer_with_harness(
         )
         return HarnessResult(output=ChatOutput(user=question, model=answer), output_status=OutputStatus.FAIL_CLOSED, trace=trace)
 
-    pack = build_evidence_pack(question=question, label=route.label, domain=route_domain, docs=retrieved_docs)
+    pack = build_evidence_pack(
+        question=question,
+        label=route.label,
+        domain=route_domain,
+        docs=retrieved_docs,
+        temporal_context=_render_temporal_context(temporal_intent),
+    )
     if not pack.items:
         answer = _fail_closed_answer(["empty_evidence_pack"])
         trace = _build_trace(
@@ -260,6 +266,21 @@ def _deterministic_answer(docs: list[KnowledgeDoc]) -> str:
 
 def _fail_closed_answer(reasons: list[str]) -> str:
     return "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+
+
+def _render_temporal_context(temporal_intent) -> str | None:
+    if temporal_intent.temporal_type == "none":
+        return None
+    lines = [f"- 현재 기준일: {temporal_intent.reference_time.date().isoformat()}"]
+    if temporal_intent.original_expression:
+        lines.append(f"- 질문의 시간 표현: {temporal_intent.original_expression}")
+    if temporal_intent.target_start and temporal_intent.target_end:
+        if temporal_intent.target_start == temporal_intent.target_end:
+            lines.append(f"- 해석된 날짜: {temporal_intent.target_start.isoformat()}")
+        else:
+            lines.append(f"- 해석된 기간: {temporal_intent.target_start.isoformat()} ~ {temporal_intent.target_end.isoformat()}")
+    lines.append("- 해석된 날짜 또는 기간과 맞지 않는 근거로는 날짜, 메뉴, 운행 여부를 단정하지 않는다.")
+    return "\n".join(lines)
 
 
 def _build_trace(

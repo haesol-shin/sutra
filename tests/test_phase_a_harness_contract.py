@@ -295,3 +295,39 @@ def test_harness_blocks_dining_evidence_for_wrong_target_date(tmp_path: Path) ->
     assert result.trace.target_start == "2026-06-16"
     assert result.trace.evidence_sufficiency_status == EvidenceSufficiencyStatus.INSUFFICIENT
     assert "백반" not in result.output.model
+
+
+def test_harness_prompt_contains_user_safe_temporal_context(tmp_path: Path) -> None:
+    knowledge_path = tmp_path / "knowledge.json"
+    knowledge_path.write_text(
+        "["
+        "{"
+        '"doc_id":"dining_doc",'
+        '"label":3,'
+        '"domain":"dining",'
+        '"title":"식단",'
+        '"body":"다음주 화요일인 2026년 6월 16일 2학생회관 점심 메뉴는 공식 식단 페이지에서 확인한다.",'
+        '"source_url":"https://mobileadmin.cnu.ac.kr/food/index.jsp",'
+        '"source_id":"cnu_mobile_food",'
+        '"metadata":{"menu_date":"2026-06-16","location":"2학생회관","raw_fetched_at":"2026-06-08T00:00:00+09:00"}'
+        "}"
+        "]",
+        encoding="utf-8",
+    )
+    captured: dict[str, str] = {}
+
+    def writer(prompt: str) -> str:
+        captured["prompt"] = prompt
+        return "다음주 화요일인 2026년 6월 16일 기준으로 2학생회관 식단은 공식 식단 페이지에서 확인하면 됩니다."
+
+    result = answer_with_harness(
+        "다음주 화요일 2학생회관 메뉴가 어떻게 되나요?",
+        knowledge_path=knowledge_path,
+        generator=writer,
+        question_time=datetime(2026, 6, 8, tzinfo=timezone.utc),
+    )
+
+    assert result.output_status == OutputStatus.ANSWERED
+    assert "2026-06-16" in captured["prompt"]
+    assert "TemporalIntent" not in captured["prompt"]
+    assert "confidence" not in captured["prompt"]

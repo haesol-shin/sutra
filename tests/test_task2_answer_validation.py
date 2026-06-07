@@ -82,3 +82,10 @@ def test_answer_validator_allows_claims_present_in_evidence_texts() -> None:
     assert result.passed is True
     assert result.unsupported_numeric_claims == []
     assert result.unsupported_institution_claims == []
+
+
+def test_answer_validation_rejects_internal_temporal_trace_leak() -> None:
+    result = validate_task2_answer("TemporalIntent confidence high 이므로 2026년 6월 16일로 답합니다.")
+
+    assert result.passed is False
+    assert "internal_trace_leak" in result.failures
