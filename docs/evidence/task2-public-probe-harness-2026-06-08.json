@@ -8,7 +8,7 @@
   "probe_path": "data\\gold\\task2_public_probe_eval.json",
   "probe_checksum": "fa342d6e2e581823dbc3aabf3f5cabe7423a52f074920d83cf272883eab07e14",
   "knowledge_path": "data\\knowledge_seed.json",
-  "knowledge_checksum": "9ec8e51bbf263fef8ad430eb5e34ab74975f32c316c8823c17fedc48b52da7c3",
+  "knowledge_checksum": "7c3f4f353d5b6befd7ff51bd8e6e06195a1b13503215d43f8cd5342868275767",
   "question_count": 14,
   "label_match_count": 13,
   "label_match_rate": 0.9285714285714286,
@@ -21,9 +21,9 @@
   "bottleneck_counts": {
     "classifier": 1,
     "data": 1,
-    "evidence": 2,
+    "evidence": 1,
     "none": 4,
-    "retrieval": 2,
+    "retrieval": 3,
     "temporal": 4
   },
   "rows": [
@@ -51,9 +51,9 @@
       "freshness_status": "not_required",
       "answer_validation_status": "passed",
       "retrieved_doc_ids": [
-        "graduation_biochemistry_requirements_chunk_6",
+        "graduation_biochemistry_requirements_chunk_5",
         "graduation_biochemistry_requirements_chunk_7",
-        "graduation_biochemistry_requirements_chunk_8"
+        "graduation_biochemistry_requirements_chunk_6"
       ],
       "retrieved_scores": [
         0.4411764705882353,
@@ -63,7 +63,7 @@
       "failure_reason": null,
       "bottleneck": "none",
       "expected_behavior": "Answer generally, mention department/admission-year differences, do not cite an unrelated department as if universal.",
-      "answer": "초과되면 재학년한 초과로 제적 처리됩니다. 졸업장도 받을 수 없습니다. 기존 실험과목이 없어진 경우 폐지재이수 신청하고 다른 전공과목으로 이수하면 됩니다. 2013학번이후 교육과정을 적용받은 학생의 경우 교양을 42이상 초과해서 이수하면 초과한 학점은 졸업이수학점에 포함되지 않습니다. 그래서 특히 2015학번이후 교육과정을 적용받는 학생들은 일선학점에 주의해야합니다. 교양42+전공78=120학점이므로 졸업이수학점 130에서 10학점이 부족하죠? 부족한 10학점은 일반선택으로 채우거나 전공을 초과해서 들어야 합니다. 일선으로 구분된 자세한 내용은 https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do에서 확인해 주세요."
+      "answer": "2013학번이후 교육과정을 적용받은 학생의 경우 교양을 42이상 초과해서 이수하면 초과한 학점은 졸업이수학점에 포함되지 않습니다. 그래서 특히 2015학번이후 교육과정을 적용받는 학생들은 일선학점에 주의해야합니다. 교양42+전공78=120학점이므로 졸업이수학점 130에서 10학점이 부족하죠? 부족한 10학점은 일반선택으로 채우거나 전공을 초과해서 들어야 합니다. 일선으로 구분된 교과목을 찾아서 이수하거나 타과 교과목(전선과목 아니라도 괜찮습니다. 자세한 내용은 https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do에서 확인해 주세요."
     },
     {
       "id": "public_probe_02",
@@ -89,21 +89,19 @@
       "freshness_status": "not_required",
       "answer_validation_status": "passed",
       "retrieved_doc_ids": [
-        "academic_calendar_chunk_1",
-        "academic_calendar_chunk_2",
-        "academic_calendar_chunk_4",
-        "academic_calendar_chunk_5"
+        "academic_calendar_chunk_5",
+        "academic_calendar_chunk_8",
+        "academic_calendar_chunk_4"
       ],
       "retrieved_scores": [
         0.375,
         0.375,
-        0.375,
-        0.375
+        0.3194444444444444
       ],
       "failure_reason": null,
       "bottleneck": "none",
       "expected_behavior": "Return the matching course registration start date if calendar evidence supports it.",
-      "answer": "01월 January 01.01(목) 신정 01.13(화) 제2학기 성적발표 01.20(화) 동기 계절학기 성적발표 01.21(수) ~ 02.10(화) 2025학년도 특별학기(신입학예정자) 01.26(월) ~ 01.28(수) 2026학년도 제1학기 예비수강신청 01.29(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
+      "answer": "02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
     },
     {
       "id": "public_probe_03",
@@ -174,19 +172,19 @@
         "shuttle_bus_chunk_3",
         "shuttle_bus_chunk_4",
         "shuttle_bus_chunk_5",
+        "shuttle_bus_chunk_6",
         "shuttle_bus_chunk_7",
-        "shuttle_bus_chunk_8",
-        "shuttle_bus_chunk_6"
+        "shuttle_bus_chunk_8"
       ],
       "retrieved_scores": [
         0.42105263157894735,
         0.42105263157894735,
         0.42105263157894735,
         0.42105263157894735,
-        0.2631578947368421,
-        0.2631578947368421,
-        0.2631578947368421,
-        0.21052631578947367
+        0.42105263157894735,
+        0.42105263157894735,
+        0.42105263157894735,
+        0.42105263157894735
       ],
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "temporal",
@@ -253,19 +251,19 @@
       "freshness_status": "not_required",
       "answer_validation_status": "passed",
       "retrieved_doc_ids": [
+        "shuttle_bus_chunk_5",
         "shuttle_bus_chunk_2",
-        "shuttle_bus_chunk_3",
-        "shuttle_bus_chunk_4"
+        "shuttle_bus_chunk_3"
       ],
       "retrieved_scores": [
-        0.31521739130434784,
+        0.40217391304347827,
         0.31521739130434784,
         0.31521739130434784
       ],
       "failure_reason": null,
       "bottleneck": "temporal",
       "expected_behavior": "Use a declared recent-change window and report verified stop changes only.",
-      "answer": "등과 협의) ※ 운행시간은 천재지변, 학교행사, 교통상황, 탑승 인원 등에 따라 변경 가능 ※ 교통상황 등으로 인해 전 구간에서 5분 내외 오차가 발생할 수 있으니 탑승자 사전 대기 운행 주체: 학교버스 운행 내용: 운행 시간표 및 운행 노선 참고 운행 노선: 교내순환(대덕캠퍼스 내), 캠퍼스 순환(대덕캠퍼스⇄보운캠퍼스) 셔틀버스 운행 시간표 셔틀버스 운행 시간표 - 구분, 오전, 오후 정보제공 구분 오전 오후 교내 순환 (대덕캠퍼스 내) 08:20 (월평역) 등교 8:30 9:30 9:40 10:30 11:30 13:30 14:3 자세한 내용은 https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html에서 확인해 주세요."
+      "answer": "장 출발(08:10) → ②중앙도 서관(08:11) → ③산학연교육연구관(08: 12) → ④충남대학교입구 버스정류장(홈 플러스유성점방면)(08:13) → ⑤월평역( 08:15) → ⑥보운캠퍼스(회차, 08:50) → ⑦다솔아파트 건너편 → 제2학생회관 → 중앙도서관 → 골프연습장 도착 1회 (회차) 학기 중 운영 (총 150일) 2026학년도 학교셔틀버스 운영 안내 운영기준: 학기 중 평일 주간 운영(평일 야간, 주말, 공휴일, 방학, 수학능력시험일(10시 이전) 등 미운영) ※ 운행 시간표는 학교 사정에 따라 변경될 수 있음 ※ 자세한 내용은 https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html에서 확인해 주세요."
     },
     {
       "id": "public_probe_07",
@@ -287,7 +285,7 @@
         "change_window_needed"
       ],
       "output_status": "fail_closed",
-      "evidence_sufficiency_status": "insufficient",
+      "evidence_sufficiency_status": "needs_fetch",
       "fetch_decision": "fetch_required_but_not_implemented",
       "freshness_status": "unknown",
       "answer_validation_status": "blocked",
@@ -296,21 +294,23 @@
         "academic_calendar_chunk_2",
         "academic_calendar_chunk_3",
         "academic_calendar_chunk_4",
+        "academic_calendar_chunk_5",
+        "academic_calendar_chunk_6",
         "academic_calendar_chunk_7",
-        "academic_calendar_chunk_8",
-        "academic_calendar_chunk_5"
+        "academic_calendar_chunk_8"
       ],
       "retrieved_scores": [
-        0.20238095238095238,
-        0.20238095238095238,
-        0.20238095238095238,
-        0.20238095238095238,
-        0.20238095238095238,
-        0.20238095238095238,
+        0.15476190476190477,
+        0.15476190476190477,
+        0.15476190476190477,
+        0.15476190476190477,
+        0.15476190476190477,
+        0.15476190476190477,
+        0.15476190476190477,
         0.15476190476190477
       ],
-      "failure_reason": "date_filtered_evidence_missing_or_mismatched",
-      "bottleneck": "evidence",
+      "failure_reason": "top_score_below_threshold;controlled_fetch_candidate_exists",
+      "bottleneck": "retrieval",
       "expected_behavior": "Search calendar or notice evidence since May and summarize verified changes.",
       "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
     },
@@ -378,13 +378,11 @@
       "answer_validation_status": "blocked",
       "retrieved_doc_ids": [
         "academic_notice_board_chunk_1",
-        "academic_notice_board_chunk_2",
-        "academic_notice_detail_2512124_chunk_1"
+        "academic_notice_board_chunk_2"
       ],
       "retrieved_scores": [
         0.19,
-        0.15,
-        0.11
+        0.15
       ],
       "failure_reason": "top_score_below_threshold;controlled_fetch_candidate_exists",
       "bottleneck": "temporal",
@@ -415,10 +413,10 @@
       "freshness_status": "unknown",
       "answer_validation_status": "blocked",
       "retrieved_doc_ids": [
-        "academic_notice_board_chunk_3"
+        "academic_notice_detail_2512782_chunk_2"
       ],
       "retrieved_scores": [
-        0.16071428571428573
+        0.18452380952380953
       ],
       "failure_reason": "top_score_below_threshold;controlled_fetch_candidate_exists",
       "bottleneck": "classifier",
@@ -449,23 +447,23 @@
       "freshness_status": "not_required",
       "answer_validation_status": "passed",
       "retrieved_doc_ids": [
+        "academic_calendar_chunk_7",
+        "academic_calendar_chunk_1",
         "academic_calendar_chunk_2",
         "academic_calendar_chunk_3",
-        "academic_calendar_chunk_7",
-        "academic_calendar_chunk_8",
-        "academic_calendar_chunk_1"
+        "academic_calendar_chunk_4"
       ],
       "retrieved_scores": [
         0.3,
-        0.3,
-        0.3,
-        0.3,
+        0.23333333333333334,
+        0.23333333333333334,
+        0.23333333333333334,
         0.23333333333333334
       ],
       "failure_reason": null,
       "bottleneck": "none",
       "expected_behavior": "Return the semester end date from academic calendar evidence.",
-      "answer": "9(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도 제1학기 재학생 등록금 납부 02.25(수) 2025학년도 전기 학위수여식 02.27(금) 입학식(2026학년도) 03월 March 03.01(일) 3ㆍ1절 03.02(월) 대체공휴일 03.03(화) 제1학기 개강일 03.03(화) ~ 03.09(월) 2025학년도 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
+      "answer": "03.03(화) 제1학기 개강일 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
     },
     {
       "id": "public_probe_12",
@@ -491,23 +489,23 @@
       "freshness_status": "not_required",
       "answer_validation_status": "passed",
       "retrieved_doc_ids": [
-        "academic_calendar_chunk_1",
-        "academic_calendar_chunk_4",
-        "academic_calendar_chunk_5",
-        "academic_calendar_chunk_6",
-        "academic_calendar_chunk_9"
+        "academic_calendar_chunk_2",
+        "academic_calendar_chunk_8",
+        "academic_calendar_chunk_9",
+        "academic_calendar_chunk_7",
+        "academic_calendar_chunk_1"
       ],
       "retrieved_scores": [
         0.4166666666666667,
         0.4166666666666667,
         0.4166666666666667,
-        0.4166666666666667,
-        0.4166666666666667
+        0.32142857142857145,
+        0.27380952380952384
       ],
       "failure_reason": null,
       "bottleneck": "none",
       "expected_behavior": "Return the summer session end date, not grade announcement date.",
-      "answer": "01월 January 01.01(목) 신정 01.13(화) 제2학기 성적발표 01.20(화) 동기 계절학기 성적발표 01.21(수) ~ 02.10(화) 2025학년도 특별학기(신입학예정자) 01.26(월) ~ 01.28(수) 2026학년도 제1학기 예비수강신청 01.29(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
+      "answer": "01.20(화) 동기 계절학기 성적발표 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
     },
     {
       "id": "public_probe_13",
