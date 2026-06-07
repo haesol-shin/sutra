@@ -68,8 +68,11 @@ def evaluate_task2_gold_answers(
     output_path: Path,
     backend: Backend = "deterministic",
     model_path: Path = DEFAULT_MODEL_PATH,
+    limit: int | None = None,
 ) -> dict[str, object]:
     gold_rows = _load_gold(gold_path)
+    if limit is not None:
+        gold_rows = gold_rows[:limit]
     facts = _load_facts(facts_path)
     missing_fact_ids = sorted(
         {
@@ -182,6 +185,7 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=model_dir() / "metrics" / "task2_gold_answer_eval.json")
     parser.add_argument("--backend", choices=["auto", "llama", "deterministic"], default="deterministic")
     parser.add_argument("--model", type=Path, default=DEFAULT_MODEL_PATH)
+    parser.add_argument("--limit", type=int)
     args = parser.parse_args()
     evaluate_task2_gold_answers(
         gold_path=args.gold,
@@ -190,6 +194,7 @@ def main() -> None:
         output_path=args.output,
         backend=args.backend,
         model_path=args.model,
+        limit=args.limit,
     )
     print(f"wrote {args.output}")
 

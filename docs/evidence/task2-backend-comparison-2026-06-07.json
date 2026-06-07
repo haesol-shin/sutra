@@ -1,0 +1,64 @@
+{
+  "run_id": "task2-backend-comparison-2026-06-07",
+  "created_at": "2026-06-07",
+  "goal_id": "2.3",
+  "step_id": "task2-backend-comparison",
+  "evidence_scope": "deterministic_vs_llama_backend_separation",
+  "claim_boundary": "This separates deterministic and llama backend evidence. The llama run is a 3-row smoke-quality sample, not final Task 2 performance evidence.",
+  "commands": [
+    {
+      "command": "uv run pytest tests/test_backend_evidence_separation.py tests/test_task2_answer_eval_artifact.py tests/test_chat_provenance.py",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run python -m nlp_term.chat.compare_backends --gold data/gold/task2_answer_eval_gold.json --facts data/gold/task2_fact_gold.json --knowledge data/knowledge_seed.json --output model/metrics/task2_backend_comparison.json --llama-limit 3",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run python -m nlp_term.validators --metric-claim model/metrics/task2_backend_comparison.json --input data/gold/task2_answer_eval_gold.json --require-dataset-origin task2_gold --require-claim-level qualitative_check",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run ruff check src tests",
+      "exit_code": 0
+    }
+  ],
+  "local_ignored_artifacts": {
+    "model/metrics/task2_backend_comparison.json": {
+      "sha256": "1432b52ae09d5eed5947dd34ef258cea89437c5a30a5ef12bd40022b9fc178e0",
+      "evaluation_scope": "task2_backend_comparison",
+      "dataset_origin": "task2_gold",
+      "claim_level": "qualitative_check",
+      "llama_backend_available": true,
+      "llama_limit": 3,
+      "backend_count": 2,
+      "llama_quality_claim_allowed": true
+    },
+    "model/metrics/task2_backend_comparison.deterministic.json": {
+      "sha256": "1f8b16ad6269836519388a77e56b4c0e6e721d8971645835ed22b44143f6ff32",
+      "row_count": 25,
+      "fact_recall": 0.8,
+      "source_hint_rate": 0.76,
+      "naturalness_heuristic_pass_rate": 0.24,
+      "naturalness_failure_counts": {
+        "internal_id_exposed": 19
+      }
+    },
+    "model/metrics/task2_backend_comparison.llama.json": {
+      "sha256": "6062662f76eb7d067f52bc62d71e178faa13b07aad7033d2995b73c30ff5a609",
+      "row_count": 3,
+      "fact_recall": 1.0,
+      "source_hint_rate": 0.0,
+      "naturalness_heuristic_pass_rate": 1.0,
+      "naturalness_failure_counts": {}
+    }
+  },
+  "diagnostic_summary": {
+    "backend_separation": "deterministic and llama outputs were evaluated in separate artifacts; no deterministic fallback was counted as llama.",
+    "deterministic_signal": "deterministic answers are grounded enough for many gold facts but expose internal IDs, causing low naturalness heuristic pass rate.",
+    "llama_signal": "llama ran on 3 gold prompts without fallback and produced natural-looking answers by the current heuristic, but did not expose source URL hints.",
+    "risk": "A natural answer can omit explicit source hints, while a sourced deterministic answer can sound unnatural. Task 2 needs separate controls for answer style and provenance.",
+    "next_action": "Diagnose retrieval bottlenecks before expanding answer generation changes."
+  },
+  "final_performance_claim_allowed": false
+}
