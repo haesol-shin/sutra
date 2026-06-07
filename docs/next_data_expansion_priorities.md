@@ -46,8 +46,8 @@ Target sources:
 
 acceptance gate:
 
-- at least 5 representative departments covered
-- at least 3 curriculum years covered where source pages provide them
+- representative departments/units fixed by 2026 모집인원 top 5 evidence in `docs/representative_departments_2026.md`: `경영학부`, `컴퓨터인공지능학부`, `정보통신융합학부`, `신소재공학과`, `의예과`
+- curriculum years fixed to `2023`, `2024`, `2025`, and `2026`
 - PDF/HWP parser output has no mojibake/private-use glyph scan hits
 - every graduation/curriculum knowledge doc has department/year/parser metadata when applicable
 - add at least 25 new Task 1 gold-like questions and 25 new Task 2 fact candidates from these sources before claiming improvement

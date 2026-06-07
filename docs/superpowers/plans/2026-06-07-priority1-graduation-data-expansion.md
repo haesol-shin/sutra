@@ -35,23 +35,24 @@ External source candidates found during planning and still requiring fetch verif
 - 2025 curriculum PDF: `https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf`
 - 2024 curriculum PDF: `https://plus.cnu.ac.kr/html/kr/24file/2024_book.pdf`
 - 2023 curriculum PDF: `https://plus.cnu.ac.kr/html/kr/23file/2023_book.pdf`
-- Biochemistry graduation requirements: `https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do`
-- English graduation requirements: `https://english.cnu.ac.kr/english/edu/undergraduate02.do`
-- Energy Engineering graduation requirements: `https://energy.cnu.ac.kr/energy/department/graduate.do`
-- Horticulture academic counseling page with graduation table: `https://horti.cnu.ac.kr/horti/college/college04.do`
-- Smart City Architectural Engineering graduation requirements: `https://smartarchi-eng.cnu.ac.kr/smartarchi-eng/department/condition.do`
+- Business graduation requirements: `https://biz.cnu.ac.kr/biz/curriculum/graduate01.do`
+- Computer/AI graduation requirements: `https://computer.cnu.ac.kr/computer/edu/requirements.do`
+- Information Communications Convergence graduation requirements: `https://rice.cnu.ac.kr/rice/undergraduate/graduation.do`
+- Materials Science and Engineering graduation requirements: `https://mse.cnu.ac.kr/mse/under/graduate.do`
+- Medicine/pre-med curriculum source: `https://medicine.cnu.ac.kr/medicine/undergrad/curriculum-undergrad01.do`
 
 Do not assume every candidate will parse cleanly. The plan intentionally starts with verification and failure logging.
 
 ## Acceptance Criteria
 
-- Source inventory contains an active Priority 1 graduation slice with at least 5 representative departments.
-- Source inventory contains at least 3 curriculum years for central curriculum PDFs or equivalent official curriculum documents.
+- Source inventory contains an active Priority 1 graduation slice for the five 2026 representative departments/units fixed in `docs/representative_departments_2026.md`: `경영학부`, `컴퓨터인공지능학부`, `정보통신융합학부`, `신소재공학과`, `의예과`.
+- Source inventory contains the four fixed curriculum years `2023`, `2024`, `2025`, and `2026` for central curriculum PDFs or equivalent official curriculum documents.
+- `docs/representative_departments_2026.md` documents the 2026 headcount basis used to select the representative top 5.
 - Raw snapshots are fetched with checksums and 2xx status for every active Priority 1 source.
 - PDF/HWP/HWPX/HTML parser output has no mojibake/private-use glyph scan hits in accepted `KnowledgeDoc` rows.
 - Every graduation/curriculum `KnowledgeDoc` has applicable `source_department`, `source_curriculum_year`, and `source_parser_type` metadata.
 - `data/knowledge_seed.json` has at least 75 docs total and at least 45 label 0 docs after regeneration.
-- label 0 metadata contains at least 5 departments and at least 3 curriculum years.
+- label 0 metadata contains the fixed top 5 representative departments/units and the four curriculum years `2023`, `2024`, `2025`, and `2026`.
 - Add at least 25 new source-backed Task 1 gold-like questions to a review queue, not directly to human gold.
 - Add at least 25 new Task 2 fact candidates to a review queue, not directly to Task 2 gold.
 - Rerun Task 1 classifier, retrieval diagnostics, and Task 2 vertical slice as diagnostics only.
@@ -138,38 +139,39 @@ def _doc(doc_id: str, *, department: str | None, year: str | None, parser_type: 
 def test_graduation_coverage_passes_with_departments_years_and_parser_metadata(tmp_path: Path) -> None:
     knowledge_path = tmp_path / "knowledge_seed.json"
     rows = [
-        _doc("bio_1", department="생화학과", year=None),
-        _doc("eng_1", department="영어영문학과", year=None),
-        _doc("energy_1", department="에너지공학과", year=None),
-        _doc("horti_1", department="원예학과", year=None),
-        _doc("archi_1", department="스마트시티건축공학과", year=None),
+        _doc("business_1", department="경영학부", year=None),
+        _doc("computer_ai_1", department="컴퓨터인공지능학부", year=None),
+        _doc("ict_1", department="정보통신융합학부", year=None),
+        _doc("materials_1", department="신소재공학과", year=None),
+        _doc("medicine_1", department="의예과", year=None),
         _doc("curriculum_2023_1", department=None, year="2023", parser_type="pdf"),
         _doc("curriculum_2024_1", department=None, year="2024", parser_type="pdf"),
         _doc("curriculum_2025_1", department=None, year="2025", parser_type="pdf"),
+        _doc("curriculum_2026_1", department=None, year="2026", parser_type="pdf"),
     ]
     _write_json(knowledge_path, rows)
 
     report = validate_graduation_coverage(
         knowledge_path,
-        min_label0_docs=8,
+        min_label0_docs=9,
         min_departments=5,
-        min_curriculum_years=3,
+        min_curriculum_years=4,
         require_parser_metadata=True,
     )
 
-    assert report["label0_doc_count"] == 8
+    assert report["label0_doc_count"] == 9
     assert report["department_count"] == 5
-    assert report["curriculum_year_count"] == 3
+    assert report["curriculum_year_count"] == 4
 
 
 def test_graduation_coverage_rejects_missing_curriculum_years(tmp_path: Path) -> None:
     knowledge_path = tmp_path / "knowledge_seed.json"
     rows = [
-        _doc("bio_1", department="생화학과", year=None),
-        _doc("eng_1", department="영어영문학과", year=None),
-        _doc("energy_1", department="에너지공학과", year=None),
-        _doc("horti_1", department="원예학과", year=None),
-        _doc("archi_1", department="스마트시티건축공학과", year=None),
+        _doc("business_1", department="경영학부", year=None),
+        _doc("computer_ai_1", department="컴퓨터인공지능학부", year=None),
+        _doc("ict_1", department="정보통신융합학부", year=None),
+        _doc("materials_1", department="신소재공학과", year=None),
+        _doc("medicine_1", department="의예과", year=None),
         _doc("curriculum_2025_1", department=None, year="2025", parser_type="pdf"),
     ]
     _write_json(knowledge_path, rows)
@@ -179,7 +181,7 @@ def test_graduation_coverage_rejects_missing_curriculum_years(tmp_path: Path) ->
             knowledge_path,
             min_label0_docs=6,
             min_departments=5,
-            min_curriculum_years=3,
+            min_curriculum_years=4,
             require_parser_metadata=True,
         )
 ```
@@ -246,7 +248,7 @@ Append this test to `tests/test_graduation_data_expansion_plan.py`:
 from nlp_term.collect.source_inventory import iter_specs
 
 
-def test_priority1_active_inventory_has_five_departments_and_three_curriculum_years() -> None:
+def test_priority1_active_inventory_has_fixed_departments_and_four_curriculum_years() -> None:
     specs = [
         spec for spec in iter_specs(stage="all", active_only=True)
         if spec.label == 0 and spec.domain == "graduation"
@@ -255,8 +257,8 @@ def test_priority1_active_inventory_has_five_departments_and_three_curriculum_ye
     years = {spec.curriculum_year for spec in specs if spec.curriculum_year}
     parser_types = {spec.parser_type for spec in specs}
 
-    assert len(departments) >= 5
-    assert len(years) >= 3
+    assert {"경영학부", "컴퓨터인공지능학부", "정보통신융합학부", "신소재공학과", "의예과"} <= departments
+    assert {"2023", "2024", "2025", "2026"} <= years
     assert {"html", "pdf"} <= parser_types
 ```
 
@@ -265,37 +267,40 @@ def test_priority1_active_inventory_has_five_departments_and_three_curriculum_ye
 Run:
 
 ```powershell
-uv run pytest tests/test_graduation_data_expansion_plan.py::test_priority1_active_inventory_has_five_departments_and_three_curriculum_years -v
+uv run pytest tests/test_graduation_data_expansion_plan.py::test_priority1_active_inventory_has_fixed_departments_and_four_curriculum_years -v
 ```
 
 Expected: fails because current active inventory has only 2 departments and 1 curriculum year.
 
 - [ ] **Step 3: Update `source_inventory.py` minimally**
 
-Activate or add only Priority 1 graduation sources that pass URL review:
+Activate or add only Priority 1 graduation sources that pass URL review and match `docs/representative_departments_2026.md`:
 
 ```python
 SourceSpec(
-    source_id="graduation_energy_requirements",
+    source_id="graduation_business_requirements",
     label=0,
     domain="graduation",
-    url="https://energy.cnu.ac.kr/energy/department/graduate.do",
+    url="https://biz.cnu.ac.kr/biz/curriculum/graduate01.do",
     parser_type="html",
     stage="stage1",
     active=True,
     priority=10,
     official_chain_ok=True,
-    notes="Energy Engineering graduation requirements",
-    department="에너지공학과",
+    notes="Business administration graduation requirements",
+    department="경영학부",
 )
 ```
 
 Add equivalent active specs for:
 
-- `graduation_horticulture_counsel`, department `원예학과`, URL `https://horti.cnu.ac.kr/horti/college/college04.do`
-- `graduation_smartarchi_requirements`, department `스마트시티건축공학과`, URL `https://smartarchi-eng.cnu.ac.kr/smartarchi-eng/department/condition.do`
+- `graduation_computer_ai_requirements`, department `컴퓨터인공지능학부`, URL `https://computer.cnu.ac.kr/computer/edu/requirements.do`
+- `graduation_ict_requirements`, department `정보통신융합학부`, URL `https://rice.cnu.ac.kr/rice/undergraduate/graduation.do`
+- `graduation_materials_requirements`, department `신소재공학과`, URL `https://mse.cnu.ac.kr/mse/under/graduate.do`
+- `graduation_medicine_requirements`, department `의예과`, URL `https://medicine.cnu.ac.kr/medicine/undergrad/curriculum-undergrad01.do`
 - `graduation_curriculum_2024_pdf`, year `2024`, URL `https://plus.cnu.ac.kr/html/kr/24file/2024_book.pdf`
 - `graduation_curriculum_2023_pdf`, year `2023`, URL `https://plus.cnu.ac.kr/html/kr/23file/2023_book.pdf`
+- `graduation_curriculum_2026_source`, year `2026`, use the official central curriculum page `https://plus.cnu.ac.kr/html/kr/sub05/sub05_051201.html` as the discovery source; activation passes only if it links a 2026 curriculum PDF or equivalent official 2026 curriculum document.
 
 Keep `graduation_curriculum_pdf` as the existing 2025 source.
 
@@ -475,7 +480,7 @@ Run:
 
 ```powershell
 uv run python -m nlp_term.validators --knowledge-quality data/knowledge_seed.json --source-probe data/sources/source_probe.json --min-total-docs 75 --min-docs-per-label 1 --min-body-chars 80 --min-source-parse-ratio 0.9
-uv run python -c "from pathlib import Path; from nlp_term.validators import validate_graduation_coverage; print(validate_graduation_coverage(Path('data/knowledge_seed.json'), min_label0_docs=45, min_departments=5, min_curriculum_years=3, require_parser_metadata=True))"
+uv run python -c "from pathlib import Path; from nlp_term.validators import validate_graduation_coverage; print(validate_graduation_coverage(Path('data/knowledge_seed.json'), min_label0_docs=45, min_departments=5, min_curriculum_years=4, require_parser_metadata=True))"
 ```
 
 Expected: both commands pass. If `data/source_parse_failures.json` is not empty, log every failure and either repair parser behavior or deactivate the failing source.
