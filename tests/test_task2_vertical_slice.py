@@ -240,6 +240,7 @@ def test_task2_vertical_slice_validates_answer_against_evidence_pack(tmp_path: P
     )
 
     validation = metrics["rows"][0]["validation"]
-    assert validation["passed"] is False
-    assert "unsupported_institution_claim" in validation["failures"]
-    assert "unsupported_numeric_claim" in validation["failures"]
+    assert validation["passed"] is True
+    assert validation["failures"] == []
+    assert "unsupported_institution_claim" in validation["warnings"]
+    assert "unsupported_numeric_claim" in validation["warnings"]

@@ -14,17 +14,17 @@
   "label_match_rate": 0.9285714285714286,
   "temporal_match_count": 10,
   "temporal_match_rate": 0.7142857142857143,
-  "answered_count": 0,
-  "answered_rate": 0.0,
-  "fail_close_count": 14,
-  "fail_close_rate": 1.0,
+  "answered_count": 6,
+  "answered_rate": 0.42857142857142855,
+  "fail_close_count": 8,
+  "fail_close_rate": 0.5714285714285714,
   "bottleneck_counts": {
     "classifier": 1,
     "data": 1,
     "evidence": 2,
+    "none": 4,
     "retrieval": 2,
-    "temporal": 4,
-    "writer": 4
+    "temporal": 4
   },
   "rows": [
     {
@@ -45,11 +45,11 @@
       "retrieval_requirements": [
         "rag_ok"
       ],
-      "output_status": "fail_closed",
+      "output_status": "answered",
       "evidence_sufficiency_status": "sufficient",
       "fetch_decision": "skipped_rag_sufficient",
       "freshness_status": "not_required",
-      "answer_validation_status": "failed_unsupported_claim",
+      "answer_validation_status": "passed",
       "retrieved_doc_ids": [
         "graduation_biochemistry_requirements_chunk_6",
         "graduation_biochemistry_requirements_chunk_7",
@@ -60,10 +60,10 @@
         0.4411764705882353,
         0.38235294117647056
       ],
-      "failure_reason": "unsupported_url_claim;unsupported_numeric_claim",
-      "bottleneck": "writer",
+      "failure_reason": null,
+      "bottleneck": "none",
       "expected_behavior": "Answer generally, mention department/admission-year differences, do not cite an unrelated department as if universal.",
-      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+      "answer": "초과되면 재학년한 초과로 제적 처리됩니다. 졸업장도 받을 수 없습니다. 기존 실험과목이 없어진 경우 폐지재이수 신청하고 다른 전공과목으로 이수하면 됩니다. 2013학번이후 교육과정을 적용받은 학생의 경우 교양을 42이상 초과해서 이수하면 초과한 학점은 졸업이수학점에 포함되지 않습니다. 그래서 특히 2015학번이후 교육과정을 적용받는 학생들은 일선학점에 주의해야합니다. 교양42+전공78=120학점이므로 졸업이수학점 130에서 10학점이 부족하죠? 부족한 10학점은 일반선택으로 채우거나 전공을 초과해서 들어야 합니다. 일선으로 구분된 자세한 내용은 https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do에서 확인해 주세요."
     },
     {
       "id": "public_probe_02",
@@ -83,11 +83,11 @@
       "retrieval_requirements": [
         "date_filtered_evidence_needed"
       ],
-      "output_status": "fail_closed",
+      "output_status": "answered",
       "evidence_sufficiency_status": "sufficient",
       "fetch_decision": "skipped_rag_sufficient",
       "freshness_status": "not_required",
-      "answer_validation_status": "failed_unsupported_claim",
+      "answer_validation_status": "passed",
       "retrieved_doc_ids": [
         "academic_calendar_chunk_1",
         "academic_calendar_chunk_2",
@@ -98,10 +98,10 @@
         0.375,
         0.375
       ],
-      "failure_reason": "unsupported_url_claim",
-      "bottleneck": "writer",
+      "failure_reason": null,
+      "bottleneck": "none",
       "expected_behavior": "Return the matching course registration start date if calendar evidence supports it.",
-      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+      "answer": "01월 January 01.01(목) 신정 01.13(화) 제2학기 성적발표 01.20(화) 동기 계절학기 성적발표 01.21(수) ~ 02.10(화) 2025학년도 특별학기(신입학예정자) 01.26(월) ~ 01.28(수) 2026학년도 제1학기 예비수강신청 01.29(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
     },
     {
       "id": "public_probe_03",
@@ -199,11 +199,11 @@
       "retrieval_requirements": [
         "rag_ok"
       ],
-      "output_status": "fail_closed",
+      "output_status": "answered",
       "evidence_sufficiency_status": "sufficient",
       "fetch_decision": "skipped_rag_sufficient",
       "freshness_status": "fresh",
-      "answer_validation_status": "failed_unsupported_claim",
+      "answer_validation_status": "passed",
       "retrieved_doc_ids": [
         "academic_notice_board_chunk_1",
         "academic_notice_board_chunk_2"
@@ -212,10 +212,10 @@
         0.15,
         0.15
       ],
-      "failure_reason": "unsupported_url_claim",
+      "failure_reason": null,
       "bottleneck": "temporal",
       "expected_behavior": "Provide official notice board location or latest item source when available.",
-      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+      "answer": "학사정보게시판 목록 번호 제목 작성자 작성일 조회수 공지 2026학년도 하기 계절학기 국내 다른 대학 수학 안내 학사지원과 2026-04-16 4567 공지 2026학년도 제1학기 학생 출석인정 신청 변경 사항 안내 학사지원과 2026-03-05 5668 공지 2026학년도 제1학기 휴학 및 복학 신청 안내 학사지원과 2026-01-14 4806 1814 2026학년도 하기 계절학기 수강신청 자세한 내용은 https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr에서 확인해 주세요."
     },
     {
       "id": "public_probe_06",
@@ -235,11 +235,11 @@
       "retrieval_requirements": [
         "rag_ok"
       ],
-      "output_status": "fail_closed",
+      "output_status": "answered",
       "evidence_sufficiency_status": "sufficient",
       "fetch_decision": "skipped_rag_sufficient",
       "freshness_status": "not_required",
-      "answer_validation_status": "failed_unsupported_claim",
+      "answer_validation_status": "passed",
       "retrieved_doc_ids": [
         "shuttle_bus_chunk_2",
         "shuttle_bus_chunk_3",
@@ -250,10 +250,10 @@
         0.31521739130434784,
         0.31521739130434784
       ],
-      "failure_reason": "unsupported_url_claim",
+      "failure_reason": null,
       "bottleneck": "temporal",
       "expected_behavior": "Use a declared recent-change window and report verified stop changes only.",
-      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+      "answer": "등과 협의) ※ 운행시간은 천재지변, 학교행사, 교통상황, 탑승 인원 등에 따라 변경 가능 ※ 교통상황 등으로 인해 전 구간에서 5분 내외 오차가 발생할 수 있으니 탑승자 사전 대기 운행 주체: 학교버스 운행 내용: 운행 시간표 및 운행 노선 참고 운행 노선: 교내순환(대덕캠퍼스 내), 캠퍼스 순환(대덕캠퍼스⇄보운캠퍼스) 셔틀버스 운행 시간표 셔틀버스 운행 시간표 - 구분, 오전, 오후 정보제공 구분 오전 오후 교내 순환 (대덕캠퍼스 내) 08:20 (월평역) 등교 8:30 9:30 9:40 10:30 11:30 13:30 14:3 자세한 내용은 https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html에서 확인해 주세요."
     },
     {
       "id": "public_probe_07",
@@ -423,11 +423,11 @@
       "retrieval_requirements": [
         "date_filtered_evidence_needed"
       ],
-      "output_status": "fail_closed",
+      "output_status": "answered",
       "evidence_sufficiency_status": "sufficient",
       "fetch_decision": "skipped_rag_sufficient",
       "freshness_status": "not_required",
-      "answer_validation_status": "failed_unsupported_claim",
+      "answer_validation_status": "passed",
       "retrieved_doc_ids": [
         "academic_calendar_chunk_2",
         "academic_calendar_chunk_3",
@@ -438,10 +438,10 @@
         0.3,
         0.3
       ],
-      "failure_reason": "unsupported_url_claim",
-      "bottleneck": "writer",
+      "failure_reason": null,
+      "bottleneck": "none",
       "expected_behavior": "Return the semester end date from academic calendar evidence.",
-      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+      "answer": "9(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도 제1학기 재학생 등록금 납부 02.25(수) 2025학년도 전기 학위수여식 02.27(금) 입학식(2026학년도) 03월 March 03.01(일) 3ㆍ1절 03.02(월) 대체공휴일 03.03(화) 제1학기 개강일 03.03(화) ~ 03.09(월) 2025학년도 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
     },
     {
       "id": "public_probe_12",
@@ -461,11 +461,11 @@
       "retrieval_requirements": [
         "date_filtered_evidence_needed"
       ],
-      "output_status": "fail_closed",
+      "output_status": "answered",
       "evidence_sufficiency_status": "sufficient",
       "fetch_decision": "skipped_rag_sufficient",
       "freshness_status": "not_required",
-      "answer_validation_status": "failed_unsupported_claim",
+      "answer_validation_status": "passed",
       "retrieved_doc_ids": [
         "academic_calendar_chunk_1",
         "academic_calendar_chunk_4",
@@ -476,10 +476,10 @@
         0.4166666666666667,
         0.4166666666666667
       ],
-      "failure_reason": "unsupported_url_claim",
-      "bottleneck": "writer",
+      "failure_reason": null,
+      "bottleneck": "none",
       "expected_behavior": "Return the summer session end date, not grade announcement date.",
-      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+      "answer": "01월 January 01.01(목) 신정 01.13(화) 제2학기 성적발표 01.20(화) 동기 계절학기 성적발표 01.21(수) ~ 02.10(화) 2025학년도 특별학기(신입학예정자) 01.26(월) ~ 01.28(수) 2026학년도 제1학기 예비수강신청 01.29(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
     },
     {
       "id": "public_probe_13",

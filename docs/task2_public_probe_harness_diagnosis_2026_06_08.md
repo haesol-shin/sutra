@@ -4,26 +4,26 @@
 - 질문 수: 14
 - Task1 label match: 13 / 14 (92.86%)
 - Temporal type match: 10 / 14 (71.43%)
-- Answered: 0 / 14 (0.00%)
-- Fail-closed: 14 / 14 (100.00%)
-- Bottlenecks: `{"classifier": 1, "data": 1, "evidence": 2, "retrieval": 2, "temporal": 4, "writer": 4}`
+- Answered: 6 / 14 (42.86%)
+- Fail-closed: 8 / 14 (57.14%)
+- Bottlenecks: `{"classifier": 1, "data": 1, "evidence": 2, "none": 4, "retrieval": 2, "temporal": 4}`
 
 이 결과는 현재 harness의 trace 진단이며 최종 Task 2 성능 claim이 아니다.
 
 | ID | Label | Temporal | Target | Status | Bottleneck | Failure |
 | --- | --- | --- | --- | --- | --- | --- |
-| public_probe_01 | 0 / 0 | none / none |  | fail_closed | writer | unsupported_url_claim;unsupported_numeric_claim |
-| public_probe_02 | 2 / 2 | date_lookup / date_lookup |  | fail_closed | writer | unsupported_url_claim |
+| public_probe_01 | 0 / 0 | none / none |  | answered | none |  |
+| public_probe_02 | 2 / 2 | date_lookup / date_lookup |  | answered | none |  |
 | public_probe_03 | 3 / 3 | current_snapshot / current_snapshot | 2026-06-08 | fail_closed | data | current_fact_source_not_official_chain_verified |
 | public_probe_04 | 4 / 4 | period_summary / ongoing_status | 2026-06-15~2026-06-21 | fail_closed | temporal | date_filtered_evidence_missing_or_mismatched |
-| public_probe_05 | 1 / 1 | none / latest_item |  | fail_closed | temporal | unsupported_url_claim |
-| public_probe_06 | 4 / 4 | none / changed_since |  | fail_closed | temporal | unsupported_url_claim |
+| public_probe_05 | 1 / 1 | none / latest_item |  | answered | temporal |  |
+| public_probe_06 | 4 / 4 | none / changed_since |  | answered | temporal |  |
 | public_probe_07 | 2 / 2 | changed_since / changed_since | 2026-05-09~2026-06-08 | fail_closed | evidence | date_filtered_evidence_missing_or_mismatched |
 | public_probe_08 | 3 / 3 | period_summary / period_summary | 2026-06-15~2026-06-21 | fail_closed | retrieval | top_score_below_threshold;no_fetchable_registry_candidate |
 | public_probe_09 | 1 / 1 | none / latest_item |  | fail_closed | temporal | top_score_below_threshold;controlled_fetch_candidate_exists |
 | public_probe_10 | 1 / 0 | none / none |  | fail_closed | classifier | top_score_below_threshold;controlled_fetch_candidate_exists |
-| public_probe_11 | 2 / 2 | date_lookup / date_lookup |  | fail_closed | writer | unsupported_url_claim |
-| public_probe_12 | 2 / 2 | date_lookup / date_lookup |  | fail_closed | writer | unsupported_url_claim |
+| public_probe_11 | 2 / 2 | date_lookup / date_lookup |  | answered | none |  |
+| public_probe_12 | 2 / 2 | date_lookup / date_lookup |  | answered | none |  |
 | public_probe_13 | 3 / 3 | future_schedule / future_schedule | 2026-06-16 | fail_closed | evidence | date_filtered_evidence_missing_or_mismatched |
 | public_probe_14 | 1 / 1 | none / none |  | fail_closed | retrieval | top_score_below_threshold;controlled_fetch_candidate_exists |
 
