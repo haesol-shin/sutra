@@ -60,13 +60,15 @@ def answer_with_harness(
     evidence_pack_size = _evidence_pack_size(temporal_intent)
 
     knowledge = load_knowledge_with_metadata(knowledge_path)
+    decision_top_k = max(6, evidence_pack_size)
     diagnostic_top_k = max(12, evidence_pack_size * 3)
-    retrieved = rank_docs(question, knowledge.docs, top_k=diagnostic_top_k)
+    decision_retrieved = rank_docs(question, knowledge.docs, top_k=decision_top_k)
+    diagnostic_retrieved = rank_docs(question, knowledge.docs, top_k=diagnostic_top_k)
     docs_by_id = {doc.doc_id: doc for doc in knowledge.docs}
-    prefilter_candidates = _candidate_trace_rows(retrieved, docs_by_id)
+    prefilter_candidates = _candidate_trace_rows(diagnostic_retrieved, docs_by_id)
     retrieved_pairs = [
         (docs_by_id[row.doc_id], row.score)
-        for row in retrieved
+        for row in decision_retrieved
         if row.doc_id in docs_by_id and docs_by_id[row.doc_id].label == route.label
     ][:evidence_pack_size]
     retrieved_docs = [doc for doc, _score in retrieved_pairs]

@@ -264,16 +264,12 @@
       "retrieved_doc_ids": [
         "academic_calendar_chunk_5",
         "academic_calendar_chunk_8",
-        "academic_calendar_chunk_4",
-        "academic_calendar_chunk_1",
-        "academic_calendar_chunk_2"
+        "academic_calendar_chunk_4"
       ],
       "retrieved_scores": [
         0.375,
         0.375,
-        0.3194444444444444,
-        0.1527777777777778,
-        0.1527777777777778
+        0.3194444444444444
       ],
       "prefilter_retrieved_doc_ids": [
         "academic_notice_board_chunk_1",
@@ -295,9 +291,7 @@
       "postfilter_retrieved_doc_ids": [
         "academic_calendar_chunk_5",
         "academic_calendar_chunk_8",
-        "academic_calendar_chunk_4",
-        "academic_calendar_chunk_1",
-        "academic_calendar_chunk_2"
+        "academic_calendar_chunk_4"
       ],
       "prefilter_retrieved_candidates": [
         {
@@ -475,26 +469,6 @@
         {
           "doc_id": "academic_calendar_chunk_4",
           "score": 0.3194444444444444,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": "atomic_guard",
-          "boundary_type": "calendar_row",
-          "chunk_confidence": "high"
-        },
-        {
-          "doc_id": "academic_calendar_chunk_1",
-          "score": 0.1527777777777778,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": "atomic_guard",
-          "boundary_type": "calendar_row",
-          "chunk_confidence": "high"
-        },
-        {
-          "doc_id": "academic_calendar_chunk_2",
-          "score": 0.1527777777777778,
           "label": 2,
           "domain": "academic_calendar",
           "source_id": "academic_calendar",
@@ -1187,13 +1161,11 @@
       "answer_validation_status": "passed",
       "retrieved_doc_ids": [
         "academic_notice_board_chunk_1",
-        "academic_notice_board_chunk_2",
-        "academic_notice_detail_2512124_chunk_1"
+        "academic_notice_board_chunk_2"
       ],
       "retrieved_scores": [
         0.15,
-        0.15,
-        0.11
+        0.15
       ],
       "prefilter_retrieved_doc_ids": [
         "academic_notice_board_chunk_1",
@@ -1211,8 +1183,7 @@
       ],
       "postfilter_retrieved_doc_ids": [
         "academic_notice_board_chunk_1",
-        "academic_notice_board_chunk_2",
-        "academic_notice_detail_2512124_chunk_1"
+        "academic_notice_board_chunk_2"
       ],
       "prefilter_retrieved_candidates": [
         {
@@ -1356,16 +1327,6 @@
           "chunking_strategy": "fallback_window",
           "boundary_type": "prose_sentence",
           "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "academic_notice_detail_2512124_chunk_1",
-          "score": 0.11,
-          "label": 1,
-          "domain": "notices",
-          "source_id": "academic_notice_detail_2512124",
-          "chunking_strategy": "recursive_prose",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "medium"
         }
       ],
       "failure_reason": null,
@@ -2362,13 +2323,11 @@
       "answer_validation_status": "blocked",
       "retrieved_doc_ids": [
         "academic_notice_board_chunk_1",
-        "academic_notice_board_chunk_2",
-        "academic_notice_detail_2512124_chunk_1"
+        "academic_notice_board_chunk_2"
       ],
       "retrieved_scores": [
         0.19,
-        0.15,
-        0.11
+        0.15
       ],
       "prefilter_retrieved_doc_ids": [
         "academic_notice_board_chunk_1",
@@ -2386,8 +2345,7 @@
       ],
       "postfilter_retrieved_doc_ids": [
         "academic_notice_board_chunk_1",
-        "academic_notice_board_chunk_2",
-        "academic_notice_detail_2512124_chunk_1"
+        "academic_notice_board_chunk_2"
       ],
       "prefilter_retrieved_candidates": [
         {
@@ -2531,16 +2489,6 @@
           "chunking_strategy": "fallback_window",
           "boundary_type": "prose_sentence",
           "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "academic_notice_detail_2512124_chunk_1",
-          "score": 0.11,
-          "label": 1,
-          "domain": "notices",
-          "source_id": "academic_notice_detail_2512124",
-          "chunking_strategy": "recursive_prose",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "medium"
         }
       ],
       "failure_reason": "top_score_below_threshold;controlled_fetch_candidate_exists",
@@ -2572,12 +2520,10 @@
       "freshness_status": "unknown",
       "answer_validation_status": "blocked",
       "retrieved_doc_ids": [
-        "academic_notice_detail_2512782_chunk_2",
-        "academic_notice_board_chunk_3"
+        "academic_notice_detail_2512782_chunk_2"
       ],
       "retrieved_scores": [
-        0.18452380952380953,
-        0.16071428571428573
+        0.18452380952380953
       ],
       "prefilter_retrieved_doc_ids": [
         "graduation_biochemistry_requirements_chunk_7",
@@ -2594,8 +2540,7 @@
         "graduation_curriculum_pdf_chunk_1"
       ],
       "postfilter_retrieved_doc_ids": [
-        "academic_notice_detail_2512782_chunk_2",
-        "academic_notice_board_chunk_3"
+        "academic_notice_detail_2512782_chunk_2"
       ],
       "prefilter_retrieved_candidates": [
         {
@@ -2729,16 +2674,6 @@
           "chunking_strategy": "recursive_prose",
           "boundary_type": "prose_sentence",
           "chunk_confidence": "medium"
-        },
-        {
-          "doc_id": "academic_notice_board_chunk_3",
-          "score": 0.16071428571428573,
-          "label": 1,
-          "domain": "notices",
-          "source_id": "academic_notice_board",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
         }
       ],
       "failure_reason": "top_score_below_threshold;controlled_fetch_candidate_exists",
@@ -3555,14 +3490,10 @@
       "freshness_status": "unknown",
       "answer_validation_status": "blocked",
       "retrieved_doc_ids": [
-        "academic_notice_detail_2512782_chunk_1",
-        "academic_notice_board_chunk_2",
-        "academic_notice_board_chunk_3"
+        "academic_notice_detail_2512782_chunk_1"
       ],
       "retrieved_scores": [
-        0.15833333333333333,
-        0.09166666666666666,
-        0.09166666666666666
+        0.15833333333333333
       ],
       "prefilter_retrieved_doc_ids": [
         "graduation_english_requirements_chunk_4",
@@ -3579,9 +3510,7 @@
         "academic_notice_board_chunk_3"
       ],
       "postfilter_retrieved_doc_ids": [
-        "academic_notice_detail_2512782_chunk_1",
-        "academic_notice_board_chunk_2",
-        "academic_notice_board_chunk_3"
+        "academic_notice_detail_2512782_chunk_1"
       ],
       "prefilter_retrieved_candidates": [
         {
@@ -3712,26 +3641,6 @@
           "label": 1,
           "domain": "notices",
           "source_id": "academic_notice_detail_2512782",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "academic_notice_board_chunk_2",
-          "score": 0.09166666666666666,
-          "label": 1,
-          "domain": "notices",
-          "source_id": "academic_notice_board",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "academic_notice_board_chunk_3",
-          "score": 0.09166666666666666,
-          "label": 1,
-          "domain": "notices",
-          "source_id": "academic_notice_board",
           "chunking_strategy": "fallback_window",
           "boundary_type": "prose_sentence",
           "chunk_confidence": "low"

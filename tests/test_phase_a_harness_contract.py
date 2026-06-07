@@ -4,6 +4,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+import nlp_term.chat.orchestrator as orchestrator_module
 from nlp_term.chat.evidence_sufficiency import evaluate_evidence_sufficiency
 from nlp_term.chat.orchestrator import answer_with_harness
 from nlp_term.chat.source_status import build_source_status
@@ -15,7 +16,7 @@ from nlp_term.chat.state_contract import (
     OutputStatus,
 )
 from nlp_term.collect.source_inventory import STAGE0_SOURCES
-from nlp_term.schemas import KnowledgeDoc
+from nlp_term.schemas import KnowledgeDoc, RetrievedDoc
 
 
 def _doc(
@@ -422,3 +423,163 @@ def test_harness_trace_records_prefilter_and_postfilter_retrieval_candidates(tmp
     assert "grad_doc" not in postfilter_ids
     assert result.trace.prefilter_retrieved_candidates[0].score >= 0
     assert {candidate.chunk_confidence for candidate in result.trace.prefilter_retrieved_candidates} >= {"medium", "low"}
+
+
+def test_diagnostic_retrieval_pool_does_not_expand_evidence_selection(tmp_path: Path) -> None:
+    knowledge_path = tmp_path / "knowledge.json"
+    high_scoring_wrong_route_docs = [
+        {
+            "doc_id": f"calendar_doc_{index}",
+            "label": 2,
+            "domain": "academic_calendar",
+            "title": "토익 장학금 성적 기준",
+            "body": "토익 장학금 성적 기준 관련 일정 안내입니다.",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/",
+            "source_id": "academic_calendar",
+            "metadata": {"chunk_confidence": "medium"},
+        }
+        for index in range(6)
+    ]
+    knowledge_path.write_text(
+        json.dumps(
+            [
+                *high_scoring_wrong_route_docs,
+                {
+                    "doc_id": "late_notice_doc",
+                    "label": 1,
+                    "domain": "notices",
+                    "title": "공지",
+                    "body": "장학 공지사항은 공식 공지 게시판에서 확인한다.",
+                    "source_url": "https://plus.cnu.ac.kr/notice",
+                    "source_id": "notices_main",
+                    "metadata": {"chunk_confidence": "low"},
+                },
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    result = answer_with_harness(
+        "토익 장학금을 받으려면 성적 기준이 어떻게 되나요?",
+        knowledge_path=knowledge_path,
+        generator=lambda prompt: "토익 장학금 성적 기준은 공지사항에서 확인해야 합니다.",
+    )
+
+    prefilter_ids = [candidate.doc_id for candidate in result.trace.prefilter_retrieved_candidates]
+    postfilter_ids = [candidate.doc_id for candidate in result.trace.postfilter_retrieved_candidates]
+
+    assert "late_notice_doc" in prefilter_ids
+    assert "late_notice_doc" not in postfilter_ids
+    assert result.trace.retrieved_doc_ids == []
+    assert result.output_status == OutputStatus.FAIL_CLOSED
+
+
+def test_harness_uses_original_top_k_for_decision_and_larger_pool_for_diagnostics(tmp_path: Path, monkeypatch) -> None:
+    knowledge_path = tmp_path / "knowledge.json"
+    knowledge_path.write_text(
+        json.dumps(
+            [
+                {
+                    "doc_id": "notice_doc",
+                    "label": 1,
+                    "domain": "notices",
+                    "title": "공지",
+                    "body": "장학금 공지는 공식 공지사항에서 확인한다.",
+                    "source_url": "https://plus.cnu.ac.kr/notice",
+                    "source_id": "notices_main",
+                    "metadata": {},
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    top_k_calls: list[int] = []
+
+    def fake_rank_docs(question, docs, *, top_k: int):
+        top_k_calls.append(top_k)
+        return [
+            RetrievedDoc(
+                doc_id="notice_doc",
+                score=0.9,
+                title="공지",
+                source_url="https://plus.cnu.ac.kr/notice",
+                label=1,
+            )
+        ]
+
+    monkeypatch.setattr(orchestrator_module, "rank_docs", fake_rank_docs)
+
+    answer_with_harness(
+        "장학금 공지 어디서 봐요?",
+        knowledge_path=knowledge_path,
+        generator=lambda prompt: "장학금 공지는 공식 공지사항에서 확인하면 됩니다.",
+    )
+
+    assert top_k_calls == [6, 12]
+
+
+def test_diagnostic_only_candidate_does_not_enter_prompt(tmp_path: Path) -> None:
+    knowledge_path = tmp_path / "knowledge.json"
+    wrong_route_docs = [
+        {
+            "doc_id": f"calendar_doc_{index}",
+            "label": 2,
+            "domain": "academic_calendar",
+            "title": "토익 장학금 성적 기준",
+            "body": "토익 장학금 성적 기준 관련 일정 안내입니다.",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/",
+            "source_id": "academic_calendar",
+            "metadata": {"chunk_confidence": "medium"},
+        }
+        for index in range(5)
+    ]
+    knowledge_path.write_text(
+        json.dumps(
+            [
+                {
+                    "doc_id": "selected_notice_doc",
+                    "label": 1,
+                    "domain": "notices",
+                    "title": "토익 장학금 성적 기준",
+                    "body": "토익 장학금 성적 기준은 공식 공지사항에서 확인한다.",
+                    "source_url": "https://plus.cnu.ac.kr/notice",
+                    "source_id": "notices_main",
+                    "metadata": {"chunk_confidence": "medium"},
+                },
+                *wrong_route_docs,
+                {
+                    "doc_id": "late_notice_doc",
+                    "label": 1,
+                    "domain": "notices",
+                    "title": "공지",
+                    "body": "진단 전용 비밀 문장. 이 문장은 prompt에 들어가면 안 된다.",
+                    "source_url": "https://plus.cnu.ac.kr/notice/late",
+                    "source_id": "notices_main",
+                    "metadata": {"chunk_confidence": "low"},
+                },
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    captured: dict[str, str] = {}
+
+    def writer(prompt: str) -> str:
+        captured["prompt"] = prompt
+        return "토익 장학금 성적 기준은 공식 공지사항에서 확인하면 됩니다."
+
+    result = answer_with_harness(
+        "토익 장학금을 받으려면 성적 기준이 어떻게 되나요?",
+        knowledge_path=knowledge_path,
+        generator=writer,
+    )
+
+    prefilter_ids = [candidate.doc_id for candidate in result.trace.prefilter_retrieved_candidates]
+    postfilter_ids = [candidate.doc_id for candidate in result.trace.postfilter_retrieved_candidates]
+
+    assert result.output_status == OutputStatus.ANSWERED
+    assert "late_notice_doc" in prefilter_ids
+    assert "late_notice_doc" not in postfilter_ids
+    assert "진단 전용 비밀 문장" not in captured["prompt"]
