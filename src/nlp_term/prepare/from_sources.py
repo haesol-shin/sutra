@@ -85,11 +85,12 @@ def parse_source(raw: RawSource, *, chunks_per_source: int = 3) -> tuple[list[Kn
         chunks = _chunk_text(text, chunks_per_source=chunks_per_source, label=raw.label)
         docs = []
         for index, chunk in enumerate(chunks):
+            chunk_index = index + 1
             doc = source_doc_from_text(
                 raw,
-                title=f"{raw.domain} source {index + 1}",
+                title=f"{raw.domain} source {chunk_index}",
                 body=chunk.text,
-                section=f"chunk_{chunk.index}",
+                section=f"chunk_{chunk_index}",
                 parser_name=_parser_name(raw),
             )
             doc.metadata.update(
@@ -97,7 +98,8 @@ def parse_source(raw: RawSource, *, chunks_per_source: int = 3) -> tuple[list[Kn
                     "chunking_strategy": chunk.strategy,
                     "boundary_type": chunk.boundary_type,
                     "chunk_confidence": chunk.chunk_confidence,
-                    "chunk_index": chunk.index,
+                    "chunk_index": chunk_index,
+                    "source_chunk_index": chunk.index,
                     "char_start": chunk.char_start,
                     "char_end": chunk.char_end,
                 }
@@ -189,8 +191,9 @@ def _chunk_text(text: str, *, chunks_per_source: int, label: int) -> list[Source
         clipped,
         label=label,
         max_chunk_chars=_chunk_chars_for_label(label),
-        max_chunks=chunks_per_source,
+        max_chunks=max(chunks_per_source * 4, chunks_per_source),
     )
+    chunks = _ranked_source_chunks(chunks, label=label, limit=chunks_per_source)
     if not chunks:
         raise ValueError("no clean source chunk passed content quality gates")
     return chunks
@@ -200,6 +203,28 @@ def _chunk_chars_for_label(label: int) -> int:
     if label == 1:
         return 220
     return 300
+
+
+def _ranked_source_chunks(chunks: list[SourceChunk], *, label: int, limit: int) -> list[SourceChunk]:
+    scored: list[tuple[int, int, SourceChunk]] = []
+    for chunk in chunks:
+        score = _source_chunk_score(chunk, label)
+        if score > 0:
+            scored.append((score, chunk.char_start if chunk.char_start is not None else chunk.index, chunk))
+    scored.sort(key=lambda item: (-item[0], item[1]))
+    selected = sorted(scored[:limit], key=lambda item: item[1])
+    return [chunk for _, _, chunk in selected]
+
+
+def _source_chunk_score(chunk: SourceChunk, label: int) -> int:
+    if chunk.chunk_confidence == "high":
+        keyword_hits = sum(1 for keyword in DOMAIN_KEYWORDS[label] if keyword in chunk.text)
+        hangul_count = sum(1 for char in chunk.text if "가" <= char <= "힣")
+        return 10000 + keyword_hits * 100 + hangul_count
+    score = _chunk_score(chunk.text, label)
+    if chunk.chunk_confidence == "medium":
+        score = max(score, 1)
+    return score
 
 
 def _ranked_content_chunks(text: str, *, label: int, chunk_chars: int, limit: int) -> list[str]:

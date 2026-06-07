@@ -16,6 +16,20 @@ def test_calendar_guard_preserves_date_and_event_name() -> None:
     assert any(chunk.boundary_type == "calendar_row" and chunk.chunk_confidence == "high" for chunk in chunks)
 
 
+def test_calendar_guard_handles_normalized_html_text() -> None:
+    text = (
+        "01월 January 01.01(목) 신정 01.13(화) 제2학기 성적발표 "
+        "05월 May 05.07(목) ~ 05.11(월) 하기 계절학기 수강신청 "
+        "06월 June 06.22(월) 하기방학 06.22(월) ~ 07.10(금) 하기 계절학기"
+    )
+
+    chunks = split_source_text(text, label=2, max_chunk_chars=100, max_chunks=10)
+
+    assert any("05.07(목) ~ 05.11(월) 하기 계절학기 수강신청" in chunk for chunk in _texts(chunks))
+    assert any("06.22(월) ~ 07.10(금) 하기 계절학기" in chunk for chunk in _texts(chunks))
+    assert all(chunk.boundary_type == "calendar_row" for chunk in chunks)
+
+
 def test_dining_guard_preserves_obvious_date_location_meal_and_menu() -> None:
     text = (
         "2026-06-16 2학생회관 중식\n"

@@ -5,9 +5,12 @@ import re
 
 
 DATE_ROW_RE = re.compile(r"(?:20\d{2}[-.]\d{1,2}[-.]\d{1,2}|\d{2}\.\d{2})")
+CALENDAR_EVENT_RE = re.compile(
+    r"\d{2}\.\d{2}\([^)]+\)(?:\s*~\s*\d{2}\.\d{2}\([^)]+\))?\s+.*?(?=\s+\d{2}\.\d{2}\([^)]+\)|\s+\d{2}월\s|$)"
+)
 TIME_RE = re.compile(r"\b\d{1,2}:\d{2}\b")
 DINING_HEADER_RE = re.compile(
-    r"20\d{2}-\d{2}-\d{2}.*(?:학생회관|생활관|푸드코트).*(?:조식|중식|석식|점심|저녁|아침)"
+    r"20\d{2}[-.]\d{2}[-.]\d{2}.*(?:학생회관|생활관|푸드코트).*(?:조식|중식|석식|점심|저녁|아침)"
 )
 NOTICE_FIELD_RE = re.compile(r"^(제목|작성일|게시일|본문)\s*[:：]")
 GRAD_REQUIREMENT_RE = re.compile(r"(?:학번|졸업|전공|교양|학점|프로젝트|이수)")
@@ -47,7 +50,7 @@ def _atomic_guard_chunks(text: str, *, label: int, max_chunk_chars: int, max_chu
     elif label == 1:
         units = _notice_guard_units(lines)
     elif label == 2:
-        units = [(line, "calendar_row") for line in lines if DATE_ROW_RE.search(line)]
+        units = _calendar_guard_units(text, lines)
     elif label == 3:
         units = _dining_guard_units(lines)
     elif label == 4:
@@ -84,6 +87,13 @@ def _notice_guard_units(lines: list[str]) -> list[tuple[str, str]]:
     if len(fields) >= 2:
         return [(" ".join(fields), "notice_detail")]
     return []
+
+
+def _calendar_guard_units(text: str, lines: list[str]) -> list[tuple[str, str]]:
+    if len(lines) > 1:
+        return [(line, "calendar_row") for line in lines if DATE_ROW_RE.search(line)]
+    normalized = " ".join(text.split())
+    return [(match.group(0).strip(), "calendar_row") for match in CALENDAR_EVENT_RE.finditer(normalized)]
 
 
 def _dining_guard_units(lines: list[str]) -> list[tuple[str, str]]:
