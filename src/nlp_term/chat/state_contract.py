@@ -206,6 +206,12 @@ class HarnessTrace(BaseModel):
     generation_backend: str | None = None
     fallback_used: bool = False
     min_top_score: float = 0.20
+    temporal_type: TemporalType = TemporalType.NONE
+    temporal_confidence: TemporalConfidence = TemporalConfidence.HIGH
+    temporal_confidence_reasons: list[str] = Field(default_factory=list)
+    target_start: str | None = None
+    target_end: str | None = None
+    retrieval_requirements: list[RetrievalRequirement] = Field(default_factory=list)
     retrieved_doc_ids: list[str] = Field(default_factory=list)
     retrieved_scores: list[float] = Field(default_factory=list)
     candidate_source_ids: list[str] = Field(default_factory=list)
