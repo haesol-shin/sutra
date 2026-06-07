@@ -18,9 +18,9 @@
    - 계획: [`docs/superpowers/plans/2026-06-08-structure-aware-chunking.md`](superpowers/plans/2026-06-08-structure-aware-chunking.md)
    - 목적: 확실한 날짜/시간/식단/공지/졸업요건 패턴만 atomic guard로 보호하고, 일반 설명문은 recursive splitting을 유지한다. fixed-window는 낮은 신뢰 fallback으로만 남긴다.
 
-4. Retrieval candidate 확장
+4. Retrieval candidate trace-lite
    - 계획: [`docs/superpowers/plans/2026-06-08-retrieval-candidate-expansion.md`](superpowers/plans/2026-06-08-retrieval-candidate-expansion.md)
-   - 목적: retrieval 후보 수와 final evidence pack 크기를 분리하고, domain filter 전후 후보를 trace에 남긴다.
+   - 목적: retrieval 알고리즘을 바꾸지 않고, pre-filter/post-filter 후보와 `chunk_confidence`를 trace에 남겨 데이터 확장 실패 원인을 분리한다.
 
 이 goal들은 데이터 확장 전에 실행한다. 이유는 추가 데이터를 넣더라도 validator, evidence pack, chunking, retrieval 후보 정책이 과도하게 정보를 버리거나 구조를 깨면 Qwen baseline 평가가 왜곡되기 때문이다.
 
@@ -95,7 +95,7 @@ Controlled fetch는 Qwen이 자유롭게 tool-call하는 방식이 아니다. so
 validator
 -> evidence pack
 -> atomic-aware chunking smoke
--> retrieval candidate policy
+-> retrieval candidate trace-lite
 -> temporal extractor 확장
 -> Task1 boundary 보강
 -> Qwen baseline
