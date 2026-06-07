@@ -364,3 +364,61 @@ def test_temporal_questions_can_send_more_than_three_evidence_items(tmp_path: Pa
     )
 
     assert captured["prompt"].count("핵심 사실:") >= 5
+
+
+def test_harness_trace_records_prefilter_and_postfilter_retrieval_candidates(tmp_path: Path) -> None:
+    knowledge_path = tmp_path / "knowledge.json"
+    knowledge_path.write_text(
+        json.dumps(
+            [
+                {
+                    "doc_id": "notice_doc",
+                    "label": 1,
+                    "domain": "notices",
+                    "title": "공지",
+                    "body": "토익 장학금 성적 기준은 공지사항에서 확인한다.",
+                    "source_url": "https://plus.cnu.ac.kr/notice",
+                    "source_id": "notices_main",
+                    "metadata": {
+                        "source_name": "공지사항",
+                        "chunking_strategy": "recursive_prose",
+                        "boundary_type": "prose_sentence",
+                        "chunk_confidence": "medium",
+                    },
+                },
+                {
+                    "doc_id": "grad_doc",
+                    "label": 0,
+                    "domain": "graduation",
+                    "title": "졸업요건",
+                    "body": "토익 졸업인증 기준은 학과별로 다르다.",
+                    "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+                    "source_id": "graduation_biochemistry_requirements",
+                    "metadata": {
+                        "source_department": "생화학과",
+                        "chunking_strategy": "fallback_window",
+                        "boundary_type": "fallback_window",
+                        "chunk_confidence": "low",
+                    },
+                },
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    result = answer_with_harness(
+        "토익 장학금을 받으려면 성적이 몇 점 이상이어야 하나요?",
+        knowledge_path=knowledge_path,
+        generator=lambda prompt: "토익 장학금 성적 기준은 공지사항에서 확인해야 합니다.",
+    )
+
+    prefilter_ids = [candidate.doc_id for candidate in result.trace.prefilter_retrieved_candidates]
+    postfilter_ids = [candidate.doc_id for candidate in result.trace.postfilter_retrieved_candidates]
+
+    assert "notice_doc" in prefilter_ids
+    assert "grad_doc" in prefilter_ids
+    assert postfilter_ids == result.trace.retrieved_doc_ids
+    assert "grad_doc" not in postfilter_ids
+    assert result.trace.prefilter_retrieved_candidates[0].score >= 0
+    assert {candidate.chunk_confidence for candidate in result.trace.prefilter_retrieved_candidates} >= {"medium", "low"}

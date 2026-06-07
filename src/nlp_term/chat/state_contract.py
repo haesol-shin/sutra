@@ -144,6 +144,17 @@ class SourceStatus(BaseModel):
     metadata_domain: Domain | None = None
 
 
+class RetrievalCandidateTrace(BaseModel):
+    doc_id: str
+    score: float
+    label: int = Field(ge=0, le=4)
+    domain: Domain
+    source_id: str
+    chunking_strategy: str | None = None
+    boundary_type: str | None = None
+    chunk_confidence: str | None = None
+
+
 class IntentState(BaseModel):
     question: str
     route_label: int = Field(ge=0, le=4)
@@ -214,6 +225,8 @@ class HarnessTrace(BaseModel):
     retrieval_requirements: list[RetrievalRequirement] = Field(default_factory=list)
     retrieved_doc_ids: list[str] = Field(default_factory=list)
     retrieved_scores: list[float] = Field(default_factory=list)
+    prefilter_retrieved_candidates: list[RetrievalCandidateTrace] = Field(default_factory=list)
+    postfilter_retrieved_candidates: list[RetrievalCandidateTrace] = Field(default_factory=list)
     candidate_source_ids: list[str] = Field(default_factory=list)
     source_statuses: list[SourceStatus] = Field(default_factory=list)
     failure_reason: str | None = None
