@@ -14,9 +14,9 @@
    - 계획: [`docs/superpowers/plans/2026-06-08-evidence-pack-context-expansion.md`](superpowers/plans/2026-06-08-evidence-pack-context-expansion.md)
    - 목적: chunk의 첫 문장만 Qwen에게 넘기는 정보 손실을 줄이고, temporal/current 질문은 더 많은 bounded context를 전달한다.
 
-3. Structure-aware chunking 선행
+3. Atomic-unit-first chunking 선행
    - 계획: [`docs/superpowers/plans/2026-06-08-structure-aware-chunking.md`](superpowers/plans/2026-06-08-structure-aware-chunking.md)
-   - 목적: 단순 fixed-window chunking이 제목/표/날짜/조건을 끊는 문제를 줄이고, 재귀적 텍스트 분할과 표/목록 보존 규칙을 도입한다.
+   - 목적: 단순 fixed-window 또는 recursive chunking이 제목/표/날짜/조건을 끊는 문제를 줄이고, 도메인별 atomic unit을 먼저 보존한 뒤 prose에만 recursive fallback을 적용한다.
 
 4. Retrieval candidate 확장
    - 계획: [`docs/superpowers/plans/2026-06-08-retrieval-candidate-expansion.md`](superpowers/plans/2026-06-08-retrieval-candidate-expansion.md)
@@ -94,7 +94,7 @@ Controlled fetch는 Qwen이 자유롭게 tool-call하는 방식이 아니다. so
 ```text
 validator
 -> evidence pack
--> structure-aware chunking
+-> atomic-unit-first chunking
 -> retrieval candidate policy
 -> temporal extractor 확장
 -> Task1 boundary 보강
