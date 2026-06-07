@@ -159,6 +159,10 @@ Expected metric movement:
 
 ## Engineering Order
 
+Before this sequence, apply only the minimal Task 2 claim guard documented in
+[`docs/task2_claim_guard_notes.md`](task2_claim_guard_notes.md). Do not spend more time on prompt tuning before
+source expansion; prompt language and answer formatting should be revisited after the expanded data smoke run.
+
 1. Build source inventory for Priority 1 only.
 2. Add parser fixtures for HTML, PDF, and HWP-like outputs where available.
 3. Add validator gates for metadata, Korean text quality, source URL, and row counts.

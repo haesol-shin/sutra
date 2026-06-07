@@ -25,6 +25,7 @@ def test_task2_prompt_defines_llm_as_natural_answer_writer_not_tool_agent() -> N
     assert "자연스럽게" in prompt
     assert "도구를 호출하지 않는다" in prompt
     assert "근거에 없는 날짜, 학점, 장소는 단정하지 않는다" in prompt
+    assert "근거에 없는 URL, 기관명, 수치, 메뉴명은 새로 만들지 않는다" in prompt
     assert "내부 문서 ID" in prompt
     assert "academic_calendar_chunk_1" not in prompt
     assert "생화학과 졸업요건" in prompt

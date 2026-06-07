@@ -94,7 +94,11 @@ def run_task2_vertical_slice(
             generation_failure_count += 1
 
         if status == "generated":
-            validation = validate_task2_answer(answer, must_not_claim=gold.must_not_claim)
+            validation = validate_task2_answer(
+                answer,
+                must_not_claim=gold.must_not_claim,
+                evidence_texts=[evidence_pack.to_prompt_text()],
+            )
             success_count += 1
             validation_pass_count += int(validation.passed)
         else:

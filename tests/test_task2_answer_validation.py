@@ -46,3 +46,39 @@ def test_answer_validator_rejects_empty_and_non_korean_text() -> None:
     assert "empty_answer" in empty.failures
     assert english.passed is False
     assert "no_hangul_text" in english.failures
+
+
+def test_answer_validator_flags_unsupported_url_number_institution_and_menu_claims() -> None:
+    result = validate_task2_answer(
+        "생화학과 졸업요건은 학생지원센터에서 확인하고, "
+        "'학사정보 > 졸업요건' 메뉴의 https://made-up.cnu.ac.kr/grad 를 보세요. "
+        "전공은 130점 이상입니다.",
+        evidence_texts=[
+            "생화학과 졸업요건은 전공과 교양 이수 기준을 확인해야 한다.",
+            "https://biochemistry.cnu.ac.kr/grad",
+        ],
+    )
+
+    assert result.passed is False
+    assert "unsupported_url_claim" in result.failures
+    assert "unsupported_numeric_claim" in result.failures
+    assert "unsupported_institution_claim" in result.failures
+    assert "unsupported_menu_claim" in result.failures
+    assert result.unsupported_urls == ["https://made-up.cnu.ac.kr/grad"]
+    assert result.unsupported_numeric_claims == ["130점"]
+    assert result.unsupported_institution_claims == ["학생지원센터"]
+    assert result.unsupported_menu_claims == ["학사정보 > 졸업요건"]
+
+
+def test_answer_validator_allows_claims_present_in_evidence_texts() -> None:
+    result = validate_task2_answer(
+        "생화학과 졸업요건은 생화학과 공식 자료에서 확인하고, 전공은 130학점 이상입니다.",
+        evidence_texts=[
+            "생화학과 졸업요건",
+            "생화학과 전공은 130학점 이상 이수해야 한다.",
+        ],
+    )
+
+    assert result.passed is True
+    assert result.unsupported_numeric_claims == []
+    assert result.unsupported_institution_claims == []

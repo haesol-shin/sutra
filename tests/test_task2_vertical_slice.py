@@ -193,3 +193,53 @@ def test_task2_vertical_slice_uses_classifier_as_hint_not_hard_filter(tmp_path: 
     assert metrics["rows"][0]["route_used_as"] == "soft_hint"
     assert metrics["rows"][0]["retrieved_doc_ids"] == ["notice_doc_1"]
     assert metrics["rows"][0]["retrieved_label_mismatch_count"] == 1
+
+
+def test_task2_vertical_slice_validates_answer_against_evidence_pack(tmp_path: Path) -> None:
+    gold_path = tmp_path / "gold.json"
+    facts_path = tmp_path / "facts.json"
+    knowledge_path = tmp_path / "knowledge.json"
+    output_path = tmp_path / "out.json"
+    _write_json(
+        facts_path,
+        [
+            {
+                "fact_id": "grad_1",
+                "label": 0,
+                "source_doc_id": "grad_doc_1",
+                "source_url": "https://biochemistry.cnu.ac.kr/grad",
+                "claim": "생화학과 졸업요건은 학과 공식 자료를 확인한다.",
+                "evidence_quote": "학과 공식 자료",
+                "answerable_scope": "static",
+            }
+        ],
+    )
+    _write_json(gold_path, [{"user": "생화학과 졸업요건 어디서 봐?", "expected_fact_ids": ["grad_1"]}])
+    _write_json(
+        knowledge_path,
+        [
+            {
+                "doc_id": "grad_doc_1",
+                "label": 0,
+                "domain": "graduation",
+                "title": "생화학과 졸업요건",
+                "body": "생화학과 졸업요건은 학과 공식 자료를 확인한다.",
+                "source_url": "https://biochemistry.cnu.ac.kr/grad",
+                "source_id": "graduation",
+                "metadata": {"source_name": "생화학과 졸업요건"},
+            }
+        ],
+    )
+
+    metrics = run_task2_vertical_slice(
+        gold_path=gold_path,
+        facts_path=facts_path,
+        knowledge_path=knowledge_path,
+        output_path=output_path,
+        generator=lambda prompt: "학생지원센터에서 130점 기준을 확인하면 됩니다.",
+    )
+
+    validation = metrics["rows"][0]["validation"]
+    assert validation["passed"] is False
+    assert "unsupported_institution_claim" in validation["failures"]
+    assert "unsupported_numeric_claim" in validation["failures"]
