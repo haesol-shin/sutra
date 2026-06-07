@@ -1,0 +1,71 @@
+{
+  "run_id": "goal-2.3-summary-2026-06-07",
+  "created_at": "2026-06-07",
+  "goal_id": "2.3",
+  "scope": "Evaluation diagnostics, backend separation, retrieval bottleneck diagnosis, and next data expansion priorities before broader data expansion.",
+  "steps": [
+    {
+      "step_id": "omc-ignore",
+      "status": "complete",
+      "commit": "3ebf599 chore: ignore omc tool state"
+    },
+    {
+      "step_id": "task1-gold-error-analysis",
+      "status": "complete",
+      "commit": "03ebb28 test: add task1 gold error analysis",
+      "evidence": "docs/evidence/task1-gold-error-analysis-2026-06-07.json"
+    },
+    {
+      "step_id": "task1-improvement-candidates",
+      "status": "complete",
+      "commit": "c14b59f docs: classify task1 gold error causes",
+      "evidence": "docs/task1_error_improvement_candidates.md"
+    },
+    {
+      "step_id": "task2-gold-answer-eval",
+      "status": "complete",
+      "commit": "d63ea2e test: add task2 gold answer evaluation",
+      "evidence": "docs/evidence/task2-gold-answer-eval-2026-06-07.json"
+    },
+    {
+      "step_id": "task2-backend-comparison",
+      "status": "complete",
+      "commit": "57f2baf test: separate task2 backend evidence",
+      "evidence": "docs/evidence/task2-backend-comparison-2026-06-07.json"
+    },
+    {
+      "step_id": "retrieval-bottleneck-diagnosis",
+      "status": "complete",
+      "commit": "9cd71f4 test: add retrieval bottleneck diagnosis",
+      "evidence": "docs/evidence/retrieval-bottleneck-diagnosis-2026-06-07.json"
+    },
+    {
+      "step_id": "next-data-expansion-priorities",
+      "status": "complete",
+      "evidence": "docs/next_data_expansion_priorities.md"
+    }
+  ],
+  "key_baselines": {
+    "task1_gold_rows": 50,
+    "task1_macro_f1": 0.8385026737967914,
+    "task1_weighted_f1": 0.8385026737967913,
+    "task1_error_count": 8,
+    "task2_answer_gold_rows": 25,
+    "task2_deterministic_fact_recall": 0.8,
+    "task2_deterministic_naturalness_heuristic_pass_rate": 0.24,
+    "task2_llama_sample_rows": 3,
+    "task2_llama_sample_naturalness_heuristic_pass_rate": 1.0,
+    "retrieval_fact_probe_hit_at_1": 0.6,
+    "retrieval_fact_probe_hit_at_3": 1.0,
+    "knowledge_doc_count": 53
+  },
+  "current_bottlenecks": [
+    "Current metrics are from small diagnostic gold sets, not final generalization evidence.",
+    "Task 2 deterministic answers expose internal IDs and are not natural enough.",
+    "Llama sample answers are more natural by heuristic but do not expose source hints.",
+    "Retrieval fact probes hit top3, but top1 is weak and probes are fact-like rather than realistic user phrasing.",
+    "Data scope is still the dominant risk, especially graduation requirements and curriculum PDF/HWP coverage."
+  ],
+  "next_recommended_goal": "Execute Priority 1 source inventory and parser/validator expansion for graduation requirements, curriculum PDF/HWP, and representative departments.",
+  "final_performance_claim_allowed": false
+}
