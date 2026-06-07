@@ -77,6 +77,14 @@ Chunking은 prompt 길이 최적화만이 아니라 evidence correctness boundar
 
 QA seed의 evidence alignment metric은 기존 긴 window chunk에서 생성된 excerpt에 민감하다. Atomic chunk가 짧은 row 단위로 바뀌면 source hit와 public probe가 유지되어도 excerpt token alignment가 하락할 수 있으므로, retrieval candidate expansion 이후 QA/evidence metric 재생성을 별도 판단한다.
 
+## Retrieval Candidate Trace Policy
+
+Retrieval candidate trace는 진단 전용이다. harness는 route-label filtering 전의 pre-filter 후보와 현재 label/domain selection path를 통과한 post-filter 후보를 함께 기록한다.
+
+pre-filter 후보가 모두 답변 근거로 사용 가능하다는 뜻은 아니다. answer writer는 여전히 최종 evidence pack만 받으며, evidence sufficiency 규칙도 그대로 유지한다.
+
+각 candidate trace에는 가능한 경우 `doc_id`, `score`, `label`, `domain`, `source_id`, `chunking_strategy`, `boundary_type`, `chunk_confidence`를 남긴다. 데이터 확장 때 이 trace를 사용해 새 source가 ranking에서 누락됐는지, route/domain filter에서 탈락했는지, 선택됐지만 sufficiency check에서 막혔는지를 분리한다.
+
 ## 3. Phase A Target Modules
 
 Phase A는 production switch가 아니라 실험용 harness다.
