@@ -26,6 +26,9 @@ from nlp_term.schemas import (
     RealtimeOutput,
     RawSource,
     SourceVerification,
+    Task1HumanGoldExample,
+    Task2AnswerEvalGoldExample,
+    Task2FactGoldExample,
 )
 
 
@@ -109,6 +112,12 @@ QA_LABEL_KEYWORDS: dict[int, tuple[str, ...]] = {
     4: ("셔틀", "버스", "통학", "시간표", "운행"),
 }
 QA_EVIDENCE_RE = re.compile(r"'([^']+)'")
+GOLD_LEAKAGE_RE = re.compile(
+    r"(chunk[_\s-]*\d+|doc[_\s-]*\d+|source\s+\d+|source[_-]\d+)",
+    re.IGNORECASE,
+)
+METRIC_DATASET_ORIGINS = {"seed", "llm_assisted_train", "synthetic", "human_gold", "task2_gold"}
+METRIC_CLAIM_LEVELS = {"sanity", "training_selection", "heldout_eval", "qualitative_check"}
 
 
 def read_json(path: Path) -> object:
@@ -572,6 +581,134 @@ def _metric_value(metrics: dict[str, object], names: tuple[str, ...]) -> float:
         if isinstance(value, int | float):
             return float(value)
     raise ValueError(f"metrics missing one of: {', '.join(names)}")
+
+
+def validate_gold_data(
+    gold_dir: Path,
+    *,
+    min_task1_rows: int | None = None,
+    min_task1_per_label: int | None = None,
+    min_task2_facts_per_label: int | None = None,
+    min_task2_answer_rows: int | None = None,
+) -> None:
+    task1_rows = validate_rows(gold_dir / "task1_human_gold.json", Task1HumanGoldExample, required=True)
+    fact_rows = validate_rows(gold_dir / "task2_fact_gold.json", Task2FactGoldExample, required=True)
+    answer_rows = validate_rows(
+        gold_dir / "task2_answer_eval_gold.json",
+        Task2AnswerEvalGoldExample,
+        required=True,
+    )
+    _validate_task1_gold_rows(task1_rows, min_rows=min_task1_rows, min_per_label=min_task1_per_label)
+    _validate_task2_fact_gold_rows(fact_rows, min_per_label=min_task2_facts_per_label)
+    _validate_task2_answer_gold_rows(answer_rows, fact_rows, min_rows=min_task2_answer_rows)
+
+
+def _validate_task1_gold_rows(
+    rows: list[Task1HumanGoldExample],
+    *,
+    min_rows: int | None,
+    min_per_label: int | None,
+) -> None:
+    if min_rows is not None and len(rows) < min_rows:
+        raise ValueError("gold-data: task1 human gold row count below threshold")
+    seen_questions: set[str] = set()
+    counts = Counter(row.label for row in rows)
+    for row in rows:
+        if not row.validated:
+            raise ValueError(f"gold-data: task1 human gold row is unvalidated: {row.question}")
+        if row.annotator != "human":
+            raise ValueError(f"gold-data: task1 gold row annotator is not human: {row.question}")
+        _reject_gold_leakage("task1", row.question)
+        normalized = _normalize_question(row.question)
+        if normalized in seen_questions:
+            raise ValueError(f"gold-data: duplicate task1 gold question: {row.question}")
+        seen_questions.add(normalized)
+    if min_per_label is not None:
+        for label in range(5):
+            if counts[label] < min_per_label:
+                raise ValueError(f"gold-data: task1 label {label} rows below threshold")
+
+
+def _validate_task2_fact_gold_rows(
+    rows: list[Task2FactGoldExample],
+    *,
+    min_per_label: int | None,
+) -> None:
+    counts = Counter(row.label for row in rows)
+    fact_ids: set[str] = set()
+    for row in rows:
+        if row.fact_id in fact_ids:
+            raise ValueError(f"gold-data: duplicate task2 fact id: {row.fact_id}")
+        fact_ids.add(row.fact_id)
+        if not row.source_url.startswith(("http://", "https://")):
+            raise ValueError(f"gold-data: task2 fact source URL is invalid: {row.fact_id}")
+        if len(row.claim.strip()) < 4:
+            raise ValueError(f"gold-data: task2 fact claim is too short: {row.fact_id}")
+        if len(row.evidence_quote.strip()) < 8:
+            raise ValueError(f"gold-data: task2 evidence quote is too short: {row.fact_id}")
+        _reject_gold_leakage("task2 fact claim", row.claim)
+        _reject_gold_leakage("task2 fact evidence", row.evidence_quote)
+    if min_per_label is not None:
+        for label in range(5):
+            if counts[label] < min_per_label:
+                raise ValueError(f"gold-data: task2 fact label {label} rows below threshold")
+
+
+def _validate_task2_answer_gold_rows(
+    rows: list[Task2AnswerEvalGoldExample],
+    fact_rows: list[Task2FactGoldExample],
+    *,
+    min_rows: int | None,
+) -> None:
+    if min_rows is not None and len(rows) < min_rows:
+        raise ValueError("gold-data: task2 answer eval row count below threshold")
+    fact_ids = {row.fact_id for row in fact_rows}
+    seen_users: set[str] = set()
+    for row in rows:
+        _reject_gold_leakage("task2 answer prompt", row.user)
+        normalized = _normalize_question(row.user)
+        if normalized in seen_users:
+            raise ValueError(f"gold-data: duplicate task2 answer prompt: {row.user}")
+        seen_users.add(normalized)
+        missing = [fact_id for fact_id in row.expected_fact_ids if fact_id not in fact_ids]
+        if missing:
+            raise ValueError(f"gold-data: task2 answer row references missing facts: {missing}")
+
+
+def _reject_gold_leakage(scope: str, text: str) -> None:
+    if GOLD_LEAKAGE_RE.search(text):
+        raise ValueError(f"gold-data: {scope} contains leakage marker")
+
+
+def validate_metric_claim(
+    path: Path,
+    *,
+    input_path: Path | None = None,
+    require_dataset_origin: str | None = None,
+    require_claim_level: str | None = None,
+) -> None:
+    payload = read_json(path)
+    if not isinstance(payload, dict):
+        raise ValueError(f"{path} must contain a metrics object")
+    for field in ("evaluation_set_type", "dataset_origin", "claim_level", "input_path", "input_checksum"):
+        if field not in payload:
+            raise ValueError(f"metric-claim: {field} is required")
+    dataset_origin = payload["dataset_origin"]
+    claim_level = payload["claim_level"]
+    if dataset_origin not in METRIC_DATASET_ORIGINS:
+        raise ValueError("metric-claim: unknown dataset_origin")
+    if claim_level not in METRIC_CLAIM_LEVELS:
+        raise ValueError("metric-claim: unknown claim_level")
+    if input_path is not None and payload.get("input_checksum") != file_checksum(input_path):
+        raise ValueError("metric-claim: input_checksum does not match input file")
+    if require_dataset_origin is not None and dataset_origin != require_dataset_origin:
+        raise ValueError("metric-claim: dataset_origin does not match required origin")
+    if require_claim_level is not None and claim_level != require_claim_level:
+        raise ValueError("metric-claim: claim_level does not match required level")
+    if dataset_origin == "seed" and claim_level == "heldout_eval":
+        raise ValueError("metric-claim: seed metrics cannot claim heldout evaluation")
+    if claim_level == "heldout_eval" and dataset_origin not in {"human_gold", "task2_gold"}:
+        raise ValueError("metric-claim: heldout evaluation requires a gold dataset origin")
 
 
 def validate_classifier_metrics(
@@ -1058,6 +1195,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--model-shortlist", type=Path, help="Validate model shortlist metadata.")
     parser.add_argument("--knowledge-quality", type=Path, help="Validate source-backed knowledge quality gates.")
     parser.add_argument("--dataset-quality", action="store_true", help="Validate generated classification/QA quality gates.")
+    parser.add_argument("--gold-data", type=Path, help="Validate human/gold evaluation artifact contracts.")
+    parser.add_argument("--metric-claim", type=Path, help="Validate metric claim metadata and checksum binding.")
     parser.add_argument("--classifier-metrics", type=Path, help="Validate classifier metric gates.")
     parser.add_argument("--task1-hard-gates", action="store_true", help="Validate Task 1 generated-data hard gates.")
     parser.add_argument("--task1-hard-report-output", type=Path, help="Write a Task 1 hard-gate report.")
@@ -1082,6 +1221,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--min-ambiguous-per-label", type=int)
     parser.add_argument("--min-qa-rows", type=int)
     parser.add_argument("--min-qa-per-label", type=int)
+    parser.add_argument("--min-task1-gold-rows", type=int)
+    parser.add_argument("--min-task1-gold-per-label", type=int)
+    parser.add_argument("--min-task2-facts-per-label", type=int)
+    parser.add_argument("--min-task2-answer-rows", type=int)
     parser.add_argument("--no-dry-run", action="store_true")
     parser.add_argument("--require-validated", action="store_true")
     parser.add_argument("--require-qa-source", action="store_true")
@@ -1114,6 +1257,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-fallback-used", type=int)
     parser.add_argument("--require-retrieved-docs", action="store_true")
     parser.add_argument("--require-model-checksum", action="store_true")
+    parser.add_argument("--require-dataset-origin", choices=sorted(METRIC_DATASET_ORIGINS))
+    parser.add_argument("--require-claim-level", choices=sorted(METRIC_CLAIM_LEVELS))
     parser.add_argument("--stage", default="stage0")
     parser.add_argument("--min-stage-sources", type=int)
     parser.add_argument("--max-stage-sources", type=int)
@@ -1142,6 +1287,8 @@ def main() -> None:
         and not args.model_shortlist
         and not args.knowledge_quality
         and not args.dataset_quality
+        and not args.gold_data
+        and not args.metric_claim
         and not args.classifier_metrics
         and not args.task1_hard_gates
         and not args.retrieval_metrics
@@ -1214,6 +1361,21 @@ def main() -> None:
                 no_dry_run=args.no_dry_run,
                 require_validated=args.require_validated,
                 require_qa_source=args.require_qa_source,
+            )
+        if args.gold_data:
+            validate_gold_data(
+                args.gold_data,
+                min_task1_rows=args.min_task1_gold_rows,
+                min_task1_per_label=args.min_task1_gold_per_label,
+                min_task2_facts_per_label=args.min_task2_facts_per_label,
+                min_task2_answer_rows=args.min_task2_answer_rows,
+            )
+        if args.metric_claim:
+            validate_metric_claim(
+                args.metric_claim,
+                input_path=args.input,
+                require_dataset_origin=args.require_dataset_origin,
+                require_claim_level=args.require_claim_level,
             )
         if args.classifier_metrics:
             validate_classifier_metrics(

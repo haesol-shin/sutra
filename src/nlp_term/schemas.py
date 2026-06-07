@@ -71,6 +71,34 @@ class QAExample(BaseModel):
     validated: bool = False
 
 
+class Task1HumanGoldExample(BaseModel):
+    question: str
+    label: int = Field(ge=0, le=4)
+    source_doc_id: str | None = None
+    difficulty: Literal["short", "natural", "ambiguous", "boundary", "typo"]
+    ambiguous_reason: str | None = None
+    annotator: str
+    validated: bool = False
+
+
+class Task2FactGoldExample(BaseModel):
+    fact_id: str
+    label: int = Field(ge=0, le=4)
+    source_doc_id: str
+    source_url: str
+    claim: str
+    evidence_quote: str
+    answerable_scope: Literal["static", "fresh", "unknown"]
+
+
+class Task2AnswerEvalGoldExample(BaseModel):
+    user: str
+    expected_fact_ids: list[str] = Field(min_length=1)
+    must_not_claim: list[str] = Field(default_factory=list)
+    naturalness_score: float | None = Field(default=None, ge=1.0, le=5.0)
+    factuality_score: float | None = Field(default=None, ge=1.0, le=5.0)
+
+
 class RetrievedDoc(BaseModel):
     doc_id: str
     score: float
