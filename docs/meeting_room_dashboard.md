@@ -49,3 +49,28 @@
 - handoff_path: `docs/meetings/phase-2.2-qa-data-2026-06-06-handoff.md`
 - closed_at: `2026-06-06`
 - outcome: final regenerated data has 15 knowledge docs, 50 QA rows, 10 QA rows per label, zero page-chrome scan hits, and all-row Source/Data critic `PASS`
+
+## goal-2.3-step-01-to-02-2026-06-07
+
+- meeting_id: `goal-2.3-step-01-to-02-2026-06-07`
+- opened_at: `2026-06-07`
+- trigger_type: `mandatory_step_transition`
+- phase: `Goal 2.3 Evaluation Diagnostics`
+- step_id: `step-01-to-step-02`
+- verdict_before_transition: `pass_no_reject`
+- roles_present:
+  - Facilitator/Planner
+  - Source/Data Steward
+  - Runtime/Architecture Engineer
+  - Evaluation/Validator Engineer
+  - Red-Team Critic
+- status: `closed`
+- selected_option: proceed to Task 1 gold error analysis
+- evidence_path: `docs/meetings/goal-2.3-step-01-evidence.md`
+- meeting_path: `docs/meetings/goal-2.3-step-01-meeting.md`
+- handoff_path: `docs/meetings/goal-2.3-step-01-handoff.md`
+- commands_to_run:
+  - `uv run pytest tests/test_task1_gold_error_report.py tests/test_classify_gold_eval.py tests/test_gold_contracts.py`
+  - `uv run python -m nlp_term.classify.analyze_gold_errors --input data/gold/task1_human_gold.json --output model/metrics/task1_gold_error_analysis.json`
+  - `uv run ruff check src tests`
+- closed_at: `2026-06-07`
