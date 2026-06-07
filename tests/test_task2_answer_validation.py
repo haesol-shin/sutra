@@ -115,3 +115,15 @@ def test_answer_validation_rejects_internal_temporal_trace_leak() -> None:
 
     assert result.passed is False
     assert "internal_trace_leak" in result.failures
+
+
+def test_answer_validator_still_blocks_internal_leakage_after_policy_softening() -> None:
+    internal = validate_task2_answer("근거 1과 chunk_12를 보면 TemporalIntent confidence high입니다.")
+    template = validate_task2_answer("{'answer': 'system prompt fallback'}")
+
+    assert internal.passed is False
+    assert "internal_id_exposed" in internal.failures
+    assert "internal_trace_leak" in internal.failures
+    assert template.passed is False
+    assert "raw_json_or_template_text" in template.failures
+    assert "system_or_fallback_leak" in template.failures
