@@ -63,6 +63,12 @@ Low temporal confidence가 곧 방어적 답변을 뜻하지는 않는다. 먼�
 
 Qwen prompt에는 전체 `TemporalIntent`를 넣지 않는다. prompt에는 현재 기준일, 질문의 시간 표현, 해석된 날짜/기간, 날짜가 맞지 않는 근거로 단정하지 말라는 사용자 안전 문장만 넣는다. 최종 답변에는 `TemporalIntent`, `confidence`, `retrieval_requirement`, `evidence_status` 같은 내부 상태명이 노출되면 안 된다.
 
+## Evidence Pack Context Policy
+
+Evidence pack은 각 chunk를 첫 문장으로 줄이지 않는다. 작은 chunk 안에서도 날짜, 학점, 장소, 조건 정보가 뒤쪽에 나올 수 있으므로, 정규화된 chunk 본문을 bounded context로 보존한다.
+
+기본 pack 크기는 static 질문 3개, 날짜/current/freshness 질문 5개, 기간 요약 또는 변경사항 요약 질문 8개다. 이는 Qwen3.5-9B가 근거를 조립할 재료를 충분히 받도록 하기 위한 Phase A 기본값이며, 이후 retrieval 품질과 context budget 실험에 따라 조정할 수 있다.
+
 ## 3. Phase A Target Modules
 
 Phase A는 production switch가 아니라 실험용 harness다.

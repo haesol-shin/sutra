@@ -91,9 +91,11 @@
       "retrieved_doc_ids": [
         "academic_calendar_chunk_1",
         "academic_calendar_chunk_2",
-        "academic_calendar_chunk_4"
+        "academic_calendar_chunk_4",
+        "academic_calendar_chunk_5"
       ],
       "retrieved_scores": [
+        0.375,
         0.375,
         0.375,
         0.375
@@ -169,12 +171,22 @@
       "retrieved_doc_ids": [
         "shuttle_bus_chunk_1",
         "shuttle_bus_chunk_2",
-        "shuttle_bus_chunk_3"
+        "shuttle_bus_chunk_3",
+        "shuttle_bus_chunk_4",
+        "shuttle_bus_chunk_5",
+        "shuttle_bus_chunk_7",
+        "shuttle_bus_chunk_8",
+        "shuttle_bus_chunk_6"
       ],
       "retrieved_scores": [
         0.42105263157894735,
         0.42105263157894735,
-        0.42105263157894735
+        0.42105263157894735,
+        0.42105263157894735,
+        0.2631578947368421,
+        0.2631578947368421,
+        0.2631578947368421,
+        0.21052631578947367
       ],
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "temporal",
@@ -282,12 +294,20 @@
       "retrieved_doc_ids": [
         "academic_calendar_chunk_1",
         "academic_calendar_chunk_2",
-        "academic_calendar_chunk_3"
+        "academic_calendar_chunk_3",
+        "academic_calendar_chunk_4",
+        "academic_calendar_chunk_7",
+        "academic_calendar_chunk_8",
+        "academic_calendar_chunk_5"
       ],
       "retrieved_scores": [
         0.20238095238095238,
         0.20238095238095238,
-        0.20238095238095238
+        0.20238095238095238,
+        0.20238095238095238,
+        0.20238095238095238,
+        0.20238095238095238,
+        0.15476190476190477
       ],
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "evidence",
@@ -431,12 +451,16 @@
       "retrieved_doc_ids": [
         "academic_calendar_chunk_2",
         "academic_calendar_chunk_3",
-        "academic_calendar_chunk_7"
+        "academic_calendar_chunk_7",
+        "academic_calendar_chunk_8",
+        "academic_calendar_chunk_1"
       ],
       "retrieved_scores": [
         0.3,
         0.3,
-        0.3
+        0.3,
+        0.3,
+        0.23333333333333334
       ],
       "failure_reason": null,
       "bottleneck": "none",
@@ -469,9 +493,13 @@
       "retrieved_doc_ids": [
         "academic_calendar_chunk_1",
         "academic_calendar_chunk_4",
-        "academic_calendar_chunk_5"
+        "academic_calendar_chunk_5",
+        "academic_calendar_chunk_6",
+        "academic_calendar_chunk_9"
       ],
       "retrieved_scores": [
+        0.4166666666666667,
+        0.4166666666666667,
         0.4166666666666667,
         0.4166666666666667,
         0.4166666666666667
