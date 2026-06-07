@@ -123,3 +123,28 @@
   - `uv run python -m nlp_term.chat.evaluate_gold --gold data/gold/task2_answer_eval_gold.json --facts data/gold/task2_fact_gold.json --knowledge data/knowledge_seed.json --output model/metrics/task2_gold_answer_eval.json --backend deterministic`
   - `uv run ruff check src tests`
 - closed_at: `2026-06-07`
+
+## goal-2.3-step-04-to-05-2026-06-07
+
+- meeting_id: `goal-2.3-step-04-to-05-2026-06-07`
+- opened_at: `2026-06-07`
+- trigger_type: `mandatory_step_transition`
+- phase: `Goal 2.3 Evaluation Diagnostics`
+- step_id: `step-04-to-step-05`
+- verdict_before_transition: `pass_no_reject`
+- roles_present:
+  - Facilitator/Planner
+  - Source/Data Steward
+  - Runtime/Architecture Engineer
+  - Evaluation/Validator Engineer
+  - Red-Team Critic
+- status: `closed`
+- selected_option: proceed to deterministic/llama backend comparison
+- evidence_path: `docs/meetings/goal-2.3-step-04-evidence.md`
+- meeting_path: `docs/meetings/goal-2.3-step-04-meeting.md`
+- handoff_path: `docs/meetings/goal-2.3-step-04-handoff.md`
+- commands_to_run:
+  - `uv run pytest tests/test_backend_evidence_separation.py tests/test_task2_answer_eval_artifact.py tests/test_chat_provenance.py`
+  - `uv run python -m nlp_term.chat.compare_backends --gold data/gold/task2_answer_eval_gold.json --facts data/gold/task2_fact_gold.json --knowledge data/knowledge_seed.json --output model/metrics/task2_backend_comparison.json`
+  - `uv run ruff check src tests`
+- closed_at: `2026-06-07`
