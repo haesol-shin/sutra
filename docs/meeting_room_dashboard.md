@@ -98,3 +98,28 @@
   - `rg -n "label 2|학사일정|no model improvement|data coverage|boundary|classifier" docs/task1_error_improvement_candidates.md`
   - `uv run ruff check src tests`
 - closed_at: `2026-06-07`
+
+## goal-2.3-step-03-to-04-2026-06-07
+
+- meeting_id: `goal-2.3-step-03-to-04-2026-06-07`
+- opened_at: `2026-06-07`
+- trigger_type: `mandatory_step_transition`
+- phase: `Goal 2.3 Evaluation Diagnostics`
+- step_id: `step-03-to-step-04`
+- verdict_before_transition: `pass_no_reject`
+- roles_present:
+  - Facilitator/Planner
+  - Source/Data Steward
+  - Runtime/Architecture Engineer
+  - Evaluation/Validator Engineer
+  - Red-Team Critic
+- status: `closed`
+- selected_option: proceed to Task 2 gold answer evaluator
+- evidence_path: `docs/meetings/goal-2.3-step-03-evidence.md`
+- meeting_path: `docs/meetings/goal-2.3-step-03-meeting.md`
+- handoff_path: `docs/meetings/goal-2.3-step-03-handoff.md`
+- commands_to_run:
+  - `uv run pytest tests/test_task2_answer_eval_artifact.py tests/test_chat_provenance.py tests/test_gold_contracts.py`
+  - `uv run python -m nlp_term.chat.evaluate_gold --gold data/gold/task2_answer_eval_gold.json --facts data/gold/task2_fact_gold.json --knowledge data/knowledge_seed.json --output model/metrics/task2_gold_answer_eval.json --backend deterministic`
+  - `uv run ruff check src tests`
+- closed_at: `2026-06-07`
