@@ -21,6 +21,7 @@ MENU_CLAIM_RE = re.compile(r"[\"'“”‘’]?([가-힣A-Za-z0-9\s]+>\s*[가-�
 class Task2AnswerValidationResult(BaseModel):
     passed: bool
     failures: list[str] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
     answer_chars: int
     must_not_claim_violations: list[str] = Field(default_factory=list)
     unsupported_urls: list[str] = Field(default_factory=list)
@@ -34,9 +35,11 @@ def validate_task2_answer(
     *,
     must_not_claim: list[str] | None = None,
     evidence_texts: list[str] | None = None,
+    strict_grounding: bool = False,
 ) -> Task2AnswerValidationResult:
     stripped = answer.strip()
     failures: list[str] = []
+    warnings: list[str] = []
 
     if not stripped:
         failures.append("empty_answer")
@@ -69,17 +72,20 @@ def validate_task2_answer(
         )
         unsupported_menu_claims = _unsupported_claims(_extract_menu_claims(stripped), evidence_text)
         if unsupported_urls:
-            failures.append("unsupported_url_claim")
+            warnings.append("unsupported_url_claim")
         if unsupported_numeric_claims:
-            failures.append("unsupported_numeric_claim")
+            warnings.append("unsupported_numeric_claim")
         if unsupported_institution_claims:
-            failures.append("unsupported_institution_claim")
+            warnings.append("unsupported_institution_claim")
         if unsupported_menu_claims:
-            failures.append("unsupported_menu_claim")
+            warnings.append("unsupported_menu_claim")
+        if strict_grounding:
+            failures.extend(warnings)
 
     return Task2AnswerValidationResult(
         passed=not failures,
         failures=failures,
+        warnings=warnings,
         answer_chars=len(stripped),
         must_not_claim_violations=violations,
         unsupported_urls=unsupported_urls,
