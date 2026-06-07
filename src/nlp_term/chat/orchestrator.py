@@ -21,6 +21,7 @@ from nlp_term.chat.state_contract import (
     HarnessTrace,
     OutputStatus,
     PackStatus,
+    RetrievalCandidateTrace,
     SourceStatus,
 )
 from nlp_term.chat.temporal_intent import resolve_temporal_intent
@@ -59,8 +60,10 @@ def answer_with_harness(
     evidence_pack_size = _evidence_pack_size(temporal_intent)
 
     knowledge = load_knowledge_with_metadata(knowledge_path)
-    retrieved = rank_docs(question, knowledge.docs, top_k=max(6, evidence_pack_size))
+    diagnostic_top_k = max(12, evidence_pack_size * 3)
+    retrieved = rank_docs(question, knowledge.docs, top_k=diagnostic_top_k)
     docs_by_id = {doc.doc_id: doc for doc in knowledge.docs}
+    prefilter_candidates = _candidate_trace_rows(retrieved, docs_by_id)
     retrieved_pairs = [
         (docs_by_id[row.doc_id], row.score)
         for row in retrieved
@@ -68,6 +71,7 @@ def answer_with_harness(
     ][:evidence_pack_size]
     retrieved_docs = [doc for doc, _score in retrieved_pairs]
     retrieved_scores = [score for _doc, score in retrieved_pairs]
+    postfilter_candidates = _selected_candidate_trace_rows(retrieved_pairs)
     source_statuses = [build_source_status(doc) for doc in retrieved_docs]
     candidate_specs = _candidate_specs(allowed_stages)
 
@@ -96,6 +100,8 @@ def answer_with_harness(
             model_path=model_path,
             retrieved_docs=retrieved_docs,
             retrieved_scores=retrieved_scores,
+            prefilter_candidates=prefilter_candidates,
+            postfilter_candidates=postfilter_candidates,
             source_statuses=source_statuses,
             sufficiency=sufficiency,
             pack_status=PackStatus.BLOCKED_UNSUPPORTED
@@ -132,6 +138,8 @@ def answer_with_harness(
             model_path=model_path,
             retrieved_docs=retrieved_docs,
             retrieved_scores=retrieved_scores,
+            prefilter_candidates=prefilter_candidates,
+            postfilter_candidates=postfilter_candidates,
             source_statuses=source_statuses,
             sufficiency=sufficiency,
             pack_status=PackStatus.BLOCKED_EMPTY,
@@ -168,6 +176,8 @@ def answer_with_harness(
             model_path=model_path,
             retrieved_docs=retrieved_docs,
             retrieved_scores=retrieved_scores,
+            prefilter_candidates=prefilter_candidates,
+            postfilter_candidates=postfilter_candidates,
             source_statuses=source_statuses,
             sufficiency=sufficiency,
             pack_status=PackStatus.BUILT,
@@ -191,6 +201,8 @@ def answer_with_harness(
         model_path=model_path,
         retrieved_docs=retrieved_docs,
         retrieved_scores=retrieved_scores,
+        prefilter_candidates=prefilter_candidates,
+        postfilter_candidates=postfilter_candidates,
         source_statuses=source_statuses,
         sufficiency=sufficiency,
         pack_status=PackStatus.BUILT,
@@ -239,6 +251,48 @@ def _candidate_specs(allowed_stages: set[Stage]) -> list[SourceSpec]:
     for stage in allowed_stages:
         specs.extend(iter_specs(stage=stage, active_only=True))
     return specs
+
+
+def _candidate_trace_rows(rows, docs_by_id: dict[str, KnowledgeDoc]) -> list[RetrievalCandidateTrace]:
+    trace_rows: list[RetrievalCandidateTrace] = []
+    for row in rows:
+        doc = docs_by_id.get(row.doc_id)
+        if doc is None:
+            continue
+        trace_rows.append(
+            RetrievalCandidateTrace(
+                doc_id=doc.doc_id,
+                score=row.score,
+                label=doc.label,
+                domain=doc.domain,
+                source_id=doc.source_id,
+                chunking_strategy=_optional_metadata_text(doc, "chunking_strategy"),
+                boundary_type=_optional_metadata_text(doc, "boundary_type"),
+                chunk_confidence=_optional_metadata_text(doc, "chunk_confidence"),
+            )
+        )
+    return trace_rows
+
+
+def _selected_candidate_trace_rows(retrieved_pairs: list[tuple[KnowledgeDoc, float]]) -> list[RetrievalCandidateTrace]:
+    return [
+        RetrievalCandidateTrace(
+            doc_id=doc.doc_id,
+            score=score,
+            label=doc.label,
+            domain=doc.domain,
+            source_id=doc.source_id,
+            chunking_strategy=_optional_metadata_text(doc, "chunking_strategy"),
+            boundary_type=_optional_metadata_text(doc, "boundary_type"),
+            chunk_confidence=_optional_metadata_text(doc, "chunk_confidence"),
+        )
+        for doc, score in retrieved_pairs
+    ]
+
+
+def _optional_metadata_text(doc: KnowledgeDoc, key: str) -> str | None:
+    value = doc.metadata.get(key)
+    return str(value) if value is not None else None
 
 
 def _evidence_pack_size(temporal_intent) -> int:
@@ -306,6 +360,8 @@ def _build_trace(
     model_path: Path,
     retrieved_docs: list[KnowledgeDoc],
     retrieved_scores: list[float],
+    prefilter_candidates: list[RetrievalCandidateTrace],
+    postfilter_candidates: list[RetrievalCandidateTrace],
     source_statuses: list[SourceStatus],
     sufficiency,
     pack_status: PackStatus,
@@ -340,6 +396,8 @@ def _build_trace(
         retrieval_requirements=temporal_intent.retrieval_requirements,
         retrieved_doc_ids=[doc.doc_id for doc in retrieved_docs],
         retrieved_scores=retrieved_scores,
+        prefilter_retrieved_candidates=prefilter_candidates,
+        postfilter_retrieved_candidates=postfilter_candidates,
         candidate_source_ids=[status.source_id for status in source_statuses],
         source_statuses=source_statuses,
         failure_reason=failure_reason,
