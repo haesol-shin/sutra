@@ -9,6 +9,7 @@ import unicodedata
 from pydantic import BaseModel
 
 from nlp_term.paths import PROJECT_ROOT
+from nlp_term.prepare.chunking import SourceChunk, split_source_text
 from nlp_term.prepare.document_parsers import document_to_text
 from nlp_term.prepare.normalize import clip_text
 from nlp_term.prepare.parsers import html_to_text, source_doc_from_text
@@ -82,16 +83,26 @@ def parse_source(raw: RawSource, *, chunks_per_source: int = 3) -> tuple[list[Kn
     try:
         text = _extract_text(raw, raw_path)
         chunks = _chunk_text(text, chunks_per_source=chunks_per_source, label=raw.label)
-        docs = [
-            source_doc_from_text(
+        docs = []
+        for index, chunk in enumerate(chunks):
+            doc = source_doc_from_text(
                 raw,
                 title=f"{raw.domain} source {index + 1}",
-                body=chunk,
-                section=f"chunk_{index + 1}",
+                body=chunk.text,
+                section=f"chunk_{chunk.index}",
                 parser_name=_parser_name(raw),
             )
-            for index, chunk in enumerate(chunks)
-        ]
+            doc.metadata.update(
+                {
+                    "chunking_strategy": chunk.strategy,
+                    "boundary_type": chunk.boundary_type,
+                    "chunk_confidence": chunk.chunk_confidence,
+                    "chunk_index": chunk.index,
+                    "char_start": chunk.char_start,
+                    "char_end": chunk.char_end,
+                }
+            )
+            docs.append(doc)
         return docs, None
     except Exception as exc:
         return [], SourceParseFailure(source_id=raw.source_id, raw_path=str(raw_path), reason=str(exc))
@@ -172,14 +183,23 @@ def _extract_text(raw: RawSource, raw_path: Path) -> str:
     return html_to_text(raw_path.read_bytes(), source_id=raw.source_id)
 
 
-def _chunk_text(text: str, *, chunks_per_source: int, label: int, chunk_chars: int = 300) -> list[str]:
+def _chunk_text(text: str, *, chunks_per_source: int, label: int) -> list[SourceChunk]:
     clipped = clip_text(text, max_chars=60000)
-    if label == 1:
-        chunk_chars = 220
-    chunks = _ranked_content_chunks(clipped, label=label, chunk_chars=chunk_chars, limit=chunks_per_source)
+    chunks = split_source_text(
+        clipped,
+        label=label,
+        max_chunk_chars=_chunk_chars_for_label(label),
+        max_chunks=chunks_per_source,
+    )
     if not chunks:
         raise ValueError("no clean source chunk passed content quality gates")
     return chunks
+
+
+def _chunk_chars_for_label(label: int) -> int:
+    if label == 1:
+        return 220
+    return 300
 
 
 def _ranked_content_chunks(text: str, *, label: int, chunk_chars: int, limit: int) -> list[str]:
