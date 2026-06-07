@@ -173,3 +173,28 @@
   - `uv run python -m nlp_term.retrieve.diagnose --facts data/gold/task2_fact_gold.json --knowledge data/knowledge_seed.json --output model/metrics/retrieval_bottleneck_diagnosis.json`
   - `uv run ruff check src tests`
 - closed_at: `2026-06-07`
+
+## goal-2.3-step-06-to-07-2026-06-07
+
+- meeting_id: `goal-2.3-step-06-to-07-2026-06-07`
+- opened_at: `2026-06-07`
+- trigger_type: `mandatory_step_transition`
+- phase: `Goal 2.3 Evaluation Diagnostics`
+- step_id: `step-06-to-step-07`
+- verdict_before_transition: `pass_no_reject`
+- roles_present:
+  - Facilitator/Planner
+  - Source/Data Steward
+  - Runtime/Architecture Engineer
+  - Evaluation/Validator Engineer
+  - Red-Team Critic
+- status: `closed`
+- selected_option: proceed to next data expansion priority report
+- evidence_path: `docs/meetings/goal-2.3-step-06-evidence.md`
+- meeting_path: `docs/meetings/goal-2.3-step-06-meeting.md`
+- handoff_path: `docs/meetings/goal-2.3-step-06-handoff.md`
+- commands_to_run:
+  - `uv run pytest tests/test_data_expansion_priority_report.py tests/test_meeting_evidence.py`
+  - `rg -n "Priority 1|졸업|PDF|HWP|acceptance gate|baseline" docs/next_data_expansion_priorities.md`
+  - `uv run ruff check src tests`
+- closed_at: `2026-06-07`
