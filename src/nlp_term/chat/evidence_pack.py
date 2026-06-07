@@ -58,13 +58,14 @@ def build_evidence_pack(
     domain: Domain,
     docs: list[KnowledgeDoc],
     max_items: int = 3,
+    max_fact_chars: int = 500,
     temporal_context: str | None = None,
 ) -> EvidencePack:
     items = [
         EvidenceItem(
             source_name=_source_name(doc),
             source_url=doc.source_url,
-            facts=[_clean_fact(doc.body)],
+            facts=[_clean_fact(doc.body, max_chars=max_fact_chars)],
             cautions=_cautions(doc),
         )
         for doc in docs[:max_items]
@@ -101,12 +102,11 @@ def _hostname(url: str) -> str:
     return parsed.netloc or "충남대학교 공식 출처"
 
 
-def _clean_fact(body: str) -> str:
+def _clean_fact(body: str, *, max_chars: int = 500) -> str:
     normalized = " ".join(body.replace("\r", " ").replace("\n", " ").split())
-    for separator in ("다. ", "요. ", ". "):
-        if separator in normalized:
-            return normalized.split(separator, 1)[0] + separator.strip()
-    return normalized
+    if len(normalized) <= max_chars:
+        return normalized
+    return normalized[:max_chars].rstrip() + "..."
 
 
 def _cautions(doc: KnowledgeDoc) -> list[str]:

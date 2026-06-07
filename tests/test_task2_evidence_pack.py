@@ -65,3 +65,32 @@ def test_evidence_pack_sanitizes_generic_source_titles() -> None:
     assert "source 1" not in prompt_text.lower()
     assert "chunk_" not in prompt_text
     assert pack.items[0].source_name == "생화학과 졸업요건"
+
+
+def test_evidence_pack_keeps_later_relevant_context_in_chunk() -> None:
+    docs = [
+        KnowledgeDoc(
+            doc_id="calendar_doc_1",
+            label=2,
+            domain="academic_calendar",
+            title="학사일정",
+            body=(
+                "학사일정 안내입니다. 수강신청은 2026년 2월에 진행됩니다. "
+                "1학기 종강일은 2026년 6월 19일입니다."
+            ),
+            source_url="https://plus.cnu.ac.kr/calendar",
+            source_id="academic_calendar",
+            metadata={"source_name": "충남대학교 학사일정"},
+        )
+    ]
+
+    pack = build_evidence_pack(
+        question="이번 학기 종강일이 언제인가요?",
+        label=2,
+        domain="academic_calendar",
+        docs=docs,
+    )
+
+    text = pack.to_prompt_text()
+
+    assert "1학기 종강일은 2026년 6월 19일입니다" in text
