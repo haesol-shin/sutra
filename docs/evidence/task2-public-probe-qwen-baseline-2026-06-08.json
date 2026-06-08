@@ -6,6 +6,7 @@
   "final_performance_claim_allowed": false,
   "writer_backend": "llama_server",
   "llama_server_url": "http://127.0.0.1:18080",
+  "max_tokens": 1024,
   "reference_time": "2026-06-08T00:00:00+09:00",
   "probe_path": "data\\gold\\task2_public_probe_eval.json",
   "probe_checksum": "fa342d6e2e581823dbc3aabf3f5cabe7423a52f074920d83cf272883eab07e14",
@@ -56,8 +57,8 @@
       "answer_validation_status": "passed",
       "trace_generation_backend": "injected",
       "qwen_writer_called": true,
-      "qwen_writer_elapsed_seconds": 20.60643110000001,
-      "elapsed_seconds": 20.62601450000011,
+      "qwen_writer_elapsed_seconds": 18.973445199999787,
+      "elapsed_seconds": 18.983135800000127,
       "retrieved_doc_ids": [
         "graduation_biochemistry_requirements_chunk_5",
         "graduation_biochemistry_requirements_chunk_7",
@@ -244,7 +245,7 @@
       "failure_reason": null,
       "bottleneck": "none",
       "expected_behavior": "Answer generally, mention department/admission-year differences, do not cite an unrelated department as if universal.",
-      "answer": "충남대학교 생화학과 졸업 요건은 입학 연도에 따라 다릅니다.\n\n**2015 학번 이후 (2013 학번 이후 교육과정 적용)**\n*   총 이수 학점: **130 학점 이상**\n*   세부 구성: 교양 42 학점 + 전공 78 학점 (총 120 학점)\n*   주의사항: 교양 과목에서 42 학점을 초과하여 이수한 학점은 졸업 이수 학점에 포함되지 않으므로, 부족한 10 학점은 일반 선택 또는 전공 과목을 초과하여 이수해야 합니다.\n\n**2014 학번 이전**\n*   총 이수 학점: **130 학점 이상**\n*   세부 구성: 교양 42 학점 + 기초 (9~12 학점) + 전공 81 학점\n*   특징: 일선 과목 구분 없이 원하는 과목을 수강하여 130 학점 이상이면 졸업 가능합니다.\n\n※ 학과 및 입학 연도에 따라 기준이 다를 수 있으므로, 정확한 정보는 반드시 **생화학과 사무실**에 문의하거나 공식 홈페이지 ([https://biochemistry.cnu.ac.kr"
+      "answer": "충남대학교 생화학과 졸업 이수 학점은 입학 연도에 따라 기준이 다릅니다.\n\n**2014 학번 이후 학생**의 경우, 교양 (42 학점 이상) 과 전공 (78 학점 이상) 을 이수한 후에도 총 130 학점에 미치지 못하면 **일반선택**이나 **전공 초과** 과목을 통해 부족한 학점을 채워야 합니다. 특히 2015 학번 이후 학생들은 교양 과목의 일선 (1 선) 구분과 전공 심화/핵심 과목의 초과 이수를 주의해야 합니다.\n\n**2014 학번 이전 학생**의 경우, 교양 (42 학점) + 기초 (9~12 학점) + 전공 (81 학점) 으로 총 130 학점 이상을 이수하면 되며, 초과된 학점은 자동으로 인정됩니다.\n\n※ 편입생은 본교 과목 중복 이수를 주의해야 하며, 직전계절학기 인턴쉽 학점은 인정되지 않습니다. 정확한 기준은 본인의 입학 연도와 학과 사무실 공식 안내를 확인하시기 바랍니다."
     },
     {
       "id": "public_probe_02",
@@ -271,8 +272,8 @@
       "answer_validation_status": "passed",
       "trace_generation_backend": "injected",
       "qwen_writer_called": true,
-      "qwen_writer_elapsed_seconds": 10.478484599999774,
-      "elapsed_seconds": 10.487028199999713,
+      "qwen_writer_elapsed_seconds": 10.085733700000219,
+      "elapsed_seconds": 10.095776899999692,
       "retrieved_doc_ids": [
         "academic_calendar_chunk_5",
         "academic_calendar_chunk_8",
@@ -492,7 +493,7 @@
       "failure_reason": null,
       "bottleneck": "none",
       "expected_behavior": "Return the matching course registration start date if calendar evidence supports it.",
-      "answer": "2026학년도 제1학기 수강신청은 2026년 2월 2일(월)부터 2월 6일(금)까지 진행됩니다.\n\n참고로, 1월 26일(월)부터 1월 28일(수)까지 예비수강신청이 먼저 열리며, 계절학기 수강신청은 5월 7일(목)부터 5월 11일(월)까지 이루어집니다. 정확한 일정은 충남대학교 공식 학사일정 페이지를 확인하시기 바랍니다."
+      "answer": "2026학년도 제1학기 수강신청은 **2026년 2월 2일 (월)부터 2월 6일 (금)**까지 진행됩니다.\n\n참고로, 1월 26일 (월)부터 1월 28일 (수)까지 예비수강신청이 먼저 이루어지며, 계절학기 수강신청은 5월 7일 (목)부터 5월 11일 (월)까지 있습니다. 정확한 일정은 학교 공식 학사일정 페이지를 통해 확인하시는 것이 좋습니다."
     },
     {
       "id": "public_probe_03",
@@ -521,7 +522,7 @@
       "trace_generation_backend": null,
       "qwen_writer_called": false,
       "qwen_writer_elapsed_seconds": null,
-      "elapsed_seconds": 0.006658100000095146,
+      "elapsed_seconds": 0.009001200000056997,
       "retrieved_doc_ids": [
         "cnu_mobile_food_chunk_1",
         "cnu_mobile_food_chunk_2",
@@ -770,7 +771,7 @@
       "trace_generation_backend": null,
       "qwen_writer_called": false,
       "qwen_writer_elapsed_seconds": null,
-      "elapsed_seconds": 0.006371200000103272,
+      "elapsed_seconds": 0.009181700000226556,
       "retrieved_doc_ids": [
         "shuttle_bus_chunk_1",
         "shuttle_bus_chunk_2",
@@ -1181,8 +1182,8 @@
       "answer_validation_status": "passed",
       "trace_generation_backend": "injected",
       "qwen_writer_called": true,
-      "qwen_writer_elapsed_seconds": 7.299974499999735,
-      "elapsed_seconds": 7.3065231000000495,
+      "qwen_writer_elapsed_seconds": 10.576442099999895,
+      "elapsed_seconds": 10.58558529999982,
       "retrieved_doc_ids": [
         "academic_notice_board_chunk_1",
         "academic_notice_board_chunk_2"
@@ -1356,7 +1357,7 @@
       "failure_reason": null,
       "bottleneck": "temporal",
       "expected_behavior": "Provide official notice board location or latest item source when available.",
-      "answer": "충남대학교 공지사항은 **학사정보게시판**에서 확인하실 수 있습니다.\n\n주요 공지사항 목록은 아래 링크를 통해 바로 보실 수 있습니다.\nhttps://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr"
+      "answer": "충남대학교 공지사항은 **학사정보게시판**에서 확인하실 수 있습니다.\n\n제공된 근거에 따르면, 2026학년도 계절학기 수강신청, 출석인정 신청 변경 사항, 휴학 및 복학 안내 등 최신 학사 관련 공지들이 게시되어 있습니다. 해당 게시판의 직접적인 접속 링크는 다음과 같습니다.\n\n*   **공지사항 주소**: https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr"
     },
     {
       "id": "public_probe_06",
@@ -1383,8 +1384,8 @@
       "answer_validation_status": "passed",
       "trace_generation_backend": "injected",
       "qwen_writer_called": true,
-      "qwen_writer_elapsed_seconds": 12.594131199999993,
-      "elapsed_seconds": 12.601025100000243,
+      "qwen_writer_elapsed_seconds": 16.418817000000217,
+      "elapsed_seconds": 16.433400399999755,
       "retrieved_doc_ids": [
         "shuttle_bus_chunk_5",
         "shuttle_bus_chunk_2",
@@ -1571,7 +1572,7 @@
       "failure_reason": null,
       "bottleneck": "temporal",
       "expected_behavior": "Use a declared recent-change window and report verified stop changes only.",
-      "answer": "충남대학교 셔틀버스는 현재 **대덕캠퍼스 내 순환**과 **대덕캠퍼스 ↔ 보운캠퍼스 순환** 두 노선을 운영 중입니다.\n\n*   **대덕캠퍼스 내 순환**: 월평역 등교 시간 08:20 출발\n*   **캠퍼스 순환 (대덕 ↔ 보운)**: 골프연습장 출발 시간 08:10\n\n정류장 변경에 대한 최신 정보는 학교 사정에 따라 변동될 수 있으므로, **충남대학교 공식 셔틀버스 안내 페이지**를 확인하시는 것을 권장합니다."
+      "answer": "충남대학교 셔틀버스는 현재 **교내 순환** (대덕캠퍼스 내) 과 **캠퍼스 순환** (대덕캠퍼스⇄보운캠퍼스) 두 노선을 운영 중입니다.\n\n*   **교내 순환**: 월평역 등교 08:20 출발\n*   **캠퍼스 순환**: 골프연습장 출발 08:10, 보운캠퍼스 회차 08:50\n\n정류장 위치나 운행 시간은 학교 사정, 천재지변, 교통 상황 등에 따라 변경될 수 있으므로, 최신 정보는 **충남대학교 공식 셔틀버스 안내 페이지** (https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html) 를 확인하시는 것이 좋습니다."
     },
     {
       "id": "public_probe_07",
@@ -1600,7 +1601,7 @@
       "trace_generation_backend": null,
       "qwen_writer_called": false,
       "qwen_writer_elapsed_seconds": null,
-      "elapsed_seconds": 0.006643600000188599,
+      "elapsed_seconds": 0.0132223000000522,
       "retrieved_doc_ids": [
         "academic_calendar_chunk_1",
         "academic_calendar_chunk_2",
@@ -2013,7 +2014,7 @@
       "trace_generation_backend": null,
       "qwen_writer_called": false,
       "qwen_writer_elapsed_seconds": null,
-      "elapsed_seconds": 0.006486899999799789,
+      "elapsed_seconds": 0.013681300000371266,
       "retrieved_doc_ids": [
         "cnu_mobile_food_chunk_1",
         "cnu_mobile_food_chunk_2",
@@ -2360,7 +2361,7 @@
       "trace_generation_backend": null,
       "qwen_writer_called": false,
       "qwen_writer_elapsed_seconds": null,
-      "elapsed_seconds": 0.006235699999706412,
+      "elapsed_seconds": 0.011824799999885727,
       "retrieved_doc_ids": [
         "academic_notice_board_chunk_1",
         "academic_notice_board_chunk_2"
@@ -2562,7 +2563,7 @@
       "trace_generation_backend": null,
       "qwen_writer_called": false,
       "qwen_writer_elapsed_seconds": null,
-      "elapsed_seconds": 0.006161100000099395,
+      "elapsed_seconds": 0.012253399999735848,
       "retrieved_doc_ids": [
         "academic_notice_detail_2512782_chunk_2"
       ],
@@ -2750,8 +2751,8 @@
       "answer_validation_status": "passed",
       "trace_generation_backend": "injected",
       "qwen_writer_called": true,
-      "qwen_writer_elapsed_seconds": 7.841234900000018,
-      "elapsed_seconds": 7.847802299999785,
+      "qwen_writer_elapsed_seconds": 7.951559699999962,
+      "elapsed_seconds": 7.964495599999736,
       "retrieved_doc_ids": [
         "academic_calendar_chunk_7",
         "academic_calendar_chunk_1",
@@ -3024,8 +3025,8 @@
       "answer_validation_status": "passed",
       "trace_generation_backend": "injected",
       "qwen_writer_called": true,
-      "qwen_writer_elapsed_seconds": 10.00761440000042,
-      "elapsed_seconds": 10.014452800000072,
+      "qwen_writer_elapsed_seconds": 9.856925300000057,
+      "elapsed_seconds": 9.871394399999645,
       "retrieved_doc_ids": [
         "academic_calendar_chunk_2",
         "academic_calendar_chunk_8",
@@ -3271,7 +3272,7 @@
       "failure_reason": null,
       "bottleneck": "none",
       "expected_behavior": "Return the summer session end date, not grade announcement date.",
-      "answer": "제공된 근거에는 '이번 여름 계절학기'의 '종강일'에 대한 구체적인 날짜가 명시되어 있지 않습니다.\n\n참고로 근거 자료에는 하기 계절학기가 6 월 22 일 (월) 에 시작한다는 정보와 동기 계절학기 성적 발표가 1 월 20 일 (화) 에 있다는 정보가 있으나, 여름 계절학기의 종료 시점은 확인되지 않았습니다. 정확한 종강일을 확인하시려면 충남대학교 공식 학사일정 페이지를 다시 한번 확인해 주시기 바랍니다."
+      "answer": "제공된 근거에는 계절학기 **종강일**에 대한 명시적인 정보가 포함되어 있지 않습니다.\n\n근거 3 에 따르면 하기 계절학기는 **6 월 22 일 (월) ~ 7 월 10 일 (금)**로 운영되며, 7 월 10 일이 마지막 수업일일 가능성이 높지만 정확한 종강일은 공식 출처를 통해 다시 확인하시는 것을 권장합니다."
     },
     {
       "id": "public_probe_13",
@@ -3300,7 +3301,7 @@
       "trace_generation_backend": null,
       "qwen_writer_called": false,
       "qwen_writer_elapsed_seconds": null,
-      "elapsed_seconds": 0.007226700000046549,
+      "elapsed_seconds": 0.015586500000154047,
       "retrieved_doc_ids": [
         "cnu_mobile_food_chunk_1",
         "cnu_mobile_food_chunk_2",
@@ -3548,7 +3549,7 @@
       "trace_generation_backend": null,
       "qwen_writer_called": false,
       "qwen_writer_elapsed_seconds": null,
-      "elapsed_seconds": 0.006198699999913515,
+      "elapsed_seconds": 0.01490700000022116,
       "retrieved_doc_ids": [
         "academic_notice_detail_2512782_chunk_1"
       ],

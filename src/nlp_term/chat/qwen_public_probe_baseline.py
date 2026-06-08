@@ -25,6 +25,7 @@ from nlp_term.validators import file_checksum
 
 
 DEFAULT_LLAMA_SERVER_URL = "http://127.0.0.1:18080"
+DEFAULT_MAX_TOKENS = 1024
 
 
 def run_qwen_public_probe_baseline(
@@ -37,7 +38,7 @@ def run_qwen_public_probe_baseline(
     llama_server_url: str = DEFAULT_LLAMA_SERVER_URL,
     writer: Callable[[str], str] | None = None,
     timeout_seconds: int = 180,
-    max_tokens: int = 256,
+    max_tokens: int = DEFAULT_MAX_TOKENS,
 ) -> dict[str, object]:
     cases = _load_cases(probe_path)
     rows: list[dict[str, object]] = []
@@ -77,6 +78,7 @@ def run_qwen_public_probe_baseline(
         "final_performance_claim_allowed": False,
         "writer_backend": "llama_server",
         "llama_server_url": llama_server_url,
+        "max_tokens": max_tokens,
         "reference_time": reference_time.isoformat(),
         "probe_path": str(probe_path),
         "probe_checksum": file_checksum(probe_path),
@@ -269,7 +271,7 @@ def main() -> None:
     )
     parser.add_argument("--llama-server-url", default=DEFAULT_LLAMA_SERVER_URL)
     parser.add_argument("--timeout-seconds", type=int, default=180)
-    parser.add_argument("--max-tokens", type=int, default=256)
+    parser.add_argument("--max-tokens", type=int, default=DEFAULT_MAX_TOKENS)
     args = parser.parse_args()
     report = run_qwen_public_probe_baseline(
         probe_path=args.probe,
