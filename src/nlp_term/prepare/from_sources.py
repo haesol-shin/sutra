@@ -147,6 +147,7 @@ def build_knowledge_from_probe(
         if isinstance(inventory, dict):
             for doc in [*structured_docs, *parsed_docs]:
                 doc.metadata.update({f"source_{key}": value for key, value in inventory.items()})
+                doc.metadata.update(_tier1_lifecycle_metadata(raw, verification, inventory=inventory))
         for doc in parsed_docs:
             doc.metadata.update(_raw_provenance_metadata(raw, verification))
         docs.extend(parsed_docs)
@@ -182,6 +183,31 @@ def _raw_provenance_metadata(raw: RawSource, verification: SourceVerification) -
         "verification_parser_name": verification.parser_name,
         "verification_parser_version": verification.parser_version,
         "verification_verified_at": verification.verified_at,
+    }
+
+
+def _tier1_lifecycle_metadata(
+    raw: RawSource,
+    verification: SourceVerification,
+    *,
+    inventory: dict,
+) -> dict[str, object]:
+    active = bool(inventory.get("active", True))
+    freshness_policy = str(inventory.get("freshness_policy", "snapshot"))
+    source_is_usable = active and (verification.official_chain_ok or freshness_policy == "short_ttl")
+    raw_ok = raw.status_code is None or 200 <= raw.status_code < 300
+    index_eligible = source_is_usable and raw_ok
+    return {
+        "source_id": raw.source_id,
+        "source_url": raw.url,
+        "source_domain": raw.domain,
+        "source_label": raw.label,
+        "official_chain_ok": verification.official_chain_ok,
+        "freshness_policy": freshness_policy,
+        "lifecycle_status": "index_eligible" if index_eligible else "parsed",
+        "index_eligible": index_eligible,
+        "parser_name": verification.parser_name,
+        "parser_version": verification.parser_version,
     }
 
 

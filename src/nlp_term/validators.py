@@ -401,6 +401,114 @@ def validate_knowledge_quality(
             )
 
 
+def validate_tier1_coverage(
+    *,
+    data_dir: Path,
+    source_probe_path: Path,
+    min_index_eligible_sources: int | None = None,
+    min_raw_sources: int | None = None,
+    min_accepted_docs: int | None = None,
+    min_structured_rows: int | None = None,
+    min_index_chunk_candidates: int | None = None,
+    min_graduation_docs: int | None = None,
+    min_graduation_rows: int | None = None,
+    min_notice_docs: int | None = None,
+    max_notice_docs: int | None = None,
+    max_notice_doc_ratio: float | None = None,
+    max_notice_duplicate_ratio: float | None = None,
+    max_source_concentration: float | None = None,
+    min_calendar_rows: int | None = None,
+    min_dining_rows: int | None = None,
+    min_shuttle_rows: int | None = None,
+) -> None:
+    probe_payload = read_json(source_probe_path)
+    if not isinstance(probe_payload, list):
+        raise ValueError(f"{source_probe_path} must contain a JSON list")
+
+    raw_sources = []
+    index_eligible_sources = set()
+    for row in probe_payload:
+        if not isinstance(row, dict):
+            raise ValueError(f"{source_probe_path} rows must be objects")
+        raw = RawSource.model_validate(row.get("raw"))
+        verification = SourceVerification.model_validate(row.get("verification"))
+        inventory = row.get("inventory")
+        if not isinstance(inventory, dict):
+            raise ValueError(f"tier1-coverage: {raw.source_id} lacks inventory metadata")
+        raw_sources.append(raw)
+        is_active = bool(inventory.get("active", True))
+        freshness_policy = str(inventory.get("freshness_policy", ""))
+        if is_active and (verification.official_chain_ok or freshness_policy == "short_ttl"):
+            index_eligible_sources.add(raw.source_id)
+
+    docs = validate_rows(data_dir / "knowledge_seed.json", KnowledgeDoc, required=True)
+    accepted_docs = [doc for doc in docs if bool(doc.metadata.get("index_eligible", True))]
+    structured_docs = [
+        doc for doc in accepted_docs if doc.metadata.get("generation_method") == "structured_row"
+    ]
+    row_type_counts = Counter(str(doc.metadata.get("row_type", "")) for doc in structured_docs)
+    domain_counts = Counter(doc.domain for doc in accepted_docs)
+    source_counts = Counter(doc.source_id for doc in accepted_docs)
+
+    _require_min("tier1-coverage: index-eligible sources", len(index_eligible_sources), min_index_eligible_sources)
+    _require_min("tier1-coverage: raw sources", len(raw_sources), min_raw_sources)
+    _require_min("tier1-coverage: accepted docs", len(accepted_docs), min_accepted_docs)
+    _require_min("tier1-coverage: structured rows", len(structured_docs), min_structured_rows)
+    _require_min("tier1-coverage: index chunk candidates", len(accepted_docs), min_index_chunk_candidates)
+    _require_min("tier1-coverage: graduation docs", domain_counts["graduation"], min_graduation_docs)
+    _require_min("tier1-coverage: graduation rows", row_type_counts["graduation_requirement"], min_graduation_rows)
+    _require_min("tier1-coverage: notice docs", domain_counts["notices"], min_notice_docs)
+    if max_notice_docs is not None and domain_counts["notices"] > max_notice_docs:
+        raise ValueError(f"tier1-coverage: notice docs {domain_counts['notices']} above {max_notice_docs}")
+    if max_notice_doc_ratio is not None:
+        ratio = domain_counts["notices"] / max(len(accepted_docs), 1)
+        if ratio > max_notice_doc_ratio:
+            raise ValueError(
+                f"tier1-coverage: notice doc ratio {ratio:.3f} above {max_notice_doc_ratio:.3f}"
+            )
+    if max_notice_duplicate_ratio is not None:
+        duplicate_ratio = _notice_duplicate_ratio(accepted_docs)
+        if duplicate_ratio > max_notice_duplicate_ratio:
+            raise ValueError(
+                f"tier1-coverage: notice duplicate ratio {duplicate_ratio:.3f} "
+                f"above {max_notice_duplicate_ratio:.3f}"
+            )
+    if max_source_concentration is not None:
+        source_concentration = max(source_counts.values(), default=0) / max(len(accepted_docs), 1)
+        if source_concentration > max_source_concentration:
+            raise ValueError(
+                f"tier1-coverage: source concentration {source_concentration:.3f} "
+                f"above {max_source_concentration:.3f}"
+            )
+    _require_min("tier1-coverage: calendar rows", row_type_counts["academic_calendar_event"], min_calendar_rows)
+    _require_min("tier1-coverage: dining rows", row_type_counts["dining_menu"], min_dining_rows)
+    shuttle_rows = row_type_counts["shuttle_route"] + row_type_counts["shuttle_segment"]
+    _require_min("tier1-coverage: shuttle rows", shuttle_rows, min_shuttle_rows)
+
+
+def _require_min(label: str, actual: int, expected: int | None) -> None:
+    if expected is not None and actual < expected:
+        raise ValueError(f"{label} {actual} below {expected}")
+
+
+def _notice_duplicate_ratio(docs: list[KnowledgeDoc]) -> float:
+    notice_docs = [doc for doc in docs if doc.domain == "notices"]
+    if not notice_docs:
+        return 0.0
+    keys = []
+    for doc in notice_docs:
+        metadata = doc.metadata
+        keys.append(
+            (
+                str(metadata.get("detail_url") or doc.source_url),
+                str(metadata.get("posted_date") or doc.date or ""),
+                doc.title.strip(),
+            )
+        )
+    duplicate_count = len(keys) - len(set(keys))
+    return duplicate_count / len(notice_docs)
+
+
 def _is_ambiguous_example(row: ClassificationExample) -> bool:
     sample_type = str(row.metadata.get("sample_type", "")).lower()
     return (
@@ -1194,6 +1302,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--require-raw-provenance", action="store_true")
     parser.add_argument("--model-shortlist", type=Path, help="Validate model shortlist metadata.")
     parser.add_argument("--knowledge-quality", type=Path, help="Validate source-backed knowledge quality gates.")
+    parser.add_argument("--tier1-coverage", action="store_true", help="Validate Tier 1 curated RAG-ready coverage.")
     parser.add_argument("--dataset-quality", action="store_true", help="Validate generated classification/QA quality gates.")
     parser.add_argument("--gold-data", type=Path, help="Validate human/gold evaluation artifact contracts.")
     parser.add_argument("--metric-claim", type=Path, help="Validate metric claim metadata and checksum binding.")
@@ -1216,6 +1325,21 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--min-total-docs", type=int)
     parser.add_argument("--min-body-chars", type=int)
     parser.add_argument("--min-source-parse-ratio", type=float)
+    parser.add_argument("--min-index-eligible-sources", type=int)
+    parser.add_argument("--min-raw-sources", type=int)
+    parser.add_argument("--min-accepted-docs", type=int)
+    parser.add_argument("--min-structured-rows", type=int)
+    parser.add_argument("--min-index-chunk-candidates", type=int)
+    parser.add_argument("--min-graduation-docs", type=int)
+    parser.add_argument("--min-graduation-rows", type=int)
+    parser.add_argument("--min-notice-docs", type=int)
+    parser.add_argument("--max-notice-docs", type=int)
+    parser.add_argument("--max-notice-doc-ratio", type=float)
+    parser.add_argument("--max-notice-duplicate-ratio", type=float)
+    parser.add_argument("--max-source-concentration", type=float)
+    parser.add_argument("--min-calendar-rows", type=int)
+    parser.add_argument("--min-dining-rows", type=int)
+    parser.add_argument("--min-shuttle-rows", type=int)
     parser.add_argument("--min-cls-rows", type=int)
     parser.add_argument("--min-cls-per-label", type=int)
     parser.add_argument("--min-ambiguous-per-label", type=int)
@@ -1286,6 +1410,7 @@ def main() -> None:
         and not args.knowledge_provenance
         and not args.model_shortlist
         and not args.knowledge_quality
+        and not args.tier1_coverage
         and not args.dataset_quality
         and not args.gold_data
         and not args.metric_claim
@@ -1349,6 +1474,28 @@ def main() -> None:
                 min_body_chars=args.min_body_chars,
                 min_source_parse_ratio=args.min_source_parse_ratio,
                 min_total_docs=args.min_total_docs,
+            )
+        if args.tier1_coverage:
+            if args.source_probe is None:
+                raise ValueError("--tier1-coverage requires --source-probe")
+            validate_tier1_coverage(
+                data_dir=args.data_dir,
+                source_probe_path=args.source_probe,
+                min_index_eligible_sources=args.min_index_eligible_sources,
+                min_raw_sources=args.min_raw_sources,
+                min_accepted_docs=args.min_accepted_docs,
+                min_structured_rows=args.min_structured_rows,
+                min_index_chunk_candidates=args.min_index_chunk_candidates,
+                min_graduation_docs=args.min_graduation_docs,
+                min_graduation_rows=args.min_graduation_rows,
+                min_notice_docs=args.min_notice_docs,
+                max_notice_docs=args.max_notice_docs,
+                max_notice_doc_ratio=args.max_notice_doc_ratio,
+                max_notice_duplicate_ratio=args.max_notice_duplicate_ratio,
+                max_source_concentration=args.max_source_concentration,
+                min_calendar_rows=args.min_calendar_rows,
+                min_dining_rows=args.min_dining_rows,
+                min_shuttle_rows=args.min_shuttle_rows,
             )
         if args.dataset_quality:
             validate_dataset_quality(

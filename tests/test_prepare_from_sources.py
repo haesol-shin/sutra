@@ -89,6 +89,13 @@ def test_build_knowledge_from_probe_adds_structured_shuttle_docs(tmp_path) -> No
     assert structured_docs
     assert any(doc.source_id == "shuttle_bus" and doc.metadata["route_name"] == "교내 순환" for doc in structured_docs)
     assert any(doc.metadata.get("generation_method") == "source_parse" for doc in docs)
+    for doc in docs:
+        assert doc.metadata["source_id"] == "shuttle_bus"
+        assert doc.metadata["source_domain"] == "shuttle"
+        assert doc.metadata["source_label"] == 4
+        assert doc.metadata["official_chain_ok"] is True
+        assert doc.metadata["lifecycle_status"] == "index_eligible"
+        assert doc.metadata["index_eligible"] is True
 
 
 def test_build_knowledge_from_probe_adds_structured_notice_docs(tmp_path) -> None:
@@ -141,3 +148,6 @@ def test_build_knowledge_from_probe_adds_structured_notice_docs(tmp_path) -> Non
         and doc.metadata.get("posted_date") == "2026-06-05"
         for doc in structured_docs
     )
+    for doc in docs:
+        assert doc.metadata["lifecycle_status"] == "index_eligible"
+        assert doc.metadata["index_eligible"] is True
