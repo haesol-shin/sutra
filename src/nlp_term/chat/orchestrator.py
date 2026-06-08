@@ -70,15 +70,17 @@ def answer_with_harness(
     diagnostic_retrieved = rank_docs(question, knowledge.docs, top_k=diagnostic_top_k)
     docs_by_id = {doc.doc_id: doc for doc in knowledge.docs}
     prefilter_candidates = _candidate_trace_rows(diagnostic_retrieved, docs_by_id)
-    retrieved_pairs = [
+    candidate_pairs = [
         (docs_by_id[row.doc_id], row.score)
         for row in decision_retrieved
-        if row.doc_id in docs_by_id and docs_by_id[row.doc_id].label == route.label
+        if row.doc_id in docs_by_id
     ]
+    retrieved_pairs = _prefer_route_pairs(candidate_pairs, route_label=route.label, min_score=min_top_score)
     retrieved_pairs = _order_retrieved_pairs(retrieved_pairs, temporal_type=temporal_intent.temporal_type)
     retrieved_pairs = _prioritize_retrieved_pairs(
         retrieved_pairs,
         question=question,
+        route_label=route.label,
         temporal_intent=temporal_intent,
     )
     retrieved_pairs = _deduplicate_retrieved_pairs(retrieved_pairs)[:evidence_pack_size]
@@ -252,6 +254,18 @@ def _candidate_trace_rows(rows, docs_by_id: dict[str, KnowledgeDoc]) -> list[Ret
     return trace_rows
 
 
+def _prefer_route_pairs(
+    retrieved_pairs: list[tuple[KnowledgeDoc, float]],
+    *,
+    route_label: int,
+    min_score: float,
+) -> list[tuple[KnowledgeDoc, float]]:
+    eligible = [(doc, score) for doc, score in retrieved_pairs if score >= min_score]
+    if eligible:
+        return sorted(eligible, key=lambda pair: (pair[0].label == route_label, pair[1]), reverse=True)
+    return [(doc, score) for doc, score in retrieved_pairs if doc.label == route_label]
+
+
 def _selected_candidate_trace_rows(retrieved_pairs: list[tuple[KnowledgeDoc, float]]) -> list[RetrievalCandidateTrace]:
     return [
         RetrievalCandidateTrace(
@@ -289,12 +303,14 @@ def _prioritize_retrieved_pairs(
     retrieved_pairs: list[tuple[KnowledgeDoc, float]],
     *,
     question: str,
+    route_label: int,
     temporal_intent,
 ) -> list[tuple[KnowledgeDoc, float]]:
     compact_question = question.replace(" ", "")
     return sorted(
         retrieved_pairs,
         key=lambda pair: (
+            pair[0].label == route_label,
             _temporal_match_score(pair[0], temporal_intent=temporal_intent),
             _structured_score(pair[0]),
             _alias_match_score(pair[0], compact_question),

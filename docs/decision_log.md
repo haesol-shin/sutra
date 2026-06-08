@@ -33,3 +33,11 @@ Decision: Simplify the Task 2 active path so retrieved evidence is passed to Qwe
 Reason: Policy-heavy sufficiency, answer-kind, temporal, and validator gates were suppressing or replacing generated answers before Qwen could use the evidence.
 Supersedes: Harness behavior that fail-closed on current-fact, wrong-domain, temporal mismatch, or validator warning cases.
 Links: `docs/task2_simplification_direction_2026_06_09.md`, `src/nlp_term/chat/orchestrator.py`
+
+## 2026-06-09
+
+Type: refactor
+Decision: Treat the Task 1 route label as a Task 2 retrieval ordering preference instead of a strict evidence filter.
+Reason: A strict route filter can erase useful evidence when Task 1 misclassifies an otherwise answerable question.
+Consequence: Sufficiently scoring evidence is kept across labels, route-matching evidence is sorted first, and selected evidence remains visible in trace.
+Links: `docs/task2_simplification_direction_2026_06_09.md`, `src/nlp_term/chat/orchestrator.py`

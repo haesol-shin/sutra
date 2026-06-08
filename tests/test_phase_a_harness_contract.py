@@ -7,6 +7,7 @@ from pathlib import Path
 import nlp_term.chat.orchestrator as orchestrator_module
 from nlp_term.chat.evidence_sufficiency import evaluate_evidence_sufficiency
 from nlp_term.chat.orchestrator import answer_with_harness
+from nlp_term.chat.router import RoutedQuestion
 from nlp_term.chat.source_status import build_source_status
 from nlp_term.chat.state_contract import (
     AnswerKind,
@@ -273,6 +274,177 @@ def test_harness_does_not_block_cross_domain_question_when_evidence_is_retrieved
     assert result.output_status == OutputStatus.ANSWERED
     assert result.trace.answer_kind == AnswerKind.STATIC_FACT
     assert "셔틀 시간표" in result.output.model
+
+
+def test_harness_uses_positive_cross_label_evidence_when_route_has_no_matches(tmp_path: Path, monkeypatch) -> None:
+    knowledge_path = tmp_path / "knowledge.json"
+    knowledge_path.write_text(
+        json.dumps(
+            [
+                {
+                    "doc_id": "notice_doc",
+                    "label": 1,
+                    "domain": "notices",
+                    "title": "수강신청 공지",
+                    "body": "수강신청 공지는 충남대학교 학사 공지 게시판에서 확인한다.",
+                    "source_url": "https://plus.cnu.ac.kr/notice",
+                    "source_id": "notices_main",
+                    "metadata": {},
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        orchestrator_module,
+        "route_question",
+        lambda question: RoutedQuestion(user=question, label=2, domain="academic_calendar"),
+    )
+
+    result = answer_with_harness(
+        "수강신청 공지는 어디서 볼 수 있나요?",
+        knowledge_path=knowledge_path,
+        generator=lambda prompt: "수강신청 공지는 충남대학교 학사 공지 게시판에서 확인하면 됩니다.",
+    )
+
+    assert result.output_status == OutputStatus.ANSWERED
+    assert result.trace.route_label == 2
+    assert result.trace.retrieved_doc_ids == ["notice_doc"]
+
+
+def test_harness_keeps_strong_cross_label_evidence_when_route_candidate_is_weak(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    knowledge_path = tmp_path / "knowledge.json"
+    knowledge_docs = [
+        {
+            "doc_id": "weak_calendar_doc",
+            "label": 2,
+            "domain": "academic_calendar",
+            "title": "일정",
+            "body": "관련 없는 일정 안내입니다.",
+            "source_url": "https://plus.cnu.ac.kr/calendar",
+            "source_id": "academic_calendar",
+            "metadata": {},
+        },
+        {
+            "doc_id": "strong_notice_doc",
+            "label": 1,
+            "domain": "notices",
+            "title": "수강신청 공지",
+            "body": "수강신청 공지는 충남대학교 학사 공지 게시판에서 확인한다.",
+            "source_url": "https://plus.cnu.ac.kr/notice",
+            "source_id": "notices_main",
+            "metadata": {},
+        },
+    ]
+    knowledge_path.write_text(json.dumps(knowledge_docs, ensure_ascii=False), encoding="utf-8")
+
+    def fake_rank_docs(question, docs, *, top_k: int):
+        del question, top_k
+        docs_by_id = {doc.doc_id: doc for doc in docs}
+        return [
+            RetrievedDoc(
+                doc_id="weak_calendar_doc",
+                score=0.0,
+                title=docs_by_id["weak_calendar_doc"].title,
+                source_url=docs_by_id["weak_calendar_doc"].source_url,
+                label=2,
+            ),
+            RetrievedDoc(
+                doc_id="strong_notice_doc",
+                score=0.9,
+                title=docs_by_id["strong_notice_doc"].title,
+                source_url=docs_by_id["strong_notice_doc"].source_url,
+                label=1,
+            ),
+        ]
+
+    monkeypatch.setattr(orchestrator_module, "rank_docs", fake_rank_docs)
+    monkeypatch.setattr(
+        orchestrator_module,
+        "route_question",
+        lambda question: RoutedQuestion(user=question, label=2, domain="academic_calendar"),
+    )
+
+    result = answer_with_harness(
+        "수강신청 공지는 어디서 볼 수 있나요?",
+        knowledge_path=knowledge_path,
+        generator=lambda prompt: "수강신청 공지는 충남대학교 학사 공지 게시판에서 확인하면 됩니다.",
+    )
+
+    assert result.output_status == OutputStatus.ANSWERED
+    assert result.trace.retrieved_doc_ids == ["strong_notice_doc"]
+
+
+def test_harness_preserves_route_preference_through_final_selection(tmp_path: Path, monkeypatch) -> None:
+    knowledge_path = tmp_path / "knowledge.json"
+    knowledge_docs = [
+        {
+            "doc_id": "eligible_calendar_doc",
+            "label": 2,
+            "domain": "academic_calendar",
+            "title": "수강신청 일정",
+            "body": "수강신청 일정은 학사일정에서 확인한다.",
+            "source_url": "https://plus.cnu.ac.kr/calendar",
+            "source_id": "academic_calendar",
+            "metadata": {},
+        },
+        *[
+            {
+                "doc_id": f"strong_notice_doc_{index}",
+                "label": 1,
+                "domain": "notices",
+                "title": "수강신청 공지",
+                "body": f"수강신청 공지는 충남대학교 학사 공지 게시판에서 확인한다. 안내 {index}.",
+                "source_url": f"https://plus.cnu.ac.kr/notice/{index}",
+                "source_id": "notices_main",
+                "metadata": {},
+            }
+            for index in range(4)
+        ],
+    ]
+    knowledge_path.write_text(json.dumps(knowledge_docs, ensure_ascii=False), encoding="utf-8")
+
+    def fake_rank_docs(question, docs, *, top_k: int):
+        del question, top_k
+        docs_by_id = {doc.doc_id: doc for doc in docs}
+        rows = [
+            ("strong_notice_doc_0", 0.9, 1),
+            ("strong_notice_doc_1", 0.89, 1),
+            ("strong_notice_doc_2", 0.88, 1),
+            ("strong_notice_doc_3", 0.87, 1),
+            ("eligible_calendar_doc", 0.3, 2),
+        ]
+        return [
+            RetrievedDoc(
+                doc_id=doc_id,
+                score=score,
+                title=docs_by_id[doc_id].title,
+                source_url=docs_by_id[doc_id].source_url,
+                label=label,
+            )
+            for doc_id, score, label in rows
+        ]
+
+    monkeypatch.setattr(orchestrator_module, "rank_docs", fake_rank_docs)
+    monkeypatch.setattr(
+        orchestrator_module,
+        "route_question",
+        lambda question: RoutedQuestion(user=question, label=2, domain="academic_calendar"),
+    )
+
+    result = answer_with_harness(
+        "수강신청 일정은 어디서 확인하나요?",
+        knowledge_path=knowledge_path,
+        generator=lambda prompt: "수강신청 일정은 학사일정과 공지사항을 함께 확인하면 됩니다.",
+    )
+
+    assert result.output_status == OutputStatus.ANSWERED
+    assert result.trace.retrieved_doc_ids[0] == "eligible_calendar_doc"
+    assert "eligible_calendar_doc" in result.trace.retrieved_doc_ids
 
 
 def test_harness_trace_records_next_week_temporal_intent(tmp_path: Path) -> None:

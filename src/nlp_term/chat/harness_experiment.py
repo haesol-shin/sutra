@@ -71,6 +71,10 @@ def run_harness_safety_experiment(
             status.metadata_domain is not None and status.metadata_domain != trace.route_domain
             for status in trace.source_statuses
         )
+        has_expected_domain_evidence = any(
+            status.metadata_domain == case.expected_domain
+            for status in trace.source_statuses
+        )
         current_hallucination = _has_current_fact_hallucination(case, result.output.model)
         validation_failed = trace.answer_validation_status not in {
             AnswerValidationStatus.PASSED,
@@ -87,9 +91,7 @@ def run_harness_safety_experiment(
         route_match_count += int(route_match)
         answer_kind_match_count += int(answer_kind_match)
         validation_failure_count += int(validation_failed)
-        wrong_domain_pass_count += int(
-            answered and (has_wrong_domain_evidence or not route_match)
-        )
+        wrong_domain_pass_count += int(answered and not has_expected_domain_evidence and (has_wrong_domain_evidence or not route_match))
         current_fact_hallucination_count += int(current_hallucination)
 
         rows.append(
@@ -113,6 +115,7 @@ def run_harness_safety_experiment(
                 "generation_status": str(trace.generation_status),
                 "answer_validation_status": str(trace.answer_validation_status),
                 "wrong_domain_evidence": has_wrong_domain_evidence,
+                "expected_domain_evidence": has_expected_domain_evidence,
                 "current_fact_hallucination": current_hallucination,
                 "bottleneck": bottleneck,
                 "failure_reason": trace.failure_reason,

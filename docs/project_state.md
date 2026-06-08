@@ -22,6 +22,7 @@ Current implementation direction:
 - Do not restart the implementation from scratch unless the user explicitly requests it.
 - Generation-blocking sufficiency and validation gates have been removed from the normal Task 2 path; evidence absence remains the minimal pre-generation block.
 - Retrieval ranking no longer calls the Task 1 classifier internally.
+- Task 2 route/domain is now a retrieval preference: sufficiently scoring candidates are kept across labels, then route-matching evidence is sorted first.
 - Graduation prose is no longer promoted into structured rows.
 - Source chunks are plain recursive/plain-window chunks without confidence labels.
 

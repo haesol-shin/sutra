@@ -22,6 +22,7 @@ The project should win by giving Qwen clean, official, relevant evidence. The im
 - The only normal pre-generation block is empty evidence: if no evidence items can be built, return the minimal insufficient-evidence answer.
 - Answer validation is diagnostic. It may record internal leaks, unsupported claims, or raw JSON in trace, but it should not replace a generated Qwen answer unless the answer is empty/unusable.
 - Retrieval ranking should not call the Task 1 classifier internally. If a route/domain is needed, pass it explicitly from the caller or handle it outside ranking.
+- Route/domain should be a retrieval preference, not a hard blocker. Keep sufficiently scoring candidates across labels, then sort route-matching evidence first instead of discarding cross-label evidence. If no candidate reaches the relevance floor, route-matching docs may still be used as sparse domain evidence.
 - Date handling is prompt context only: current date, timezone, original expression, and exact resolved date/period when available.
 - Plain/recursive chunking means paragraph -> sentence -> fixed-size split in source order, without domain keyword scoring, confidence labels, or hidden quality classes.
 - Source-specific parsing is allowed only when the source has explicit structure such as tables, list rows, menus, route tables, or board rows.
