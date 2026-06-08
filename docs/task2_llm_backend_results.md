@@ -6,6 +6,7 @@
 
 Task 2의 다음 구현 backend는 `llama.cpp + Qwen3.5-9B Q4_K_M GGUF`를 현실 후보로 둔다.
 
+- 반복 실행 계약과 샘플 답변은 `docs/qwen_runtime.md`에 기록한다.
 - 목표였던 `INT4 weight + FP8 KV cache` 중 weight 쪽은 Q4_K_M GGUF로 충족한다.
 - llama.cpp b9538의 KV cache options에는 `fp8`이 없으므로, `q8_0`을 nearest 8-bit KV cache로 사용한다.
 - exact `FP8 KV`는 vLLM XPU 후보에 남긴다. 다만 현재 로컬 Windows 환경에서는 vLLM XPU보다 llama.cpp Vulkan 경로가 먼저 실측 가능하다.
@@ -72,3 +73,4 @@ Observed quality:
 2. Keep deterministic composer as a controlled emergency path, not the preferred generator.
 3. Run a larger source-backed QA set once available, because the current comparison only covers the small `data/test_chat.json` smoke input.
 4. Revisit exact FP8 KV through vLLM XPU only after the llama.cpp path is stable enough for Task 2 scoring.
+5. Do not rediscover the model path each run; use `docs/qwen_runtime.md` as the runtime contract.

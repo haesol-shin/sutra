@@ -1,0 +1,248 @@
+[
+  {
+    "case_id": "grad_nav_biochem",
+    "question": "생화학과 졸업요건은 어디서 확인해?",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_answer_kind": "source_navigation",
+    "scenario": "source_navigation"
+  },
+  {
+    "case_id": "grad_static_credits",
+    "question": "생화학과 졸업하려면 전공이랑 교양 학점 기준이 어떻게 돼?",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_answer_kind": "static_fact",
+    "scenario": "static_fact"
+  },
+  {
+    "case_id": "grad_static_curriculum",
+    "question": "2025 교육과정 생화학과 졸업학점 요건 알려줘",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_answer_kind": "static_fact",
+    "scenario": "static_fact"
+  },
+  {
+    "case_id": "grad_procedural_check",
+    "question": "졸업학점 자가진단은 어떤 순서로 확인하면 돼?",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_answer_kind": "procedural",
+    "scenario": "procedural"
+  },
+  {
+    "case_id": "grad_unsupported_other_major",
+    "question": "컴퓨터융합학부 2026 졸업요건을 정확히 알려줘",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_answer_kind": "static_fact",
+    "scenario": "unsupported"
+  },
+  {
+    "case_id": "grad_wrong_domain_guard",
+    "question": "졸업요건 페이지 말고 식단 페이지에서 학점 확인할 수 있어?",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_answer_kind": "unsupported",
+    "scenario": "wrong_domain_guard"
+  },
+  {
+    "case_id": "notice_nav_board",
+    "question": "학사 공지 게시판은 어디서 봐?",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_answer_kind": "source_navigation",
+    "scenario": "source_navigation"
+  },
+  {
+    "case_id": "notice_static_recent",
+    "question": "학사 공지에서 최근 안내문 내용을 요약해줘",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_answer_kind": "static_fact",
+    "scenario": "static_fact"
+  },
+  {
+    "case_id": "notice_procedural_scholarship",
+    "question": "장학 공지 신청 안내문은 어떻게 확인하면 돼?",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_answer_kind": "procedural",
+    "scenario": "procedural"
+  },
+  {
+    "case_id": "notice_current_latest",
+    "question": "오늘 새로 올라온 학사 공지 있어?",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_answer_kind": "current_fact",
+    "scenario": "current_fact",
+    "must_not_contain": ["오늘 새로"]
+  },
+  {
+    "case_id": "notice_unsupported_job",
+    "question": "대전 근처 아르바이트 공지 추천해줘",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_answer_kind": "static_fact",
+    "scenario": "unsupported"
+  },
+  {
+    "case_id": "notice_wrong_domain_guard",
+    "question": "학사 공지는 셔틀 시간표 페이지에서 보면 돼?",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_answer_kind": "unsupported",
+    "scenario": "wrong_domain_guard"
+  },
+  {
+    "case_id": "calendar_nav",
+    "question": "학사일정표는 어디서 확인해?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_answer_kind": "source_navigation",
+    "scenario": "source_navigation"
+  },
+  {
+    "case_id": "calendar_static_semester",
+    "question": "개강이랑 종강 같은 학사일정 정보를 알려줘",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_answer_kind": "static_fact",
+    "scenario": "static_fact"
+  },
+  {
+    "case_id": "calendar_procedural_registration",
+    "question": "수강신청 일정은 어떻게 확인하면 돼?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_answer_kind": "procedural",
+    "scenario": "procedural"
+  },
+  {
+    "case_id": "calendar_current_this_week",
+    "question": "이번 주 학사일정 뭐 있어?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_answer_kind": "current_fact",
+    "scenario": "current_fact",
+    "must_not_contain": ["마감일"]
+  },
+  {
+    "case_id": "calendar_unsupported_weather",
+    "question": "개강일 날씨도 같이 알려줘",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_answer_kind": "current_fact",
+    "scenario": "unsupported"
+  },
+  {
+    "case_id": "calendar_wrong_domain_guard",
+    "question": "학사일정은 식단 페이지에서 확인할 수 있어?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_answer_kind": "unsupported",
+    "scenario": "wrong_domain_guard"
+  },
+  {
+    "case_id": "dining_nav",
+    "question": "식단 페이지는 어디서 봐?",
+    "expected_label": 3,
+    "expected_domain": "dining",
+    "expected_answer_kind": "source_navigation",
+    "scenario": "source_navigation"
+  },
+  {
+    "case_id": "dining_static_location",
+    "question": "학생식당 식단 안내는 어떤 공식 페이지를 보면 돼?",
+    "expected_label": 3,
+    "expected_domain": "dining",
+    "expected_answer_kind": "source_navigation",
+    "scenario": "static_fact"
+  },
+  {
+    "case_id": "dining_current_lunch",
+    "question": "오늘 점심 메뉴 뭐야?",
+    "expected_label": 3,
+    "expected_domain": "dining",
+    "expected_answer_kind": "current_fact",
+    "scenario": "current_fact_guard",
+    "must_not_contain": ["김치찌개"]
+  },
+  {
+    "case_id": "dining_current_dinner",
+    "question": "오늘 저녁 학식 메뉴 알려줘",
+    "expected_label": 3,
+    "expected_domain": "dining",
+    "expected_answer_kind": "current_fact",
+    "scenario": "current_fact_guard",
+    "must_not_contain": ["김치찌개"]
+  },
+  {
+    "case_id": "dining_unsupported_restaurant",
+    "question": "학교 근처 맛집 메뉴 추천해줘",
+    "expected_label": 3,
+    "expected_domain": "dining",
+    "expected_answer_kind": "current_fact",
+    "scenario": "unsupported",
+    "must_not_contain": ["김치찌개"]
+  },
+  {
+    "case_id": "dining_wrong_domain_guard",
+    "question": "식단은 셔틀 시간표 페이지에서 보면 돼?",
+    "expected_label": 3,
+    "expected_domain": "dining",
+    "expected_answer_kind": "unsupported",
+    "scenario": "wrong_domain_guard"
+  },
+  {
+    "case_id": "shuttle_nav",
+    "question": "셔틀 시간표 어디서 봐?",
+    "expected_label": 4,
+    "expected_domain": "shuttle",
+    "expected_answer_kind": "source_navigation",
+    "scenario": "source_navigation"
+  },
+  {
+    "case_id": "shuttle_static_route",
+    "question": "월평역 통학버스 운행 안내 알려줘",
+    "expected_label": 4,
+    "expected_domain": "shuttle",
+    "expected_answer_kind": "static_fact",
+    "scenario": "static_fact"
+  },
+  {
+    "case_id": "shuttle_procedural_check",
+    "question": "셔틀버스 정류장 정보는 어떻게 확인하면 돼?",
+    "expected_label": 4,
+    "expected_domain": "shuttle",
+    "expected_answer_kind": "procedural",
+    "scenario": "procedural"
+  },
+  {
+    "case_id": "shuttle_current_now",
+    "question": "오늘 셔틀 지금 운행 중이야?",
+    "expected_label": 4,
+    "expected_domain": "shuttle",
+    "expected_answer_kind": "current_fact",
+    "scenario": "current_fact_guard",
+    "must_not_contain": ["08:30"]
+  },
+  {
+    "case_id": "shuttle_unsupported_taxi",
+    "question": "월평역에서 택시비 얼마야?",
+    "expected_label": 4,
+    "expected_domain": "shuttle",
+    "expected_answer_kind": "static_fact",
+    "scenario": "unsupported"
+  },
+  {
+    "case_id": "shuttle_wrong_domain_guard",
+    "question": "셔틀 시간표는 졸업요건 페이지에서 확인해도 돼?",
+    "expected_label": 4,
+    "expected_domain": "shuttle",
+    "expected_answer_kind": "unsupported",
+    "scenario": "wrong_domain_guard"
+  }
+]

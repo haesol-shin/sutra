@@ -18,6 +18,7 @@
 - MCP나 full LLM tool-call agent는 제출 runtime 핵심 경로에 넣지 않는다.
 - Task 2의 기본 generator 목표는 로컬 LLM이다. 1차 후보는 Qwen3.5-9B이며, 목표 quantization은 INT4 weight + FP8 KV cache다.
 - deterministic composer는 Task 2의 비교 기준, 디버그 기준, 비상 경로로 유지한다. 기본 제출 경로로 승격하려면 로컬 LLM 경로가 모델 로딩 또는 품질 gate를 통과하지 못했다는 증거가 필요하다.
+- Task 2/3 응답 경로는 `docs/task2_task3_harness_architecture.md`의 Phase A evidence harness를 먼저 검증한 뒤 production batch/UI/realtime 경로로 이관한다.
 
 ## 2. 전체 데이터 흐름
 
@@ -44,8 +45,9 @@ src/classifier.ipynb
 Task 2:
 chatbot.sh batch
   -> nlp_term.chat.batch.run_chat_file()
-  -> classify.predict_label()
-  -> retrieve.rank_docs()
+  -> Phase A 통과 후 nlp_term.chat.orchestrator.answer_with_harness()
+  -> classifier/router soft hint
+  -> evidence store/RAG sufficiency check
   -> local Qwen3.5-9B generator target
   -> deterministic composer reference/emergency path
   -> outputs/chat_output.json
@@ -54,12 +56,13 @@ Task 2 UI:
 chatbot.sh ui
   -> nlp_term.ui.app
   -> Gradio ChatInterface
-  -> same router/retriever/composer/generator path
+  -> Phase A 통과 후 same orchestrator path
 
 Task 3:
 chatbot.sh realtime
-  -> verified live fetch if available
-  -> cached KnowledgeDoc fallback
+  -> Phase A 통과 후 same orchestrator path with stricter freshness gates
+  -> registry-only controlled fetch if available
+  -> fail-closed response when current evidence is unsafe
   -> outputs/realtime_output.json
 ```
 
@@ -219,14 +222,17 @@ Task 2는 Gradio UI와 batch JSON 출력을 모두 지원한다.
 
 ```text
 question
-  -> classifier/router
-  -> label/domain별 retrieval
-  -> local Qwen3.5-9B generator target
-  -> deterministic composer reference/emergency path
+  -> classifier/router soft hint
+  -> evidence lookup
+  -> evidence sufficiency/freshness/source-status gate
+  -> local Qwen3.5-9B answer writer
+  -> final validator
   -> ChatOutput
 ```
 
 Qwen3.5-9B는 기본 generator 목표다. composer는 자연스러운 응답 생성기의 대체재가 아니라 품질 비교 기준과 비상 경로로 유지한다.
+
+Task 2/3의 구체적인 state contract, RAG-vs-fetch truth table, fail-closed output 규칙은 `docs/task2_task3_harness_architecture.md`를 따른다. Phase A에서는 Qwen을 tool/action planner로 쓰지 않고 answer writer로만 사용한다.
 
 Generator gate:
 

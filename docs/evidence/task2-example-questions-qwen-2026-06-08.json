@@ -1,0 +1,1298 @@
+{
+  "evaluation_scope": "task2_qwen_example_questions",
+  "dataset_origin": "manual_probe",
+  "claim_level": "qualitative_check",
+  "run_at": "2026-06-08T00:00:00+09:00",
+  "model_path": "model/generator/Qwen3.5-9B-Q4_K_M.gguf",
+  "knowledge_path": "data/knowledge_seed.json",
+  "knowledge_checksum": "9ec8e51bbf263fef8ad430eb5e34ab74975f32c316c8823c17fedc48b52da7c3",
+  "prompt_policy": "실행 기준 시각: 2026-06-08T00:00:00+09:00 (Asia/Seoul)\n\n답변 정책:\n- 오늘/이번 주/다음 주/최근/새로 업데이트 같은 표현은 위 기준 시각을 기준으로 해석한다.\n- 질문이 모호하면 특정 학과, 학번, 식당, 식사 시간, 공지 게시판을 임의로 단정하지 않는다.\n- 근거에 구체 값이 없으면 범용적으로 안내하고, 필요한 추가 조건을 자연스럽게 말한다.\n- 근거에 없는 날짜, 점수, 학점, 메뉴, 정류장 변경 사항을 새로 만들지 않는다.\n- 가능하면 공식 출처 확인 경로를 안내한다.",
+  "row_count": 14,
+  "rows": [
+    {
+      "group": "assignment_example",
+      "question": "졸업까지 몇 학점 들어야 하나요?",
+      "task1": {
+        "route_label": 0,
+        "route_domain": "graduation"
+      },
+      "task2_generation_process": {
+        "run_at": "2026-06-08T00:00:00+09:00",
+        "prompt_variant": "task2_evidence_pack_plus_current_datetime_and_ambiguity_policy",
+        "retrieval_top_k": 3,
+        "retrieved": [
+          {
+            "doc_id": "graduation_biochemistry_requirements_chunk_6",
+            "score": 0.4411764705882353,
+            "title": "graduation source 6",
+            "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+            "label": 0
+          },
+          {
+            "doc_id": "graduation_biochemistry_requirements_chunk_7",
+            "score": 0.4411764705882353,
+            "title": "graduation source 7",
+            "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+            "label": 0
+          },
+          {
+            "doc_id": "graduation_biochemistry_requirements_chunk_8",
+            "score": 0.38235294117647056,
+            "title": "graduation source 8",
+            "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+            "label": 0
+          }
+        ],
+        "evidence_items": [
+          {
+            "source_name": "생화학과 졸업요건",
+            "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+            "facts": [
+              "초과되면 재학년한 초과로 제적 처리됩니다."
+            ],
+            "cautions": [
+              "학과와 입학연도에 따라 기준이 다를 수 있으므로 해당 학과의 공식 기준을 확인한다."
+            ]
+          },
+          {
+            "source_name": "생화학과 졸업요건",
+            "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+            "facts": [
+              "포함되지 않습니다."
+            ],
+            "cautions": [
+              "학과와 입학연도에 따라 기준이 다를 수 있으므로 해당 학과의 공식 기준을 확인한다."
+            ]
+          },
+          {
+            "source_name": "생화학과 졸업요건",
+            "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+            "facts": [
+              "교과목을 찾아서 이수하거나 타과 교과목(전선과목 아니라도 괜찮습니다."
+            ],
+            "cautions": [
+              "학과와 입학연도에 따라 기준이 다를 수 있으므로 해당 학과의 공식 기준을 확인한다."
+            ]
+          }
+        ],
+        "validator": {
+          "passed": true,
+          "failures": [],
+          "answer_chars": 202,
+          "must_not_claim_violations": [],
+          "unsupported_urls": [],
+          "unsupported_numeric_claims": [],
+          "unsupported_institution_claims": [],
+          "unsupported_menu_claims": []
+        },
+        "usage": {
+          "completion_tokens": 77,
+          "prompt_tokens": 571,
+          "total_tokens": 648,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "elapsed_seconds": 15.580874699997366
+      },
+      "answer": "졸업에 필요한 학점 수는 학과 및 입학 연도에 따라 달라질 수 있습니다. 제공된 정보에는 구체적인 학점 수치가 명시되어 있지 않으므로, 정확한 기준을 확인하시려면 **생화학과 공식 홈페이지** (https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do) 의 졸업요건 페이지를 참고하시는 것을 권장합니다."
+    },
+    {
+      "group": "assignment_example",
+      "question": "이번 학기 수강신청은 언제 시작하나요?",
+      "task1": {
+        "route_label": 2,
+        "route_domain": "academic_calendar"
+      },
+      "task2_generation_process": {
+        "run_at": "2026-06-08T00:00:00+09:00",
+        "prompt_variant": "task2_evidence_pack_plus_current_datetime_and_ambiguity_policy",
+        "retrieval_top_k": 3,
+        "retrieved": [
+          {
+            "doc_id": "academic_notice_board_chunk_1",
+            "score": 0.4027777777777778,
+            "title": "notices source 1",
+            "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+            "label": 1
+          },
+          {
+            "doc_id": "academic_notice_board_chunk_2",
+            "score": 0.4027777777777778,
+            "title": "notices source 2",
+            "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+            "label": 1
+          },
+          {
+            "doc_id": "academic_calendar_chunk_1",
+            "score": 0.375,
+            "title": "academic_calendar source 1",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "label": 2
+          }
+        ],
+        "evidence_items": [
+          {
+            "source_name": "충남대학교 공지사항",
+            "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+            "facts": [
+              "학사정보게시판 목록 번호 제목 작성자 작성일 조회수 공지 2026학년도 하기 계절학기 국내 다른 대학 수학 안내 학사지원과 2026-04-16 4567 공지 2026학년도 제1학기 학생 출석인정 신청 변경 사항 안내 학사지원과 2026-03-05 5668 공지 2026학년도 제1학기 휴학 및 복학 신청 안내 학사지원과 2026-01-14 4806 1814 2026학년도 하기 계절학기 수강신청"
+            ],
+            "cautions": []
+          },
+          {
+            "source_name": "충남대학교 공지사항",
+            "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+            "facts": [
+              "청 변경 사항 안내 학사지원과 2026-03-05 5668 공지 2026학년도 제1학기 휴학 및 복학 신청 안내 학사지원과 2026-01-14 4806 1814 2026학년도 하기 계절학기 수강신청 취소(1~3차)기간 안내 학사지원과 2026-06-05 130 1813 [화성시인재육성재단] 2026년 화성 into 테크노폴 11기·12기 해외탐방 장학생 모집 안내 학생과 2026-06-05"
+            ],
+            "cautions": []
+          },
+          {
+            "source_name": "충남대학교 학사일정",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "facts": [
+              "01월 January 01.01(목) 신정 01.13(화) 제2학기 성적발표 01.20(화) 동기 계절학기 성적발표 01.21(수) ~ 02.10(화) 2025학년도 특별학기(신입학예정자) 01.26(월) ~ 01.28(수) 2026학년도 제1학기 예비수강신청 01.29(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          }
+        ],
+        "validator": {
+          "passed": false,
+          "failures": [
+            "unsupported_numeric_claim"
+          ],
+          "answer_chars": 145,
+          "must_not_claim_violations": [],
+          "unsupported_urls": [],
+          "unsupported_numeric_claims": [
+            "2 일",
+            "6 일"
+          ],
+          "unsupported_institution_claims": [],
+          "unsupported_menu_claims": []
+        },
+        "usage": {
+          "completion_tokens": 80,
+          "prompt_tokens": 1087,
+          "total_tokens": 1167,
+          "prompt_tokens_details": {
+            "cached_tokens": 55
+          }
+        },
+        "elapsed_seconds": 19.59991779999109
+      },
+      "answer": "2026학년도 제 1 학기 수강신청은 **2026 년 2 월 2 일 (월)부터 2 월 6 일 (금)**까지 진행됩니다.\n\n세부 일정과 변경 사항이 있을 수 있으므로, 최종 확인은 충남대학교 학사정보게시판 또는 공식 학사일정 페이지를 참고하시는 것을 권장합니다."
+    },
+    {
+      "group": "assignment_example",
+      "question": "오늘 학식 뭐 나와요?",
+      "task1": {
+        "route_label": 3,
+        "route_domain": "dining"
+      },
+      "task2_generation_process": {
+        "run_at": "2026-06-08T00:00:00+09:00",
+        "prompt_variant": "task2_evidence_pack_plus_current_datetime_and_ambiguity_policy",
+        "retrieval_top_k": 3,
+        "retrieved": [
+          {
+            "doc_id": "academic_calendar_chunk_2",
+            "score": 0.1,
+            "title": "academic_calendar source 2",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "label": 2
+          },
+          {
+            "doc_id": "academic_calendar_chunk_3",
+            "score": 0.1,
+            "title": "academic_calendar source 3",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "label": 2
+          },
+          {
+            "doc_id": "cnu_mobile_food_chunk_1",
+            "score": 0.1,
+            "title": "dining source 1",
+            "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+            "label": 3
+          }
+        ],
+        "evidence_items": [
+          {
+            "source_name": "충남대학교 학사일정",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "facts": [
+              "9(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도 제1학기 재학생 등록금 납부 02.25(수) 2025학년도 전기 학위수여식 02.27(금) 입학식(2026학년도) 03월 March 03.01(일) 3ㆍ1절 03.02(월) 대체공휴일 03.03(화) 제1학기 개강일 03.03(화) ~ 03.09(월) 2025학년도"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 학사일정",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "facts": [
+              "제1학기 재학생 등록금 납부 02.25(수) 2025학년도 전기 학위수여식 02.27(금) 입학식(2026학년도) 03월 March 03.01(일) 3ㆍ1절 03.02(월) 대체공휴일 03.03(화) 제1학기 개강일 03.03(화) ~ 03.09(월) 2025학년도 전기 학사학위취득 유예 신청 취소 03.03(화) ~ 03.09(월) 수강신청 확인 및 변경 03.03(화) ~ 03.31(화) 교육과정 적용연도 및 소속 변경 03.03(화) ~ 03.09(월) 수강신청 확인 및 변경 03.16(월) 폐강과목 결정(최종) 03.16("
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 식단",
+            "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+            "facts": [
+              "일요일 2026.06.07 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          }
+        ],
+        "validator": {
+          "passed": false,
+          "failures": [
+            "unsupported_numeric_claim"
+          ],
+          "answer_chars": 273,
+          "must_not_claim_violations": [],
+          "unsupported_urls": [],
+          "unsupported_numeric_claims": [
+            "2026 년",
+            "6 월",
+            "8 일",
+            "7 일"
+          ],
+          "unsupported_institution_claims": [],
+          "unsupported_menu_claims": []
+        },
+        "usage": {
+          "completion_tokens": 124,
+          "prompt_tokens": 1204,
+          "total_tokens": 1328,
+          "prompt_tokens_details": {
+            "cached_tokens": 55
+          }
+        },
+        "elapsed_seconds": 25.76869450000231
+      },
+      "answer": "제공된 근거에는 2026 년 6 월 8 일 (일요일) 의 학식 메뉴 정보가 포함되어 있지 않습니다.\n\n근거 3 에 따르면 2026 년 6 월 7 일 (일요일) 의 식단 정보도 '운영안함'으로 표시되어 있어, 해당 기간의 구체적인 메뉴가 공개되지 않았거나 안내되지 않은 것으로 보입니다.\n\n정확한 학식 메뉴를 확인하시려면 충남대학교 공식 식단 안내 페이지 (https://mobileadmin.cnu.ac.kr/food/index.jsp) 를 직접 방문하여 최신 정보를 확인하시기 바랍니다."
+    },
+    {
+      "group": "assignment_example",
+      "question": "다음주에 셔틀버스는 정상 운행하나요?",
+      "task1": {
+        "route_label": 4,
+        "route_domain": "shuttle"
+      },
+      "task2_generation_process": {
+        "run_at": "2026-06-08T00:00:00+09:00",
+        "prompt_variant": "task2_evidence_pack_plus_current_datetime_and_ambiguity_policy",
+        "retrieval_top_k": 3,
+        "retrieved": [
+          {
+            "doc_id": "shuttle_bus_chunk_1",
+            "score": 0.42105263157894735,
+            "title": "shuttle source 1",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+            "label": 4
+          },
+          {
+            "doc_id": "shuttle_bus_chunk_2",
+            "score": 0.42105263157894735,
+            "title": "shuttle source 2",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+            "label": 4
+          },
+          {
+            "doc_id": "shuttle_bus_chunk_3",
+            "score": 0.42105263157894735,
+            "title": "shuttle source 3",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+            "label": 4
+          }
+        ],
+        "evidence_items": [
+          {
+            "source_name": "충남대학교 셔틀 안내",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+            "facts": [
+              "2026학년도 학교셔틀버스 운영 안내 운영기준: 학기 중 평일 주간 운영(평일 야간, 주말, 공휴일, 방학, 수학능력시험일(10시 이전) 등 미운영) ※ 운행 시간표는 학교 사정에 따라 변경될 수 있음 ※ 학사일정 변경 시 운행 기간 변경될 수 있음(총학생회, 총무과 등과 협의) ※ 운행시간은 천재지변, 학교행사, 교통상황, 탑승 인원 등에 따라 변경 가능 ※ 교통상황 등으로 인해 전 구간에서 5분 내외 오차가 발생할 수 있으니 탑승자 사전 대기 운행 주체: 학교버스 운행 내용: 운행 시간표 및 운행 노선 참고 운행 노선: 교내순환"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 셔틀 안내",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+            "facts": [
+              "등과 협의) ※ 운행시간은 천재지변, 학교행사, 교통상황, 탑승 인원 등에 따라 변경 가능 ※ 교통상황 등으로 인해 전 구간에서 5분 내외 오차가 발생할 수 있으니 탑승자 사전 대기 운행 주체: 학교버스 운행 내용: 운행 시간표 및 운행 노선 참고 운행 노선: 교내순환(대덕캠퍼스 내), 캠퍼스 순환(대덕캠퍼스⇄보운캠퍼스) 셔틀버스 운행 시간표 셔틀버스 운행 시간표 - 구분, 오전, 오후 정보제공 구분 오전 오후 교내 순환 (대덕캠퍼스 내) 08:20 (월평역) 등교 8:30 9:30 9:40 10:30 11:30 13:30 14:3"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 셔틀 안내",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+            "facts": [
+              "(대덕캠퍼스 내), 캠퍼스 순환(대덕캠퍼스⇄보운캠퍼스) 셔틀버스 운행 시간표 셔틀버스 운행 시간표 - 구분, 오전, 오후 정보제공 구분 오전 오후 교내 순환 (대덕캠퍼스 내) 08:20 (월평역) 등교 8:30 9:30 9:40 10:30 11:30 13:30 14:30 15:30 16:30 17:30 캠퍼스 순환 (대덕캠퍼스 ↔ 보운캠퍼스) 8:10 (출발, 골프연습장) 8:50 (회차 보운캠퍼스) 미운영 셔틀버스 운행 노선 순환버스 노선 - 구분(등교), 운행시간, 운행노선, 운행횟수 정보제공 구 분(등교) 운행시간 운행 노선("
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          }
+        ],
+        "validator": {
+          "passed": false,
+          "failures": [
+            "unsupported_numeric_claim"
+          ],
+          "answer_chars": 456,
+          "must_not_claim_violations": [],
+          "unsupported_urls": [],
+          "unsupported_numeric_claims": [
+            "2026 년",
+            "6 월",
+            "8 일"
+          ],
+          "unsupported_institution_claims": [],
+          "unsupported_menu_claims": []
+        },
+        "usage": {
+          "completion_tokens": 243,
+          "prompt_tokens": 1125,
+          "total_tokens": 1368,
+          "prompt_tokens_details": {
+            "cached_tokens": 55
+          }
+        },
+        "elapsed_seconds": 47.56087490000937
+      },
+      "answer": "2026 년 6 월 8 일 (일요일) 기준, **다음 주 (평일)**에는 셔틀버스가 **정상 운행**됩니다.\n\n단, 다음 주의 운영 여부는 학사일정 및 학교 사정에 따라 변경될 수 있으므로, 아래 공식 안내를 참고하시기 바랍니다.\n\n*   **운영 기준**: 학기 중 평일 주간 운영 (평일 야간, 주말, 공휴일, 방학, 수학능력시험일 등 미운영)\n*   **주요 노선**: 교내 순환 (대덕캠퍼스 내), 캠퍼스 순환 (대덕캠퍼스 ⇄ 보운캠퍼스)\n*   **주의사항**: 운행 시간표는 천재지변, 학교 행사, 교통 상황, 탑승 인원 등에 따라 변경될 수 있으며, 전 구간에서 5 분 내외의 오차가 발생할 수 있습니다.\n\n상세한 운행 시간표와 노선은 [충남대학교 셔틀버스 운영 안내](https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html) 페이지에서 확인하실 수 있습니다."
+    },
+    {
+      "group": "assignment_example",
+      "question": "이번에 올라온 공지사항 어디서 볼 수 있어요?",
+      "task1": {
+        "route_label": 1,
+        "route_domain": "notices"
+      },
+      "task2_generation_process": {
+        "run_at": "2026-06-08T00:00:00+09:00",
+        "prompt_variant": "task2_evidence_pack_plus_current_datetime_and_ambiguity_policy",
+        "retrieval_top_k": 3,
+        "retrieved": [
+          {
+            "doc_id": "academic_notice_board_chunk_1",
+            "score": 0.15,
+            "title": "notices source 1",
+            "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+            "label": 1
+          },
+          {
+            "doc_id": "academic_notice_board_chunk_2",
+            "score": 0.15,
+            "title": "notices source 2",
+            "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+            "label": 1
+          },
+          {
+            "doc_id": "graduation_curriculum_pdf_chunk_3",
+            "score": 0.12,
+            "title": "graduation source 3",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+            "label": 0
+          }
+        ],
+        "evidence_items": [
+          {
+            "source_name": "충남대학교 공지사항",
+            "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+            "facts": [
+              "학사정보게시판 목록 번호 제목 작성자 작성일 조회수 공지 2026학년도 하기 계절학기 국내 다른 대학 수학 안내 학사지원과 2026-04-16 4567 공지 2026학년도 제1학기 학생 출석인정 신청 변경 사항 안내 학사지원과 2026-03-05 5668 공지 2026학년도 제1학기 휴학 및 복학 신청 안내 학사지원과 2026-01-14 4806 1814 2026학년도 하기 계절학기 수강신청"
+            ],
+            "cautions": []
+          },
+          {
+            "source_name": "충남대학교 공지사항",
+            "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+            "facts": [
+              "청 변경 사항 안내 학사지원과 2026-03-05 5668 공지 2026학년도 제1학기 휴학 및 복학 신청 안내 학사지원과 2026-01-14 4806 1814 2026학년도 하기 계절학기 수강신청 취소(1~3차)기간 안내 학사지원과 2026-06-05 130 1813 [화성시인재육성재단] 2026년 화성 into 테크노폴 11기·12기 해외탐방 장학생 모집 안내 학생과 2026-06-05"
+            ],
+            "cautions": []
+          },
+          {
+            "source_name": "충남대학교 졸업요건",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+            "facts": [
+              "을 때에는 따로 정할 수 있다."
+            ],
+            "cautions": [
+              "학과와 입학연도에 따라 기준이 다를 수 있으므로 해당 학과의 공식 기준을 확인한다."
+            ]
+          }
+        ],
+        "validator": {
+          "passed": true,
+          "failures": [],
+          "answer_chars": 317,
+          "must_not_claim_violations": [],
+          "unsupported_urls": [],
+          "unsupported_numeric_claims": [],
+          "unsupported_institution_claims": [],
+          "unsupported_menu_claims": []
+        },
+        "usage": {
+          "completion_tokens": 152,
+          "prompt_tokens": 846,
+          "total_tokens": 998,
+          "prompt_tokens_details": {
+            "cached_tokens": 55
+          }
+        },
+        "elapsed_seconds": 30.28600500000175
+      },
+      "answer": "이번에 올라온 공지사항은 **학사정보게시판**에서 확인하실 수 있습니다.\n\n제공된 정보에 따르면, 2026 학년도 계절학기 수강신청, 출석인정 신청 변경 사항, 휴학 및 복학 안내 등 최신 공지가 게시되어 있습니다. 구체적인 내용은 아래 링크를 통해 확인하실 수 있습니다.\n\n*   **확인 경로**: [충남대학교 학사정보게시판](https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr)\n\n원하시는 특정 학과나 주제에 대한 공지가 있는지 확인해 보시는 것을 추천드립니다."
+    },
+    {
+      "group": "assignment_example",
+      "question": "새로 업데이트된 셔틀버스 정류장이 있을까요?",
+      "task1": {
+        "route_label": 4,
+        "route_domain": "shuttle"
+      },
+      "task2_generation_process": {
+        "run_at": "2026-06-08T00:00:00+09:00",
+        "prompt_variant": "task2_evidence_pack_plus_current_datetime_and_ambiguity_policy",
+        "retrieval_top_k": 3,
+        "retrieved": [
+          {
+            "doc_id": "shuttle_bus_chunk_2",
+            "score": 0.31521739130434784,
+            "title": "shuttle source 2",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+            "label": 4
+          },
+          {
+            "doc_id": "shuttle_bus_chunk_3",
+            "score": 0.31521739130434784,
+            "title": "shuttle source 3",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+            "label": 4
+          },
+          {
+            "doc_id": "shuttle_bus_chunk_4",
+            "score": 0.31521739130434784,
+            "title": "shuttle source 4",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+            "label": 4
+          }
+        ],
+        "evidence_items": [
+          {
+            "source_name": "충남대학교 셔틀 안내",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+            "facts": [
+              "등과 협의) ※ 운행시간은 천재지변, 학교행사, 교통상황, 탑승 인원 등에 따라 변경 가능 ※ 교통상황 등으로 인해 전 구간에서 5분 내외 오차가 발생할 수 있으니 탑승자 사전 대기 운행 주체: 학교버스 운행 내용: 운행 시간표 및 운행 노선 참고 운행 노선: 교내순환(대덕캠퍼스 내), 캠퍼스 순환(대덕캠퍼스⇄보운캠퍼스) 셔틀버스 운행 시간표 셔틀버스 운행 시간표 - 구분, 오전, 오후 정보제공 구분 오전 오후 교내 순환 (대덕캠퍼스 내) 08:20 (월평역) 등교 8:30 9:30 9:40 10:30 11:30 13:30 14:3"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 셔틀 안내",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+            "facts": [
+              "(대덕캠퍼스 내), 캠퍼스 순환(대덕캠퍼스⇄보운캠퍼스) 셔틀버스 운행 시간표 셔틀버스 운행 시간표 - 구분, 오전, 오후 정보제공 구분 오전 오후 교내 순환 (대덕캠퍼스 내) 08:20 (월평역) 등교 8:30 9:30 9:40 10:30 11:30 13:30 14:30 15:30 16:30 17:30 캠퍼스 순환 (대덕캠퍼스 ↔ 보운캠퍼스) 8:10 (출발, 골프연습장) 8:50 (회차 보운캠퍼스) 미운영 셔틀버스 운행 노선 순환버스 노선 - 구분(등교), 운행시간, 운행노선, 운행횟수 정보제공 구 분(등교) 운행시간 운행 노선("
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 셔틀 안내",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+            "facts": [
+              "0 15:30 16:30 17:30 캠퍼스 순환 (대덕캠퍼스 ↔ 보운캠퍼스) 8:10 (출발, 골프연습장) 8:50 (회차 보운캠퍼스) 미운영 셔틀버스 운행 노선 순환버스 노선 - 구분(등교), 운행시간, 운행노선, 운행횟수 정보제공 구 분(등교) 운행시간 운행 노선(시간) 운행횟수(1일) 첫차 막차 교내 순환 (유성캠퍼스 내) 08:30 17:30 ① 정심화 국제문화회관 ⟶ ② 사회과 학대학 입구(한누리회관 뒤) → ③ 서문( 공동실험실습관 앞) ⟶ ④ 음악 2호관 앞 ⟶ ⑤ 공동동물실험센터(회차) ⟶ ⑥ 체 육관 입구 → ⑦ 예"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          }
+        ],
+        "validator": {
+          "passed": true,
+          "failures": [],
+          "answer_chars": 325,
+          "must_not_claim_violations": [],
+          "unsupported_urls": [],
+          "unsupported_numeric_claims": [],
+          "unsupported_institution_claims": [],
+          "unsupported_menu_claims": []
+        },
+        "usage": {
+          "completion_tokens": 161,
+          "prompt_tokens": 1204,
+          "total_tokens": 1365,
+          "prompt_tokens_details": {
+            "cached_tokens": 55
+          }
+        },
+        "elapsed_seconds": 32.361645700002555
+      },
+      "answer": "제공된 근거에는 **새로 업데이트된 셔틀버스 정류장**에 대한 구체적인 정보나 변경 사항이 포함되어 있지 않습니다.\n\n현재 안내된 운행 노선은 다음과 같습니다.\n*   **교내 순환 (대덕캠퍼스 내)**\n*   **캠퍼스 순환 (대덕캠퍼스 ⇄ 보운캠퍼스)**\n\n정류장 위치나 운행 시간표의 최신 변경 사항이 궁금하시다면, 공식 안내 페이지 ([https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html](https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html)) 를 직접 확인하시는 것을 권장합니다."
+    },
+    {
+      "group": "assignment_example",
+      "question": "5월 이후로 변동된 학사일정이 있을까요?",
+      "task1": {
+        "route_label": 2,
+        "route_domain": "academic_calendar"
+      },
+      "task2_generation_process": {
+        "run_at": "2026-06-08T00:00:00+09:00",
+        "prompt_variant": "task2_evidence_pack_plus_current_datetime_and_ambiguity_policy",
+        "retrieval_top_k": 3,
+        "retrieved": [
+          {
+            "doc_id": "academic_calendar_chunk_1",
+            "score": 0.20238095238095238,
+            "title": "academic_calendar source 1",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "label": 2
+          },
+          {
+            "doc_id": "academic_calendar_chunk_2",
+            "score": 0.20238095238095238,
+            "title": "academic_calendar source 2",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "label": 2
+          },
+          {
+            "doc_id": "academic_calendar_chunk_3",
+            "score": 0.20238095238095238,
+            "title": "academic_calendar source 3",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "label": 2
+          }
+        ],
+        "evidence_items": [
+          {
+            "source_name": "충남대학교 학사일정",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "facts": [
+              "01월 January 01.01(목) 신정 01.13(화) 제2학기 성적발표 01.20(화) 동기 계절학기 성적발표 01.21(수) ~ 02.10(화) 2025학년도 특별학기(신입학예정자) 01.26(월) ~ 01.28(수) 2026학년도 제1학기 예비수강신청 01.29(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 학사일정",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "facts": [
+              "9(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도 제1학기 재학생 등록금 납부 02.25(수) 2025학년도 전기 학위수여식 02.27(금) 입학식(2026학년도) 03월 March 03.01(일) 3ㆍ1절 03.02(월) 대체공휴일 03.03(화) 제1학기 개강일 03.03(화) ~ 03.09(월) 2025학년도"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 학사일정",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "facts": [
+              "제1학기 재학생 등록금 납부 02.25(수) 2025학년도 전기 학위수여식 02.27(금) 입학식(2026학년도) 03월 March 03.01(일) 3ㆍ1절 03.02(월) 대체공휴일 03.03(화) 제1학기 개강일 03.03(화) ~ 03.09(월) 2025학년도 전기 학사학위취득 유예 신청 취소 03.03(화) ~ 03.09(월) 수강신청 확인 및 변경 03.03(화) ~ 03.31(화) 교육과정 적용연도 및 소속 변경 03.03(화) ~ 03.09(월) 수강신청 확인 및 변경 03.16(월) 폐강과목 결정(최종) 03.16("
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          }
+        ],
+        "validator": {
+          "passed": false,
+          "failures": [
+            "unsupported_numeric_claim"
+          ],
+          "answer_chars": 377,
+          "must_not_claim_violations": [],
+          "unsupported_urls": [],
+          "unsupported_numeric_claims": [
+            "2026 년",
+            "2025 년"
+          ],
+          "unsupported_institution_claims": [],
+          "unsupported_menu_claims": []
+        },
+        "usage": {
+          "completion_tokens": 182,
+          "prompt_tokens": 1294,
+          "total_tokens": 1476,
+          "prompt_tokens_details": {
+            "cached_tokens": 55
+          }
+        },
+        "elapsed_seconds": 35.667930499999784
+      },
+      "answer": "제공된 근거에는 2026 년 5 월 이후의 학사일정 정보가 포함되어 있지 않습니다.\n\n현재 제공된 자료는 2026 년 1 월부터 3 월까지의 제 1 학기 관련 일정 (예비수강신청, 수강신청, 개강 등) 과 2025 년 학기 일정까지의 내용으로 구성되어 있습니다. 5 월 이후의 변동 사항이나 구체적인 일정은 시점에 따라 달라질 수 있으므로, 최신 정보를 확인하시려면 **충남대학교 총장실 홈페이지의 학사일정 메뉴** 또는 아래 공식 링크를 통해 직접 확인하시는 것을 권장합니다.\n\n*   공식 출처: [충남대학교 학사일정](https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr)"
+    },
+    {
+      "group": "assignment_example",
+      "question": "다음주 학식 뭐 나와요?",
+      "task1": {
+        "route_label": 3,
+        "route_domain": "dining"
+      },
+      "task2_generation_process": {
+        "run_at": "2026-06-08T00:00:00+09:00",
+        "prompt_variant": "task2_evidence_pack_plus_current_datetime_and_ambiguity_policy",
+        "retrieval_top_k": 3,
+        "retrieved": [
+          {
+            "doc_id": "graduation_curriculum_pdf_chunk_5",
+            "score": 0.08333333333333333,
+            "title": "graduation source 5",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+            "label": 0
+          },
+          {
+            "doc_id": "academic_calendar_chunk_2",
+            "score": 0.08333333333333333,
+            "title": "academic_calendar source 2",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "label": 2
+          },
+          {
+            "doc_id": "academic_calendar_chunk_3",
+            "score": 0.08333333333333333,
+            "title": "academic_calendar source 3",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "label": 2
+          }
+        ],
+        "evidence_items": [
+          {
+            "source_name": "충남대학교 졸업요건",
+            "source_url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+            "facts": [
+              ".2.22., 2015.2.16., 2023.6.27., 2024.5.31.) ② 교양과정은 인문･사회･자연과학 및 예체능의 각 계열에 속하는 과목을 균형있게 이수하여야 한다."
+            ],
+            "cautions": [
+              "학과와 입학연도에 따라 기준이 다를 수 있으므로 해당 학과의 공식 기준을 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 학사일정",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "facts": [
+              "9(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도 제1학기 재학생 등록금 납부 02.25(수) 2025학년도 전기 학위수여식 02.27(금) 입학식(2026학년도) 03월 March 03.01(일) 3ㆍ1절 03.02(월) 대체공휴일 03.03(화) 제1학기 개강일 03.03(화) ~ 03.09(월) 2025학년도"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 학사일정",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "facts": [
+              "제1학기 재학생 등록금 납부 02.25(수) 2025학년도 전기 학위수여식 02.27(금) 입학식(2026학년도) 03월 March 03.01(일) 3ㆍ1절 03.02(월) 대체공휴일 03.03(화) 제1학기 개강일 03.03(화) ~ 03.09(월) 2025학년도 전기 학사학위취득 유예 신청 취소 03.03(화) ~ 03.09(월) 수강신청 확인 및 변경 03.03(화) ~ 03.31(화) 교육과정 적용연도 및 소속 변경 03.03(화) ~ 03.09(월) 수강신청 확인 및 변경 03.16(월) 폐강과목 결정(최종) 03.16("
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          }
+        ],
+        "validator": {
+          "passed": false,
+          "failures": [
+            "unsupported_numeric_claim",
+            "unsupported_institution_claim"
+          ],
+          "answer_chars": 214,
+          "must_not_claim_violations": [],
+          "unsupported_urls": [],
+          "unsupported_numeric_claims": [
+            "2026 년",
+            "6 월",
+            "8 일"
+          ],
+          "unsupported_institution_claims": [
+            "단과대학"
+          ],
+          "unsupported_menu_claims": []
+        },
+        "usage": {
+          "completion_tokens": 97,
+          "prompt_tokens": 1112,
+          "total_tokens": 1209,
+          "prompt_tokens_details": {
+            "cached_tokens": 55
+          }
+        },
+        "elapsed_seconds": 22.74622330001148
+      },
+      "answer": "제공된 근거에는 다음 주 (2026 년 6 월 8 일 기준) 의 구체적인 학식 메뉴나 운영 일정 정보가 포함되어 있지 않습니다.\n\n학식 메뉴는 계절, 행사, 또는 학기별 계획에 따라 변동될 수 있으므로, 가장 정확한 정보는 **충남대학교 총학생회**나 **각 단과대학 학생회**에서 운영하는 공식 공지 게시판, 혹은 **학식 운영 관련 공식 홈페이지**를 확인하시는 것을 권장합니다."
+    },
+    {
+      "group": "assignment_example",
+      "question": "가장 최근에 올라온 공지사항은 언제 게시되었나요?",
+      "task1": {
+        "route_label": 1,
+        "route_domain": "notices"
+      },
+      "task2_generation_process": {
+        "run_at": "2026-06-08T00:00:00+09:00",
+        "prompt_variant": "task2_evidence_pack_plus_current_datetime_and_ambiguity_policy",
+        "retrieval_top_k": 3,
+        "retrieved": [
+          {
+            "doc_id": "academic_notice_board_chunk_1",
+            "score": 0.19,
+            "title": "notices source 1",
+            "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+            "label": 1
+          },
+          {
+            "doc_id": "academic_notice_board_chunk_2",
+            "score": 0.15,
+            "title": "notices source 2",
+            "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+            "label": 1
+          },
+          {
+            "doc_id": "graduation_english_requirements_chunk_7",
+            "score": 0.12,
+            "title": "graduation source 7",
+            "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+            "label": 0
+          }
+        ],
+        "evidence_items": [
+          {
+            "source_name": "충남대학교 공지사항",
+            "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+            "facts": [
+              "학사정보게시판 목록 번호 제목 작성자 작성일 조회수 공지 2026학년도 하기 계절학기 국내 다른 대학 수학 안내 학사지원과 2026-04-16 4567 공지 2026학년도 제1학기 학생 출석인정 신청 변경 사항 안내 학사지원과 2026-03-05 5668 공지 2026학년도 제1학기 휴학 및 복학 신청 안내 학사지원과 2026-01-14 4806 1814 2026학년도 하기 계절학기 수강신청"
+            ],
+            "cautions": []
+          },
+          {
+            "source_name": "충남대학교 공지사항",
+            "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+            "facts": [
+              "청 변경 사항 안내 학사지원과 2026-03-05 5668 공지 2026학년도 제1학기 휴학 및 복학 신청 안내 학사지원과 2026-01-14 4806 1814 2026학년도 하기 계절학기 수강신청 취소(1~3차)기간 안내 학사지원과 2026-06-05 130 1813 [화성시인재육성재단] 2026년 화성 into 테크노폴 11기·12기 해외탐방 장학생 모집 안내 학생과 2026-06-05"
+            ],
+            "cautions": []
+          },
+          {
+            "source_name": "영어영문학과 졸업요건",
+            "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+            "facts": [
+              "핵은 상호인정이 가능함.) -전문기초교양3학점 → 이 모든 사항을 포함하여 130학점 이수 ※ 단, 교양학점은 36학점은 이수해야 하며 42학점까지만 졸업소요학점에 포함됨."
+            ],
+            "cautions": [
+              "학과와 입학연도에 따라 기준이 다를 수 있으므로 해당 학과의 공식 기준을 확인한다."
+            ]
+          }
+        ],
+        "validator": {
+          "passed": false,
+          "failures": [
+            "unsupported_numeric_claim"
+          ],
+          "answer_chars": 381,
+          "must_not_claim_violations": [],
+          "unsupported_urls": [],
+          "unsupported_numeric_claims": [
+            "6 월",
+            "5 일"
+          ],
+          "unsupported_institution_claims": [],
+          "unsupported_menu_claims": []
+        },
+        "usage": {
+          "completion_tokens": 194,
+          "prompt_tokens": 897,
+          "total_tokens": 1091,
+          "prompt_tokens_details": {
+            "cached_tokens": 55
+          }
+        },
+        "elapsed_seconds": 35.36918900000455
+      },
+      "answer": "제공된 근거에 따르면, 충남대학교 공지사항 게시판에서 가장 최근의 게시물은 **2026 년 6 월 5 일**에 올라온 것입니다.\n\n해당 날짜에 게시된 주요 내용은 다음과 같습니다.\n*   **2026 학년도 제 1 학기 수강신청 취소 (1~3 차) 기간 안내** (학사지원과)\n*   **[화성시인재육성재단] 2026 년 화성 into 테크노폴 11 기·12 기 해외탐방 장학생 모집 안내** (학생과)\n\n보다 정확한 최신 공지사항이나 추가 정보를 확인하시려면 [충남대학교 공지사항 게시판](https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr)을 직접 방문하여 확인하시기 바랍니다."
+    },
+    {
+      "group": "user_probe",
+      "question": "충남대학교 인공지능학과 24학번의 경우 프로젝트 수업을 몇 개 들어야 하나요?",
+      "task1": {
+        "route_label": 1,
+        "route_domain": "notices"
+      },
+      "task2_generation_process": {
+        "run_at": "2026-06-08T00:00:00+09:00",
+        "prompt_variant": "task2_evidence_pack_plus_current_datetime_and_ambiguity_policy",
+        "retrieval_top_k": 3,
+        "retrieved": [
+          {
+            "doc_id": "graduation_biochemistry_requirements_chunk_1",
+            "score": 0.20238095238095238,
+            "title": "graduation source 1",
+            "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+            "label": 0
+          },
+          {
+            "doc_id": "graduation_english_requirements_chunk_1",
+            "score": 0.20238095238095238,
+            "title": "graduation source 1",
+            "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+            "label": 0
+          },
+          {
+            "doc_id": "graduation_english_requirements_chunk_2",
+            "score": 0.20238095238095238,
+            "title": "graduation source 2",
+            "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+            "label": 0
+          }
+        ],
+        "evidence_items": [
+          {
+            "source_name": "생화학과 졸업요건",
+            "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+            "facts": [
+              "메뉴 닫기 학사정보 학사일정표 학부교육과정 졸업요건 재이수 대학원교육과정 학과내규 장학제도 졸업요건 Home 학사정보 졸업요건 졸업학점 자가 진단법 본인의 교육과정 년도를 먼저 확인합니다."
+            ],
+            "cautions": [
+              "학과와 입학연도에 따라 기준이 다를 수 있으므로 해당 학과의 공식 기준을 확인한다."
+            ]
+          },
+          {
+            "source_name": "영어영문학과 졸업요건",
+            "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+            "facts": [
+              "육과정 이수학점 및 졸업요건 기준 대학원과정 일반대학원(영어학) 일반대학원(영문학) 교육대학원 이수학점 및 졸업요건 기준 커뮤니티 사진게시판 동문게시판 학습자료실 학생회게시판 COVID-19 모바일 메뉴 닫기 Tradition and Innovation 전통과 혁신을 모색하는 충남대학교 영어영문학과 처음으로 교육과정 홈 학과안내 학부공지 대학원공지 교육대학원공지 입학/취업 교육과정 커뮤니티 학부과정 학부과정 대학원과정 이수학점 및 졸업요건 기준 교육과정 이수학점 및 졸업요건 기준 학부과정 교육과정 이수학점 및 졸업요건 기준 Tab"
+            ],
+            "cautions": [
+              "학과와 입학연도에 따라 기준이 다를 수 있으므로 해당 학과의 공식 기준을 확인한다."
+            ]
+          },
+          {
+            "source_name": "영어영문학과 졸업요건",
+            "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+            "facts": [
+              "모색하는 충남대학교 영어영문학과 처음으로 교육과정 홈 학과안내 학부공지 대학원공지 교육대학원공지 입학/취업 교육과정 커뮤니티 학부과정 학부과정 대학원과정 이수학점 및 졸업요건 기준 교육과정 이수학점 및 졸업요건 기준 학부과정 교육과정 이수학점 및 졸업요건 기준 Tab 교육과정 이수학점 및 졸업요건 기준 영어영문학과 졸업 이수 요건 영어영문학과 졸업이수 요건 교육과정 적용년도 세부내용 2015,2016년 *졸업소요학점(130학점) -대학영어1,2(각 2학점) -기초글쓰기2학점 -진로설계1,2: 각각 1학점."
+            ],
+            "cautions": [
+              "학과와 입학연도에 따라 기준이 다를 수 있으므로 해당 학과의 공식 기준을 확인한다."
+            ]
+          }
+        ],
+        "validator": {
+          "passed": true,
+          "failures": [],
+          "answer_chars": 208,
+          "must_not_claim_violations": [],
+          "unsupported_urls": [],
+          "unsupported_numeric_claims": [],
+          "unsupported_institution_claims": [],
+          "unsupported_menu_claims": []
+        },
+        "usage": {
+          "completion_tokens": 88,
+          "prompt_tokens": 917,
+          "total_tokens": 1005,
+          "prompt_tokens_details": {
+            "cached_tokens": 55
+          }
+        },
+        "elapsed_seconds": 20.21317839999392
+      },
+      "answer": "제공된 근거에는 충남대학교 **인공지능학과**의 교육과정 또는 프로젝트 수업 관련 정보가 포함되어 있지 않습니다.\n\n기존 근거는 생화학과 및 영어영문학과 졸업요건에 대한 내용으로, 인공지능학과 24 학번의 구체적인 이수 과목 수를 확인할 수 없습니다. 따라서 정확한 정보는 인공지능학과 공식 홈페이지나 학사정보 공지사항에서 해당 학과의 최신 교육과정을 확인하시기 바랍니다."
+    },
+    {
+      "group": "user_probe",
+      "question": "이번 학기 종강일이 언제인가요?",
+      "task1": {
+        "route_label": 2,
+        "route_domain": "academic_calendar"
+      },
+      "task2_generation_process": {
+        "run_at": "2026-06-08T00:00:00+09:00",
+        "prompt_variant": "task2_evidence_pack_plus_current_datetime_and_ambiguity_policy",
+        "retrieval_top_k": 3,
+        "retrieved": [
+          {
+            "doc_id": "academic_calendar_chunk_2",
+            "score": 0.3,
+            "title": "academic_calendar source 2",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "label": 2
+          },
+          {
+            "doc_id": "academic_calendar_chunk_3",
+            "score": 0.3,
+            "title": "academic_calendar source 3",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "label": 2
+          },
+          {
+            "doc_id": "academic_calendar_chunk_7",
+            "score": 0.3,
+            "title": "academic_calendar source 7",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "label": 2
+          }
+        ],
+        "evidence_items": [
+          {
+            "source_name": "충남대학교 학사일정",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "facts": [
+              "9(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도 제1학기 재학생 등록금 납부 02.25(수) 2025학년도 전기 학위수여식 02.27(금) 입학식(2026학년도) 03월 March 03.01(일) 3ㆍ1절 03.02(월) 대체공휴일 03.03(화) 제1학기 개강일 03.03(화) ~ 03.09(월) 2025학년도"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 학사일정",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "facts": [
+              "제1학기 재학생 등록금 납부 02.25(수) 2025학년도 전기 학위수여식 02.27(금) 입학식(2026학년도) 03월 March 03.01(일) 3ㆍ1절 03.02(월) 대체공휴일 03.03(화) 제1학기 개강일 03.03(화) ~ 03.09(월) 2025학년도 전기 학사학위취득 유예 신청 취소 03.03(화) ~ 03.09(월) 수강신청 확인 및 변경 03.03(화) ~ 03.31(화) 교육과정 적용연도 및 소속 변경 03.03(화) ~ 03.09(월) 수강신청 확인 및 변경 03.16(월) 폐강과목 결정(최종) 03.16("
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 학사일정",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "facts": [
+              "수강신청 08월 August 08.03(월) ~ 08.07(금) 제2학기 수강신청 08.03(월) ~ 08.31(월) 휴학 및 복학 신청 08.15(토) 광복절 08.17(월) 대체공휴일 08.25(화) 2025학년도 후기 학위수여식 08.25(화) ~ 08.28(금) 2026학년도 2학기 재학생 등록금 납부 09월 September 09.01(화) 제2학기 개강일 09.01(화) ~ 09.07(월) 2025학년도 후기 학사학위취득 유예 신청 취소 09.01(화) ~ 09.07(월) 수강신청 확인 및 변경 09.01(화) ~ 09."
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          }
+        ],
+        "validator": {
+          "passed": false,
+          "failures": [
+            "unsupported_numeric_claim",
+            "unsupported_institution_claim"
+          ],
+          "answer_chars": 293,
+          "must_not_claim_violations": [],
+          "unsupported_urls": [],
+          "unsupported_numeric_claims": [
+            "3 일",
+            "1 일"
+          ],
+          "unsupported_institution_claims": [
+            "학생지원센터"
+          ],
+          "unsupported_menu_claims": []
+        },
+        "usage": {
+          "completion_tokens": 142,
+          "prompt_tokens": 1283,
+          "total_tokens": 1425,
+          "prompt_tokens_details": {
+            "cached_tokens": 55
+          }
+        },
+        "elapsed_seconds": 28.094440500004566
+      },
+      "answer": "제공된 근거에는 '종강일'에 대한 구체적인 날짜가 명시되어 있지 않습니다.\n\n일반적으로 제 1 학기는 3 월 3 일 (화) 에 개강하며, 제 2 학기는 9 월 1 일 (화) 에 개강합니다. 학기별 정확한 종강일은 매년 학사규정에 따라 달라질 수 있으므로, 충남대학교 공식 학사 일정 페이지 (https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr) 를 확인하시거나, 소속 학과 사무실 및 학생지원센터에 문의하시는 것을 권장합니다."
+    },
+    {
+      "group": "user_probe",
+      "question": "이번 여름 계절학기 종강일이 언제인 가요?",
+      "task1": {
+        "route_label": 2,
+        "route_domain": "academic_calendar"
+      },
+      "task2_generation_process": {
+        "run_at": "2026-06-08T00:00:00+09:00",
+        "prompt_variant": "task2_evidence_pack_plus_current_datetime_and_ambiguity_policy",
+        "retrieval_top_k": 3,
+        "retrieved": [
+          {
+            "doc_id": "academic_calendar_chunk_1",
+            "score": 0.4166666666666667,
+            "title": "academic_calendar source 1",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "label": 2
+          },
+          {
+            "doc_id": "academic_calendar_chunk_4",
+            "score": 0.4166666666666667,
+            "title": "academic_calendar source 4",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "label": 2
+          },
+          {
+            "doc_id": "academic_calendar_chunk_5",
+            "score": 0.4166666666666667,
+            "title": "academic_calendar source 5",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "label": 2
+          }
+        ],
+        "evidence_items": [
+          {
+            "source_name": "충남대학교 학사일정",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "facts": [
+              "01월 January 01.01(목) 신정 01.13(화) 제2학기 성적발표 01.20(화) 동기 계절학기 성적발표 01.21(수) ~ 02.10(화) 2025학년도 특별학기(신입학예정자) 01.26(월) ~ 01.28(수) 2026학년도 제1학기 예비수강신청 01.29(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 학사일정",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "facts": [
+              "월) ~ 03.20(금) 융복합창의전공 신청.취소 03.23(월) ~ 03.26(목) 수강신청 취소 03.27(금) 수업일수 1/4선 03.30(월) ~ 04.03(금) 2025학년도 후기 조기졸업 신청 05월 May 05.01(금) 노동절 05.05(화) 어린이날 05.07(목) ~ 05.11(월) 하기 계절학기 수강신청 05.13(수) 수업일수 2/3선 05.22(금) 수업일수 3/4선 05.24(일) 부처님오신날 05.25(월) 개교기념일, 대체공휴일 06월 June 06.03(수) 지방선거일 06.06(토) 현충일 06.09"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 학사일정",
+            "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+            "facts": [
+              "5.07(목) ~ 05.11(월) 하기 계절학기 수강신청 05.13(수) 수업일수 2/3선 05.22(금) 수업일수 3/4선 05.24(일) 부처님오신날 05.25(월) 개교기념일, 대체공휴일 06월 June 06.03(수) 지방선거일 06.06(토) 현충일 06.09(화) ~ 06.12(금) 정기휴업일 수업결손 보충강의 06.22(월) 하기방학 06.22(월) ~ 07.10(금) 하기 계절학기 07월 July 07.10(금) 제1학기 성적발표 07.20(월) 하기 계절학기 성적발표 07.27(월) ~ 07.29(수) 제2학기 예비"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          }
+        ],
+        "validator": {
+          "passed": false,
+          "failures": [
+            "unsupported_numeric_claim"
+          ],
+          "answer_chars": 232,
+          "must_not_claim_violations": [],
+          "unsupported_urls": [],
+          "unsupported_numeric_claims": [
+            "2026 년",
+            "20 일"
+          ],
+          "unsupported_institution_claims": [],
+          "unsupported_menu_claims": []
+        },
+        "usage": {
+          "completion_tokens": 107,
+          "prompt_tokens": 1301,
+          "total_tokens": 1408,
+          "prompt_tokens_details": {
+            "cached_tokens": 55
+          }
+        },
+        "elapsed_seconds": 23.55831120000221
+      },
+      "answer": "2026 년 하계 계절학기 종강일은 **7 월 20 일 (월)**입니다.\n\n이는 하기 계절학기 성적발표 일자로, 해당 일자에 성적표가 발표됨을 의미합니다. 다만, 세부 일정은 시점에 따라 달라질 수 있으므로 충남대학교 공식 학사일정 (https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr) 을 최종 확인하시기 바랍니다."
+    },
+    {
+      "group": "user_probe",
+      "question": "다음주 화요일 2학생회관 메뉴가 어떻게 되나요?",
+      "task1": {
+        "route_label": 3,
+        "route_domain": "dining"
+      },
+      "task2_generation_process": {
+        "run_at": "2026-06-08T00:00:00+09:00",
+        "prompt_variant": "task2_evidence_pack_plus_current_datetime_and_ambiguity_policy",
+        "retrieval_top_k": 3,
+        "retrieved": [
+          {
+            "doc_id": "cnu_mobile_food_chunk_1",
+            "score": 0.4230769230769231,
+            "title": "dining source 1",
+            "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+            "label": 3
+          },
+          {
+            "doc_id": "cnu_mobile_food_chunk_2",
+            "score": 0.38461538461538464,
+            "title": "dining source 2",
+            "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+            "label": 3
+          },
+          {
+            "doc_id": "cnu_mobile_food_chunk_3",
+            "score": 0.19230769230769232,
+            "title": "dining source 3",
+            "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+            "label": 3
+          }
+        ],
+        "evidence_items": [
+          {
+            "source_name": "충남대학교 식단",
+            "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+            "facts": [
+              "일요일 2026.06.07 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 식단",
+            "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+            "facts": [
+              "안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          },
+          {
+            "source_name": "충남대학교 식단",
+            "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+            "facts": [
+              "영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 중식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함 석식 직원 운영안함 운영안함 운영안함 운영안함 학생 운영안함 운영안함 운영안함 운영안함"
+            ],
+            "cautions": [
+              "세부 정보는 시점에 따라 달라질 수 있으므로 공식 출처를 기준으로 확인한다."
+            ]
+          }
+        ],
+        "validator": {
+          "passed": false,
+          "failures": [
+            "unsupported_numeric_claim"
+          ],
+          "answer_chars": 271,
+          "must_not_claim_violations": [],
+          "unsupported_urls": [],
+          "unsupported_numeric_claims": [
+            "2026 년",
+            "6 월",
+            "8 일",
+            "7 일"
+          ],
+          "unsupported_institution_claims": [],
+          "unsupported_menu_claims": []
+        },
+        "usage": {
+          "completion_tokens": 120,
+          "prompt_tokens": 930,
+          "total_tokens": 1050,
+          "prompt_tokens_details": {
+            "cached_tokens": 55
+          }
+        },
+        "elapsed_seconds": 23.135614600003464
+      },
+      "answer": "제공된 근거에는 2026 년 6 월 8 일 기준 '다음 주 화요일'의 메뉴 정보가 포함되어 있지 않습니다. 현재 확인 가능한 정보는 6 월 7 일 (일요일) 의 식단이며, 해당 날짜에도 2 학생회관의 조식, 중식, 석식 모두 '운영안함'으로 안내되어 있습니다.\n\n다음 주 화요일의 정확한 메뉴는 시점에 따라 변동될 수 있으므로, 충남대학교 공식 식단 홈페이지 (https://mobileadmin.cnu.ac.kr/food/index.jsp) 를 통해 최신 정보를 확인하시기 바랍니다."
+    },
+    {
+      "group": "user_probe",
+      "question": "토익 장학금을 받으려면 성적이 몇 점 이상이어야 하나요?",
+      "task1": {
+        "route_label": 1,
+        "route_domain": "notices"
+      },
+      "task2_generation_process": {
+        "run_at": "2026-06-08T00:00:00+09:00",
+        "prompt_variant": "task2_evidence_pack_plus_current_datetime_and_ambiguity_policy",
+        "retrieval_top_k": 3,
+        "retrieved": [
+          {
+            "doc_id": "graduation_biochemistry_requirements_chunk_1",
+            "score": 0.16666666666666666,
+            "title": "graduation source 1",
+            "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+            "label": 0
+          },
+          {
+            "doc_id": "graduation_english_requirements_chunk_4",
+            "score": 0.16666666666666666,
+            "title": "graduation source 4",
+            "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+            "label": 0
+          },
+          {
+            "doc_id": "graduation_english_requirements_chunk_5",
+            "score": 0.16666666666666666,
+            "title": "graduation source 5",
+            "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+            "label": 0
+          }
+        ],
+        "evidence_items": [
+          {
+            "source_name": "생화학과 졸업요건",
+            "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+            "facts": [
+              "메뉴 닫기 학사정보 학사일정표 학부교육과정 졸업요건 재이수 대학원교육과정 학과내규 장학제도 졸업요건 Home 학사정보 졸업요건 졸업학점 자가 진단법 본인의 교육과정 년도를 먼저 확인합니다."
+            ],
+            "cautions": [
+              "학과와 입학연도에 따라 기준이 다를 수 있으므로 해당 학과의 공식 기준을 확인한다."
+            ]
+          },
+          {
+            "source_name": "영어영문학과 졸업요건",
+            "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+            "facts": [
+              "양 6개영역 중 3개 필수이수, 총 9학점 -미래설계상담4회이수 -전기16학점/전핵 23학점/전심39학점 (전심과 전핵은 상호인정이 가능함.) -전문기초교양3학점 → 이 모든 사항을 포함하여 130학점 이수 ※ 단, 교양학점은 36학점은 이수해야 하며 42학점까지만 졸업소요학점에 포함됨."
+            ],
+            "cautions": [
+              "학과와 입학연도에 따라 기준이 다를 수 있으므로 해당 학과의 공식 기준을 확인한다."
+            ]
+          },
+          {
+            "source_name": "영어영문학과 졸업요건",
+            "source_url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+            "facts": [
+              "W관련 교과목 이수 면제 -미래설계상담4회이수 -전기16학점/전핵 23학점/전심39학점 (전심과 전핵은 상호인정이 가능함.) -전문기초교양3학점 → 이 모든 사항을 포함하여 130학점 이수 ※ 단, 교양학점은 36학점은 이수해야 하며 42학점까지만 졸업소요학점에 포함됨."
+            ],
+            "cautions": [
+              "학과와 입학연도에 따라 기준이 다를 수 있으므로 해당 학과의 공식 기준을 확인한다."
+            ]
+          }
+        ],
+        "validator": {
+          "passed": false,
+          "failures": [
+            "unsupported_numeric_claim",
+            "unsupported_institution_claim"
+          ],
+          "answer_chars": 211,
+          "must_not_claim_violations": [],
+          "unsupported_urls": [],
+          "unsupported_numeric_claims": [
+            "800 점"
+          ],
+          "unsupported_institution_claims": [
+            "충남대학교"
+          ],
+          "unsupported_menu_claims": []
+        },
+        "usage": {
+          "completion_tokens": 99,
+          "prompt_tokens": 816,
+          "total_tokens": 915,
+          "prompt_tokens_details": {
+            "cached_tokens": 55
+          }
+        },
+        "elapsed_seconds": 18.441793300007703
+      },
+      "answer": "제공된 근거에는 토익 장학금의 구체적인 성적 기준 (예: 800 점 이상 등) 이 명시되어 있지 않습니다.\n\n일반적으로 토익 장학금은 학교 또는 학과별 장학제도 내규에 따라 정해지며, 학과와 입학 연도에 따라 기준이 다를 수 있습니다. 정확한 점수 요건과 신청 방법을 확인하시려면 **충남대학교 공식 홈페이지의 학사정보 또는 해당 학과 장학제도 페이지**를 참고하시기 바랍니다."
+    }
+  ],
+  "final_performance_claim_allowed": false
+}

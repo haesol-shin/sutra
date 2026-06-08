@@ -51,6 +51,12 @@ bash ./chatbot.sh batch deterministic
 bash ./chatbot.sh batch llama
 ```
 
+Local Qwen runtime notes:
+
+```text
+docs/qwen_runtime.md
+```
+
 Generate a submission-oriented package list near the end of the project:
 
 ```powershell

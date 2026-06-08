@@ -30,3 +30,4 @@
 
 Model metadata는 `data/model_shortlist.json`에 기록하고 `validators --model-shortlist`로 검사한다.
 Backend 결정과 검증 기준은 `docs/task2_llm_backend_plan.md`에 기록한다.
+Qwen 로컬 실행 계약과 고정 가중치 경로는 `docs/qwen_runtime.md`에 기록한다.

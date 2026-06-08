@@ -6,6 +6,8 @@
 
 이 문서는 Goal 2.3 진단 결과를 바탕으로 다음 데이터 확장 순서를 정한다. 지금 단계의 목적은 데이터를 바로 늘리는 것이 아니라, 어떤 데이터를 먼저 늘려야 Task 1, Task 2, Optional Task 3의 generalization 위험을 줄일 수 있는지 정하는 것이다.
 
+업데이트: Task 2/3 응답 경로는 먼저 [`docs/task2_task3_harness_architecture.md`](task2_task3_harness_architecture.md)의 Phase A evidence harness를 구현하고, 5개 카테고리 x 2문항 smoke에서 RAG 충분성/fetch 필요성/fail-closed 동작을 검증한 뒤 아래 데이터 확장 순서로 들어간다. 데이터 확장은 harness가 요구하는 metadata와 structured field 계약을 기준으로 진행한다.
+
 ## Current Baseline
 
 baseline:
@@ -159,17 +161,20 @@ Expected metric movement:
 
 ## Engineering Order
 
-Before this sequence, apply only the minimal Task 2 claim guard documented in
-[`docs/task2_claim_guard_notes.md`](task2_claim_guard_notes.md). Do not spend more time on prompt tuning before
-source expansion; prompt language and answer formatting should be revisited after the expanded data smoke run.
+Before this sequence, implement the Phase A evidence harness documented in
+[`docs/task2_task3_harness_architecture.md`](task2_task3_harness_architecture.md). The earlier minimal Task 2 claim guard in
+[`docs/task2_claim_guard_notes.md`](task2_claim_guard_notes.md) remains useful, but data expansion should now follow the
+harness metadata, freshness, and structured-field contracts instead of adding source chunks blindly.
 
-1. Build source inventory for Priority 1 only.
-2. Add parser fixtures for HTML, PDF, and HWP-like outputs where available.
-3. Add validator gates for metadata, Korean text quality, source URL, and row counts.
-4. Generate LLM-assisted labels with self-consistency, then run deterministic structure validation.
-5. Add human review queue for low-confidence or boundary examples.
-6. Re-run Task 1 gold and Task 2 gold answer diagnostics.
-7. Only after source expansion stabilizes, revisit embedding RAG, cross-encoder reranking, or llama answer formatting.
+1. Implement Phase A harness state contract and RAG-vs-fetch truth-table tests.
+2. Run the 5 categories x 2 questions harness smoke and record fail-closed reasons.
+3. Build source inventory for Priority 1 only, using harness-required metadata keys.
+4. Add parser fixtures for HTML, PDF, and HWP-like outputs where available.
+5. Add validator gates for metadata, Korean text quality, source URL, freshness, and row counts.
+6. Generate LLM-assisted labels with self-consistency, then run deterministic structure validation.
+7. Add human review queue for low-confidence or boundary examples.
+8. Re-run Task 1 gold and Task 2 gold answer diagnostics.
+9. Only after source expansion stabilizes, revisit embedding RAG, cross-encoder reranking, Qwen action-proposal experiments, or llama answer formatting.
 
 ## Do Not Do Yet
 
@@ -178,3 +183,4 @@ source expansion; prompt language and answer formatting should be revisited afte
 - Do not add embedding RAG until there is enough source breadth to make retrieval comparison meaningful.
 - Do not use external LLM API at inference time.
 - Do not use deterministic fallback as evidence for llama quality.
+- Do not use Qwen as a free tool-call agent in Phase A; keep it as an evidence-backed answer writer until harness failure modes are measured.
