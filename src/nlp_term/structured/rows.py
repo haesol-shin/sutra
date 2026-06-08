@@ -59,6 +59,19 @@ NOTICE_STRUCTURED_FIELDS = [
     "hits",
     "has_attachment",
 ]
+GRADUATION_STRUCTURED_FIELDS = [
+    "department",
+    "curriculum_year",
+    "admission_year",
+    "requirement_category",
+    "requirement_name",
+    "required_value",
+    "unit",
+    "applies_to",
+    "effective_year",
+    "source_section",
+    "confidence",
+]
 
 
 class BaseStructuredRow(BaseModel):
@@ -583,6 +596,127 @@ class NoticeRow(BaseStructuredRow):
         )
 
 
+class GraduationRequirementRow(BaseStructuredRow):
+    row_type: Literal["graduation_requirement"] = "graduation_requirement"
+    department: str
+    curriculum_year: str
+    admission_year: str
+    requirement_category: str
+    requirement_name: str
+    required_value: str
+    unit: str
+    applies_to: str
+    effective_year: str
+    source_section: str
+    confidence: float = Field(ge=0.0, le=1.0)
+
+    @classmethod
+    def from_source_context(
+        cls,
+        *,
+        spec: SourceSpec,
+        raw: RawSource,
+        verification: SourceVerification,
+        row_id: str,
+        evidence_text: str,
+        department: str,
+        curriculum_year: str,
+        admission_year: str,
+        requirement_category: str,
+        requirement_name: str,
+        required_value: str,
+        unit: str,
+        applies_to: str,
+        effective_year: str,
+        source_section: str,
+        confidence: float,
+    ) -> GraduationRequirementRow:
+        provenance = BaseStructuredRow.provenance_from(
+            spec=spec,
+            raw=raw,
+            verification=verification,
+            row_id=row_id,
+            row_type="graduation_requirement",
+            evidence_text=evidence_text,
+        )
+        return cls(
+            **provenance,
+            department=department,
+            curriculum_year=curriculum_year,
+            admission_year=admission_year,
+            requirement_category=requirement_category,
+            requirement_name=requirement_name,
+            required_value=required_value,
+            unit=unit,
+            applies_to=applies_to,
+            effective_year=effective_year,
+            source_section=source_section,
+            confidence=confidence,
+        )
+
+    def structured_payload(self) -> dict[str, Any]:
+        return {
+            "department": self.department,
+            "curriculum_year": self.curriculum_year,
+            "admission_year": self.admission_year,
+            "requirement_category": self.requirement_category,
+            "requirement_name": self.requirement_name,
+            "required_value": self.required_value,
+            "unit": self.unit,
+            "applies_to": self.applies_to,
+            "effective_year": self.effective_year,
+            "source_section": self.source_section,
+            "confidence": self.confidence,
+        }
+
+    def to_knowledge_doc(self) -> KnowledgeDoc:
+        metadata = {
+            "structured": self.structured_payload(),
+            "department": self.department,
+            "curriculum_year": self.curriculum_year,
+            "admission_year": self.admission_year,
+            "requirement_category": self.requirement_category,
+            "requirement_name": self.requirement_name,
+            "required_value": self.required_value,
+            "unit": self.unit,
+            "applies_to": self.applies_to,
+            "effective_year": self.effective_year,
+            "source_section": self.source_section,
+            "confidence": self.confidence,
+            "structured_fields": GRADUATION_STRUCTURED_FIELDS,
+            "raw_path": self.raw_path,
+            "raw_checksum": self.raw_checksum,
+            "raw_fetched_at": self.raw_fetched_at,
+            "verification_official_chain_ok": self.verification_official_chain_ok,
+            "verification_parser_name": self.parser_name,
+            "verification_parser_version": self.parser_version,
+            "source_freshness_policy": self.freshness_policy,
+            "parser": self.parser_name,
+            "generation_method": "structured_row",
+            "row_id": self.row_id,
+            "row_type": self.row_type,
+        }
+        return KnowledgeDoc(
+            doc_id=self.row_id,
+            label=self.label,
+            domain=self.domain,
+            title=f"{self.department} {self.curriculum_year} {self.requirement_name}",
+            body=self._knowledge_body(),
+            date=self.effective_year,
+            source_url=self.source_url,
+            source_id=self.source_id,
+            section=self.row_type,
+            metadata=metadata,
+        )
+
+    def _knowledge_body(self) -> str:
+        return (
+            f"{self.department} {self.curriculum_year} 교육과정의 {self.requirement_category} 요건: "
+            f"{self.requirement_name}은 {self.required_value}{self.unit} 기준입니다. "
+            f"적용 대상은 {self.applies_to}입니다. 원문 문장: '{self.evidence_text}'."
+        )
+
+
 def dining_row_id(
     *,
     source_id: str,
@@ -661,6 +795,27 @@ def notice_row_id(
         notice_no,
         posted_date,
         title,
+    ]
+    normalized = "__".join(_slug(part) for part in parts)
+    digest = sha1("|".join(parts).encode("utf-8")).hexdigest()[:10]
+    return f"{normalized}__{digest}"
+
+
+def graduation_requirement_row_id(
+    *,
+    source_id: str,
+    department: str,
+    curriculum_year: str,
+    requirement_name: str,
+    ordinal: int,
+) -> str:
+    parts = [
+        source_id,
+        "graduation_requirement",
+        department,
+        curriculum_year,
+        requirement_name,
+        str(ordinal),
     ]
     normalized = "__".join(_slug(part) for part in parts)
     digest = sha1("|".join(parts).encode("utf-8")).hexdigest()[:10]

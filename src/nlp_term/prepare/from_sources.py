@@ -17,6 +17,7 @@ from nlp_term.schemas import KnowledgeDoc, RawSource, SourceVerification
 from nlp_term.collect.source_inventory import SourceSpec, iter_specs
 from nlp_term.structured.calendar import CalendarAdapter
 from nlp_term.structured.dining import DiningAdapter
+from nlp_term.structured.graduation import GraduationRequirementAdapter
 from nlp_term.structured.notices import NoticeAdapter
 from nlp_term.structured.shuttle import ShuttleAdapter
 from nlp_term.validators import read_json
@@ -161,7 +162,7 @@ def parse_structured_source(
     *,
     verification: SourceVerification,
 ) -> tuple[list[KnowledgeDoc], SourceParseFailure | None]:
-    adapter = STRUCTURED_ADAPTERS.get(raw.source_id)
+    adapter = GraduationRequirementAdapter() if raw.domain == "graduation" else STRUCTURED_ADAPTERS.get(raw.source_id)
     if adapter is None:
         return [], None
     try:
