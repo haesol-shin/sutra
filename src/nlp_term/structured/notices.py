@@ -12,10 +12,25 @@ from nlp_term.structured.rows import NoticeRow, notice_row_id
 
 
 DATE_RE = re.compile(r"20\d{2}-\d{2}-\d{2}")
+HIGH_VALUE_KEYWORDS = (
+    "졸업",
+    "학사",
+    "수강",
+    "장학",
+    "셔틀",
+    "식단",
+    "일정",
+    "휴학",
+    "복학",
+    "등록",
+    "계절학기",
+)
 
 
 class NoticeAdapter:
     source_id = "academic_notice_board"
+    max_rows_per_board = 12
+    min_high_value_score = 3
 
     def parse(
         self,
@@ -27,7 +42,10 @@ class NoticeAdapter:
         raw_path = PROJECT_ROOT / raw.raw_path
         soup = BeautifulSoup(raw_path.read_bytes(), "lxml")
         rows: list[NoticeRow] = []
+        seen: set[tuple[str, str, str]] = set()
         for tr in soup.select(".board_list tbody tr"):
+            if len(rows) >= self.max_rows_per_board:
+                break
             cells = tr.select("td")
             if len(cells) < 5:
                 continue
@@ -43,6 +61,18 @@ class NoticeAdapter:
             hits = _parse_int(_cell_text(cells[4]))
             detail_url = urljoin(raw.url, link.get("href", ""))
             has_attachment = bool(cells[-1].select_one("img")) or "파일" in _cell_text(cells[-1])
+            duplicate_key = (detail_url, posted_date, title)
+            if duplicate_key in seen:
+                continue
+            seen.add(duplicate_key)
+            high_value_score = _high_value_score(
+                title=title,
+                author=author,
+                has_attachment=has_attachment,
+                verification=verification,
+            )
+            if high_value_score < self.min_high_value_score:
+                continue
             row_id = notice_row_id(
                 source_id=spec.source_id,
                 notice_no=notice_no,
@@ -65,6 +95,7 @@ class NoticeAdapter:
                     is_pinned=notice_no == "공지",
                     hits=hits,
                     has_attachment=has_attachment,
+                    high_value_score=high_value_score,
                 )
             )
         if not rows:
@@ -84,3 +115,24 @@ def _parse_int(value: str) -> int | None:
         return int(value.replace(",", ""))
     except ValueError:
         return None
+
+
+def _high_value_score(
+    *,
+    title: str,
+    author: str,
+    has_attachment: bool,
+    verification: SourceVerification,
+) -> int:
+    score = 0
+    if any(keyword in title for keyword in HIGH_VALUE_KEYWORDS):
+        score += 1
+    if has_attachment:
+        score += 1
+    if len(title) >= 20:
+        score += 1
+    if author:
+        score += 1
+    if verification.official_chain_ok:
+        score += 1
+    return score

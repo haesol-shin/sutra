@@ -68,6 +68,7 @@ NOTICE_STRUCTURED_FIELDS = [
     "is_pinned",
     "hits",
     "has_attachment",
+    "high_value_score",
 ]
 GRADUATION_STRUCTURED_FIELDS = [
     "department",
@@ -616,6 +617,7 @@ class NoticeRow(BaseStructuredRow):
     is_pinned: bool = False
     hits: int | None = None
     has_attachment: bool = False
+    high_value_score: int = 0
 
     @classmethod
     def from_source_context(
@@ -634,6 +636,7 @@ class NoticeRow(BaseStructuredRow):
         is_pinned: bool,
         hits: int | None,
         has_attachment: bool,
+        high_value_score: int,
     ) -> NoticeRow:
         provenance = BaseStructuredRow.provenance_from(
             spec=spec,
@@ -653,6 +656,7 @@ class NoticeRow(BaseStructuredRow):
             is_pinned=is_pinned,
             hits=hits,
             has_attachment=has_attachment,
+            high_value_score=high_value_score,
         )
 
     def structured_payload(self) -> dict[str, Any]:
@@ -665,6 +669,7 @@ class NoticeRow(BaseStructuredRow):
             "is_pinned": self.is_pinned,
             "hits": self.hits,
             "has_attachment": self.has_attachment,
+            "high_value_score": self.high_value_score,
         }
 
     def to_knowledge_doc(self) -> KnowledgeDoc:
@@ -678,6 +683,7 @@ class NoticeRow(BaseStructuredRow):
             "is_pinned": self.is_pinned,
             "hits": self.hits,
             "has_attachment": self.has_attachment,
+            "high_value_score": self.high_value_score,
             "structured_fields": NOTICE_STRUCTURED_FIELDS,
             "raw_path": self.raw_path,
             "raw_checksum": self.raw_checksum,

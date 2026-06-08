@@ -43,6 +43,8 @@ def test_notice_adapter_parses_board_rows_with_posted_dates() -> None:
     rows = NoticeAdapter().parse(spec=spec, raw=raw, verification=verification)
 
     assert len(rows) >= 8
+    assert len(rows) <= NoticeAdapter.max_rows_per_board
+    assert all(row.high_value_score >= NoticeAdapter.min_high_value_score for row in rows)
     latest = next(row for row in rows if row.notice_no == "1814")
     assert latest.title == "2026학년도 하기 계절학기 수강신청 취소(1~3차)기간 안내"
     assert latest.posted_date == "2026-06-05"
@@ -82,7 +84,9 @@ def test_notice_knowledge_doc_metadata_contract() -> None:
         "is_pinned",
         "hits",
         "has_attachment",
+        "high_value_score",
     ]
+    assert doc.metadata["high_value_score"] >= 3
     assert doc.metadata["verification_official_chain_ok"] is True
     assert "게시일은 2026-06-05" in doc.body
 
