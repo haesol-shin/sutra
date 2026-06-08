@@ -34,6 +34,21 @@ CALENDAR_SEARCH_ALIASES = {
     "하기방학": ["1학기 종강", "종강일", "여름방학 시작", "방학 시작"],
     "동기방학": ["2학기 종강", "종강일", "겨울방학 시작", "방학 시작"],
 }
+SHUTTLE_STRUCTURED_FIELDS = [
+    "route_key",
+    "route_name",
+    "departure_times",
+    "first_time",
+    "last_time",
+    "stops",
+    "operation_count",
+    "operation_period",
+    "operating_days",
+    "non_operating_days",
+    "valid_start",
+    "valid_end",
+    "notes",
+]
 
 
 class BaseStructuredRow(BaseModel):
@@ -311,6 +326,145 @@ class CalendarRow(BaseStructuredRow):
         return f" 학생 표현으로는 {', '.join(aliases)}에 해당합니다."
 
 
+class ShuttleRow(BaseStructuredRow):
+    row_type: Literal["shuttle_route"] = "shuttle_route"
+    route_key: str
+    route_name: str
+    departure_times: list[str] = Field(default_factory=list)
+    first_time: str | None = None
+    last_time: str | None = None
+    stops: list[str] = Field(default_factory=list)
+    operation_count: str | None = None
+    operation_period: str | None = None
+    operating_days: str
+    non_operating_days: list[str] = Field(default_factory=list)
+    valid_start: str
+    valid_end: str
+    notes: list[str] = Field(default_factory=list)
+
+    @classmethod
+    def from_source_context(
+        cls,
+        *,
+        spec: SourceSpec,
+        raw: RawSource,
+        verification: SourceVerification,
+        row_id: str,
+        evidence_text: str,
+        route_key: str,
+        route_name: str,
+        departure_times: list[str],
+        first_time: str | None,
+        last_time: str | None,
+        stops: list[str],
+        operation_count: str | None,
+        operation_period: str | None,
+        operating_days: str,
+        non_operating_days: list[str],
+        valid_start: str,
+        valid_end: str,
+        notes: list[str],
+    ) -> ShuttleRow:
+        provenance = BaseStructuredRow.provenance_from(
+            spec=spec,
+            raw=raw,
+            verification=verification,
+            row_id=row_id,
+            row_type="shuttle_route",
+            evidence_text=evidence_text,
+        )
+        return cls(
+            **provenance,
+            route_key=route_key,
+            route_name=route_name,
+            departure_times=departure_times,
+            first_time=first_time,
+            last_time=last_time,
+            stops=stops,
+            operation_count=operation_count,
+            operation_period=operation_period,
+            operating_days=operating_days,
+            non_operating_days=non_operating_days,
+            valid_start=valid_start,
+            valid_end=valid_end,
+            notes=notes,
+        )
+
+    def structured_payload(self) -> dict[str, Any]:
+        return {
+            "route_key": self.route_key,
+            "route_name": self.route_name,
+            "departure_times": self.departure_times,
+            "first_time": self.first_time,
+            "last_time": self.last_time,
+            "stops": self.stops,
+            "operation_count": self.operation_count,
+            "operation_period": self.operation_period,
+            "operating_days": self.operating_days,
+            "non_operating_days": self.non_operating_days,
+            "valid_start": self.valid_start,
+            "valid_end": self.valid_end,
+            "notes": self.notes,
+        }
+
+    def to_knowledge_doc(self) -> KnowledgeDoc:
+        metadata = {
+            "structured": self.structured_payload(),
+            "route_key": self.route_key,
+            "route_name": self.route_name,
+            "departure_times": self.departure_times,
+            "first_time": self.first_time,
+            "last_time": self.last_time,
+            "stops": self.stops,
+            "operation_count": self.operation_count,
+            "operation_period": self.operation_period,
+            "operating_days": self.operating_days,
+            "non_operating_days": self.non_operating_days,
+            "valid_start": self.valid_start,
+            "valid_end": self.valid_end,
+            "date_span": f"{self.valid_start}/{self.valid_end}",
+            "structured_fields": SHUTTLE_STRUCTURED_FIELDS,
+            "raw_path": self.raw_path,
+            "raw_checksum": self.raw_checksum,
+            "raw_fetched_at": self.raw_fetched_at,
+            "verification_official_chain_ok": self.verification_official_chain_ok,
+            "verification_parser_name": self.parser_name,
+            "verification_parser_version": self.parser_version,
+            "source_freshness_policy": self.freshness_policy,
+            "parser": self.parser_name,
+            "generation_method": "structured_row",
+            "row_id": self.row_id,
+            "row_type": self.row_type,
+        }
+        return KnowledgeDoc(
+            doc_id=self.row_id,
+            label=self.label,
+            domain=self.domain,
+            title=f"2026학년도 셔틀버스 {self.route_name}",
+            body=self._knowledge_body(),
+            date=self.valid_start,
+            source_url=self.source_url,
+            source_id=self.source_id,
+            section=self.row_type,
+            metadata=metadata,
+        )
+
+    def _knowledge_body(self) -> str:
+        departures = ", ".join(self.departure_times)
+        stops = ", ".join(self.stops)
+        non_operating = ", ".join(self.non_operating_days)
+        notes = " ".join(self.notes)
+        return (
+            f"2026학년도 셔틀버스 {self.route_name}은 {self.valid_start}부터 {self.valid_end}까지 "
+            f"{self.operating_days}에 정상 운행합니다. "
+            f"평일 야간, 주말, 공휴일, 방학 등은 미운영입니다. "
+            f"출발 시간표: {departures}. 첫차 {self.first_time}, 막차 {self.last_time}. "
+            f"정류장 및 운행 노선: {stops}. "
+            f"운행횟수는 {self.operation_count}, 운영기간 표기는 {self.operation_period}입니다. "
+            f"미운영 조건: {non_operating}. {notes}"
+        )
+
+
 def dining_row_id(
     *,
     source_id: str,
@@ -351,6 +505,25 @@ def calendar_row_id(
         end_date,
         event_name,
         str(ordinal),
+    ]
+    normalized = "__".join(_slug(part) for part in parts)
+    digest = sha1("|".join(parts).encode("utf-8")).hexdigest()[:10]
+    return f"{normalized}__{digest}"
+
+
+def shuttle_row_id(
+    *,
+    source_id: str,
+    route_key: str,
+    valid_start: str,
+    valid_end: str,
+) -> str:
+    parts = [
+        source_id,
+        "shuttle_route",
+        route_key,
+        valid_start,
+        valid_end,
     ]
     normalized = "__".join(_slug(part) for part in parts)
     digest = sha1("|".join(parts).encode("utf-8")).hexdigest()[:10]
