@@ -156,7 +156,106 @@ STAGE0_SOURCES: tuple[SourceSpec, ...] = (
     ),
 )
 
+
+def _curriculum_year_sources() -> tuple[SourceSpec, ...]:
+    return tuple(
+        SourceSpec(
+            source_id=f"graduation_curriculum_{year}_pdf",
+            label=0,
+            domain="graduation",
+            url=f"https://plus.cnu.ac.kr/html/kr/{year[-2:]}file/{year}_book.pdf",
+            parser_type="pdf",
+            raw_suffix="pdf",
+            stage="stage1",
+            active=True,
+            priority=12 + index,
+            official_chain_ok=True,
+            notes=f"central curriculum PDF for {year}; HEAD verified 2026-06-08",
+            curriculum_year=year,
+        )
+        for index, year in enumerate(("2023", "2024"))
+    )
+
+
+def _academic_calendar_year_sources() -> tuple[SourceSpec, ...]:
+    return tuple(
+        SourceSpec(
+            source_id=f"academic_calendar_{year}",
+            label=2,
+            domain="academic_calendar",
+            url=(
+                "https://plus.cnu.ac.kr/_prog/academic_calendar/"
+                f"?menu_dvs_cd=05020101&site_dvs_cd=kr&year={year}"
+            ),
+            parser_type="calendar",
+            stage="stage1",
+            active=True,
+            priority=42 + index,
+            official_chain_ok=True,
+            notes=f"official academic calendar for {year}; HEAD and calen_box verified 2026-06-08",
+            curriculum_year=year,
+        )
+        for index, year in enumerate(("2023", "2024", "2025"))
+    )
+
+
+def _academic_notice_page_sources() -> tuple[SourceSpec, ...]:
+    return tuple(
+        SourceSpec(
+            source_id=f"academic_notice_board_page_{page}",
+            label=1,
+            domain="notices",
+            url=(
+                "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702"
+                f"&menu_dvs_cd=0702&site_dvs_cd=kr&GotoPage={page}"
+            ),
+            parser_type="html",
+            stage="stage1",
+            active=True,
+            priority=70 + page,
+            official_chain_ok=True,
+            freshness_policy="latest_snapshot",
+            notes=f"central academic notice board list page {page}; HEAD verified 2026-06-08",
+        )
+        for page in range(2, 7)
+    )
+
+
+def _june_dining_week_sources() -> tuple[SourceSpec, ...]:
+    cafeterias = (
+        ("1st", "OCL03.01", "제1학생회관"),
+        ("2nd", "OCL03.02", "제2학생회관"),
+        ("3rd", "OCL03.03", "제3학생회관"),
+        ("4th", "OCL03.04", "제4학생회관"),
+        ("life_science", "OCL03.05", "생활과학대학"),
+    )
+    weeks = ("2026.06.01", "2026.06.15", "2026.06.22", "2026.06.29")
+    specs = []
+    for week_index, week in enumerate(weeks):
+        week_id = week.replace(".", "_")
+        for cafeteria_index, (slug, code, cafeteria_name) in enumerate(cafeterias):
+            specs.append(
+                SourceSpec(
+                    source_id=f"cnu_mobile_food_week_{week_id}_{slug}",
+                    label=3,
+                    domain="dining",
+                    url=(
+                        f"https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd={week}"
+                        f"&searchLang=OCL04.10&searchView=date&searchCafeteria={code}"
+                    ),
+                    parser_type="dining",
+                    stage="stage1",
+                    active=True,
+                    priority=90 + week_index * 5 + cafeteria_index,
+                    freshness_policy="short_ttl",
+                    notes=f"June 2026 weekly dining endpoint for {cafeteria_name}",
+                )
+            )
+    return tuple(specs)
+
+
 STAGE1_CANDIDATE_SOURCES: tuple[SourceSpec, ...] = (
+    *_curriculum_year_sources(),
     SourceSpec(
         source_id="graduation_energy_requirements",
         label=0,
@@ -206,6 +305,7 @@ STAGE1_CANDIDATE_SOURCES: tuple[SourceSpec, ...] = (
         notes="candidate department academic calendar mirror",
         department="무용학과",
     ),
+    *_academic_calendar_year_sources(),
     SourceSpec(
         source_id="shuttle_geo_notice_2026",
         label=4,
@@ -293,6 +393,8 @@ STAGE1_CANDIDATE_SOURCES: tuple[SourceSpec, ...] = (
         freshness_policy="short_ttl",
         notes="verified weekly dining endpoint for 생활과학대학",
     ),
+    *_academic_notice_page_sources(),
+    *_june_dining_week_sources(),
     SourceSpec(
         source_id="dining_mobile_candidate",
         label=3,
@@ -392,6 +494,7 @@ def collect_spec(spec: SourceSpec, *, fetch: bool = False) -> RawSource:
             spec.domain,
             spec.url,
             raw_suffix=spec.raw_suffix,
+            timeout=120.0 if spec.raw_suffix == "pdf" else 30.0,
         )
     content_type = "application/pdf" if spec.raw_suffix == "pdf" else "text/html"
     return build_stub_source(

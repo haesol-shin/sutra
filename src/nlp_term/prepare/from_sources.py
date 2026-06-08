@@ -174,12 +174,17 @@ def parse_structured_source(
 
 
 def _structured_adapter(raw: RawSource):
+    spec = _spec_for(raw.source_id)
     if raw.domain == "graduation":
         return GraduationRequirementAdapter()
+    if raw.domain == "academic_calendar":
+        return CalendarAdapter()
     if raw.domain == "dining":
         return DiningAdapter()
     if raw.domain == "shuttle":
         return ShuttleAdapter()
+    if raw.domain == "notices" and spec.parser_type == "html":
+        return NoticeAdapter()
     return STRUCTURED_ADAPTERS.get(raw.source_id)
 
 

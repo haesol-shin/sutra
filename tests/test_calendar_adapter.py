@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 
 from nlp_term.collect.base import PARSER_VERSION
@@ -78,6 +79,18 @@ def test_calendar_adapter_row_ids_ignore_fetched_at() -> None:
     second_ids = [row.row_id for row in CalendarAdapter().parse(spec=spec, raw=newer_raw, verification=verification)]
 
     assert first_ids == second_ids
+
+
+def test_calendar_adapter_uses_source_curriculum_year() -> None:
+    spec, raw, verification = _context()
+    yearly_spec = replace(spec, source_id="academic_calendar_2025", curriculum_year="2025")
+    yearly_raw = raw.model_copy(update={"source_id": yearly_spec.source_id})
+    yearly_verification = verification.model_copy(update={"source_id": yearly_spec.source_id})
+
+    rows = CalendarAdapter().parse(spec=yearly_spec, raw=yearly_raw, verification=yearly_verification)
+
+    assert any(row.event_name == "제1학기 개강일" and row.start_date == "2025-03-03" for row in rows)
+    assert all(row.academic_year == 2025 for row in rows)
 
 
 def test_calendar_knowledge_doc_metadata_contract() -> None:

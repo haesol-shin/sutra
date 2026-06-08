@@ -40,11 +40,12 @@ class CalendarAdapter:
     ) -> list[CalendarRow]:
         raw_path = PROJECT_ROOT / raw.raw_path
         boxes = _calendar_boxes(raw_path)
+        academic_year = _academic_year(spec)
         rows: list[CalendarRow] = []
         seen: set[tuple[str, str, str]] = set()
         ordinal = 0
         for box in boxes:
-            box_year = _box_year(box, academic_year=self.academic_year)
+            box_year = _box_year(box, academic_year=academic_year)
             for match in EVENT_RE.finditer(box.text):
                 event_name = " ".join(match.group("name").split())
                 start_month = int(match.group("start_month"))
@@ -66,14 +67,14 @@ class CalendarAdapter:
                         verification=verification,
                         row_id=calendar_row_id(
                             source_id=spec.source_id,
-                            academic_year=self.academic_year,
+                            academic_year=academic_year,
                             start_date=start_date,
                             end_date=end_date,
                             event_name=event_name,
                             ordinal=ordinal,
                         ),
                         evidence_text=match.group(0).strip(),
-                        academic_year=self.academic_year,
+                        academic_year=academic_year,
                         month=box.month,
                         event_name=event_name,
                         start_date=start_date,
@@ -100,6 +101,12 @@ def _calendar_boxes(raw_path: Path) -> list[_CalendarBox]:
     if not boxes:
         raise ValueError("calendar boxes not found")
     return boxes
+
+
+def _academic_year(spec: SourceSpec) -> int:
+    if spec.curriculum_year:
+        return int(spec.curriculum_year)
+    return CalendarAdapter.academic_year
 
 
 def _box_year(box: _CalendarBox, *, academic_year: int) -> int:

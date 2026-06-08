@@ -1,88 +1,22 @@
 [
   {
-    "source_id": "graduation_biochemistry_requirements",
-    "url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
-    "stage": "stage0",
-    "active": true,
-    "exception_type": "ConnectionError",
-    "reason": "('Connection aborted.', ConnectionResetError(10054, '현재 연결은 원격 호스트에 의해 강제로 끊겼습니다', None, 10054, None))",
-    "reused_cached_raw": true,
-    "cached_raw_path": "data\\raw\\graduation\\graduation_biochemistry_requirements.html",
-    "cached_checksum": "861bc6b3469b2f522b67420875b5a017724e6c007de5fc23b3b4681ff3abca63"
-  },
-  {
     "source_id": "graduation_curriculum_pdf",
     "url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
     "stage": "stage0",
     "active": true,
-    "exception_type": "ConnectionError",
-    "reason": "('Connection aborted.', ConnectionResetError(10054, '현재 연결은 원격 호스트에 의해 강제로 끊겼습니다', None, 10054, None))",
+    "exception_type": "CalledProcessError",
+    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '120', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmp9jfuklyw', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf']' returned non-zero exit status 28.",
     "reused_cached_raw": true,
     "cached_raw_path": "data\\raw\\graduation\\graduation_curriculum_pdf.pdf",
     "cached_checksum": "ec67193f7a9a8a89fb84df62b6d032fc94de3eff8455dc9b5167061e1925a653"
-  },
-  {
-    "source_id": "graduation_english_requirements",
-    "url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
-    "stage": "stage0",
-    "active": true,
-    "exception_type": "ConnectionError",
-    "reason": "('Connection aborted.', ConnectionResetError(10054, '현재 연결은 원격 호스트에 의해 강제로 끊겼습니다', None, 10054, None))",
-    "reused_cached_raw": true,
-    "cached_raw_path": "data\\raw\\graduation\\graduation_english_requirements.html",
-    "cached_checksum": "3bb02d31bdb104839c167efc19e95d9d98396ce9268e1b25f4cf8e99e96108ba"
-  },
-  {
-    "source_id": "academic_notice_board",
-    "url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
-    "stage": "stage0",
-    "active": true,
-    "exception_type": "ConnectionError",
-    "reason": "('Connection aborted.', ConnectionResetError(10054, '현재 연결은 원격 호스트에 의해 강제로 끊겼습니다', None, 10054, None))",
-    "reused_cached_raw": true,
-    "cached_raw_path": "data\\raw\\notices\\academic_notice_board.html",
-    "cached_checksum": "98da5254a281df5fd9efd6cf5d168f5af6a142f595dbcbaf5651e588b8a72b1e"
-  },
-  {
-    "source_id": "academic_notice_detail_2511200",
-    "url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2511200&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
-    "stage": "stage0",
-    "active": true,
-    "exception_type": "ConnectionError",
-    "reason": "('Connection aborted.', ConnectionResetError(10054, '현재 연결은 원격 호스트에 의해 강제로 끊겼습니다', None, 10054, None))",
-    "reused_cached_raw": true,
-    "cached_raw_path": "data\\raw\\notices\\academic_notice_detail_2511200.html",
-    "cached_checksum": "716ea2b19446fad4524d14887b4c00bf871343392075c25481ffd80cf2308a34"
-  },
-  {
-    "source_id": "academic_notice_detail_2512124",
-    "url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512124&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
-    "stage": "stage0",
-    "active": true,
-    "exception_type": "ConnectionError",
-    "reason": "('Connection aborted.', ConnectionResetError(10054, '현재 연결은 원격 호스트에 의해 강제로 끊겼습니다', None, 10054, None))",
-    "reused_cached_raw": true,
-    "cached_raw_path": "data\\raw\\notices\\academic_notice_detail_2512124.html",
-    "cached_checksum": "042e34f557d8e9882647eefcf7013fb22391cb5b03bd64f0b8327a1d993e921f"
-  },
-  {
-    "source_id": "academic_notice_detail_2512782",
-    "url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512782&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
-    "stage": "stage0",
-    "active": true,
-    "exception_type": "ConnectionError",
-    "reason": "('Connection aborted.', ConnectionResetError(10054, '현재 연결은 원격 호스트에 의해 강제로 끊겼습니다', None, 10054, None))",
-    "reused_cached_raw": true,
-    "cached_raw_path": "data\\raw\\notices\\academic_notice_detail_2512782.html",
-    "cached_checksum": "3ab0a1e2d70f9b2284a89a7fac96f1e8b73715b24b720f52c5bf332f9d4dad97"
   },
   {
     "source_id": "academic_calendar",
     "url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
     "stage": "stage0",
     "active": true,
-    "exception_type": "ConnectionError",
-    "reason": "('Connection aborted.', ConnectionResetError(10054, '현재 연결은 원격 호스트에 의해 강제로 끊겼습니다', None, 10054, None))",
+    "exception_type": "CalledProcessError",
+    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '30', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmpva_6b4yc', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr']' returned non-zero exit status 28.",
     "reused_cached_raw": true,
     "cached_raw_path": "data\\raw\\academic_calendar\\academic_calendar.html",
     "cached_checksum": "915b349966fbc716eb5415396d18d28f534ab96c6e364beb15b96d1c24b832e0"
@@ -92,10 +26,54 @@
     "url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
     "stage": "stage0",
     "active": true,
-    "exception_type": "ConnectionError",
-    "reason": "('Connection aborted.', ConnectionResetError(10054, '현재 연결은 원격 호스트에 의해 강제로 끊겼습니다', None, 10054, None))",
+    "exception_type": "CalledProcessError",
+    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '30', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmp_sown05c', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html']' returned non-zero exit status 28.",
     "reused_cached_raw": true,
     "cached_raw_path": "data\\raw\\shuttle\\shuttle_bus.html",
     "cached_checksum": "d948bebf245bed00263c693a4bd822b6117d6f199e5751be15f881885f6edf67"
+  },
+  {
+    "source_id": "graduation_curriculum_2024_pdf",
+    "url": "https://plus.cnu.ac.kr/html/kr/24file/2024_book.pdf",
+    "stage": "stage1",
+    "active": true,
+    "exception_type": "CalledProcessError",
+    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '120', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmpl9n0llsx', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/html/kr/24file/2024_book.pdf']' returned non-zero exit status 28.",
+    "reused_cached_raw": true,
+    "cached_raw_path": "data\\raw\\graduation\\graduation_curriculum_2024_pdf.pdf",
+    "cached_checksum": "6311f16b35ae9a985cd58c449d409d9cc7607a1caef72e2a1bf45151627947e3"
+  },
+  {
+    "source_id": "academic_notice_board_page_2",
+    "url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr&GotoPage=2",
+    "stage": "stage1",
+    "active": true,
+    "exception_type": "CalledProcessError",
+    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '30', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmperuaxxr1', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr&GotoPage=2']' returned non-zero exit status 28.",
+    "reused_cached_raw": true,
+    "cached_raw_path": "data\\raw\\notices\\academic_notice_board_page_2.html",
+    "cached_checksum": "1864a6d3a30422f86f00ca92419ecf102fb89e646c38e94d307a8dfa7213b21f"
+  },
+  {
+    "source_id": "academic_notice_board_page_4",
+    "url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr&GotoPage=4",
+    "stage": "stage1",
+    "active": true,
+    "exception_type": "CalledProcessError",
+    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '30', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmp1i_kpa9z', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr&GotoPage=4']' returned non-zero exit status 28.",
+    "reused_cached_raw": true,
+    "cached_raw_path": "data\\raw\\notices\\academic_notice_board_page_4.html",
+    "cached_checksum": "187560b62f243dec35292274f883fe0909ffa1b6a32e1a49cec313221bcb51cb"
+  },
+  {
+    "source_id": "academic_notice_board_page_5",
+    "url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr&GotoPage=5",
+    "stage": "stage1",
+    "active": true,
+    "exception_type": "CalledProcessError",
+    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '30', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmpc6v42q0o', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr&GotoPage=5']' returned non-zero exit status 28.",
+    "reused_cached_raw": true,
+    "cached_raw_path": "data\\raw\\notices\\academic_notice_board_page_5.html",
+    "cached_checksum": "f2fcedabbdc948d7da6593a28fd52d38aae78e4b6afee961900f6e33c62653cf"
   }
 ]

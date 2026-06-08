@@ -13,48 +13,48 @@
 
 | 항목 | 현재 | Tier 1 hard floor | 상태 |
 |---|---:|---:|---|
-| index-eligible active sources | 15 | 32 | 미달 |
-| raw fetched sources | 15 | 120 | 미달 |
-| accepted knowledge docs | 556 | 600 | 미달 |
-| structured rows | 466 | 700 | 미달 |
-| index chunk candidates | 556 | 1,500 | 미달 |
-| graduation docs | 166 | 180 | 미달 |
-| graduation rows | 141 | 150 | 미달 |
-| notice docs | 18 | 80 | 미달 |
-| calendar rows | 69 | 120 | 미달 |
-| dining rows | 205 | 120 | 통과 |
+| index-eligible active sources | 45 | 32 | 통과 |
+| raw fetched sources | 45 | 120 | 미달 |
+| accepted knowledge docs | 1,814 | 600 | 통과 |
+| structured rows | 1,533 | 700 | 통과 |
+| index chunk candidates | 1,814 | 1,500 | 통과 |
+| graduation docs | 271 | 180 | 통과 |
+| graduation rows | 228 | 150 | 통과 |
+| notice docs | 94 | 80 | 통과 |
+| calendar rows | 279 | 120 | 통과 |
+| dining rows | 925 | 120 | 통과 |
 | shuttle rows/segments | 41 | 40 | 통과 |
 
 ## 분포
 
-- domain: dining 244, graduation 166, academic_calendar 78, shuttle 50, notices 18
-- row types: dining_menu 205, graduation_requirement 141, academic_calendar_event 69, shuttle_segment 39, notice_board_item 10, shuttle_route 2
-- generation: structured_row 466, source_parse 90
-- source count in accepted docs: 15
-- notice ratio: 0.032
-- max source concentration: 0.228
+- domain: dining 1,084, academic_calendar 315, graduation 271, notices 94, shuttle 50
+- row types: dining_menu 925, academic_calendar_event 279, graduation_requirement 228, notice_board_item 60, shuttle_segment 39, shuttle_route 2
+- generation: structured_row 1,533, source_parse 281
+- source count in accepted docs: 45
+- notice ratio: 0.052
+- max source concentration: 0.070
 
 ## 실패 및 병목
 
-- Tier 1 hard floor validator는 `index-eligible sources 15 below 32`에서 실패한다.
-- source concentration hard floor도 0.15 이하가 필요한데 현재 0.228이다.
-- 중앙 교육과정 PDF가 127 docs로 가장 크다. 졸업요건 추가 source가 필요하다.
-- calendar는 2026년 단일 source라 69 rows에 머문다. 2023~2026 학사일정 source 확장이 필요하다.
-- notice는 cap/gate 이후 18 docs로 안전하지만, 목표량 80에는 부족하다. 학과 학사공지와 졸업/수강/장학 high-value notice source가 필요하다.
-- collection failure 9건은 모두 cached raw snapshot 재사용으로 처리됐다.
+- Tier 1 hard floor validator는 `raw sources 45 below 120`에서 실패한다.
+- 현재치 기준 sanity gate(`min_raw_sources=45`)는 통과했다. 즉 raw source 120을 제외한 hard floor는 모두 충족한다.
+- raw source 120은 의미 있는 공식 source를 더 찾아야 한다. 중앙 공지 페이지만 대량 추가하면 notice cap과 사용자 요구의 의미성 조건을 깨기 쉽다.
+- collection failure 7건은 모두 cached raw snapshot 재사용으로 처리됐다.
 - source parse failure는 0건이다.
 
 ## 이번 실행에서 개선된 점
 
-- 졸업요건이 일반 chunk가 아니라 `graduation_requirement` row로 141개 생성된다.
+- 졸업요건이 일반 chunk가 아니라 `graduation_requirement` row로 228개 생성된다.
 - 셔틀은 route 2개 외에 출발시각/정류장 `shuttle_segment` 39개를 생성한다.
-- 식단은 2026-06-08 주간 식당별 source를 통해 `dining_menu` 205개를 생성한다.
+- 식단은 2026년 6월 주간 식당별 source를 통해 `dining_menu` 925개를 생성한다.
 - notice는 high-value score, dedupe, board cap을 적용한다.
+- `plus.cnu.ac.kr`는 Python `requests`에서 연결 리셋이 반복되어 collector에 curl fallback을 추가했다.
+- 2023/2024 교육과정 PDF, 2023~2025 학사일정, 2026년 6월 식당별 주간 식단, 학사공지 2~6페이지를 stage1 active source로 추가했다.
+- 연도별 학사일정 source의 `curriculum_year`를 calendar row 날짜/row_id에 반영한다.
 
 ## 다음 작업
 
-1. 공식 source를 32개 이상으로 늘린다.
-2. 2023~2026 교육과정 PDF와 대표 학과 top5 졸업요건 source를 추가한다.
-3. 2023~2026 학사일정 source를 추가한다.
-4. 학과 학사공지/졸업공지 source를 high-value gate로 추가한다.
-5. source concentration 0.15 이하가 되도록 중앙 PDF 의존도를 낮춘다.
+1. raw source 120 목표는 공식성과 의미성을 유지한 상태에서 재검토한다.
+2. 대표 학과 top5 졸업요건 source를 추가해 graduation source 다양성을 더 높인다.
+3. 학과 학사공지/졸업공지 source를 high-value gate로 추가하되 notice docs 150 cap을 유지한다.
+4. RAG index/probe 단계에서 1,814 docs가 실제 검색 품질로 이어지는지 평가한다.
