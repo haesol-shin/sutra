@@ -77,7 +77,8 @@ def answer_with_harness(
         retrieved_pairs,
         question=question,
         temporal_intent=temporal_intent,
-    )[:evidence_pack_size]
+    )
+    retrieved_pairs = _deduplicate_retrieved_pairs(retrieved_pairs)[:evidence_pack_size]
     retrieved_docs = [doc for doc, _score in retrieved_pairs]
     retrieved_scores = [score for _doc, score in retrieved_pairs]
     postfilter_candidates = _selected_candidate_trace_rows(retrieved_pairs)
@@ -333,6 +334,65 @@ def _prioritize_retrieved_pairs(
         ),
         reverse=True,
     )
+
+
+def _deduplicate_retrieved_pairs(retrieved_pairs: list[tuple[KnowledgeDoc, float]]) -> list[tuple[KnowledgeDoc, float]]:
+    selected: list[tuple[KnowledgeDoc, float]] = []
+    seen_fact_keys: set[str] = set()
+    seen_scope_keys: set[str] = set()
+    for doc, score in retrieved_pairs:
+        fact_key = _fact_key(doc)
+        if fact_key:
+            if fact_key in seen_fact_keys:
+                continue
+            seen_fact_keys.add(fact_key)
+        scope_key = _scope_key(doc)
+        if scope_key:
+            if scope_key in seen_scope_keys:
+                continue
+            seen_scope_keys.add(scope_key)
+        selected.append((doc, score))
+    return selected
+
+
+def _fact_key(doc: KnowledgeDoc) -> str | None:
+    metadata = doc.metadata
+    row_type = metadata.get("row_type")
+    if row_type == "academic_calendar_event":
+        return _join_key(
+            "calendar_event",
+            metadata.get("start_date"),
+            metadata.get("end_date"),
+            metadata.get("event_name"),
+        )
+    if row_type == "dining_menu":
+        return _join_key(
+            "dining_menu",
+            metadata.get("menu_date"),
+            metadata.get("cafeteria"),
+            metadata.get("meal_type"),
+            metadata.get("user_type"),
+        )
+    return None
+
+
+def _scope_key(doc: KnowledgeDoc) -> str | None:
+    metadata = doc.metadata
+    row_type = metadata.get("row_type")
+    if row_type == "academic_calendar_monthly":
+        return _join_key("calendar_month", metadata.get("academic_year"), metadata.get("month"))
+    if row_type == "academic_calendar_semester":
+        return _join_key("calendar_semester", metadata.get("academic_year"), metadata.get("semester"))
+    if row_type == "dining_weekly_menu":
+        return _join_key("dining_week", metadata.get("week_start"), metadata.get("week_end"), metadata.get("cafeteria"))
+    return None
+
+
+def _join_key(*values: object) -> str | None:
+    parts = [str(value).strip() for value in values if value is not None and str(value).strip()]
+    if len(parts) != len(values):
+        return None
+    return ":".join(parts)
 
 
 def _temporal_match_score(doc: KnowledgeDoc, *, temporal_intent) -> int:

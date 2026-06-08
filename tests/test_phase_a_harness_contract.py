@@ -748,3 +748,153 @@ def test_diagnostic_only_candidate_does_not_enter_prompt(tmp_path: Path) -> None
     assert "late_notice_doc" in prefilter_ids
     assert "late_notice_doc" not in postfilter_ids
     assert "진단 전용 비밀 문장" not in captured["prompt"]
+
+
+def test_harness_deduplicates_evidence_by_fact_and_scope_before_pack_selection(tmp_path: Path, monkeypatch) -> None:
+    knowledge_docs = [
+        {
+            "doc_id": "calendar_event",
+            "label": 2,
+            "domain": "academic_calendar",
+            "title": "종강일",
+            "body": "2026학년도 1학기 종강일은 2026-06-19입니다.",
+            "source_url": "https://plus.cnu.ac.kr/calendar",
+            "source_id": "academic_calendar",
+            "metadata": {
+                "row_type": "academic_calendar_event",
+                "start_date": "2026-06-19",
+                "end_date": "2026-06-19",
+                "event_name": "종강",
+            },
+        },
+        {
+            "doc_id": "calendar_event_copy",
+            "label": 2,
+            "domain": "academic_calendar",
+            "title": "종강일 복제",
+            "body": "1학기 종강은 2026-06-19입니다.",
+            "source_url": "https://plus.cnu.ac.kr/calendar",
+            "source_id": "academic_calendar",
+            "metadata": {
+                "row_type": "academic_calendar_event",
+                "start_date": "2026-06-19",
+                "end_date": "2026-06-19",
+                "event_name": "종강",
+            },
+        },
+        {
+            "doc_id": "calendar_month",
+            "label": 2,
+            "domain": "academic_calendar",
+            "title": "6월 학사일정",
+            "body": "2026년 6월 학사일정에는 종강, 성적 입력, 하기방학이 포함됩니다.",
+            "source_url": "https://plus.cnu.ac.kr/calendar",
+            "source_id": "academic_calendar",
+            "metadata": {
+                "row_type": "academic_calendar_monthly",
+                "academic_year": 2026,
+                "month": 6,
+            },
+        },
+        {
+            "doc_id": "calendar_month_copy",
+            "label": 2,
+            "domain": "academic_calendar",
+            "title": "6월 학사일정 복제",
+            "body": "2026학년도 6월 학사일정 요약입니다.",
+            "source_url": "https://plus.cnu.ac.kr/calendar",
+            "source_id": "academic_calendar",
+            "metadata": {
+                "row_type": "academic_calendar_monthly",
+                "academic_year": 2026,
+                "month": 6,
+            },
+        },
+        {
+            "doc_id": "calendar_semester",
+            "label": 2,
+            "domain": "academic_calendar",
+            "title": "1학기 학사일정",
+            "body": "2026학년도 1학기 주요 학사일정입니다.",
+            "source_url": "https://plus.cnu.ac.kr/calendar",
+            "source_id": "academic_calendar",
+            "metadata": {
+                "row_type": "academic_calendar_semester",
+                "academic_year": 2026,
+                "semester": 1,
+            },
+        },
+        {
+            "doc_id": "calendar_other_event",
+            "label": 2,
+            "domain": "academic_calendar",
+            "title": "하기방학",
+            "body": "2026학년도 하기방학은 2026-06-22에 시작합니다.",
+            "source_url": "https://plus.cnu.ac.kr/calendar",
+            "source_id": "academic_calendar",
+            "metadata": {
+                "row_type": "academic_calendar_event",
+                "start_date": "2026-06-22",
+                "end_date": "2026-06-22",
+                "event_name": "하기방학",
+            },
+        },
+        {
+            "doc_id": "calendar_grades",
+            "label": 2,
+            "domain": "academic_calendar",
+            "title": "성적 입력",
+            "body": "2026학년도 1학기 성적 입력 기간은 종강 이후입니다.",
+            "source_url": "https://plus.cnu.ac.kr/calendar",
+            "source_id": "academic_calendar",
+            "metadata": {
+                "row_type": "academic_calendar_event",
+                "start_date": "2026-06-20",
+                "end_date": "2026-06-24",
+                "event_name": "성적입력",
+            },
+        },
+    ]
+    knowledge_path = tmp_path / "knowledge.json"
+    knowledge_path.write_text(json.dumps(knowledge_docs, ensure_ascii=False), encoding="utf-8")
+    ranked_ids = [doc["doc_id"] for doc in knowledge_docs]
+
+    def fake_rank_docs(question, docs, *, top_k: int):
+        docs_by_id = {doc.doc_id: doc for doc in docs}
+        return [
+            RetrievedDoc(
+                doc_id=doc_id,
+                score=1.0 - index * 0.01,
+                title=docs_by_id[doc_id].title,
+                source_url=docs_by_id[doc_id].source_url,
+                label=docs_by_id[doc_id].label,
+            )
+            for index, doc_id in enumerate(ranked_ids[:top_k])
+        ]
+
+    captured: dict[str, str] = {}
+
+    def writer(prompt: str) -> str:
+        captured["prompt"] = prompt
+        return "2026학년도 1학기 종강일은 2026년 6월 19일입니다."
+
+    monkeypatch.setattr(orchestrator_module, "rank_docs", fake_rank_docs)
+
+    result = answer_with_harness(
+        "이번 학기 종강일이 언제인가요?",
+        knowledge_path=knowledge_path,
+        generator=writer,
+        question_time=datetime(2026, 6, 8, tzinfo=timezone.utc),
+    )
+
+    assert result.output_status == OutputStatus.ANSWERED
+    assert result.trace.retrieved_doc_ids == [
+        "calendar_event",
+        "calendar_month",
+        "calendar_semester",
+        "calendar_other_event",
+        "calendar_grades",
+    ]
+    assert "calendar_event_copy" not in result.trace.retrieved_doc_ids
+    assert "calendar_month_copy" not in result.trace.retrieved_doc_ids
+    assert "하기방학" in captured["prompt"]

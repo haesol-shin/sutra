@@ -10,11 +10,11 @@
 - Answered: 31 / 39 (79.49%)
 - Fail-closed: 8 / 39 (20.51%)
 - Bottlenecks: `{"classifier": 1, "data": 1, "evidence": 5, "none": 25, "temporal": 7}`
-- Evidence duplicate doc rate: 19 / 169 (11.24%)
-- Evidence fact duplicates: 4
-- Evidence scope duplicates: 15
-- Answered duplicate rate: 3.82%
-- Fail-closed duplicate rate: 36.84%
+- Evidence duplicate doc rate: 0 / 163 (0.00%)
+- Evidence fact duplicates: 0
+- Evidence scope duplicates: 0
+- Answered duplicate rate: 0.00%
+- Fail-closed duplicate rate: 0.00%
 
 이 결과는 deterministic harness trace 진단이며 최종 Task 2 성능 claim이 아니다.
 

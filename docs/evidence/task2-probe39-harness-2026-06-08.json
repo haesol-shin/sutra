@@ -38,13 +38,13 @@
     "none": 25,
     "temporal": 7
   },
-  "evidence_duplicate_doc_count": 19,
-  "evidence_selected_doc_count": 169,
-  "evidence_duplicate_doc_rate": 0.11242603550295859,
-  "evidence_fact_duplicate_count": 4,
-  "evidence_scope_duplicate_count": 15,
-  "answered_evidence_duplicate_doc_rate": 0.03816793893129771,
-  "fail_closed_evidence_duplicate_doc_rate": 0.3684210526315789,
+  "evidence_duplicate_doc_count": 0,
+  "evidence_selected_doc_count": 163,
+  "evidence_duplicate_doc_rate": 0.0,
+  "evidence_fact_duplicate_count": 0,
+  "evidence_scope_duplicate_count": 0,
+  "answered_evidence_duplicate_doc_rate": 0.0,
+  "fail_closed_evidence_duplicate_doc_rate": 0.0,
   "rows": [
     {
       "id": "public_probe_01",
@@ -607,35 +607,33 @@
       ],
       "postfilter_retrieved_doc_ids": [
         "academic_calendar__academic_calendar_monthly__2026__05",
-        "academic_calendar_2026__academic_calendar_monthly__2026__05",
         "academic_calendar__academic_calendar_monthly__2026__06",
         "academic_calendar__academic_calendar_semester__2026__1학기",
         "academic_calendar__academic_calendar_semester__2026__2학기",
         "academic_calendar_2023__academic_calendar_monthly__2023__05",
         "academic_calendar_2024__academic_calendar_monthly__2024__05",
-        "academic_calendar_2025__academic_calendar_monthly__2025__05"
+        "academic_calendar_2025__academic_calendar_monthly__2025__05",
+        "academic_calendar__academic_calendar_monthly__2026__01"
       ],
       "selected_retrieved_doc_ids": [
         "academic_calendar__academic_calendar_monthly__2026__05",
-        "academic_calendar_2026__academic_calendar_monthly__2026__05",
         "academic_calendar__academic_calendar_monthly__2026__06",
         "academic_calendar__academic_calendar_semester__2026__1학기",
         "academic_calendar__academic_calendar_semester__2026__2학기",
         "academic_calendar_2023__academic_calendar_monthly__2023__05",
         "academic_calendar_2024__academic_calendar_monthly__2024__05",
-        "academic_calendar_2025__academic_calendar_monthly__2025__05"
+        "academic_calendar_2025__academic_calendar_monthly__2025__05",
+        "academic_calendar__academic_calendar_monthly__2026__01"
       ],
       "evidence_duplicate_diagnostics": {
         "selected_doc_count": 8,
         "fact_key_count": 0,
         "scope_key_count": 8,
         "fact_duplicate_count": 0,
-        "scope_duplicate_count": 1,
-        "duplicate_doc_count": 1,
-        "duplicate_doc_rate": 0.125,
-        "duplicate_doc_ids": [
-          "academic_calendar_2026__academic_calendar_monthly__2026__05"
-        ]
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
       },
       "failure_reason": null,
       "bottleneck": "none",
@@ -703,34 +701,24 @@
         "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
         "cnu_mobile_food_week_2026_06_08_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
         "cnu_mobile_food_week_2026_06_08_4th__dining_weekly_menu__2026-06-08__2026-06-13__제4학생회관",
-        "cnu_mobile_food_week_2026_06_08_life_science__dining_weekly_menu__2026-06-08__2026-06-13__생활과학대학",
-        "cnu_mobile_food_week_2026_06_01_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
-        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관"
+        "cnu_mobile_food_week_2026_06_08_life_science__dining_weekly_menu__2026-06-08__2026-06-13__생활과학대학"
       ],
       "selected_retrieved_doc_ids": [
         "cnu_mobile_food_week_2026_06_08_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
         "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
         "cnu_mobile_food_week_2026_06_08_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
         "cnu_mobile_food_week_2026_06_08_4th__dining_weekly_menu__2026-06-08__2026-06-13__제4학생회관",
-        "cnu_mobile_food_week_2026_06_08_life_science__dining_weekly_menu__2026-06-08__2026-06-13__생활과학대학",
-        "cnu_mobile_food_week_2026_06_01_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
-        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관"
+        "cnu_mobile_food_week_2026_06_08_life_science__dining_weekly_menu__2026-06-08__2026-06-13__생활과학대학"
       ],
       "evidence_duplicate_diagnostics": {
-        "selected_doc_count": 8,
+        "selected_doc_count": 5,
         "fact_key_count": 0,
-        "scope_key_count": 8,
+        "scope_key_count": 5,
         "fact_duplicate_count": 0,
-        "scope_duplicate_count": 3,
-        "duplicate_doc_count": 3,
-        "duplicate_doc_rate": 0.375,
-        "duplicate_doc_ids": [
-          "cnu_mobile_food_week_2026_06_01_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
-          "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-          "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관"
-        ]
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
       },
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "evidence",
@@ -964,26 +952,24 @@
         "academic_calendar_2023__academic_calendar_event__2023__2023-06-22__2023-06-22__하기방학__38__9c7a70e40a",
         "academic_calendar_2024__academic_calendar_event__2024__2024-06-24__2024-06-24__하기방학__38__20a32c8785",
         "academic_calendar_2025__academic_calendar_event__2025__2025-06-24__2025-06-24__하기방학__38__1c7756fe0f",
-        "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__9f26db7337"
+        "academic_calendar__academic_calendar_event__2026__2025-12-22__2026-01-13__동기_계절학기__1__58dc59a409"
       ],
       "selected_retrieved_doc_ids": [
         "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__964c89f954",
         "academic_calendar_2023__academic_calendar_event__2023__2023-06-22__2023-06-22__하기방학__38__9c7a70e40a",
         "academic_calendar_2024__academic_calendar_event__2024__2024-06-24__2024-06-24__하기방학__38__20a32c8785",
         "academic_calendar_2025__academic_calendar_event__2025__2025-06-24__2025-06-24__하기방학__38__1c7756fe0f",
-        "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__9f26db7337"
+        "academic_calendar__academic_calendar_event__2026__2025-12-22__2026-01-13__동기_계절학기__1__58dc59a409"
       ],
       "evidence_duplicate_diagnostics": {
         "selected_doc_count": 5,
         "fact_key_count": 5,
         "scope_key_count": 0,
-        "fact_duplicate_count": 1,
+        "fact_duplicate_count": 0,
         "scope_duplicate_count": 0,
-        "duplicate_doc_count": 1,
-        "duplicate_doc_rate": 0.2,
-        "duplicate_doc_ids": [
-          "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__9f26db7337"
-        ]
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
       },
       "failure_reason": null,
       "bottleneck": "none",
@@ -1051,26 +1037,24 @@
         "academic_calendar_2023__academic_calendar_event__2023__2023-06-22__2023-07-12__하기_계절학기__39__a1b316d8ff",
         "academic_calendar_2024__academic_calendar_event__2024__2024-06-24__2024-07-12__하기_계절학기__39__4feae89257",
         "academic_calendar_2025__academic_calendar_event__2025__2025-06-24__2025-07-14__하기_계절학기__39__8afa1a76a9",
-        "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__33cf4353de"
+        "academic_calendar__academic_calendar_event__2026__2025-12-22__2026-01-13__동기_계절학기__1__58dc59a409"
       ],
       "selected_retrieved_doc_ids": [
         "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__169fbd8705",
         "academic_calendar_2023__academic_calendar_event__2023__2023-06-22__2023-07-12__하기_계절학기__39__a1b316d8ff",
         "academic_calendar_2024__academic_calendar_event__2024__2024-06-24__2024-07-12__하기_계절학기__39__4feae89257",
         "academic_calendar_2025__academic_calendar_event__2025__2025-06-24__2025-07-14__하기_계절학기__39__8afa1a76a9",
-        "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__33cf4353de"
+        "academic_calendar__academic_calendar_event__2026__2025-12-22__2026-01-13__동기_계절학기__1__58dc59a409"
       ],
       "evidence_duplicate_diagnostics": {
         "selected_doc_count": 5,
         "fact_key_count": 5,
         "scope_key_count": 0,
-        "fact_duplicate_count": 1,
+        "fact_duplicate_count": 0,
         "scope_duplicate_count": 0,
-        "duplicate_doc_count": 1,
-        "duplicate_doc_rate": 0.2,
-        "duplicate_doc_ids": [
-          "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__33cf4353de"
-        ]
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
       },
       "failure_reason": null,
       "bottleneck": "none",
@@ -1135,32 +1119,27 @@
       ],
       "postfilter_retrieved_doc_ids": [
         "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_15_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관"
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__직원__2__256ddf0c67",
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__직원__11__719fd0a2ec",
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__학생__15__f93b5483f8"
       ],
       "selected_retrieved_doc_ids": [
         "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_15_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관"
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__직원__2__256ddf0c67",
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__직원__11__719fd0a2ec",
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__학생__15__f93b5483f8"
       ],
       "evidence_duplicate_diagnostics": {
         "selected_doc_count": 5,
-        "fact_key_count": 0,
-        "scope_key_count": 5,
+        "fact_key_count": 4,
+        "scope_key_count": 1,
         "fact_duplicate_count": 0,
-        "scope_duplicate_count": 4,
-        "duplicate_doc_count": 4,
-        "duplicate_doc_rate": 0.8,
-        "duplicate_doc_ids": [
-          "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-          "cnu_mobile_food_week_2026_06_15_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-          "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-          "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관"
-        ]
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
       },
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "evidence",
@@ -2202,26 +2181,24 @@
         "academic_calendar_2023__academic_calendar_event__2023__2023-06-22__2023-06-22__하기방학__38__9c7a70e40a",
         "academic_calendar_2024__academic_calendar_event__2024__2024-06-24__2024-06-24__하기방학__38__20a32c8785",
         "academic_calendar_2025__academic_calendar_event__2025__2025-06-24__2025-06-24__하기방학__38__1c7756fe0f",
-        "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__9f26db7337"
+        "academic_calendar__academic_calendar_event__2026__2025-12-22__2026-01-13__동기_계절학기__1__58dc59a409"
       ],
       "selected_retrieved_doc_ids": [
         "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__964c89f954",
         "academic_calendar_2023__academic_calendar_event__2023__2023-06-22__2023-06-22__하기방학__38__9c7a70e40a",
         "academic_calendar_2024__academic_calendar_event__2024__2024-06-24__2024-06-24__하기방학__38__20a32c8785",
         "academic_calendar_2025__academic_calendar_event__2025__2025-06-24__2025-06-24__하기방학__38__1c7756fe0f",
-        "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__9f26db7337"
+        "academic_calendar__academic_calendar_event__2026__2025-12-22__2026-01-13__동기_계절학기__1__58dc59a409"
       ],
       "evidence_duplicate_diagnostics": {
         "selected_doc_count": 5,
         "fact_key_count": 5,
         "scope_key_count": 0,
-        "fact_duplicate_count": 1,
+        "fact_duplicate_count": 0,
         "scope_duplicate_count": 0,
-        "duplicate_doc_count": 1,
-        "duplicate_doc_rate": 0.2,
-        "duplicate_doc_ids": [
-          "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__9f26db7337"
-        ]
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
       },
       "failure_reason": null,
       "bottleneck": "none",
@@ -2289,26 +2266,24 @@
         "academic_calendar_2023__academic_calendar_event__2023__2023-06-22__2023-07-12__하기_계절학기__39__a1b316d8ff",
         "academic_calendar_2024__academic_calendar_event__2024__2024-06-24__2024-07-12__하기_계절학기__39__4feae89257",
         "academic_calendar_2025__academic_calendar_event__2025__2025-06-24__2025-07-14__하기_계절학기__39__8afa1a76a9",
-        "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__33cf4353de"
+        "academic_calendar__academic_calendar_event__2026__2025-12-22__2026-01-13__동기_계절학기__1__58dc59a409"
       ],
       "selected_retrieved_doc_ids": [
         "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__169fbd8705",
         "academic_calendar_2023__academic_calendar_event__2023__2023-06-22__2023-07-12__하기_계절학기__39__a1b316d8ff",
         "academic_calendar_2024__academic_calendar_event__2024__2024-06-24__2024-07-12__하기_계절학기__39__4feae89257",
         "academic_calendar_2025__academic_calendar_event__2025__2025-06-24__2025-07-14__하기_계절학기__39__8afa1a76a9",
-        "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__33cf4353de"
+        "academic_calendar__academic_calendar_event__2026__2025-12-22__2026-01-13__동기_계절학기__1__58dc59a409"
       ],
       "evidence_duplicate_diagnostics": {
         "selected_doc_count": 5,
         "fact_key_count": 5,
         "scope_key_count": 0,
-        "fact_duplicate_count": 1,
+        "fact_duplicate_count": 0,
         "scope_duplicate_count": 0,
-        "duplicate_doc_count": 1,
-        "duplicate_doc_rate": 0.2,
-        "duplicate_doc_ids": [
-          "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__33cf4353de"
-        ]
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
       },
       "failure_reason": null,
       "bottleneck": "none",
@@ -2708,34 +2683,24 @@
         "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
         "cnu_mobile_food_week_2026_06_08_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
         "cnu_mobile_food_week_2026_06_08_4th__dining_weekly_menu__2026-06-08__2026-06-13__제4학생회관",
-        "cnu_mobile_food_week_2026_06_08_life_science__dining_weekly_menu__2026-06-08__2026-06-13__생활과학대학",
-        "cnu_mobile_food_week_2026_06_01_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
-        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관"
+        "cnu_mobile_food_week_2026_06_08_life_science__dining_weekly_menu__2026-06-08__2026-06-13__생활과학대학"
       ],
       "selected_retrieved_doc_ids": [
         "cnu_mobile_food_week_2026_06_08_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
         "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
         "cnu_mobile_food_week_2026_06_08_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
         "cnu_mobile_food_week_2026_06_08_4th__dining_weekly_menu__2026-06-08__2026-06-13__제4학생회관",
-        "cnu_mobile_food_week_2026_06_08_life_science__dining_weekly_menu__2026-06-08__2026-06-13__생활과학대학",
-        "cnu_mobile_food_week_2026_06_01_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
-        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관"
+        "cnu_mobile_food_week_2026_06_08_life_science__dining_weekly_menu__2026-06-08__2026-06-13__생활과학대학"
       ],
       "evidence_duplicate_diagnostics": {
-        "selected_doc_count": 8,
+        "selected_doc_count": 5,
         "fact_key_count": 0,
-        "scope_key_count": 8,
+        "scope_key_count": 5,
         "fact_duplicate_count": 0,
-        "scope_duplicate_count": 3,
-        "duplicate_doc_count": 3,
-        "duplicate_doc_rate": 0.375,
-        "duplicate_doc_ids": [
-          "cnu_mobile_food_week_2026_06_01_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
-          "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-          "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관"
-        ]
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
       },
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "evidence",
@@ -2800,32 +2765,27 @@
       ],
       "postfilter_retrieved_doc_ids": [
         "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_15_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관"
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__직원__2__256ddf0c67",
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__직원__11__719fd0a2ec",
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__학생__15__f93b5483f8"
       ],
       "selected_retrieved_doc_ids": [
         "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_15_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-        "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관"
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__직원__2__256ddf0c67",
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__직원__11__719fd0a2ec",
+        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__학생__15__f93b5483f8"
       ],
       "evidence_duplicate_diagnostics": {
         "selected_doc_count": 5,
-        "fact_key_count": 0,
-        "scope_key_count": 5,
+        "fact_key_count": 4,
+        "scope_key_count": 1,
         "fact_duplicate_count": 0,
-        "scope_duplicate_count": 4,
-        "duplicate_doc_count": 4,
-        "duplicate_doc_rate": 0.8,
-        "duplicate_doc_ids": [
-          "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-          "cnu_mobile_food_week_2026_06_15_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-          "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
-          "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관"
-        ]
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
       },
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "evidence",
