@@ -14,6 +14,7 @@ METADATA_FIELDS = (
     "source_curriculum_year",
     "source_parser_type",
     "source_notes",
+    "search_aliases",
 )
 LABEL_HINTS = {
     0: ("졸업", "교육과정", "학점", "전공", "교양", "이수"),
@@ -71,6 +72,8 @@ def _metadata_text(doc: KnowledgeDoc) -> str:
         value = doc.metadata.get(field)
         if isinstance(value, str):
             values.append(value)
+        elif isinstance(value, list):
+            values.extend(str(item) for item in value)
         elif isinstance(value, bool | int | float):
             values.append(str(value))
     return " ".join(values)

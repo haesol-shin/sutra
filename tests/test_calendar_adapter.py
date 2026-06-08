@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_term.collect.base import PARSER_VERSION
 from nlp_term.collect.source_inventory import iter_specs
+from nlp_term.retrieve.rank import rank_docs
 from nlp_term.schemas import RawSource, SourceVerification
 from nlp_term.structured.calendar import CalendarAdapter
 
@@ -110,3 +111,24 @@ def test_calendar_adapter_records_absence_of_exact_semester_end() -> None:
     rows = CalendarAdapter().parse(spec=spec, raw=raw, verification=verification)
 
     assert not any("종강" in row.event_name for row in rows)
+
+
+def test_calendar_break_rows_include_semester_end_search_aliases() -> None:
+    spec, raw, verification = _context()
+    adapter = CalendarAdapter()
+    rows = adapter.parse(spec=spec, raw=raw, verification=verification)
+
+    summer_break = next(row for row in rows if row.event_name == "하기방학")
+    winter_break = next(row for row in rows if row.event_name == "동기방학")
+    summer_doc = summer_break.to_knowledge_doc()
+    winter_doc = winter_break.to_knowledge_doc()
+
+    assert summer_doc.metadata["search_aliases"] == ["1학기 종강", "종강일", "여름방학 시작", "방학 시작"]
+    assert winter_doc.metadata["search_aliases"] == ["2학기 종강", "종강일", "겨울방학 시작", "방학 시작"]
+    assert "1학기 종강" in summer_doc.body
+    assert "2학기 종강" in winter_doc.body
+
+    docs = adapter.to_knowledge_docs(rows)
+    top = rank_docs("이번 학기 종강일이 언제인가요?", docs=docs, top_k=1)[0]
+
+    assert top.doc_id == summer_doc.doc_id

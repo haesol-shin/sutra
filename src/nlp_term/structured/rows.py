@@ -30,6 +30,10 @@ CALENDAR_STRUCTURED_FIELDS = [
     "semester",
     "is_range",
 ]
+CALENDAR_SEARCH_ALIASES = {
+    "하기방학": ["1학기 종강", "종강일", "여름방학 시작", "방학 시작"],
+    "동기방학": ["2학기 종강", "종강일", "겨울방학 시작", "방학 시작"],
+}
 
 
 class BaseStructuredRow(BaseModel):
@@ -251,12 +255,14 @@ class CalendarRow(BaseStructuredRow):
 
     def to_knowledge_doc(self) -> KnowledgeDoc:
         date_span = self.start_date if self.start_date == self.end_date else f"{self.start_date}/{self.end_date}"
+        search_aliases = self._search_aliases()
         metadata = {
             "structured": self.structured_payload(),
             "event_name": self.event_name,
             "start_date": self.start_date,
             "end_date": self.end_date,
             "date_span": date_span,
+            "search_aliases": search_aliases,
             "academic_year": self.academic_year,
             "month": self.month,
             "semester": self.semester,
@@ -287,12 +293,22 @@ class CalendarRow(BaseStructuredRow):
         )
 
     def _knowledge_body(self) -> str:
+        alias_sentence = self._alias_sentence()
         if self.start_date == self.end_date:
-            return f"{self.academic_year}학년도 학사일정: {self.start_date} {self.event_name}."
+            return f"{self.academic_year}학년도 학사일정: {self.start_date} {self.event_name}.{alias_sentence}"
         return (
             f"{self.academic_year}학년도 학사일정: {self.event_name}은 "
-            f"{self.start_date}부터 {self.end_date}까지입니다."
+            f"{self.start_date}부터 {self.end_date}까지입니다.{alias_sentence}"
         )
+
+    def _search_aliases(self) -> list[str]:
+        return CALENDAR_SEARCH_ALIASES.get(self.event_name, [])
+
+    def _alias_sentence(self) -> str:
+        aliases = self._search_aliases()
+        if not aliases:
+            return ""
+        return f" 학생 표현으로는 {', '.join(aliases)}에 해당합니다."
 
 
 def dining_row_id(
