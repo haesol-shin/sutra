@@ -102,7 +102,10 @@ def test_calendar_knowledge_doc_metadata_contract() -> None:
 
     assert doc.metadata["structured"]["start_date"] == "2026-06-22"
     assert doc.metadata["structured"]["end_date"] == "2026-07-10"
+    assert doc.metadata["structured"]["event_type"] == "summer_session_end"
+    assert "여름 계절학기 종강일" in doc.metadata["structured"]["aliases"]
     assert doc.metadata["event_name"] == "하기 계절학기"
+    assert doc.metadata["event_type"] == "summer_session_end"
     assert doc.metadata["start_date"] == "2026-06-22"
     assert doc.metadata["end_date"] == "2026-07-10"
     assert doc.metadata["date_span"] == "2026-06-22/2026-07-10"
@@ -110,6 +113,8 @@ def test_calendar_knowledge_doc_metadata_contract() -> None:
         "academic_year",
         "month",
         "event_name",
+        "event_type",
+        "aliases",
         "start_date",
         "end_date",
         "semester",
@@ -136,7 +141,8 @@ def test_calendar_break_rows_include_semester_end_search_aliases() -> None:
     summer_doc = summer_break.to_knowledge_doc()
     winter_doc = winter_break.to_knowledge_doc()
 
-    assert summer_doc.metadata["search_aliases"] == ["1학기 종강", "종강일", "여름방학 시작", "방학 시작"]
+    assert summer_doc.metadata["event_type"] == "semester_end"
+    assert summer_doc.metadata["search_aliases"] == ["1학기 종강", "이번 학기 종강", "종강일", "여름방학 시작", "방학 시작"]
     assert winter_doc.metadata["search_aliases"] == ["2학기 종강", "종강일", "겨울방학 시작", "방학 시작"]
     assert "1학기 종강" in summer_doc.body
     assert "2학기 종강" in winter_doc.body

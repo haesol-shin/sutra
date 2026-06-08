@@ -25,6 +25,8 @@ def test_temporal_intent_contract_stores_iso_week_resolution() -> None:
         explicitness="relative",
         target_start=date(2026, 6, 16),
         target_end=date(2026, 6, 16),
+        candidate_dates=[date(2026, 6, 16)],
+        candidate_resolution_policy="next_iso_week_weekday",
         granularity="day",
         resolution_policy="next_iso_week_weekday",
         freshness_required=True,
@@ -39,6 +41,8 @@ def test_temporal_intent_contract_stores_iso_week_resolution() -> None:
 
     assert intent.week_policy == "iso_monday_to_sunday"
     assert intent.target_start.isoformat() == "2026-06-16"
+    assert intent.candidate_dates == [date(2026, 6, 16)]
+    assert intent.candidate_resolution_policy == "next_iso_week_weekday"
     assert intent.retrieval_requirements == [
         RetrievalRequirement.DATE_FILTERED_EVIDENCE_NEEDED,
         RetrievalRequirement.STRUCTURED_SOURCE_PREFERRED,
@@ -55,6 +59,8 @@ def test_next_week_tuesday_uses_iso_week_policy() -> None:
     assert intent.temporal_type == TemporalType.FUTURE_SCHEDULE
     assert intent.target_start == date(2026, 6, 16)
     assert intent.target_end == date(2026, 6, 16)
+    assert intent.candidate_dates == [date(2026, 6, 16)]
+    assert intent.candidate_resolution_policy == "next_iso_week_weekday"
     assert intent.confidence == TemporalConfidence.HIGH
     assert RetrievalRequirement.DATE_FILTERED_EVIDENCE_NEEDED in intent.retrieval_requirements
     assert RetrievalRequirement.STRUCTURED_SOURCE_PREFERRED in intent.retrieval_requirements
@@ -70,6 +76,8 @@ def test_next_week_shuttle_normal_operation_uses_ongoing_status() -> None:
     assert intent.temporal_type == TemporalType.ONGOING_STATUS
     assert intent.target_start == date(2026, 6, 15)
     assert intent.target_end == date(2026, 6, 21)
+    assert intent.candidate_periods == ["2026-06-15/2026-06-21"]
+    assert intent.candidate_resolution_policy == "next_iso_week"
     assert intent.granularity == "week"
     assert RetrievalRequirement.DATE_FILTERED_EVIDENCE_NEEDED in intent.retrieval_requirements
     assert RetrievalRequirement.STRUCTURED_SOURCE_PREFERRED in intent.retrieval_requirements
@@ -85,6 +93,8 @@ def test_changed_since_defaults_to_recent_30_day_window() -> None:
     assert intent.temporal_type == TemporalType.CHANGED_SINCE
     assert intent.target_start == date(2026, 5, 9)
     assert intent.target_end == date(2026, 6, 8)
+    assert intent.candidate_periods == ["2026-05-09/2026-06-08"]
+    assert intent.candidate_resolution_policy == "recent_30_days_default"
     assert intent.confidence == TemporalConfidence.MEDIUM
     assert RetrievalRequirement.CHANGE_WINDOW_NEEDED in intent.retrieval_requirements
 

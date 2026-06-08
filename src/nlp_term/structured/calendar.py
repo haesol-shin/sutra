@@ -77,6 +77,8 @@ class CalendarAdapter:
                         academic_year=academic_year,
                         month=box.month,
                         event_name=event_name,
+                        event_type=_event_type(event_name),
+                        aliases=_event_aliases(event_name),
                         start_date=start_date,
                         end_date=end_date,
                         semester=_semester(event_name),
@@ -129,3 +131,34 @@ def _semester(event_name: str) -> str | None:
     if "동기" in event_name:
         return "동기"
     return None
+
+
+def _event_type(event_name: str) -> str | None:
+    if event_name in {"하기방학", "동기방학"}:
+        return "semester_end"
+    if event_name in {"하기 계절학기", "동기 계절학기"}:
+        return "summer_session_end" if "하기" in event_name else "winter_session_end"
+    if "중간고사" in event_name:
+        return "midterm_period"
+    if "수강신청" in event_name:
+        return "course_registration"
+    if "휴학" in event_name:
+        return "leave_application"
+    return None
+
+
+def _event_aliases(event_name: str) -> list[str]:
+    aliases: list[str] = []
+    if event_name == "하기방학":
+        aliases.extend(["1학기 종강", "이번 학기 종강", "종강일", "여름방학 시작", "방학 시작"])
+    elif event_name == "동기방학":
+        aliases.extend(["2학기 종강", "종강일", "겨울방학 시작", "방학 시작"])
+    elif event_name == "하기 계절학기":
+        aliases.extend(["여름 계절학기", "하계 계절학기", "계절학기 종강", "여름 계절학기 종강일"])
+    elif event_name == "동기 계절학기":
+        aliases.extend(["겨울 계절학기", "동계 계절학기", "계절학기 종강", "겨울 계절학기 종강일"])
+    elif "수강신청" in event_name:
+        aliases.extend(["수강 신청", "수강신청 일정", "수강신청 기간"])
+    elif "휴학" in event_name:
+        aliases.extend(["휴학 신청", "휴학 신청 마감", "휴복학 신청"])
+    return aliases

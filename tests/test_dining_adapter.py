@@ -86,8 +86,9 @@ def test_dining_adapter_knowledge_docs_preserve_safety_metadata() -> None:
     assert first.metadata["structured"]
     assert first.metadata["menu_date"]
     assert first.metadata["cafeteria"]
+    assert first.metadata["search_aliases"]
     assert first.metadata["structured_fields"]
-    assert first.metadata["verification_official_chain_ok"] is False
+    assert first.metadata["verification_official_chain_ok"] is True
     assert first.metadata["source_freshness_policy"] == "short_ttl"
 
 

@@ -182,6 +182,9 @@ class TemporalIntent(BaseModel):
     explicitness: Literal["none", "absolute", "relative", "mixed_conflict"] = "none"
     target_start: date | None = None
     target_end: date | None = None
+    candidate_dates: list[date] = Field(default_factory=list)
+    candidate_periods: list[str] = Field(default_factory=list)
+    candidate_resolution_policy: str | None = None
     granularity: Literal["none", "day", "week", "month", "semester", "year"] = "none"
     resolution_policy: str | None = None
     freshness_required: bool = False
@@ -222,6 +225,9 @@ class HarnessTrace(BaseModel):
     temporal_confidence_reasons: list[str] = Field(default_factory=list)
     target_start: str | None = None
     target_end: str | None = None
+    candidate_dates: list[str] = Field(default_factory=list)
+    candidate_periods: list[str] = Field(default_factory=list)
+    candidate_resolution_policy: str | None = None
     retrieval_requirements: list[RetrievalRequirement] = Field(default_factory=list)
     retrieved_doc_ids: list[str] = Field(default_factory=list)
     retrieved_scores: list[float] = Field(default_factory=list)

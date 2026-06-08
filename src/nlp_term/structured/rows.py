@@ -25,14 +25,18 @@ CALENDAR_STRUCTURED_FIELDS = [
     "academic_year",
     "month",
     "event_name",
+    "event_type",
+    "aliases",
     "start_date",
     "end_date",
     "semester",
     "is_range",
 ]
 CALENDAR_SEARCH_ALIASES = {
-    "하기방학": ["1학기 종강", "종강일", "여름방학 시작", "방학 시작"],
+    "하기방학": ["1학기 종강", "이번 학기 종강", "종강일", "여름방학 시작", "방학 시작"],
     "동기방학": ["2학기 종강", "종강일", "겨울방학 시작", "방학 시작"],
+    "하기 계절학기": ["여름 계절학기", "하계 계절학기", "계절학기 종강", "여름 계절학기 종강일"],
+    "동기 계절학기": ["겨울 계절학기", "동계 계절학기", "계절학기 종강", "겨울 계절학기 종강일"],
 }
 SHUTTLE_STRUCTURED_FIELDS = [
     "route_key",
@@ -198,6 +202,7 @@ class DiningRow(BaseStructuredRow):
 
     def to_knowledge_doc(self) -> KnowledgeDoc:
         body = self._knowledge_body()
+        search_aliases = self._search_aliases()
         metadata = {
             "structured": self.structured_payload(),
             "menu_date": self.meal_date,
@@ -205,6 +210,7 @@ class DiningRow(BaseStructuredRow):
             "cafeteria": self.cafeteria,
             "meal_type": self.meal_type,
             "user_type": self.user_type,
+            "search_aliases": search_aliases,
             "structured_fields": DINING_STRUCTURED_FIELDS,
             "raw_path": self.raw_path,
             "raw_checksum": self.raw_checksum,
@@ -244,12 +250,29 @@ class DiningRow(BaseStructuredRow):
         items = ", ".join(self.menu_items)
         return f"{subject} {menu_label}: {items}."
 
+    def _search_aliases(self) -> list[str]:
+        aliases = []
+        normalized_cafeteria = self.cafeteria.replace("제", "", 1)
+        if normalized_cafeteria != self.cafeteria:
+            aliases.append(normalized_cafeteria)
+        if self.meal_type == "조식":
+            aliases.append("아침")
+        elif self.meal_type == "중식":
+            aliases.append("점심")
+        elif self.meal_type == "석식":
+            aliases.append("저녁")
+        aliases.append("학식")
+        aliases.append("식단")
+        return aliases
+
 
 class CalendarRow(BaseStructuredRow):
     row_type: Literal["academic_calendar_event"] = "academic_calendar_event"
     academic_year: int
     month: int
     event_name: str
+    event_type: str | None = None
+    aliases: list[str] = Field(default_factory=list)
     start_date: str
     end_date: str
     semester: str | None = None
@@ -267,6 +290,8 @@ class CalendarRow(BaseStructuredRow):
         academic_year: int,
         month: int,
         event_name: str,
+        event_type: str | None,
+        aliases: list[str] | None,
         start_date: str,
         end_date: str,
         semester: str | None,
@@ -285,6 +310,8 @@ class CalendarRow(BaseStructuredRow):
             academic_year=academic_year,
             month=month,
             event_name=event_name,
+            event_type=event_type,
+            aliases=aliases or [],
             start_date=start_date,
             end_date=end_date,
             semester=semester,
@@ -296,6 +323,8 @@ class CalendarRow(BaseStructuredRow):
             "academic_year": self.academic_year,
             "month": self.month,
             "event_name": self.event_name,
+            "event_type": self.event_type,
+            "aliases": self.aliases,
             "start_date": self.start_date,
             "end_date": self.end_date,
             "semester": self.semester,
@@ -308,6 +337,7 @@ class CalendarRow(BaseStructuredRow):
         metadata = {
             "structured": self.structured_payload(),
             "event_name": self.event_name,
+            "event_type": self.event_type,
             "start_date": self.start_date,
             "end_date": self.end_date,
             "date_span": date_span,
@@ -351,7 +381,7 @@ class CalendarRow(BaseStructuredRow):
         )
 
     def _search_aliases(self) -> list[str]:
-        return CALENDAR_SEARCH_ALIASES.get(self.event_name, [])
+        return self.aliases or CALENDAR_SEARCH_ALIASES.get(self.event_name, [])
 
     def _alias_sentence(self) -> str:
         aliases = self._search_aliases()

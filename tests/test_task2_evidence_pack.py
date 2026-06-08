@@ -94,3 +94,42 @@ def test_evidence_pack_keeps_later_relevant_context_in_chunk() -> None:
     text = pack.to_prompt_text()
 
     assert "1학기 종강일은 2026년 6월 19일입니다" in text
+
+
+def test_evidence_pack_separates_structured_primary_rows_from_supporting_chunks() -> None:
+    docs = [
+        KnowledgeDoc(
+            doc_id="dining_row_1",
+            label=3,
+            domain="dining",
+            title="2학생회관 중식",
+            body="2026-06-16 2학생회관 중식: 쌀밥, 된장국.",
+            source_url="https://mobileadmin.cnu.ac.kr/food/index.jsp",
+            source_id="cnu_mobile_food",
+            metadata={"generation_method": "structured_row", "row_type": "dining_menu"},
+        ),
+        KnowledgeDoc(
+            doc_id="dining_notice_chunk_1",
+            label=3,
+            domain="dining",
+            title="식단 안내",
+            body="식단은 운영 상황에 따라 변경될 수 있다.",
+            source_url="https://plus.cnu.ac.kr/food",
+            source_id="cnu_food_notice",
+            metadata={"chunking_strategy": "recursive_prose"},
+        ),
+    ]
+
+    pack = build_evidence_pack(
+        question="다음주 화요일 2학생회관 메뉴가 어떻게 되나요?",
+        label=3,
+        domain="dining",
+        docs=docs,
+    )
+
+    text = pack.to_prompt_text()
+
+    assert [item.source_url for item in pack.primary_structured_rows] == ["https://mobileadmin.cnu.ac.kr/food/index.jsp"]
+    assert [item.source_url for item in pack.supporting_chunks] == ["https://plus.cnu.ac.kr/food"]
+    assert "주요 구조화 근거:" in text
+    assert "보조 문서 근거:" in text

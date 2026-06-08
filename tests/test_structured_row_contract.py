@@ -27,7 +27,7 @@ def _dining_context(fetched_at: str = "2026-06-08T02:02:37+00:00"):
         parser_name="dining_stage_inventory",
         parser_version=PARSER_VERSION,
         evidence=[spec.url],
-        warnings=["source is not official-chain verified", "freshness policy: short_ttl"],
+        warnings=["official welfare menu links to mobile dining endpoint", "freshness policy: short_ttl"],
         verified_at="2026-06-08T02:02:38+00:00",
     )
     return spec, raw, verification
@@ -74,7 +74,7 @@ def test_dining_row_derives_provenance_from_source_context() -> None:
     assert row.raw_fetched_at == raw.fetched_at
     assert row.parser_name == verification.parser_name
     assert row.parser_version == verification.parser_version
-    assert row.verification_official_chain_ok is False
+    assert row.verification_official_chain_ok is True
     assert row.freshness_policy == spec.freshness_policy
 
 
@@ -136,7 +136,7 @@ def test_dining_knowledge_doc_metadata_contract() -> None:
     assert doc.metadata["raw_path"] == row.raw_path
     assert doc.metadata["raw_checksum"] == row.raw_checksum
     assert doc.metadata["raw_fetched_at"] == row.raw_fetched_at
-    assert doc.metadata["verification_official_chain_ok"] is False
+    assert doc.metadata["verification_official_chain_ok"] is True
     assert doc.metadata["verification_parser_name"] == row.parser_name
     assert doc.metadata["verification_parser_version"] == row.parser_version
     assert doc.metadata["source_freshness_policy"] == row.freshness_policy

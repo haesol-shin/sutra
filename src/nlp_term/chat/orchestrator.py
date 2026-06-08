@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Literal
 
@@ -61,8 +61,8 @@ def answer_with_harness(
     evidence_pack_size = _evidence_pack_size(temporal_intent)
 
     knowledge = load_knowledge_with_metadata(knowledge_path)
-    decision_top_k = max(6, evidence_pack_size)
-    diagnostic_top_k = max(12, evidence_pack_size * 3)
+    decision_top_k = max(12, evidence_pack_size * 3)
+    diagnostic_top_k = max(24, evidence_pack_size * 4)
     decision_retrieved = rank_docs(question, knowledge.docs, top_k=decision_top_k)
     diagnostic_retrieved = rank_docs(question, knowledge.docs, top_k=diagnostic_top_k)
     docs_by_id = {doc.doc_id: doc for doc in knowledge.docs}
@@ -71,8 +71,13 @@ def answer_with_harness(
         (docs_by_id[row.doc_id], row.score)
         for row in decision_retrieved
         if row.doc_id in docs_by_id and docs_by_id[row.doc_id].label == route.label
-    ][:evidence_pack_size]
+    ]
     retrieved_pairs = _order_retrieved_pairs(retrieved_pairs, temporal_type=temporal_intent.temporal_type)
+    retrieved_pairs = _prioritize_retrieved_pairs(
+        retrieved_pairs,
+        question=question,
+        temporal_intent=temporal_intent,
+    )[:evidence_pack_size]
     retrieved_docs = [doc for doc, _score in retrieved_pairs]
     retrieved_scores = [score for _doc, score in retrieved_pairs]
     postfilter_candidates = _selected_candidate_trace_rows(retrieved_pairs)
@@ -311,6 +316,80 @@ def _posted_date_key(doc: KnowledgeDoc) -> str:
     return doc.date or ""
 
 
+def _prioritize_retrieved_pairs(
+    retrieved_pairs: list[tuple[KnowledgeDoc, float]],
+    *,
+    question: str,
+    temporal_intent,
+) -> list[tuple[KnowledgeDoc, float]]:
+    compact_question = question.replace(" ", "")
+    return sorted(
+        retrieved_pairs,
+        key=lambda pair: (
+            _temporal_match_score(pair[0], temporal_intent=temporal_intent),
+            _structured_score(pair[0]),
+            _alias_match_score(pair[0], compact_question),
+            pair[1],
+        ),
+        reverse=True,
+    )
+
+
+def _temporal_match_score(doc: KnowledgeDoc, *, temporal_intent) -> int:
+    if temporal_intent.target_start is None:
+        return 0
+    target_end = temporal_intent.target_end or temporal_intent.target_start
+    if _doc_interval_overlaps(doc, target_start=temporal_intent.target_start, target_end=target_end):
+        return 2
+    target = temporal_intent.target_start.isoformat()
+    date_keys = ("menu_date", "operation_date", "valid_at", "effective_date", "posted_date", "start_date", "end_date")
+    values = [doc.date or "", *(str(doc.metadata.get(key, "")) for key in date_keys), doc.body]
+    return int(any(target in value for value in values if value))
+
+
+def _structured_score(doc: KnowledgeDoc) -> int:
+    return int(doc.metadata.get("generation_method") == "structured_row" or "structured" in doc.metadata)
+
+
+def _alias_match_score(doc: KnowledgeDoc, compact_question: str) -> int:
+    aliases = doc.metadata.get("search_aliases")
+    if not isinstance(aliases, list):
+        return 0
+    return sum(int(str(alias).replace(" ", "") in compact_question) for alias in aliases)
+
+
+def _doc_interval_overlaps(doc: KnowledgeDoc, *, target_start: date, target_end: date) -> bool:
+    spans = []
+    date_span = doc.metadata.get("date_span")
+    if isinstance(date_span, str):
+        spans.extend(_parse_date_span(date_span))
+    start = _parse_iso_date(doc.metadata.get("start_date") or doc.metadata.get("valid_start"))
+    end = _parse_iso_date(doc.metadata.get("end_date") or doc.metadata.get("valid_end"))
+    if start and end:
+        spans.append((start, end))
+    return any(left <= target_end and target_start <= right for left, right in spans)
+
+
+def _parse_date_span(value: str) -> list[tuple[date, date]]:
+    parts = [part for part in value.replace("/", " ").split() if part]
+    dates = [_parse_iso_date(part) for part in parts]
+    parsed = [item for item in dates if item is not None]
+    if len(parsed) >= 2:
+        return [(parsed[0], parsed[1])]
+    if len(parsed) == 1:
+        return [(parsed[0], parsed[0])]
+    return []
+
+
+def _parse_iso_date(value: object) -> date | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        return None
+
+
 def _optional_metadata_text(doc: KnowledgeDoc, key: str) -> str | None:
     value = doc.metadata.get(key)
     return str(value) if value is not None else None
@@ -365,7 +444,14 @@ def _render_temporal_context(temporal_intent) -> str | None:
             lines.append(f"- 해석된 날짜: {temporal_intent.target_start.isoformat()}")
         else:
             lines.append(f"- 해석된 기간: {temporal_intent.target_start.isoformat()} ~ {temporal_intent.target_end.isoformat()}")
-    lines.append("- 해석된 날짜 또는 기간과 맞지 않는 근거로는 날짜, 메뉴, 운행 여부를 단정하지 않는다.")
+    if temporal_intent.candidate_dates:
+        dates = ", ".join(item.isoformat() for item in temporal_intent.candidate_dates)
+        lines.append(f"- 후보 날짜: {dates}")
+    if temporal_intent.candidate_periods:
+        lines.append(f"- 후보 기간: {', '.join(temporal_intent.candidate_periods)}")
+    if temporal_intent.candidate_resolution_policy:
+        lines.append(f"- 날짜 해석 정책: {temporal_intent.candidate_resolution_policy}")
+    lines.append("- 후보 날짜 또는 기간과 맞는 근거를 우선 사용하고, 맞지 않는 근거로는 날짜, 메뉴, 운행 여부를 단정하지 않는다.")
     return "\n".join(lines)
 
 
@@ -414,6 +500,9 @@ def _build_trace(
         temporal_confidence_reasons=temporal_intent.confidence_reasons,
         target_start=temporal_intent.target_start.isoformat() if temporal_intent.target_start else None,
         target_end=temporal_intent.target_end.isoformat() if temporal_intent.target_end else None,
+        candidate_dates=[item.isoformat() for item in temporal_intent.candidate_dates],
+        candidate_periods=temporal_intent.candidate_periods,
+        candidate_resolution_policy=temporal_intent.candidate_resolution_policy,
         retrieval_requirements=temporal_intent.retrieval_requirements,
         retrieved_doc_ids=[doc.doc_id for doc in retrieved_docs],
         retrieved_scores=retrieved_scores,

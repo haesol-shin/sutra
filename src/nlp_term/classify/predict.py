@@ -20,10 +20,29 @@ KEYWORD_LABELS: list[tuple[int, tuple[str, ...]]] = [
 
 def predict_label(question: str) -> int:
     compact = question.replace(" ", "")
+    if _is_notice_post_query(compact):
+        return 1
+    if _is_graduation_requirement_query(compact):
+        return 0
     for label, keywords in KEYWORD_LABELS:
         if any(keyword.replace(" ", "") in compact for keyword in keywords):
             return label
     return 1
+
+
+def _is_notice_post_query(compact: str) -> bool:
+    notice_cues = ("공지", "공지사항", "게시", "올라온", "새글", "글")
+    action_cues = ("찾", "어디", "최신", "최근", "이번주", "지난주", "있", "올라왔")
+    return any(cue in compact for cue in notice_cues) and any(cue in compact for cue in action_cues)
+
+
+def _is_graduation_requirement_query(compact: str) -> bool:
+    graduation_cues = ("졸업", "졸업요건", "졸업인증", "학점", "전공필수", "전공선택", "교양필수", "교육과정")
+    version_cues = ("학번", "입학", "교육과정")
+    project_course_cues = ("프로젝트수업", "프로젝트교과목", "프로젝트")
+    return any(cue in compact for cue in graduation_cues) or (
+        any(cue in compact for cue in version_cues) and any(cue in compact for cue in project_course_cues)
+    )
 
 
 def predict_rows(rows: list[ClassificationInput]) -> list[ClassificationOutput]:

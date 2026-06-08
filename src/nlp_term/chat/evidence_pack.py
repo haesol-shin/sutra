@@ -30,6 +30,8 @@ class EvidencePack(BaseModel):
     intent_label: int = Field(ge=0, le=4)
     intent_domain: Domain
     temporal_context: str | None = None
+    primary_structured_rows: list[EvidenceItem] = Field(default_factory=list)
+    supporting_chunks: list[EvidenceItem] = Field(default_factory=list)
     items: list[EvidenceItem] = Field(default_factory=list)
 
     def to_prompt_text(self) -> str:
@@ -40,14 +42,15 @@ class EvidencePack(BaseModel):
         ]
         if self.temporal_context:
             lines.extend(["시간 기준:", self.temporal_context])
-        lines.append("근거:")
-        for index, item in enumerate(self.items, start=1):
-            lines.append(f"- 근거 {index}: {item.source_name}")
-            for fact in item.facts:
-                lines.append(f"  - 핵심 사실: {fact}")
-            for caution in item.cautions:
-                lines.append(f"  - 주의: {caution}")
-            lines.append(f"  - 출처 URL: {item.source_url}")
+        if self.primary_structured_rows:
+            lines.append("주요 구조화 근거:")
+            _append_items(lines, self.primary_structured_rows)
+        if self.supporting_chunks:
+            lines.append("보조 문서 근거:")
+            _append_items(lines, self.supporting_chunks)
+        if not self.primary_structured_rows and not self.supporting_chunks:
+            lines.append("근거:")
+            _append_items(lines, self.items)
         return "\n".join(lines)
 
 
@@ -61,22 +64,45 @@ def build_evidence_pack(
     max_fact_chars: int = 500,
     temporal_context: str | None = None,
 ) -> EvidencePack:
-    items = [
-        EvidenceItem(
-            source_name=_source_name(doc),
-            source_url=doc.source_url,
-            facts=[_clean_fact(doc.body, max_chars=max_fact_chars)],
-            cautions=_cautions(doc),
-        )
-        for doc in docs[:max_items]
-        if doc.body.strip()
-    ]
+    selected_docs = [doc for doc in docs[:max_items] if doc.body.strip()]
+    primary_structured_rows = [_to_item(doc, max_fact_chars=max_fact_chars) for doc in selected_docs if _is_structured_row(doc)]
+    supporting_chunks = [_to_item(doc, max_fact_chars=max_fact_chars) for doc in selected_docs if not _is_structured_row(doc)]
+    items = [*primary_structured_rows, *supporting_chunks]
     return EvidencePack(
         question=question,
         intent_label=label,
         intent_domain=domain,
         temporal_context=temporal_context,
+        primary_structured_rows=primary_structured_rows,
+        supporting_chunks=supporting_chunks,
         items=items,
+    )
+
+
+def _append_items(lines: list[str], items: list[EvidenceItem]) -> None:
+    for index, item in enumerate(items, start=1):
+        lines.append(f"- 근거 {index}: {item.source_name}")
+        for fact in item.facts:
+            lines.append(f"  - 핵심 사실: {fact}")
+        for caution in item.cautions:
+            lines.append(f"  - 주의: {caution}")
+        lines.append(f"  - 출처 URL: {item.source_url}")
+
+
+def _to_item(doc: KnowledgeDoc, *, max_fact_chars: int) -> EvidenceItem:
+    return EvidenceItem(
+        source_name=_source_name(doc),
+        source_url=doc.source_url,
+        facts=[_clean_fact(doc.body, max_chars=max_fact_chars)],
+        cautions=_cautions(doc),
+    )
+
+
+def _is_structured_row(doc: KnowledgeDoc) -> bool:
+    return (
+        doc.metadata.get("generation_method") == "structured_row"
+        or isinstance(doc.metadata.get("structured_fields"), list)
+        or isinstance(doc.metadata.get("row_type"), str)
     )
 
 

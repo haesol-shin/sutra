@@ -51,6 +51,8 @@ def resolve_temporal_intent(
             explicitness="relative",
             target_start=start,
             target_end=reference_date,
+            candidate_periods=[_period_text(start, reference_date)],
+            candidate_resolution_policy="recent_30_days_default",
             granularity="day",
             resolution_policy="recent_30_days_default",
             freshness_required=True,
@@ -87,6 +89,8 @@ def resolve_temporal_intent(
             explicitness="relative",
             target_start=target,
             target_end=target,
+            candidate_dates=[target],
+            candidate_resolution_policy="next_iso_week_weekday",
             granularity="day",
             resolution_policy="next_iso_week_weekday",
             freshness_required=route_domain in {"dining", "shuttle", "notices", "academic_calendar"},
@@ -106,6 +110,8 @@ def resolve_temporal_intent(
             explicitness="relative",
             target_start=start,
             target_end=end,
+            candidate_periods=[_period_text(start, end)],
+            candidate_resolution_policy="next_iso_week",
             granularity="week",
             resolution_policy="next_iso_week",
             freshness_required=route_domain in {"dining", "shuttle", "notices", "academic_calendar"},
@@ -122,6 +128,8 @@ def resolve_temporal_intent(
             explicitness="relative",
             target_start=reference_date,
             target_end=reference_date,
+            candidate_dates=[reference_date],
+            candidate_resolution_policy="current_date",
             granularity="day",
             resolution_policy="current_date",
             freshness_required=True,
@@ -136,6 +144,7 @@ def resolve_temporal_intent(
             original_expression=_original_expression(question, default="이번 학기"),
             temporal_type=TemporalType.DATE_LOOKUP,
             explicitness="relative",
+            candidate_resolution_policy="academic_semester_lookup_required",
             granularity="semester",
             resolution_policy="academic_semester_lookup_required",
             freshness_required=False,
@@ -164,6 +173,10 @@ def _to_kst(value: datetime) -> datetime:
 
 def _iso_week_start(value: date) -> date:
     return value - timedelta(days=value.weekday())
+
+
+def _period_text(start: date, end: date) -> str:
+    return f"{start.isoformat()}/{end.isoformat()}"
 
 
 def _extract_weekday(compact: str) -> int | None:

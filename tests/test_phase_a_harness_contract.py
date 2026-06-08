@@ -86,7 +86,7 @@ def test_source_navigation_is_sufficient_with_safe_official_url() -> None:
     assert decision.freshness_status == FreshnessStatus.FRESH
 
 
-def test_current_dining_fact_fails_closed_when_source_is_unverified_and_unstructured() -> None:
+def test_current_dining_fact_fails_closed_when_source_is_unstructured() -> None:
     doc = _doc(
         label=3,
         domain="dining",
@@ -109,8 +109,8 @@ def test_current_dining_fact_fails_closed_when_source_is_unverified_and_unstruct
     )
 
     assert decision.status == EvidenceSufficiencyStatus.INSUFFICIENT
-    assert decision.fetch_decision == FetchDecision.FETCH_BLOCKED_UNOFFICIAL
-    assert decision.freshness_status == FreshnessStatus.UNVERIFIED_SOURCE
+    assert decision.fetch_decision == FetchDecision.FETCH_REQUIRED_BUT_NOT_IMPLEMENTED
+    assert decision.freshness_status == FreshnessStatus.UNKNOWN
 
 
 def test_harness_generates_from_sufficient_evidence_with_injected_writer(tmp_path: Path) -> None:
@@ -144,7 +144,7 @@ def test_harness_generates_from_sufficient_evidence_with_injected_writer(tmp_pat
     assert result.trace.generation_backend == "injected"
 
 
-def test_harness_current_dining_question_fails_closed_without_menu_claim(tmp_path: Path) -> None:
+def test_harness_current_dining_question_fails_closed_without_structured_menu_row(tmp_path: Path) -> None:
     knowledge_path = tmp_path / "knowledge.json"
     knowledge_path.write_text(
         "["
@@ -174,8 +174,48 @@ def test_harness_current_dining_question_fails_closed_without_menu_claim(tmp_pat
     assert "공식 근거가 충분하지 않아 확답하기 어렵습니다" in result.output.model
     assert "김치찌개" not in result.output.model
     assert result.trace.answer_kind == AnswerKind.CURRENT_FACT
-    assert result.trace.fetch_decision == FetchDecision.FETCH_BLOCKED_UNOFFICIAL
+    assert result.trace.fetch_decision == FetchDecision.FETCH_REQUIRED_BUT_NOT_IMPLEMENTED
     assert result.trace.generation_status == "skipped_blocked"
+
+
+def test_harness_current_dining_question_accepts_official_structured_menu_row(tmp_path: Path) -> None:
+    knowledge_path = tmp_path / "knowledge.json"
+    knowledge_path.write_text(
+        "["
+        "{"
+        '"doc_id":"dining_doc",'
+        '"label":3,'
+        '"domain":"dining",'
+        '"title":"2026-06-08 제2학생회관 중식 식단",'
+        '"body":"2026-06-08 제2학생회관 중식 학생 정식: 김치볶음밥, 계란국.",'
+        '"date":"2026-06-08",'
+        '"source_url":"https://mobileadmin.cnu.ac.kr/food/index.jsp",'
+        '"source_id":"cnu_mobile_food",'
+        '"metadata":{'
+        '"generation_method":"structured_row",'
+        '"structured_fields":["meal_date","cafeteria","meal_type"],'
+        '"menu_date":"2026-06-08",'
+        '"cafeteria":"제2학생회관",'
+        '"location":"제2학생회관",'
+        '"meal_type":"중식",'
+        '"raw_fetched_at":"2026-06-08T00:00:00+09:00"'
+        "}"
+        "}"
+        "]",
+        encoding="utf-8",
+    )
+
+    result = answer_with_harness(
+        "오늘 2학생회관 점심 메뉴 뭐야?",
+        mode="chat",
+        knowledge_path=knowledge_path,
+        generator=lambda prompt: "오늘 2학생회관 점심은 김치볶음밥과 계란국입니다.",
+        question_time=datetime(2026, 6, 8, tzinfo=timezone.utc),
+    )
+
+    assert result.output_status == OutputStatus.ANSWERED
+    assert result.trace.evidence_sufficiency_status == EvidenceSufficiencyStatus.SUFFICIENT
+    assert result.trace.fetch_decision == FetchDecision.SKIPPED_RAG_SUFFICIENT
 
 
 def test_harness_does_not_accept_safe_source_from_wrong_domain(tmp_path: Path) -> None:
@@ -265,6 +305,8 @@ def test_harness_trace_records_next_week_temporal_intent(tmp_path: Path) -> None
     assert result.trace.temporal_confidence == "high"
     assert result.trace.target_start == "2026-06-16"
     assert result.trace.target_end == "2026-06-16"
+    assert result.trace.candidate_dates == ["2026-06-16"]
+    assert result.trace.candidate_resolution_policy == "next_iso_week_weekday"
     assert "date_filtered_evidence_needed" in result.trace.retrieval_requirements
 
 
@@ -434,6 +476,8 @@ def test_harness_prompt_contains_user_safe_temporal_context(tmp_path: Path) -> N
 
     assert result.output_status == OutputStatus.ANSWERED
     assert "2026-06-16" in captured["prompt"]
+    assert "후보 날짜: 2026-06-16" in captured["prompt"]
+    assert "날짜 해석 정책: next_iso_week_weekday" in captured["prompt"]
     assert "TemporalIntent" not in captured["prompt"]
     assert "confidence" not in captured["prompt"]
 
@@ -530,6 +574,19 @@ def test_harness_trace_records_prefilter_and_postfilter_retrieval_candidates(tmp
 
 def test_diagnostic_retrieval_pool_does_not_expand_evidence_selection(tmp_path: Path) -> None:
     knowledge_path = tmp_path / "knowledge.json"
+    selected_notice_docs = [
+        {
+            "doc_id": f"selected_notice_doc_{index}",
+            "label": 1,
+            "domain": "notices",
+            "title": "토익 장학금 성적 기준",
+            "body": f"토익 장학금 성적 기준은 공식 공지사항에서 확인한다. 관련 안내 {index}.",
+            "source_url": f"https://plus.cnu.ac.kr/notice/{index}",
+            "source_id": "notices_main",
+            "metadata": {"chunk_confidence": "medium"},
+        }
+        for index in range(3)
+    ]
     high_scoring_wrong_route_docs = [
         {
             "doc_id": f"calendar_doc_{index}",
@@ -546,6 +603,7 @@ def test_diagnostic_retrieval_pool_does_not_expand_evidence_selection(tmp_path: 
     knowledge_path.write_text(
         json.dumps(
             [
+                *selected_notice_docs,
                 *high_scoring_wrong_route_docs,
                 {
                     "doc_id": "late_notice_doc",
@@ -574,8 +632,8 @@ def test_diagnostic_retrieval_pool_does_not_expand_evidence_selection(tmp_path: 
 
     assert "late_notice_doc" in prefilter_ids
     assert "late_notice_doc" not in postfilter_ids
-    assert result.trace.retrieved_doc_ids == []
-    assert result.output_status == OutputStatus.FAIL_CLOSED
+    assert result.trace.retrieved_doc_ids == [doc["doc_id"] for doc in selected_notice_docs]
+    assert result.output_status == OutputStatus.ANSWERED
 
 
 def test_harness_uses_original_top_k_for_decision_and_larger_pool_for_diagnostics(tmp_path: Path, monkeypatch) -> None:
@@ -620,11 +678,24 @@ def test_harness_uses_original_top_k_for_decision_and_larger_pool_for_diagnostic
         generator=lambda prompt: "장학금 공지는 공식 공지사항에서 확인하면 됩니다.",
     )
 
-    assert top_k_calls == [6, 12]
+    assert top_k_calls == [12, 24]
 
 
 def test_diagnostic_only_candidate_does_not_enter_prompt(tmp_path: Path) -> None:
     knowledge_path = tmp_path / "knowledge.json"
+    selected_notice_docs = [
+        {
+            "doc_id": f"selected_notice_doc_{index}",
+            "label": 1,
+            "domain": "notices",
+            "title": "토익 장학금 성적 기준",
+            "body": f"토익 장학금 성적 기준은 공식 공지사항에서 확인한다. 관련 안내 {index}.",
+            "source_url": f"https://plus.cnu.ac.kr/notice/{index}",
+            "source_id": "notices_main",
+            "metadata": {"chunk_confidence": "medium"},
+        }
+        for index in range(3)
+    ]
     wrong_route_docs = [
         {
             "doc_id": f"calendar_doc_{index}",
@@ -641,16 +712,7 @@ def test_diagnostic_only_candidate_does_not_enter_prompt(tmp_path: Path) -> None
     knowledge_path.write_text(
         json.dumps(
             [
-                {
-                    "doc_id": "selected_notice_doc",
-                    "label": 1,
-                    "domain": "notices",
-                    "title": "토익 장학금 성적 기준",
-                    "body": "토익 장학금 성적 기준은 공식 공지사항에서 확인한다.",
-                    "source_url": "https://plus.cnu.ac.kr/notice",
-                    "source_id": "notices_main",
-                    "metadata": {"chunk_confidence": "medium"},
-                },
+                *selected_notice_docs,
                 *wrong_route_docs,
                 {
                     "doc_id": "late_notice_doc",

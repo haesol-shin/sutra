@@ -75,6 +75,13 @@ def evaluate_evidence_sufficiency(
                 freshness_status=blocking_status[1],
                 reasons=blocking_status[2],
             )
+        if not _has_structured_current_fact(docs):
+            return EvidenceSufficiencyDecision(
+                status=EvidenceSufficiencyStatus.INSUFFICIENT,
+                fetch_decision=FetchDecision.FETCH_REQUIRED_BUT_NOT_IMPLEMENTED,
+                freshness_status=FreshnessStatus.UNKNOWN,
+                reasons=["current_fact_requires_structured_fields"],
+            )
 
     top_score = max(retrieved_scores or [0.0])
     if top_score < min_top_score:
@@ -90,14 +97,6 @@ def evaluate_evidence_sufficiency(
             fetch_decision=FetchDecision.FETCH_BLOCKED_NO_REGISTRY,
             freshness_status=FreshnessStatus.UNKNOWN,
             reasons=["top_score_below_threshold", "no_fetchable_registry_candidate"],
-        )
-
-    if answer_kind == AnswerKind.CURRENT_FACT and not _has_structured_current_fact(docs):
-        return EvidenceSufficiencyDecision(
-            status=EvidenceSufficiencyStatus.INSUFFICIENT,
-            fetch_decision=FetchDecision.FETCH_REQUIRED_BUT_NOT_IMPLEMENTED,
-            freshness_status=FreshnessStatus.UNKNOWN,
-            reasons=["current_fact_requires_structured_fields"],
         )
 
     if temporal_intent and RetrievalRequirement.DATE_FILTERED_EVIDENCE_NEEDED in temporal_intent.retrieval_requirements:
