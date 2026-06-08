@@ -37,6 +37,10 @@
 - `writer`: 답변 생성 후 validator에서 막혔다.
 - `none`: 현재 trace 기준으로 harness 병목이 없다.
 
+## Generalization Probe Policy
+
+The 14 public probes are fixed regression probes, not the only optimization target. `data/gold/task2_generalization_probe.json` tracks expression coverage for latest notices, changed-since questions, dining date queries, shuttle status, and versioned graduation questions. Future router or source changes should improve both public probes and this robustness set.
+
 ## Notice Latest Parse 개선 후 진단
 
 이번 변경은 공지 목록 HTML을 단순 chunk가 아니라 정렬 가능한 `notice_board_item` row로 바꾸는 데 집중했다.
