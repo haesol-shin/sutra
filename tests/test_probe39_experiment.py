@@ -4,6 +4,8 @@ from collections import Counter
 from pathlib import Path
 
 from nlp_term.chat.probe39_experiment import build_probe39_cases
+from nlp_term.chat.probe39_experiment import evidence_duplicate_diagnostics
+from nlp_term.schemas import KnowledgeDoc
 
 
 PUBLIC_PROBE_PATH = Path("data/gold/task2_public_probe_eval.json")
@@ -65,3 +67,77 @@ def test_probe39_generalization_sample_selection_is_stable() -> None:
         "gp052",
         "gp053",
     ]
+
+
+def test_evidence_duplicate_diagnostics_counts_fact_and_scope_duplicates() -> None:
+    docs = [
+        KnowledgeDoc(
+            doc_id="calendar-atomic",
+            label=2,
+            domain="academic_calendar",
+            title="하기방학",
+            body="2026-06-22 하기방학",
+            source_url="https://plus.cnu.ac.kr/calendar",
+            source_id="academic_calendar",
+            metadata={
+                "row_type": "academic_calendar_event",
+                "start_date": "2026-06-22",
+                "end_date": "2026-06-22",
+                "event_name": "하기방학",
+            },
+        ),
+        KnowledgeDoc(
+            doc_id="calendar-atomic-copy",
+            label=2,
+            domain="academic_calendar",
+            title="하기방학 copy",
+            body="2026학년도 학사일정: 하기방학은 2026-06-22입니다.",
+            source_url="https://plus.cnu.ac.kr/calendar",
+            source_id="academic_calendar",
+            metadata={
+                "row_type": "academic_calendar_event",
+                "start_date": "2026-06-22",
+                "end_date": "2026-06-22",
+                "event_name": "하기방학",
+            },
+        ),
+        KnowledgeDoc(
+            doc_id="calendar-month",
+            label=2,
+            domain="academic_calendar",
+            title="6월 학사일정",
+            body="2026년 6월 학사일정 요약",
+            source_url="https://plus.cnu.ac.kr/calendar",
+            source_id="academic_calendar",
+            metadata={
+                "row_type": "academic_calendar_monthly",
+                "academic_year": 2026,
+                "month": 6,
+            },
+        ),
+        KnowledgeDoc(
+            doc_id="calendar-month-copy",
+            label=2,
+            domain="academic_calendar",
+            title="6월 학사일정 copy",
+            body="2026학년도 6월 학사일정",
+            source_url="https://plus.cnu.ac.kr/calendar",
+            source_id="academic_calendar",
+            metadata={
+                "row_type": "academic_calendar_monthly",
+                "academic_year": 2026,
+                "month": 6,
+            },
+        ),
+    ]
+
+    diagnostics = evidence_duplicate_diagnostics(
+        selected_doc_ids=[doc.doc_id for doc in docs],
+        docs_by_id={doc.doc_id: doc for doc in docs},
+    )
+
+    assert diagnostics["selected_doc_count"] == 4
+    assert diagnostics["fact_duplicate_count"] == 1
+    assert diagnostics["scope_duplicate_count"] == 1
+    assert diagnostics["duplicate_doc_count"] == 2
+    assert diagnostics["duplicate_doc_rate"] == 0.5

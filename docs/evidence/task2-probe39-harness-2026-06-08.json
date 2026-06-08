@@ -38,6 +38,13 @@
     "none": 25,
     "temporal": 7
   },
+  "evidence_duplicate_doc_count": 19,
+  "evidence_selected_doc_count": 169,
+  "evidence_duplicate_doc_rate": 0.11242603550295859,
+  "evidence_fact_duplicate_count": 4,
+  "evidence_scope_duplicate_count": 15,
+  "answered_evidence_duplicate_doc_rate": 0.03816793893129771,
+  "fail_closed_evidence_duplicate_doc_rate": 0.3684210526315789,
   "rows": [
     {
       "id": "public_probe_01",
@@ -106,6 +113,16 @@
         "graduation_biochemistry_requirements__graduation_requirement__생화학과__unknown__교양_이수학점__9__a066f8fd0c",
         "graduation_biochemistry_requirements__graduation_requirement__생화학과__unknown__졸업소요학점__11__5c3c8a6002"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 3,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "영어영문학과 unknown 교육과정의 total_credits 요건: 졸업소요학점은 3학점 기준입니다. 적용 대상은 영어영문학과 적용자입니다. 원문 문장: ') -전문기초교양3학점 → 이 모든 사항을 포함하여 130학점 이수 ※ 단, 교양학점은 36학점은 이수해야 하며 42학점까지만 졸업소요학점에 포함됨'. 자세한 내용은 https://english.cnu.ac.kr/english/edu/undergraduate02.do에서 확인해 주세요."
@@ -181,6 +198,16 @@
         "academic_calendar__academic_calendar_event__2026__2026-11-05__2026-11-10__동기_계절학기_수강신청__63__6b6e442bf4",
         "academic_calendar_2023__academic_calendar_event__2023__2023-05-10__2023-05-12__하기_계절학기_수강신청__30__52b0861610"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 5,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026학년도 학사일정: 2026학년도 제1학기 수강신청은 2026-02-02부터 2026-02-06까지입니다. 학생 표현으로는 수강 신청, 수강신청 일정, 수강신청 기간에 해당합니다. 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
@@ -256,6 +283,16 @@
         "cnu_mobile_food__dining_menu__2026-06-08__제4학생회관__조식__직원__4__c62f6984a8",
         "cnu_mobile_food__dining_menu__2026-06-08__생활과학대학__조식__직원__5__99b04013d7"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 5,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026-06-08 제1학생회관 조식 직원 메뉴: 메뉴운영내역. 자세한 내용은 https://mobileadmin.cnu.ac.kr/food/index.jsp에서 확인해 주세요."
@@ -331,6 +368,16 @@
         "shuttle_bus__shuttle_segment__campus_loop__departure_time__0830__2__2026-03-03__2026-06-21__f73ccdf144",
         "shuttle_bus__shuttle_segment__campus_loop__departure_time__0930__3__2026-03-03__2026-06-21__3763c72372"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026학년도 셔틀버스 교내 순환은 2026-03-03부터 2026-06-21까지 학기 중 평일 주간에 정상 운행합니다. 평일 야간, 주말, 공휴일, 방학 등은 미운영입니다. 출발 시간표: 08:20 (월평역) 등교, 08:30, 09:30, 09:40, 10:30, 11:30, 13:30, 14:30, 15:30, 16:30, 17:30. 첫차 08:30, 막차 17:30. 정류장 및 운행 노선: 정심화 국제문화회관, 사회과 학대학 입구, 서문, 음악 2호관 앞, 공동동물실험센터, 체 육관 입구, 예술대학 앞, 도서 관 앞, 학생 생활관 3거리, 농업생명과학대학 앞, 동문주차장, 농업생명과 학대학 앞, 도서관 앞, 사회과학대학 입 구, 산학연교육연 구관 앞, 월평역. 운행횟수는 10회, 운영기간 표기는 학기 중 운영 (총 150일)입니다. 미운영 조건: 평일 야간, 주말, 공휴일, 방학, 수학능력시험일(10시 이전). 운영기준:학기 중 평일 주간 운영(평일 야간, 주말, 공휴일, 방학, 수학능력시험일(10시 이전) 등 미운영) ※ 운행 시간표는 학교 사정에 따라 변경될 수 있음 ※ 학사일정 변경 시 운행 기간 변경될 수 있음(총학생회, 총무과 등과 협의) ※ 운행시간은 천재지변, 학교행사, 교통상황, 탑승 인원 등에 따라 변경 가능 ※ 교통상황 등으로 인해 전 구간에서 5분 내외 오차가 발생할 수 있으니 탑승자 사전 대기 자세한 내용은 https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html에서 확인해 주세요."
@@ -406,6 +453,16 @@
         "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
         "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026학년도 하기 계절학기 2차 폐강 안내 공지사항의 게시일은 2026-06-08입니다. 작성자는 학사지원과이고, 번호는 1815입니다. 일반 공지이며 첨부파일이 있습니다. 상세 링크: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2513508&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage= 자세한 내용은 https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2513508&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage=에서 확인해 주세요."
@@ -477,6 +534,16 @@
         "shuttle_bus__shuttle_segment__campus_loop__stop__정심화_국제문화회관__1__2026-03-03__2026-06-21__1c357c6234",
         "shuttle_bus__shuttle_segment__campus_loop__stop__사회과_학대학_입구__2__2026-03-03__2026-06-21__f4f636ba5c"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 3,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "temporal",
       "answer": "2026학년도 셔틀버스 캠퍼스 순환의 정류장: 충남대학교입구 버스정류장. 적용 기간은 2026-03-03부터 2026-06-21까지이고, 운영일은 학기 중 평일 주간입니다. 자세한 내용은 https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html에서 확인해 주세요."
@@ -558,6 +625,18 @@
         "academic_calendar_2024__academic_calendar_monthly__2024__05",
         "academic_calendar_2025__academic_calendar_monthly__2025__05"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 8,
+        "fact_key_count": 0,
+        "scope_key_count": 8,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 1,
+        "duplicate_doc_count": 1,
+        "duplicate_doc_rate": 0.125,
+        "duplicate_doc_ids": [
+          "academic_calendar_2026__academic_calendar_monthly__2026__05"
+        ]
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026학년도 5월 학사일정 요약:\n- 2026-05-01: 노동절\n- 2026-05-05: 어린이날\n- 2026-05-07~2026-05-11: 하기 계절학기 수강신청\n- 2026-05-13: 수업일수 2/3선\n- 2026-05-22: 수업일수 3/4선\n- 2026-05-24: 부처님오신날\n- 2026-05-25: 개교기념일, 대체공휴일 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
@@ -639,6 +718,20 @@
         "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
         "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 8,
+        "fact_key_count": 0,
+        "scope_key_count": 8,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 3,
+        "duplicate_doc_count": 3,
+        "duplicate_doc_rate": 0.375,
+        "duplicate_doc_ids": [
+          "cnu_mobile_food_week_2026_06_01_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
+          "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관"
+        ]
+      },
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "evidence",
       "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
@@ -714,6 +807,16 @@
         "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
         "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026학년도 하기 계절학기 2차 폐강 안내 공지사항의 게시일은 2026-06-08입니다. 작성자는 학사지원과이고, 번호는 1815입니다. 일반 공지이며 첨부파일이 있습니다. 상세 링크: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2513508&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage= 자세한 내용은 https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2513508&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage=에서 확인해 주세요."
@@ -785,6 +888,16 @@
         "graduation_chemistry_credit__graduation_requirement__화학과__2024__졸업소요학점__2__ddd33469d6",
         "graduation_english_requirements__graduation_requirement__영어영문학과__2022__졸업소요학점__7__12f3898cb5"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 3,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "신소재공학과 2024 교육과정의 major 요건: 전공 이수학점은 12학점 기준입니다. 적용 대상은 신소재공학과 2024학년도 적용자입니다. 원문 문장: '1196-4034 반도체공정재료 - 주관: 기계공학부 1196-3005 계측공학 ◦동일과목: 마이크로나노 기계공학 (1196-3031) 1196-4022 초소형기전공학설계 1196-4035 생산품질공학 ◦반도체 소재 및 공정 특화 과정 1203-3012 반도체 재료 - 이수학점: 12학점 1203-3008 반도체 공정 - 주관: 신소재공학과 1203-4007 반도체 소자 1203-4025 반도체소재공정 캡스톤디자인 ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● ● 280 2024 충남대학교 교육과정 과정명 교과목번호 교과목명 비고 ◦지역'. 자세한 내용은 https://plus.cnu.ac.kr/html/kr/24file/2024_book.pdf에서 확인해 주세요."
@@ -860,6 +973,18 @@
         "academic_calendar_2025__academic_calendar_event__2025__2025-06-24__2025-06-24__하기방학__38__1c7756fe0f",
         "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__9f26db7337"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 5,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 1,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 1,
+        "duplicate_doc_rate": 0.2,
+        "duplicate_doc_ids": [
+          "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__9f26db7337"
+        ]
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026학년도 학사일정: 2026-06-22 하기방학. 학생 표현으로는 1학기 종강, 이번 학기 종강, 종강일, 여름방학 시작, 방학 시작에 해당합니다. 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
@@ -935,6 +1060,18 @@
         "academic_calendar_2025__academic_calendar_event__2025__2025-06-24__2025-07-14__하기_계절학기__39__8afa1a76a9",
         "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__33cf4353de"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 5,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 1,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 1,
+        "duplicate_doc_rate": 0.2,
+        "duplicate_doc_ids": [
+          "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__33cf4353de"
+        ]
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026학년도 학사일정: 하기 계절학기은 2026-06-22부터 2026-07-10까지입니다. 학생 표현으로는 여름 계절학기, 하계 계절학기, 계절학기 종강, 여름 계절학기 종강일에 해당합니다. 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
@@ -1010,6 +1147,21 @@
         "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
         "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 0,
+        "scope_key_count": 5,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 4,
+        "duplicate_doc_count": 4,
+        "duplicate_doc_rate": 0.8,
+        "duplicate_doc_ids": [
+          "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "cnu_mobile_food_week_2026_06_15_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관"
+        ]
+      },
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "evidence",
       "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
@@ -1081,6 +1233,16 @@
         "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
         "academic_notice_board_page_2__notice_board_item__1802__2026-05-21__2027-2028년도_풀브라이트_미국_연구년_지원_교수전문가_장학_프로그램_안내__06adf94ed4"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 3,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "「2026년 하기 국가근로장학금 취업연계 중점대학」 안내 공지사항의 게시일은 2026-04-29입니다. 작성자는 인재개발원이고, 번호는 1784입니다. 일반 공지이며 첨부파일이 있습니다. 상세 링크: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512929&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage=4 자세한 내용은 https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512929&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage=4에서 확인해 주세요."
@@ -1152,6 +1314,16 @@
         "graduation_english_requirements__graduation_requirement__영어영문학과__2022__졸업소요학점__7__12f3898cb5",
         "graduation_english_requirements__graduation_requirement__영어영문학과__2025__졸업소요학점__8__946eb4bd8e"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 3,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "영어영문학과 unknown 교육과정의 total_credits 요건: 졸업소요학점은 3학점 기준입니다. 적용 대상은 영어영문학과 적용자입니다. 원문 문장: ') -전문기초교양3학점 → 이 모든 사항을 포함하여 130학점 이수 ※ 단, 교양학점은 36학점은 이수해야 하며 42학점까지만 졸업소요학점에 포함됨'. 자세한 내용은 https://english.cnu.ac.kr/english/edu/undergraduate02.do에서 확인해 주세요."
@@ -1223,6 +1395,16 @@
         "graduation_curriculum_pdf__graduation_requirement__공통__2025__졸업요건__25__399e26b3f2",
         "graduation_curriculum_pdf__graduation_requirement__공통__2025__졸업요건__93__caa694fbd0"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 3,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "법학과 unknown 교육과정의 other 요건: 졸업요건은 27학점 기준입니다. 적용 대상은 법학과 적용자입니다. 원문 문장: '최소 이수학점 중에서 필수이론과목 27학점과 필수실무과목 8학점, 총 35학점이 필수과목이다'. 자세한 내용은 https://law.cnu.ac.kr/law/curriculum/graduate.do에서 확인해 주세요."
@@ -1294,6 +1476,16 @@
         "graduation_energy_requirements__graduation_requirement__에너지공학과__unknown__졸업소요학점__1__5fe1487d36",
         "graduation_chemistry_credit__graduation_requirement__화학과__2010__졸업소요학점__3__21aa65bbcb"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 3,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "화학과 2024 교육과정의 total_credits 요건: 졸업소요학점은 42학점 기준입니다. 적용 대상은 화학과 2024학년도 적용자입니다. 원문 문장: '단 연구실험트랙만 운영) 충남대 화학과 졸업학점 모집단위 교육과정 적용년도 교양 전공 일반선택 졸업학점(합계) 교공 교핵 교전 교일 계 전기 전핵 전심 계 화학과 2024 8 9 12 7 36 15 30 39 84 10 130 2015-2023 12 27 39 78 16 교양 42학점 초과 이수학점은 졸업이수학점에 포함하지 않음 전공핵심, 전공심화 상호인정 가능 2023학년도 까지 필수이수 전공 교과목 : 전기 12학점 과목(분석/유기/무기/물리화학실험), 화학캡스톤디자인1, 2 (2 선택이수, 2025부터) 2024학년도 부터 필수이수 전공 교과목 : 전기 15학점 과목(분석/유기/무기/물리화학실험, 양자화학 및 분광학1 ), 화학캡스톤디자인1, 2 (2 선택이수, 2025부터) 미래설계상담 (2025'. 자세한 내용은 https://chem.cnu.ac.kr/chem/undergrad/credit.do에서 확인해 주세요."
@@ -1365,6 +1557,16 @@
         "graduation_english_requirements__graduation_requirement__영어영문학과__2015__졸업소요학점__1__4f25b4916f",
         "graduation_english_requirements__graduation_requirement__영어영문학과__2017__졸업소요학점__4__ba9239e3dd"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 3,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "영어영문학과 unknown 교육과정의 total_credits 요건: 졸업소요학점은 3학점 기준입니다. 적용 대상은 영어영문학과 적용자입니다. 원문 문장: ') -전문기초교양3학점 → 이 모든 사항을 포함하여 130학점 이수 ※ 단, 교양학점은 36학점은 이수해야 하며 42학점까지만 졸업소요학점에 포함됨'. 자세한 내용은 https://english.cnu.ac.kr/english/edu/undergraduate02.do에서 확인해 주세요."
@@ -1436,6 +1638,16 @@
         "graduation_curriculum_pdf__graduation_requirement__공통__2025__교양_이수학점__98__282371fdca",
         "graduation_curriculum_pdf__graduation_requirement__공통__2025__교양_이수학점__16__50e2f8f770"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 3,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "공통 2025 교육과정의 total_credits 요건: 졸업소요학점은 6학점 기준입니다. 적용 대상은 공통 2013학년도 적용자입니다. 원문 문장: '제2조(교양과정 개편에 따른 2013학년도 이전 입학자에 대한 경과조치) ① 교양과정 개편에 따 라 2013학년도 이전 입학자는 영어 관련 교과목 중에서 6학점 이상, 국어작문 관련 교과목 중에 서 3학점 이상 이수하고, 나머지 졸업에 필요한 이수학점은 영역에 관계없이 졸업학점 이상을 이 수하여야 한다'. 자세한 내용은 https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf에서 확인해 주세요."
@@ -1505,6 +1717,16 @@
         "academic_notice_board__notice_board_item__공지__2026-03-05__2026학년도_제1학기_학생_출석인정_신청_변경_사항_안내__4898d48afa",
         "academic_notice_board_page_2__notice_board_item__1799__2026-05-18__졸업생_취업_특화_취업_실패_원인_진단_취업_나침반_안내__452575b4ea"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 2,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "temporal",
       "answer": "2026학년도 제1학기 학생 출석인정 신청 변경 사항 안내 공지사항의 게시일은 2026-03-05입니다. 작성자는 학사지원과이고, 번호는 공지입니다. 상단 고정 공지이며 첨부파일이 있습니다. 상세 링크: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512124&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage= 자세한 내용은 https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512124&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage=에서 확인해 주세요."
@@ -1580,6 +1802,16 @@
         "academic_notice_board_page_2__notice_board_item__1799__2026-05-18__졸업생_취업_특화_취업_실패_원인_진단_취업_나침반_안내__452575b4ea",
         "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026년도 학부생 미니 연구 프로젝트 지원사업 실행 계획 안내 공지사항의 게시일은 2026-06-04입니다. 작성자는 융복합과학원이고, 번호는 1812입니다. 일반 공지이며 첨부파일이 있습니다. 상세 링크: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2513477&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage= 자세한 내용은 https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2513477&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage=에서 확인해 주세요."
@@ -1651,6 +1883,16 @@
         "academic_notice_board__notice_board_item__공지__2026-04-16__2026학년도_하기_계절학기_국내_다른_대학_수학_안내__8b9f10574f",
         "academic_notice_board__notice_board_item__공지__2026-03-05__2026학년도_제1학기_학생_출석인정_신청_변경_사항_안내__4898d48afa"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 3,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": "raw_json_or_template_text",
       "bottleneck": "temporal",
       "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
@@ -1722,6 +1964,16 @@
         "academic_notice_board_page_2__notice_board_item__1799__2026-05-18__졸업생_취업_특화_취업_실패_원인_진단_취업_나침반_안내__452575b4ea",
         "academic_notice_board_page_4__notice_board_item__1779__2026-04-16__2026년도_국비유학생_선발_시험_공고모의계산표_변경_알림__bb181151b5"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 3,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "evidence",
       "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
@@ -1789,6 +2041,16 @@
       "selected_retrieved_doc_ids": [
         "academic_notice_board_page_2__notice_board_item__1799__2026-05-18__졸업생_취업_특화_취업_실패_원인_진단_취업_나침반_안내__452575b4ea"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 1,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": "raw_json_or_template_text",
       "bottleneck": "temporal",
       "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
@@ -1864,6 +2126,16 @@
         "academic_calendar__academic_calendar_event__2026__2026-11-05__2026-11-10__동기_계절학기_수강신청__63__6b6e442bf4",
         "academic_calendar_2023__academic_calendar_event__2023__2023-05-10__2023-05-12__하기_계절학기_수강신청__30__52b0861610"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 5,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026학년도 학사일정: 2026학년도 제1학기 수강신청은 2026-02-02부터 2026-02-06까지입니다. 학생 표현으로는 수강 신청, 수강신청 일정, 수강신청 기간에 해당합니다. 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
@@ -1939,6 +2211,18 @@
         "academic_calendar_2025__academic_calendar_event__2025__2025-06-24__2025-06-24__하기방학__38__1c7756fe0f",
         "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__9f26db7337"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 5,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 1,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 1,
+        "duplicate_doc_rate": 0.2,
+        "duplicate_doc_ids": [
+          "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__9f26db7337"
+        ]
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026학년도 학사일정: 2026-06-22 하기방학. 학생 표현으로는 1학기 종강, 이번 학기 종강, 종강일, 여름방학 시작, 방학 시작에 해당합니다. 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
@@ -2014,6 +2298,18 @@
         "academic_calendar_2025__academic_calendar_event__2025__2025-06-24__2025-07-14__하기_계절학기__39__8afa1a76a9",
         "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__33cf4353de"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 5,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 1,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 1,
+        "duplicate_doc_rate": 0.2,
+        "duplicate_doc_ids": [
+          "academic_calendar_2026__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__33cf4353de"
+        ]
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026학년도 학사일정: 하기 계절학기은 2026-06-22부터 2026-07-10까지입니다. 학생 표현으로는 여름 계절학기, 하계 계절학기, 계절학기 종강, 여름 계절학기 종강일에 해당합니다. 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
@@ -2085,6 +2381,16 @@
         "academic_notice_board__notice_board_item__공지__2026-03-05__2026학년도_제1학기_학생_출석인정_신청_변경_사항_안내__4898d48afa",
         "academic_notice_board__notice_board_item__공지__2026-01-14__2026학년도_제1학기_휴학_및_복학_신청_안내__4ef151e604"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 3,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "classifier",
       "answer": "2026학년도 제1학기 중간 강의평가 실시 안내 공지사항의 게시일은 2026-03-30입니다. 작성자는 학사지원과이고, 번호는 1772입니다. 일반 공지이며 첨부파일이 있습니다. 상세 링크: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512519&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage=5 자세한 내용은 https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512519&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage=5에서 확인해 주세요."
@@ -2156,6 +2462,16 @@
         "academic_calendar__academic_calendar_event__2026__2026-08-03__2026-08-31__휴학_및_복학_신청__43__e955fffae8",
         "academic_calendar_2023__academic_calendar_event__2023__2023-02-01__2023-02-28__휴학_및_복학_신청__11__0b4b5b454f"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 3,
+        "fact_key_count": 3,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "temporal",
       "answer": "2026학년도 학사일정: 휴학 및 복학 신청은 2026-02-02부터 2026-02-27까지입니다. 학생 표현으로는 휴학 신청, 휴학 신청 마감, 휴복학 신청에 해당합니다. 자세한 내용은 https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr에서 확인해 주세요."
@@ -2231,6 +2547,16 @@
         "cnu_mobile_food__dining_menu__2026-06-08__제4학생회관__조식__직원__4__c62f6984a8",
         "cnu_mobile_food__dining_menu__2026-06-08__생활과학대학__조식__직원__5__99b04013d7"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 5,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026-06-08 제1학생회관 조식 직원 메뉴: 메뉴운영내역. 자세한 내용은 https://mobileadmin.cnu.ac.kr/food/index.jsp에서 확인해 주세요."
@@ -2306,6 +2632,16 @@
         "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
         "cnu_mobile_food__dining_menu__2026-06-08__제3학생회관__조식__학생__8__6efdf5cf4e"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 5,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026-06-08 제2학생회관 조식 직원 식단은 운영안함입니다. 자세한 내용은 https://mobileadmin.cnu.ac.kr/food/index.jsp에서 확인해 주세요."
@@ -2387,6 +2723,20 @@
         "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
         "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 8,
+        "fact_key_count": 0,
+        "scope_key_count": 8,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 3,
+        "duplicate_doc_count": 3,
+        "duplicate_doc_rate": 0.375,
+        "duplicate_doc_ids": [
+          "cnu_mobile_food_week_2026_06_01_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
+          "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관"
+        ]
+      },
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "evidence",
       "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
@@ -2462,6 +2812,21 @@
         "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
         "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 0,
+        "scope_key_count": 5,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 4,
+        "duplicate_doc_count": 4,
+        "duplicate_doc_rate": 0.8,
+        "duplicate_doc_ids": [
+          "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "cnu_mobile_food_week_2026_06_15_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관"
+        ]
+      },
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "evidence",
       "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
@@ -2537,6 +2902,16 @@
         "cnu_mobile_food_week_2026_06_08_4th_chunk_1",
         "cnu_mobile_food_week_2026_06_08_life_science_chunk_1"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": "current_fact_requires_structured_fields",
       "bottleneck": "data",
       "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
@@ -2612,6 +2987,16 @@
         "shuttle_bus__shuttle_segment__campus_loop__departure_time__0830__2__2026-03-03__2026-06-21__f73ccdf144",
         "shuttle_bus__shuttle_segment__campus_loop__departure_time__0930__3__2026-03-03__2026-06-21__3763c72372"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026학년도 셔틀버스 교내 순환은 2026-03-03부터 2026-06-21까지 학기 중 평일 주간에 정상 운행합니다. 평일 야간, 주말, 공휴일, 방학 등은 미운영입니다. 출발 시간표: 08:20 (월평역) 등교, 08:30, 09:30, 09:40, 10:30, 11:30, 13:30, 14:30, 15:30, 16:30, 17:30. 첫차 08:30, 막차 17:30. 정류장 및 운행 노선: 정심화 국제문화회관, 사회과 학대학 입구, 서문, 음악 2호관 앞, 공동동물실험센터, 체 육관 입구, 예술대학 앞, 도서 관 앞, 학생 생활관 3거리, 농업생명과학대학 앞, 동문주차장, 농업생명과 학대학 앞, 도서관 앞, 사회과학대학 입 구, 산학연교육연 구관 앞, 월평역. 운행횟수는 10회, 운영기간 표기는 학기 중 운영 (총 150일)입니다. 미운영 조건: 평일 야간, 주말, 공휴일, 방학, 수학능력시험일(10시 이전). 운영기준:학기 중 평일 주간 운영(평일 야간, 주말, 공휴일, 방학, 수학능력시험일(10시 이전) 등 미운영) ※ 운행 시간표는 학교 사정에 따라 변경될 수 있음 ※ 학사일정 변경 시 운행 기간 변경될 수 있음(총학생회, 총무과 등과 협의) ※ 운행시간은 천재지변, 학교행사, 교통상황, 탑승 인원 등에 따라 변경 가능 ※ 교통상황 등으로 인해 전 구간에서 5분 내외 오차가 발생할 수 있으니 탑승자 사전 대기 자세한 내용은 https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html에서 확인해 주세요."
@@ -2687,6 +3072,16 @@
         "shuttle_bus__shuttle_segment__campus_loop__departure_time__0830__2__2026-03-03__2026-06-21__f73ccdf144",
         "shuttle_bus__shuttle_segment__campus_loop__departure_time__0930__3__2026-03-03__2026-06-21__3763c72372"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026학년도 셔틀버스 교내 순환은 2026-03-03부터 2026-06-21까지 학기 중 평일 주간에 정상 운행합니다. 평일 야간, 주말, 공휴일, 방학 등은 미운영입니다. 출발 시간표: 08:20 (월평역) 등교, 08:30, 09:30, 09:40, 10:30, 11:30, 13:30, 14:30, 15:30, 16:30, 17:30. 첫차 08:30, 막차 17:30. 정류장 및 운행 노선: 정심화 국제문화회관, 사회과 학대학 입구, 서문, 음악 2호관 앞, 공동동물실험센터, 체 육관 입구, 예술대학 앞, 도서 관 앞, 학생 생활관 3거리, 농업생명과학대학 앞, 동문주차장, 농업생명과 학대학 앞, 도서관 앞, 사회과학대학 입 구, 산학연교육연 구관 앞, 월평역. 운행횟수는 10회, 운영기간 표기는 학기 중 운영 (총 150일)입니다. 미운영 조건: 평일 야간, 주말, 공휴일, 방학, 수학능력시험일(10시 이전). 운영기준:학기 중 평일 주간 운영(평일 야간, 주말, 공휴일, 방학, 수학능력시험일(10시 이전) 등 미운영) ※ 운행 시간표는 학교 사정에 따라 변경될 수 있음 ※ 학사일정 변경 시 운행 기간 변경될 수 있음(총학생회, 총무과 등과 협의) ※ 운행시간은 천재지변, 학교행사, 교통상황, 탑승 인원 등에 따라 변경 가능 ※ 교통상황 등으로 인해 전 구간에서 5분 내외 오차가 발생할 수 있으니 탑승자 사전 대기 자세한 내용은 https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html에서 확인해 주세요."
@@ -2762,6 +3157,16 @@
         "shuttle_bus__shuttle_route__campus_loop__2026-03-03__2026-06-21__2a184c34ae",
         "shuttle_bus__shuttle_route__intercampus_loop__2026-03-03__2026-06-21__4b1ebb50cb"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "none",
       "answer": "2026학년도 셔틀버스 교내 순환의 정류장: 월평역. 적용 기간은 2026-03-03부터 2026-06-21까지이고, 운영일은 학기 중 평일 주간입니다. 자세한 내용은 https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html에서 확인해 주세요."
@@ -2837,6 +3242,16 @@
         "shuttle_bus__shuttle_segment__campus_loop__departure_time__0930__3__2026-03-03__2026-06-21__3763c72372",
         "shuttle_bus__shuttle_segment__campus_loop__departure_time__0940__4__2026-03-03__2026-06-21__ee150ffdeb"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 5,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "temporal",
       "answer": "2026학년도 셔틀버스 교내 순환은 2026-03-03부터 2026-06-21까지 학기 중 평일 주간에 정상 운행합니다. 평일 야간, 주말, 공휴일, 방학 등은 미운영입니다. 출발 시간표: 08:20 (월평역) 등교, 08:30, 09:30, 09:40, 10:30, 11:30, 13:30, 14:30, 15:30, 16:30, 17:30. 첫차 08:30, 막차 17:30. 정류장 및 운행 노선: 정심화 국제문화회관, 사회과 학대학 입구, 서문, 음악 2호관 앞, 공동동물실험센터, 체 육관 입구, 예술대학 앞, 도서 관 앞, 학생 생활관 3거리, 농업생명과학대학 앞, 동문주차장, 농업생명과 학대학 앞, 도서관 앞, 사회과학대학 입 구, 산학연교육연 구관 앞, 월평역. 운행횟수는 10회, 운영기간 표기는 학기 중 운영 (총 150일)입니다. 미운영 조건: 평일 야간, 주말, 공휴일, 방학, 수학능력시험일(10시 이전). 운영기준:학기 중 평일 주간 운영(평일 야간, 주말, 공휴일, 방학, 수학능력시험일(10시 이전) 등 미운영) ※ 운행 시간표는 학교 사정에 따라 변경될 수 있음 ※ 학사일정 변경 시 운행 기간 변경될 수 있음(총학생회, 총무과 등과 협의) ※ 운행시간은 천재지변, 학교행사, 교통상황, 탑승 인원 등에 따라 변경 가능 ※ 교통상황 등으로 인해 전 구간에서 5분 내외 오차가 발생할 수 있으니 탑승자 사전 대기 자세한 내용은 https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html에서 확인해 주세요."
@@ -2908,6 +3323,16 @@
         "shuttle_bus__shuttle_segment__campus_loop__stop__정심화_국제문화회관__1__2026-03-03__2026-06-21__1c357c6234",
         "shuttle_bus__shuttle_segment__campus_loop__stop__사회과_학대학_입구__2__2026-03-03__2026-06-21__f4f636ba5c"
       ],
+      "evidence_duplicate_diagnostics": {
+        "selected_doc_count": 3,
+        "fact_key_count": 0,
+        "scope_key_count": 0,
+        "fact_duplicate_count": 0,
+        "scope_duplicate_count": 0,
+        "duplicate_doc_count": 0,
+        "duplicate_doc_rate": 0.0,
+        "duplicate_doc_ids": []
+      },
       "failure_reason": null,
       "bottleneck": "temporal",
       "answer": "2026학년도 셔틀버스 캠퍼스 순환의 정류장: 충남대학교입구 버스정류장. 적용 기간은 2026-03-03부터 2026-06-21까지이고, 운영일은 학기 중 평일 주간입니다. 자세한 내용은 https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html에서 확인해 주세요."

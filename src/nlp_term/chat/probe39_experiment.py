@@ -11,6 +11,8 @@ from nlp_term.chat.orchestrator import answer_with_harness
 from nlp_term.chat.public_probe_experiment import _classify_bottleneck
 from nlp_term.chat.public_probe_experiment import _rate
 from nlp_term.paths import data_dir
+from nlp_term.retrieve.knowledge import load_knowledge_with_metadata
+from nlp_term.schemas import KnowledgeDoc
 from nlp_term.schemas import Domain
 from nlp_term.validators import file_checksum, read_json
 
@@ -50,6 +52,16 @@ def run_probe39_experiment(
     retrieval_top3_domain_hit_count = 0
     bottleneck_counts: Counter[str] = Counter()
     domain_counts: Counter[str] = Counter()
+    duplicate_doc_count = 0
+    duplicate_selected_doc_count = 0
+    duplicate_fact_count = 0
+    duplicate_scope_count = 0
+    duplicate_answered_doc_count = 0
+    duplicate_answered_selected_doc_count = 0
+    duplicate_fail_closed_doc_count = 0
+    duplicate_fail_closed_selected_doc_count = 0
+    knowledge = load_knowledge_with_metadata(knowledge_path)
+    docs_by_id = {doc.doc_id: doc for doc in knowledge.docs}
 
     for case in cases:
         result = answer_with_harness(
@@ -84,6 +96,22 @@ def run_probe39_experiment(
         retrieval_top3_domain_hit_count += int(top3_domain_hit)
         bottleneck_counts[bottleneck] += 1
         domain_counts[expected_domain] += 1
+        duplicate_diagnostics = evidence_duplicate_diagnostics(
+            selected_doc_ids=trace.retrieved_doc_ids,
+            docs_by_id=docs_by_id,
+        )
+        selected_count = int(duplicate_diagnostics["selected_doc_count"])
+        duplicate_count = int(duplicate_diagnostics["duplicate_doc_count"])
+        duplicate_doc_count += duplicate_count
+        duplicate_selected_doc_count += selected_count
+        duplicate_fact_count += int(duplicate_diagnostics["fact_duplicate_count"])
+        duplicate_scope_count += int(duplicate_diagnostics["scope_duplicate_count"])
+        if str(result.output_status) == "answered":
+            duplicate_answered_doc_count += duplicate_count
+            duplicate_answered_selected_doc_count += selected_count
+        elif str(result.output_status) == "fail_closed":
+            duplicate_fail_closed_doc_count += duplicate_count
+            duplicate_fail_closed_selected_doc_count += selected_count
         rows.append(
             {
                 "id": case["id"],
@@ -119,6 +147,7 @@ def run_probe39_experiment(
                     candidate.doc_id for candidate in trace.postfilter_retrieved_candidates
                 ],
                 "selected_retrieved_doc_ids": trace.retrieved_doc_ids,
+                "evidence_duplicate_diagnostics": duplicate_diagnostics,
                 "failure_reason": trace.failure_reason,
                 "bottleneck": bottleneck,
                 "answer": result.output.model,
@@ -154,6 +183,19 @@ def run_probe39_experiment(
         "fail_close_count": fail_close_count,
         "fail_close_rate": _rate(fail_close_count, question_count),
         "bottleneck_counts": dict(sorted(bottleneck_counts.items())),
+        "evidence_duplicate_doc_count": duplicate_doc_count,
+        "evidence_selected_doc_count": duplicate_selected_doc_count,
+        "evidence_duplicate_doc_rate": _rate(duplicate_doc_count, duplicate_selected_doc_count),
+        "evidence_fact_duplicate_count": duplicate_fact_count,
+        "evidence_scope_duplicate_count": duplicate_scope_count,
+        "answered_evidence_duplicate_doc_rate": _rate(
+            duplicate_answered_doc_count,
+            duplicate_answered_selected_doc_count,
+        ),
+        "fail_closed_evidence_duplicate_doc_rate": _rate(
+            duplicate_fail_closed_doc_count,
+            duplicate_fail_closed_selected_doc_count,
+        ),
         "rows": rows,
     }
     _write_json(output_path, report)
@@ -203,6 +245,92 @@ def build_probe39_cases(*, public_probe_path: Path, generalization_probe_path: P
     return cases
 
 
+def evidence_duplicate_diagnostics(
+    *,
+    selected_doc_ids: list[str],
+    docs_by_id: dict[str, KnowledgeDoc],
+) -> dict[str, object]:
+    fact_keys: list[str] = []
+    scope_keys: list[str] = []
+    duplicate_doc_ids: set[str] = set()
+    seen_fact_keys: set[str] = set()
+    seen_scope_keys: set[str] = set()
+
+    for doc_id in selected_doc_ids:
+        doc = docs_by_id.get(doc_id)
+        if doc is None:
+            continue
+        fact_key = _fact_key(doc)
+        if fact_key:
+            fact_keys.append(fact_key)
+            if fact_key in seen_fact_keys:
+                duplicate_doc_ids.add(doc_id)
+            else:
+                seen_fact_keys.add(fact_key)
+        scope_key = _scope_key(doc)
+        if scope_key:
+            scope_keys.append(scope_key)
+            if scope_key in seen_scope_keys:
+                duplicate_doc_ids.add(doc_id)
+            else:
+                seen_scope_keys.add(scope_key)
+
+    fact_duplicate_count = len(fact_keys) - len(set(fact_keys))
+    scope_duplicate_count = len(scope_keys) - len(set(scope_keys))
+    selected_doc_count = len(selected_doc_ids)
+    duplicate_doc_count = len(duplicate_doc_ids)
+    return {
+        "selected_doc_count": selected_doc_count,
+        "fact_key_count": len(fact_keys),
+        "scope_key_count": len(scope_keys),
+        "fact_duplicate_count": fact_duplicate_count,
+        "scope_duplicate_count": scope_duplicate_count,
+        "duplicate_doc_count": duplicate_doc_count,
+        "duplicate_doc_rate": _rate(duplicate_doc_count, selected_doc_count),
+        "duplicate_doc_ids": sorted(duplicate_doc_ids),
+    }
+
+
+def _fact_key(doc: KnowledgeDoc) -> str | None:
+    metadata = doc.metadata
+    row_type = metadata.get("row_type")
+    if row_type == "academic_calendar_event":
+        return _join_key(
+            "calendar_event",
+            metadata.get("start_date"),
+            metadata.get("end_date"),
+            metadata.get("event_name"),
+        )
+    if row_type == "dining_menu":
+        return _join_key(
+            "dining_menu",
+            metadata.get("menu_date"),
+            metadata.get("cafeteria"),
+            metadata.get("meal_type"),
+            metadata.get("user_type"),
+        )
+    return None
+
+
+def _scope_key(doc: KnowledgeDoc) -> str | None:
+    metadata = doc.metadata
+    row_type = metadata.get("row_type")
+    if row_type == "academic_calendar_monthly":
+        return _join_key("calendar_month", metadata.get("academic_year"), metadata.get("month"))
+    if row_type == "academic_calendar_semester":
+        return _join_key("calendar_semester", metadata.get("academic_year"), metadata.get("semester"))
+    if row_type == "dining_weekly_menu":
+        return _join_key("dining_week", metadata.get("week_start"), metadata.get("week_end"), metadata.get("cafeteria"))
+    return None
+
+
+def _join_key(*values: object) -> str | None:
+    parts = [str(value).strip() for value in values if value is not None and str(value).strip()]
+    if len(parts) != len(values):
+        return None
+    return ":".join(parts)
+
+
 def write_markdown_report(report: dict[str, object], output_path: Path) -> None:
     rows = report["rows"]
     assert isinstance(rows, list)
@@ -219,6 +347,11 @@ def write_markdown_report(report: dict[str, object], output_path: Path) -> None:
         f"- Answered: {report['answered_count']} / {report['question_count']} ({report['answered_rate']:.2%})",
         f"- Fail-closed: {report['fail_close_count']} / {report['question_count']} ({report['fail_close_rate']:.2%})",
         f"- Bottlenecks: `{json.dumps(report['bottleneck_counts'], ensure_ascii=False, sort_keys=True)}`",
+        f"- Evidence duplicate doc rate: {report['evidence_duplicate_doc_count']} / {report['evidence_selected_doc_count']} ({report['evidence_duplicate_doc_rate']:.2%})",
+        f"- Evidence fact duplicates: {report['evidence_fact_duplicate_count']}",
+        f"- Evidence scope duplicates: {report['evidence_scope_duplicate_count']}",
+        f"- Answered duplicate rate: {report['answered_evidence_duplicate_doc_rate']:.2%}",
+        f"- Fail-closed duplicate rate: {report['fail_closed_evidence_duplicate_doc_rate']:.2%}",
         "",
         "이 결과는 deterministic harness trace 진단이며 최종 Task 2 성능 claim이 아니다.",
         "",
