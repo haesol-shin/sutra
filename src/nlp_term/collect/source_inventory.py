@@ -219,64 +219,79 @@ STAGE1_CANDIDATE_SOURCES: tuple[SourceSpec, ...] = (
         notes="candidate 2026 shuttle notice with HWP attachment",
     ),
     SourceSpec(
-        source_id="cnu_mobile_food_2026_06_09",
+        source_id="cnu_mobile_food_week_2026_06_08_1st",
         label=3,
         domain="dining",
-        url="https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.09&searchLang=OCL04.10&searchView=date",
+        url=(
+            "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.09&searchLang=OCL04.10"
+            "&searchView=date&searchCafeteria=OCL03.01"
+        ),
         parser_type="dining",
         stage="stage1",
         active=True,
         priority=55,
         freshness_policy="short_ttl",
-        notes="verified date-parameter dining endpoint for week expansion",
+        notes="verified weekly dining endpoint for 제1학생회관",
     ),
     SourceSpec(
-        source_id="cnu_mobile_food_2026_06_10",
+        source_id="cnu_mobile_food_week_2026_06_08_2nd",
         label=3,
         domain="dining",
-        url="https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.10&searchLang=OCL04.10&searchView=date",
+        url=(
+            "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.09&searchLang=OCL04.10"
+            "&searchView=date&searchCafeteria=OCL03.02"
+        ),
         parser_type="dining",
         stage="stage1",
         active=True,
         priority=56,
         freshness_policy="short_ttl",
-        notes="verified date-parameter dining endpoint for week expansion",
+        notes="verified weekly dining endpoint for 제2학생회관",
     ),
     SourceSpec(
-        source_id="cnu_mobile_food_2026_06_11",
+        source_id="cnu_mobile_food_week_2026_06_08_3rd",
         label=3,
         domain="dining",
-        url="https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.11&searchLang=OCL04.10&searchView=date",
+        url=(
+            "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.09&searchLang=OCL04.10"
+            "&searchView=date&searchCafeteria=OCL03.03"
+        ),
         parser_type="dining",
         stage="stage1",
         active=True,
         priority=57,
         freshness_policy="short_ttl",
-        notes="verified date-parameter dining endpoint for week expansion",
+        notes="verified weekly dining endpoint for 제3학생회관",
     ),
     SourceSpec(
-        source_id="cnu_mobile_food_2026_06_12",
+        source_id="cnu_mobile_food_week_2026_06_08_4th",
         label=3,
         domain="dining",
-        url="https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.12&searchLang=OCL04.10&searchView=date",
+        url=(
+            "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.09&searchLang=OCL04.10"
+            "&searchView=date&searchCafeteria=OCL03.04"
+        ),
         parser_type="dining",
         stage="stage1",
         active=True,
         priority=58,
         freshness_policy="short_ttl",
-        notes="verified date-parameter dining endpoint for week expansion",
+        notes="verified weekly dining endpoint for 제4학생회관",
     ),
     SourceSpec(
-        source_id="cnu_mobile_food_2026_06_13",
+        source_id="cnu_mobile_food_week_2026_06_08_life_science",
         label=3,
         domain="dining",
-        url="https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.13&searchLang=OCL04.10&searchView=date",
+        url=(
+            "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.09&searchLang=OCL04.10"
+            "&searchView=date&searchCafeteria=OCL03.05"
+        ),
         parser_type="dining",
         stage="stage1",
         active=True,
         priority=59,
         freshness_policy="short_ttl",
-        notes="verified date-parameter dining endpoint for week expansion",
+        notes="verified weekly dining endpoint for 생활과학대학",
     ),
     SourceSpec(
         source_id="dining_mobile_candidate",

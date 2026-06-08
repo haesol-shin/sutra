@@ -89,3 +89,45 @@ def test_dining_adapter_knowledge_docs_preserve_safety_metadata() -> None:
     assert first.metadata["structured_fields"]
     assert first.metadata["verification_official_chain_ok"] is False
     assert first.metadata["source_freshness_policy"] == "short_ttl"
+
+
+def test_dining_adapter_parses_weekly_single_cafeteria_layout() -> None:
+    spec = next(
+        item
+        for item in iter_specs(stage="all")
+        if item.source_id == "cnu_mobile_food_week_2026_06_08_2nd"
+    )
+    raw = RawSource(
+        source_id=spec.source_id,
+        label=spec.label,
+        domain=spec.domain,
+        url=spec.url,
+        fetched_at="2026-06-08T02:02:37+00:00",
+        content_type="text/html; charset=UTF-8",
+        raw_path="data/raw/dining/cnu_mobile_food_2026_06_09.html",
+        status_code=200,
+        checksum="weekly-dining-raw-checksum",
+    )
+    verification = SourceVerification(
+        source_id=spec.source_id,
+        official_chain_ok=spec.official_chain_ok,
+        parser_name="dining_stage_inventory",
+        parser_version=PARSER_VERSION,
+        evidence=[spec.url],
+        warnings=["source is not official-chain verified", "freshness policy: short_ttl"],
+        verified_at="2026-06-08T02:02:38+00:00",
+    )
+
+    rows = DiningAdapter().parse(spec=spec, raw=raw, verification=verification)
+
+    assert any(
+        row.meal_date == "2026-06-09"
+        and row.cafeteria == "제2학생회관"
+        and row.meal_type == "중식"
+        and row.user_type == "학생"
+        and "치즈닭갈비덮밥" in row.menu_items
+        for row in rows
+    )
+    assert {row.meal_date for row in rows}.issuperset(
+        {"2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-13"}
+    )
