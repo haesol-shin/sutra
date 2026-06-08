@@ -31,7 +31,7 @@ def test_source_audit_defers_inactive_candidates() -> None:
     assert {row.decision for row in inactive_rows} == {"defer"}
 
 
-def test_source_audit_records_official_linked_dining_evidence() -> None:
+def test_source_audit_records_verified_dining_with_official_link_evidence() -> None:
     report = build_source_audit(
         source_probe_path=Path("data/sources/source_probe.json"),
         official_link_evidence=[
@@ -45,7 +45,7 @@ def test_source_audit_records_official_linked_dining_evidence() -> None:
     )
 
     dining = next(row for row in report.rows if row.source_id == "cnu_mobile_food")
-    assert dining.official_chain_status == "official_linked"
+    assert dining.official_chain_status == "verified"
     assert any("plus.cnu.ac.kr" in item and "mobileadmin.cnu.ac.kr" in item for item in dining.official_chain_evidence)
 
 
