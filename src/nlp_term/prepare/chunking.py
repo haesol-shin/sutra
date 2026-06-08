@@ -14,6 +14,30 @@ DINING_HEADER_RE = re.compile(
 )
 NOTICE_FIELD_RE = re.compile(r"^(제목|작성일|게시일|본문)\s*[:：]")
 GRAD_REQUIREMENT_RE = re.compile(r"(?:학번|졸업|전공|교양|학점|프로젝트|이수)")
+PAGE_CHROME_TERMS = {
+    "목록",
+    "이전글",
+    "다음글",
+    "첨부파일",
+    "다운로드",
+    "본문 바로가기",
+    "사이드메뉴",
+    "공유하기",
+    "URL복사",
+    "인쇄",
+    "조회수",
+    "작성일",
+    "등록일",
+    "검색",
+    "전체메뉴",
+    "닫기",
+    "CSV 내보내기",
+    "ICS 내보내기",
+    "의견등록",
+    "구성 모듈 안내",
+    "Copyright",
+    "All Rights Reserved",
+}
 
 
 @dataclass(frozen=True)
@@ -34,6 +58,8 @@ def split_source_text(
     max_chunk_chars: int = 300,
     max_chunks: int = 9,
 ) -> list[SourceChunk]:
+    if _is_page_chrome_only(text):
+        return []
     guarded = _atomic_guard_chunks(text, label=label, max_chunk_chars=max_chunk_chars, max_chunks=max_chunks)
     if guarded:
         return guarded
@@ -68,6 +94,31 @@ def _atomic_guard_chunks(text: str, *, label: int, max_chunk_chars: int, max_chu
 
 def _clean_lines(text: str) -> list[str]:
     return [line.strip() for line in text.replace("\r", "\n").split("\n") if line.strip()]
+
+
+def _is_page_chrome_only(text: str) -> bool:
+    lines = _clean_lines(text)
+    if not lines:
+        return True
+    normalized_lines = [" ".join(line.split()) for line in lines]
+    if all(line in PAGE_CHROME_TERMS for line in normalized_lines):
+        return True
+    normalized_text = " ".join(normalized_lines)
+    chrome_hits = sum(1 for term in PAGE_CHROME_TERMS if term.casefold() in normalized_text.casefold())
+    if len(normalized_text) <= 80 and not _has_source_signal(normalized_text):
+        return chrome_hits >= 2
+    if chrome_hits >= 3 and not _has_source_signal(normalized_text):
+        return True
+    return False
+
+
+def _has_source_signal(text: str) -> bool:
+    return bool(
+        DATE_ROW_RE.search(text)
+        or TIME_RE.search(text)
+        or GRAD_REQUIREMENT_RE.search(text)
+        or any(term in text for term in ("학생회관", "학식", "식단", "메뉴", "셔틀", "버스", "공지", "수강신청", "종강"))
+    )
 
 
 def _graduation_guard_units(lines: list[str]) -> list[tuple[str, str]]:
@@ -166,7 +217,7 @@ def _materialize_units(
     chunks: list[SourceChunk] = []
     for text, boundary_type in units:
         normalized = " ".join(text.split())
-        if not normalized:
+        if not normalized or _is_page_chrome_only(normalized):
             continue
         if len(normalized) > max_chunk_chars:
             chunks.extend(
@@ -206,7 +257,7 @@ def _fallback_window_chunks(
     step = max(max_chunk_chars // 2, 80)
     for start in range(0, len(normalized), step):
         body = normalized[start : start + max_chunk_chars].strip()
-        if not body:
+        if not body or _is_page_chrome_only(body):
             continue
         chunks.append(
             SourceChunk(

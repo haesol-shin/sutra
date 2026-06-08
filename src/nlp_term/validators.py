@@ -388,7 +388,11 @@ def validate_knowledge_quality(
                 )
     if min_body_chars is not None:
         for doc in docs:
-            if len(doc.body.strip()) < min_body_chars:
+            if (
+                _requires_prose_body_length_check(doc)
+                and len(doc.body.strip()) < min_body_chars
+                and not _has_compact_source_fact(doc)
+            ):
                 raise ValueError(f"knowledge-quality: {doc.doc_id} body is shorter than {min_body_chars} chars")
     for doc in docs:
         _validate_knowledge_body_text(doc)
@@ -399,6 +403,23 @@ def validate_knowledge_quality(
             raise ValueError(
                 f"knowledge-quality: source_parse ratio {ratio:.3f} is below {min_source_parse_ratio:.3f}"
             )
+
+
+def _requires_prose_body_length_check(doc: KnowledgeDoc) -> bool:
+    generation_method = doc.metadata.get("generation_method")
+    if generation_method in {"structured_row", "structured_aggregate"}:
+        return False
+    if doc.metadata.get("chunking_strategy") == "atomic_guard":
+        return False
+    if isinstance(doc.metadata.get("row_type"), str):
+        return False
+    if isinstance(doc.metadata.get("structured_fields"), list):
+        return False
+    return True
+
+
+def _has_compact_source_fact(doc: KnowledgeDoc) -> bool:
+    return _has_label_specific_source_signal(doc.body, doc.label)
 
 
 def validate_tier1_coverage(
@@ -598,30 +619,64 @@ def _validate_qa_answer_text(row: QAExample, *, docs_by_id: dict[str, KnowledgeD
 
 def _validate_knowledge_body_text(doc: KnowledgeDoc) -> None:
     for term in QA_BOILERPLATE_TERMS:
-        if term.casefold() in doc.body.casefold():
+        if _contains_page_chrome_term(doc.body, term):
             raise ValueError(f"knowledge-quality: {doc.doc_id} contains page chrome term {term}")
     if _mojibake_score(doc.body) >= 3:
         raise ValueError(f"knowledge-quality: {doc.doc_id} appears garbled")
     if _contains_private_use(doc.body):
         raise ValueError(f"knowledge-quality: {doc.doc_id} contains private-use glyphs")
-    if not _has_label_specific_source_signal(doc.body, doc.label):
+    if _requires_prose_source_signal_check(doc) and not _has_label_specific_source_signal(doc.body, doc.label):
         raise ValueError(f"knowledge-quality: {doc.doc_id} lacks source-specific content signal")
 
 
 def _has_label_specific_source_signal(text: str, label: int) -> bool:
     if label == 1:
-        return bool(re.search(r"20\d{2}-\d{2}-\d{2}", text)) and any(
+        if bool(re.search(r"20\d{2}-\d{2}-\d{2}", text)) and any(
             term in text for term in ("공지", "학사지원과", "작성일", "조회수")
+        ):
+            return True
+        return any(
+            term in text
+            for term in (
+                "장학금",
+                "성적인정",
+                "성적표",
+                "선발기준",
+                "신청",
+                "지원서",
+                "제출",
+                "포털",
+                "학점교류",
+                "공인영어",
+                "TOEIC",
+                "TOEFL",
+                "TEPS",
+                "IELTS",
+            )
         )
     if label == 2:
-        return bool(re.search(r"\d{2}\.\d{2}", text)) and any(
-            term in text for term in ("개강", "수강신청", "휴학", "복학", "등록", "계절학기", "성적")
+        has_calendar_date = bool(re.search(r"(?:\d{2}\.\d{2}|\d{1,2}월\s*\d{1,2}\([^)]+\)|\d{1,2}\.\d{1,2}\([^)]+\))", text))
+        return has_calendar_date and any(
+            term in text for term in ("개강", "종강", "방학", "학기", "수강신청", "휴학", "복학", "등록", "계절학기", "성적")
         )
     if label == 3:
-        return any(term in text for term in ("조식", "중식", "석식", "메뉴운영내역", "원산지"))
+        return any(
+            term in text
+            for term in ("조식", "중식", "석식", "메뉴운영내역", "원산지", "국내산", "식재료", "MSG", "식사", "저염식단", "영양사")
+        )
     if label == 4:
         return any(term in text for term in ("운영기준", "운행", "시간표", "평일", "주말", "공휴일", "월평역"))
     return True
+
+
+def _contains_page_chrome_term(text: str, term: str) -> bool:
+    if term.isascii() and len(term) <= 4:
+        return bool(re.search(rf"(?<![A-Za-z]){re.escape(term)}(?![A-Za-z])", text, flags=re.IGNORECASE))
+    return term.casefold() in text.casefold()
+
+
+def _requires_prose_source_signal_check(doc: KnowledgeDoc) -> bool:
+    return _requires_prose_body_length_check(doc)
 
 
 def _validate_qa_evidence_span(row: QAExample, *, docs_by_id: dict[str, KnowledgeDoc] | None) -> None:

@@ -5,8 +5,8 @@
 - 도메인 분포: `{"academic_calendar": 9, "dining": 8, "graduation": 7, "notices": 8, "shuttle": 7}`
 - Task 1 label match: 38 / 39 (97.44%)
 - Temporal type match: 31 / 39 (79.49%)
-- Retrieval top1 domain match: 31 / 39 (79.49%)
-- Retrieval top3 domain hit: 34 / 39 (87.18%)
+- Retrieval top1 domain match: 32 / 39 (82.05%)
+- Retrieval top3 domain hit: 35 / 39 (89.74%)
 - Answered: 31 / 39 (79.49%)
 - Fail-closed: 8 / 39 (20.51%)
 - Bottlenecks: `{"classifier": 1, "data": 1, "evidence": 5, "none": 25, "temporal": 7}`
@@ -22,7 +22,7 @@
 | public_probe_05 | public_probe | notices | 1 / 1 | latest_item / latest_item | top1=True, top3=True | answered | none |  |
 | public_probe_06 | public_probe | shuttle | 4 / 4 | none / changed_since | top1=True, top3=True | answered | temporal |  |
 | public_probe_07 | public_probe | academic_calendar | 2 / 2 | changed_since / changed_since | top1=True, top3=True | answered | none |  |
-| public_probe_08 | public_probe | dining | 3 / 3 | period_summary / period_summary | top1=False, top3=False | fail_closed | evidence | date_filtered_evidence_missing_or_mismatched |
+| public_probe_08 | public_probe | dining | 3 / 3 | period_summary / period_summary | top1=True, top3=True | fail_closed | evidence | date_filtered_evidence_missing_or_mismatched |
 | public_probe_09 | public_probe | notices | 1 / 1 | latest_item / latest_item | top1=True, top3=True | answered | none |  |
 | public_probe_10 | public_probe | graduation | 0 / 0 | none / none | top1=False, top3=True | answered | none |  |
 | public_probe_11 | public_probe | academic_calendar | 2 / 2 | date_lookup / date_lookup | top1=True, top3=True | answered | none |  |
@@ -46,11 +46,11 @@
 | gp035 | generalization_sample | academic_calendar | 2 / 2 | none / date_lookup | top1=True, top3=True | answered | temporal |  |
 | gp043 | generalization_sample | dining | 3 / 3 | current_snapshot / current_snapshot | top1=False, top3=False | answered | none |  |
 | gp044 | generalization_sample | dining | 3 / 3 | current_snapshot / current_snapshot | top1=True, top3=True | answered | none |  |
-| gp045 | generalization_sample | dining | 3 / 3 | period_summary / period_summary | top1=False, top3=False | fail_closed | evidence | date_filtered_evidence_missing_or_mismatched |
+| gp045 | generalization_sample | dining | 3 / 3 | period_summary / period_summary | top1=True, top3=True | fail_closed | evidence | date_filtered_evidence_missing_or_mismatched |
 | gp046 | generalization_sample | dining | 3 / 3 | future_schedule / future_schedule | top1=True, top3=True | fail_closed | evidence | date_filtered_evidence_missing_or_mismatched |
 | gp047 | generalization_sample | dining | 3 / 3 | current_snapshot / current_snapshot | top1=True, top3=True | fail_closed | data | current_fact_requires_structured_fields |
 | gp049 | generalization_sample | shuttle | 4 / 4 | ongoing_status / ongoing_status | top1=True, top3=True | answered | none |  |
 | gp050 | generalization_sample | shuttle | 4 / 4 | current_snapshot / current_snapshot | top1=True, top3=True | answered | none |  |
 | gp051 | generalization_sample | shuttle | 4 / 4 | current_snapshot / current_snapshot | top1=True, top3=True | answered | none |  |
-| gp052 | generalization_sample | shuttle | 4 / 4 | ongoing_status / future_schedule | top1=True, top3=True | answered | temporal |  |
+| gp052 | generalization_sample | shuttle | 4 / 4 | ongoing_status / future_schedule | top1=False, top3=False | answered | temporal |  |
 | gp053 | generalization_sample | shuttle | 4 / 4 | none / changed_since | top1=True, top3=True | answered | temporal |  |

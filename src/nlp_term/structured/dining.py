@@ -61,7 +61,83 @@ class DiningAdapter:
         return rows
 
     def to_knowledge_docs(self, rows: list[DiningRow]) -> list[KnowledgeDoc]:
-        return [row.to_knowledge_doc() for row in rows]
+        return [row.to_knowledge_doc() for row in rows] + _weekly_aggregate_docs(rows)
+
+
+def _weekly_aggregate_docs(rows: list[DiningRow]) -> list[KnowledgeDoc]:
+    groups: dict[tuple[str, str], list[DiningRow]] = {}
+    for row in rows:
+        groups.setdefault((row.source_id, row.cafeteria), []).append(row)
+
+    docs: list[KnowledgeDoc] = []
+    for (_source_id, cafeteria), group_rows in sorted(groups.items()):
+        dates = sorted({row.meal_date for row in group_rows})
+        if len(dates) < 2:
+            continue
+        ordered_rows = sorted(group_rows, key=lambda row: (row.meal_date, _meal_order(row.meal_type), row.user_type or ""))
+        first = ordered_rows[0]
+        week_start = dates[0]
+        week_end = dates[-1]
+        body_lines = [f"{week_start}~{week_end} {cafeteria} 주간 식단 요약:"]
+        for row in ordered_rows:
+            body_lines.append(f"- {row._knowledge_body()}")
+        metadata = {
+            "structured": {
+                "week_start": week_start,
+                "week_end": week_end,
+                "cafeteria": cafeteria,
+                "meal_dates": dates,
+                "meal_types": sorted({row.meal_type for row in group_rows}, key=_meal_order),
+            },
+            "week_start": week_start,
+            "week_end": week_end,
+            "date_span": f"{week_start}/{week_end}",
+            "cafeteria": cafeteria,
+            "location": cafeteria,
+            "search_aliases": _aggregate_aliases(cafeteria),
+            "structured_fields": ["week_start", "week_end", "cafeteria", "meal_dates", "meal_types"],
+            "raw_path": first.raw_path,
+            "raw_checksum": first.raw_checksum,
+            "raw_fetched_at": first.raw_fetched_at,
+            "verification_official_chain_ok": first.verification_official_chain_ok,
+            "verification_parser_name": first.parser_name,
+            "verification_parser_version": first.parser_version,
+            "source_freshness_policy": first.freshness_policy,
+            "parser": first.parser_name,
+            "generation_method": "structured_aggregate",
+            "row_type": "dining_weekly_menu",
+        }
+        docs.append(
+            KnowledgeDoc(
+                doc_id=f"{first.source_id}__dining_weekly_menu__{week_start}__{week_end}__{_slug(cafeteria)}",
+                label=first.label,
+                domain=first.domain,
+                title=f"{week_start}~{week_end} {cafeteria} 주간 식단",
+                body="\n".join(body_lines),
+                date=week_start,
+                source_url=first.source_url,
+                source_id=first.source_id,
+                section="dining_weekly_menu",
+                metadata=metadata,
+            )
+        )
+    return docs
+
+
+def _meal_order(meal_type: str) -> int:
+    return {"조식": 0, "중식": 1, "석식": 2}.get(meal_type, 99)
+
+
+def _aggregate_aliases(cafeteria: str) -> list[str]:
+    aliases = ["학식", "식단", "주간 식단", "이번주 학식", "다음주 학식"]
+    normalized_cafeteria = cafeteria.replace("제", "", 1)
+    if normalized_cafeteria != cafeteria:
+        aliases.append(normalized_cafeteria)
+    return aliases
+
+
+def _slug(value: str) -> str:
+    return re.sub(r"[^0-9A-Za-z가-힣]+", "_", value).strip("_")
 
 
 def _weekly_rows(

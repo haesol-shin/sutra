@@ -106,3 +106,22 @@ def test_unstructured_text_falls_back_with_low_confidence() -> None:
     assert chunks
     assert all(chunk.strategy == "fallback_window" for chunk in chunks)
     assert all(chunk.chunk_confidence == "low" for chunk in chunks)
+
+
+def test_page_chrome_only_text_is_removed_instead_of_chunked() -> None:
+    text = "목록\n이전글\n다음글\n첨부파일\n다운로드\nURL복사\n인쇄"
+
+    chunks = split_source_text(text, label=1, max_chunk_chars=100, max_chunks=5)
+
+    assert chunks == []
+
+
+def test_long_footer_chrome_text_is_removed_instead_of_chunked() -> None:
+    text = (
+        "연도 2026 2025 2024 2023 닫기 CSV 내보내기 ICS 내보내기 의견등록 구성 모듈 안내 "
+        "대전광역시 유성구 대학로 99 충남대학교 Copyright CNU All Rights Reserved."
+    )
+
+    chunks = split_source_text(text, label=2, max_chunk_chars=300, max_chunks=5)
+
+    assert chunks == []

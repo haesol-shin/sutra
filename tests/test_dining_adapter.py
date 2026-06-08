@@ -132,3 +132,44 @@ def test_dining_adapter_parses_weekly_single_cafeteria_layout() -> None:
     assert {row.meal_date for row in rows}.issuperset(
         {"2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-13"}
     )
+
+
+def test_dining_adapter_adds_weekly_aggregate_knowledge_doc() -> None:
+    spec = next(
+        item
+        for item in iter_specs(stage="all")
+        if item.source_id == "cnu_mobile_food_week_2026_06_08_2nd"
+    )
+    raw = RawSource(
+        source_id=spec.source_id,
+        label=spec.label,
+        domain=spec.domain,
+        url=spec.url,
+        fetched_at="2026-06-08T02:02:37+00:00",
+        content_type="text/html; charset=UTF-8",
+        raw_path="data/raw/dining/cnu_mobile_food_2026_06_09.html",
+        status_code=200,
+        checksum="weekly-dining-raw-checksum",
+    )
+    verification = SourceVerification(
+        source_id=spec.source_id,
+        official_chain_ok=spec.official_chain_ok,
+        parser_name="dining_stage_inventory",
+        parser_version=PARSER_VERSION,
+        evidence=[spec.url],
+        warnings=["freshness policy: short_ttl"],
+        verified_at="2026-06-08T02:02:38+00:00",
+    )
+    adapter = DiningAdapter()
+
+    docs = adapter.to_knowledge_docs(adapter.parse(spec=spec, raw=raw, verification=verification))
+
+    weekly_docs = [doc for doc in docs if doc.metadata.get("row_type") == "dining_weekly_menu"]
+    assert len(weekly_docs) == 1
+    weekly = weekly_docs[0]
+    assert weekly.metadata["week_start"] == "2026-06-08"
+    assert weekly.metadata["week_end"] == "2026-06-13"
+    assert weekly.metadata["cafeteria"] == "제2학생회관"
+    assert "2026-06-09" in weekly.body
+    assert "중식" in weekly.body
+    assert "치즈닭갈비덮밥" in weekly.body

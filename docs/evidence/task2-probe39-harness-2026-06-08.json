@@ -10,7 +10,7 @@
   "public_probe_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\gold\\task2_public_probe_eval.json",
   "generalization_probe_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\gold\\task2_generalization_probe.json",
   "knowledge_path": "data\\knowledge_seed.json",
-  "knowledge_checksum": "8a5f154d33ec23dc8da818955967236bb6ed18ec2c49306d2b310ced85d0d5d4",
+  "knowledge_checksum": "f9d55d5a5131f306c2be8626c3684ca6174931642f0a8afb8dc1fc031fc5be21",
   "question_count": 39,
   "domain_counts": {
     "academic_calendar": 9,
@@ -23,10 +23,10 @@
   "label_match_rate": 0.9743589743589743,
   "temporal_match_count": 31,
   "temporal_match_rate": 0.7948717948717948,
-  "retrieval_top1_domain_match_count": 31,
-  "retrieval_top1_domain_match_rate": 0.7948717948717948,
-  "retrieval_top3_domain_hit_count": 34,
-  "retrieval_top3_domain_hit_rate": 0.8717948717948718,
+  "retrieval_top1_domain_match_count": 32,
+  "retrieval_top1_domain_match_rate": 0.8205128205128205,
+  "retrieval_top3_domain_hit_count": 35,
+  "retrieval_top3_domain_hit_rate": 0.8974358974358975,
   "answered_count": 31,
   "answered_rate": 0.7948717948717948,
   "fail_close_count": 8,
@@ -580,64 +580,64 @@
       "evidence_sufficiency_status": "insufficient",
       "fetch_decision": "fetch_required_but_not_implemented",
       "answer_validation_status": "blocked",
-      "retrieval_top1_domain_match": false,
-      "retrieval_top3_domain_hit": false,
+      "retrieval_top1_domain_match": true,
+      "retrieval_top3_domain_hit": true,
       "prefilter_retrieved_candidates": [
         {
-          "doc_id": "academic_calendar__academic_calendar_event__2026__2026-02-27__2026-02-27__입학식2026학년도__13__2d6f71eb70",
-          "score": 0.25,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar"
+          "doc_id": "cnu_mobile_food_week_2026_06_08_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
+          "score": 0.7083333333333334,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_08_1st"
         },
         {
-          "doc_id": "academic_calendar_2023__academic_calendar_event__2023__2023-02-28__2023-02-28__2023학년도_입학식__15__fb3d8e6e41",
-          "score": 0.25,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar_2023"
+          "doc_id": "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "score": 0.7083333333333334,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_08_2nd"
         },
         {
-          "doc_id": "academic_calendar_2024__academic_calendar_event__2024__2024-02-28__2024-02-28__입학식2024년도__14__f03d27e054",
-          "score": 0.25,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar_2024"
+          "doc_id": "cnu_mobile_food_week_2026_06_08_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
+          "score": 0.7083333333333334,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_08_3rd"
         },
         {
-          "doc_id": "academic_calendar_2025__academic_calendar_event__2025__2025-02-28__2025-02-28__입학식2025학년도__14__57dcb9ae22",
-          "score": 0.25,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar_2025"
+          "doc_id": "cnu_mobile_food_week_2026_06_08_4th__dining_weekly_menu__2026-06-08__2026-06-13__제4학생회관",
+          "score": 0.7083333333333334,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_08_4th"
         },
         {
-          "doc_id": "academic_calendar_2026__academic_calendar_event__2026__2026-02-27__2026-02-27__입학식2026학년도__13__72db059543",
-          "score": 0.25,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar_2026"
+          "doc_id": "cnu_mobile_food_week_2026_06_08_life_science__dining_weekly_menu__2026-06-08__2026-06-13__생활과학대학",
+          "score": 0.7083333333333334,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_08_life_science"
         }
       ],
       "postfilter_retrieved_doc_ids": [
-        "cnu_mobile_food__dining_menu__2026-06-08__제1학생회관__조식__직원__1__de7b35a625",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__직원__2__256ddf0c67",
-        "cnu_mobile_food__dining_menu__2026-06-08__제3학생회관__조식__직원__3__b838af6db9",
-        "cnu_mobile_food__dining_menu__2026-06-08__제4학생회관__조식__직원__4__c62f6984a8",
-        "cnu_mobile_food__dining_menu__2026-06-08__생활과학대학__조식__직원__5__99b04013d7",
-        "cnu_mobile_food__dining_menu__2026-06-08__제1학생회관__조식__학생__6__766f4ae481",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
-        "cnu_mobile_food__dining_menu__2026-06-08__제3학생회관__조식__학생__8__6efdf5cf4e"
+        "cnu_mobile_food_week_2026_06_08_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
+        "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_08_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
+        "cnu_mobile_food_week_2026_06_08_4th__dining_weekly_menu__2026-06-08__2026-06-13__제4학생회관",
+        "cnu_mobile_food_week_2026_06_08_life_science__dining_weekly_menu__2026-06-08__2026-06-13__생활과학대학",
+        "cnu_mobile_food_week_2026_06_01_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
+        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관"
       ],
       "selected_retrieved_doc_ids": [
-        "cnu_mobile_food__dining_menu__2026-06-08__제1학생회관__조식__직원__1__de7b35a625",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__직원__2__256ddf0c67",
-        "cnu_mobile_food__dining_menu__2026-06-08__제3학생회관__조식__직원__3__b838af6db9",
-        "cnu_mobile_food__dining_menu__2026-06-08__제4학생회관__조식__직원__4__c62f6984a8",
-        "cnu_mobile_food__dining_menu__2026-06-08__생활과학대학__조식__직원__5__99b04013d7",
-        "cnu_mobile_food__dining_menu__2026-06-08__제1학생회관__조식__학생__6__766f4ae481",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
-        "cnu_mobile_food__dining_menu__2026-06-08__제3학생회관__조식__학생__8__6efdf5cf4e"
+        "cnu_mobile_food_week_2026_06_08_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
+        "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_08_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
+        "cnu_mobile_food_week_2026_06_08_4th__dining_weekly_menu__2026-06-08__2026-06-13__제4학생회관",
+        "cnu_mobile_food_week_2026_06_08_life_science__dining_weekly_menu__2026-06-08__2026-06-13__생활과학대학",
+        "cnu_mobile_food_week_2026_06_01_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
+        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관"
       ],
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "evidence",
@@ -961,54 +961,54 @@
       "retrieval_top3_domain_hit": true,
       "prefilter_retrieved_candidates": [
         {
-          "doc_id": "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__직원__2__256ddf0c67",
-          "score": 0.9038461538461539,
+          "doc_id": "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "score": 1.0769230769230769,
           "label": 3,
           "domain": "dining",
-          "source_id": "cnu_mobile_food"
+          "source_id": "cnu_mobile_food_week_2026_06_08_2nd"
         },
         {
-          "doc_id": "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
-          "score": 0.9038461538461539,
+          "doc_id": "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "score": 1.0769230769230769,
           "label": 3,
           "domain": "dining",
-          "source_id": "cnu_mobile_food"
+          "source_id": "cnu_mobile_food_week_2026_06_01_2nd"
         },
         {
-          "doc_id": "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__직원__11__719fd0a2ec",
-          "score": 0.9038461538461539,
+          "doc_id": "cnu_mobile_food_week_2026_06_15_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "score": 1.0769230769230769,
           "label": 3,
           "domain": "dining",
-          "source_id": "cnu_mobile_food"
+          "source_id": "cnu_mobile_food_week_2026_06_15_2nd"
         },
         {
-          "doc_id": "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__학생__15__f93b5483f8",
-          "score": 0.9038461538461539,
+          "doc_id": "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "score": 1.0769230769230769,
           "label": 3,
           "domain": "dining",
-          "source_id": "cnu_mobile_food"
+          "source_id": "cnu_mobile_food_week_2026_06_22_2nd"
         },
         {
-          "doc_id": "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__석식__직원__19__7a089ca5e1",
-          "score": 0.9038461538461539,
+          "doc_id": "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "score": 1.0769230769230769,
           "label": 3,
           "domain": "dining",
-          "source_id": "cnu_mobile_food"
+          "source_id": "cnu_mobile_food_week_2026_06_29_2nd"
         }
       ],
       "postfilter_retrieved_doc_ids": [
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__직원__2__256ddf0c67",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__직원__11__719fd0a2ec",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__학생__15__f93b5483f8",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__석식__직원__19__7a089ca5e1"
+        "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_15_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관"
       ],
       "selected_retrieved_doc_ids": [
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__직원__2__256ddf0c67",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__직원__11__719fd0a2ec",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__학생__15__f93b5483f8",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__석식__직원__19__7a089ca5e1"
+        "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_15_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관"
       ],
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "evidence",
@@ -2328,64 +2328,64 @@
       "evidence_sufficiency_status": "insufficient",
       "fetch_decision": "fetch_required_but_not_implemented",
       "answer_validation_status": "blocked",
-      "retrieval_top1_domain_match": false,
-      "retrieval_top3_domain_hit": false,
+      "retrieval_top1_domain_match": true,
+      "retrieval_top3_domain_hit": true,
       "prefilter_retrieved_candidates": [
         {
-          "doc_id": "academic_calendar__academic_calendar_event__2026__2026-02-27__2026-02-27__입학식2026학년도__13__2d6f71eb70",
-          "score": 0.25,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar"
+          "doc_id": "cnu_mobile_food_week_2026_06_08_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
+          "score": 0.7083333333333334,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_08_1st"
         },
         {
-          "doc_id": "academic_calendar_2023__academic_calendar_event__2023__2023-02-28__2023-02-28__2023학년도_입학식__15__fb3d8e6e41",
-          "score": 0.25,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar_2023"
+          "doc_id": "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "score": 0.7083333333333334,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_08_2nd"
         },
         {
-          "doc_id": "academic_calendar_2024__academic_calendar_event__2024__2024-02-28__2024-02-28__입학식2024년도__14__f03d27e054",
-          "score": 0.25,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar_2024"
+          "doc_id": "cnu_mobile_food_week_2026_06_08_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
+          "score": 0.7083333333333334,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_08_3rd"
         },
         {
-          "doc_id": "academic_calendar_2025__academic_calendar_event__2025__2025-02-28__2025-02-28__입학식2025학년도__14__57dcb9ae22",
-          "score": 0.25,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar_2025"
+          "doc_id": "cnu_mobile_food_week_2026_06_08_4th__dining_weekly_menu__2026-06-08__2026-06-13__제4학생회관",
+          "score": 0.7083333333333334,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_08_4th"
         },
         {
-          "doc_id": "academic_calendar_2026__academic_calendar_event__2026__2026-02-27__2026-02-27__입학식2026학년도__13__72db059543",
-          "score": 0.25,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar_2026"
+          "doc_id": "cnu_mobile_food_week_2026_06_08_life_science__dining_weekly_menu__2026-06-08__2026-06-13__생활과학대학",
+          "score": 0.7083333333333334,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_08_life_science"
         }
       ],
       "postfilter_retrieved_doc_ids": [
-        "cnu_mobile_food__dining_menu__2026-06-08__제1학생회관__조식__직원__1__de7b35a625",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__직원__2__256ddf0c67",
-        "cnu_mobile_food__dining_menu__2026-06-08__제3학생회관__조식__직원__3__b838af6db9",
-        "cnu_mobile_food__dining_menu__2026-06-08__제4학생회관__조식__직원__4__c62f6984a8",
-        "cnu_mobile_food__dining_menu__2026-06-08__생활과학대학__조식__직원__5__99b04013d7",
-        "cnu_mobile_food__dining_menu__2026-06-08__제1학생회관__조식__학생__6__766f4ae481",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
-        "cnu_mobile_food__dining_menu__2026-06-08__제3학생회관__조식__학생__8__6efdf5cf4e"
+        "cnu_mobile_food_week_2026_06_08_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
+        "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_08_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
+        "cnu_mobile_food_week_2026_06_08_4th__dining_weekly_menu__2026-06-08__2026-06-13__제4학생회관",
+        "cnu_mobile_food_week_2026_06_08_life_science__dining_weekly_menu__2026-06-08__2026-06-13__생활과학대학",
+        "cnu_mobile_food_week_2026_06_01_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
+        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관"
       ],
       "selected_retrieved_doc_ids": [
-        "cnu_mobile_food__dining_menu__2026-06-08__제1학생회관__조식__직원__1__de7b35a625",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__직원__2__256ddf0c67",
-        "cnu_mobile_food__dining_menu__2026-06-08__제3학생회관__조식__직원__3__b838af6db9",
-        "cnu_mobile_food__dining_menu__2026-06-08__제4학생회관__조식__직원__4__c62f6984a8",
-        "cnu_mobile_food__dining_menu__2026-06-08__생활과학대학__조식__직원__5__99b04013d7",
-        "cnu_mobile_food__dining_menu__2026-06-08__제1학생회관__조식__학생__6__766f4ae481",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
-        "cnu_mobile_food__dining_menu__2026-06-08__제3학생회관__조식__학생__8__6efdf5cf4e"
+        "cnu_mobile_food_week_2026_06_08_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
+        "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_08_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
+        "cnu_mobile_food_week_2026_06_08_4th__dining_weekly_menu__2026-06-08__2026-06-13__제4학생회관",
+        "cnu_mobile_food_week_2026_06_08_life_science__dining_weekly_menu__2026-06-08__2026-06-13__생활과학대학",
+        "cnu_mobile_food_week_2026_06_01_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
+        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관"
       ],
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "evidence",
@@ -2413,54 +2413,54 @@
       "retrieval_top3_domain_hit": true,
       "prefilter_retrieved_candidates": [
         {
-          "doc_id": "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__직원__2__256ddf0c67",
-          "score": 0.9038461538461539,
+          "doc_id": "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "score": 1.0769230769230769,
           "label": 3,
           "domain": "dining",
-          "source_id": "cnu_mobile_food"
+          "source_id": "cnu_mobile_food_week_2026_06_08_2nd"
         },
         {
-          "doc_id": "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
-          "score": 0.9038461538461539,
+          "doc_id": "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "score": 1.0769230769230769,
           "label": 3,
           "domain": "dining",
-          "source_id": "cnu_mobile_food"
+          "source_id": "cnu_mobile_food_week_2026_06_01_2nd"
         },
         {
-          "doc_id": "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__직원__11__719fd0a2ec",
-          "score": 0.9038461538461539,
+          "doc_id": "cnu_mobile_food_week_2026_06_15_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "score": 1.0769230769230769,
           "label": 3,
           "domain": "dining",
-          "source_id": "cnu_mobile_food"
+          "source_id": "cnu_mobile_food_week_2026_06_15_2nd"
         },
         {
-          "doc_id": "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__학생__15__f93b5483f8",
-          "score": 0.9038461538461539,
+          "doc_id": "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "score": 1.0769230769230769,
           "label": 3,
           "domain": "dining",
-          "source_id": "cnu_mobile_food"
+          "source_id": "cnu_mobile_food_week_2026_06_22_2nd"
         },
         {
-          "doc_id": "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__석식__직원__19__7a089ca5e1",
-          "score": 0.9038461538461539,
+          "doc_id": "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+          "score": 1.0769230769230769,
           "label": 3,
           "domain": "dining",
-          "source_id": "cnu_mobile_food"
+          "source_id": "cnu_mobile_food_week_2026_06_29_2nd"
         }
       ],
       "postfilter_retrieved_doc_ids": [
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__직원__2__256ddf0c67",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__직원__11__719fd0a2ec",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__학생__15__f93b5483f8",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__석식__직원__19__7a089ca5e1"
+        "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_15_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관"
       ],
       "selected_retrieved_doc_ids": [
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__직원__2__256ddf0c67",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__조식__학생__7__465a75c6e2",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__직원__11__719fd0a2ec",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__중식__학생__15__f93b5483f8",
-        "cnu_mobile_food__dining_menu__2026-06-08__제2학생회관__석식__직원__19__7a089ca5e1"
+        "cnu_mobile_food_week_2026_06_08_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_01_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_15_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_22_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관",
+        "cnu_mobile_food_week_2026_06_29_2nd__dining_weekly_menu__2026-06-08__2026-06-13__제2학생회관"
       ],
       "failure_reason": "date_filtered_evidence_missing_or_mismatched",
       "bottleneck": "evidence",
@@ -2784,43 +2784,43 @@
       "evidence_sufficiency_status": "sufficient",
       "fetch_decision": "skipped_rag_sufficient",
       "answer_validation_status": "passed",
-      "retrieval_top1_domain_match": true,
-      "retrieval_top3_domain_hit": true,
+      "retrieval_top1_domain_match": false,
+      "retrieval_top3_domain_hit": false,
       "prefilter_retrieved_candidates": [
         {
-          "doc_id": "shuttle_bus__shuttle_route__campus_loop__2026-03-03__2026-06-21__2a184c34ae",
+          "doc_id": "cnu_mobile_food_week_2026_06_08_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
           "score": 0.34210526315789475,
-          "label": 4,
-          "domain": "shuttle",
-          "source_id": "shuttle_bus"
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_08_3rd"
         },
         {
-          "doc_id": "shuttle_bus__shuttle_segment__campus_loop__departure_time__0820_월평역_등교__1__2026-03-03__2026-06-21__44bb3f901c",
+          "doc_id": "cnu_mobile_food_week_2026_06_01_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
           "score": 0.34210526315789475,
-          "label": 4,
-          "domain": "shuttle",
-          "source_id": "shuttle_bus"
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_01_3rd"
         },
         {
-          "doc_id": "shuttle_bus__shuttle_segment__campus_loop__departure_time__0830__2__2026-03-03__2026-06-21__f73ccdf144",
+          "doc_id": "cnu_mobile_food_week_2026_06_15_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
           "score": 0.34210526315789475,
-          "label": 4,
-          "domain": "shuttle",
-          "source_id": "shuttle_bus"
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_15_3rd"
         },
         {
-          "doc_id": "shuttle_bus__shuttle_segment__campus_loop__departure_time__0930__3__2026-03-03__2026-06-21__3763c72372",
+          "doc_id": "cnu_mobile_food_week_2026_06_22_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
           "score": 0.34210526315789475,
-          "label": 4,
-          "domain": "shuttle",
-          "source_id": "shuttle_bus"
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_22_3rd"
         },
         {
-          "doc_id": "shuttle_bus__shuttle_segment__campus_loop__departure_time__0940__4__2026-03-03__2026-06-21__ee150ffdeb",
+          "doc_id": "cnu_mobile_food_week_2026_06_29_3rd__dining_weekly_menu__2026-06-08__2026-06-13__제3학생회관",
           "score": 0.34210526315789475,
-          "label": 4,
-          "domain": "shuttle",
-          "source_id": "shuttle_bus"
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food_week_2026_06_29_3rd"
         }
       ],
       "postfilter_retrieved_doc_ids": [
