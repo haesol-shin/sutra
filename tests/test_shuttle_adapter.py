@@ -42,7 +42,10 @@ def test_shuttle_adapter_parses_schedule_and_route_rows() -> None:
 
     rows = ShuttleAdapter().parse(spec=spec, raw=raw, verification=verification)
 
-    assert len(rows) == 2
+    route_rows = [row for row in rows if row.row_type == "shuttle_route"]
+    segment_rows = [row for row in rows if row.row_type == "shuttle_segment"]
+    assert len(route_rows) == 2
+    assert len(segment_rows) >= 30
     campus = next(row for row in rows if row.route_key == "campus_loop")
     assert campus.route_name == "교내 순환"
     assert "08:20 (월평역) 등교" in campus.departure_times
@@ -66,6 +69,13 @@ def test_shuttle_knowledge_doc_metadata_contract_and_search() -> None:
 
     docs = adapter.to_knowledge_docs(rows)
     campus_doc = next(doc for doc in docs if doc.metadata["structured"]["route_key"] == "campus_loop")
+    segment_doc = next(
+        doc
+        for doc in docs
+        if doc.metadata.get("row_type") == "shuttle_segment"
+        and doc.metadata.get("segment_kind") == "departure_time"
+        and doc.metadata.get("segment_value") == "08:20 (월평역) 등교"
+    )
 
     assert campus_doc.metadata["structured"]["departure_times"][0] == "08:20 (월평역) 등교"
     assert campus_doc.metadata["route_name"] == "교내 순환"
@@ -89,6 +99,16 @@ def test_shuttle_knowledge_doc_metadata_contract_and_search() -> None:
     assert campus_doc.metadata["verification_official_chain_ok"] is True
     assert "정상 운행" in campus_doc.body
     assert "정류장" in campus_doc.body
+    assert segment_doc.metadata["structured_fields"] == [
+        "route_key",
+        "route_name",
+        "segment_kind",
+        "segment_value",
+        "segment_index",
+        "valid_start",
+        "valid_end",
+        "operating_days",
+    ]
 
     top = rank_docs("다음주에 셔틀버스는 정상 운행하나요?", docs=docs, top_k=1)[0]
 

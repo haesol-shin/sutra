@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from nlp_term.collect.source_inventory import SourceSpec
 from nlp_term.paths import PROJECT_ROOT
 from nlp_term.schemas import KnowledgeDoc, RawSource, SourceVerification
-from nlp_term.structured.rows import ShuttleRow, shuttle_row_id
+from nlp_term.structured.rows import ShuttleRow, ShuttleSegmentRow, shuttle_row_id, shuttle_segment_row_id
 
 
 TIME_RE = re.compile(r"\d{1,2}:\d{2}")
@@ -38,7 +38,7 @@ class ShuttleAdapter:
         spec: SourceSpec,
         raw: RawSource,
         verification: SourceVerification,
-    ) -> list[ShuttleRow]:
+    ) -> list[ShuttleRow | ShuttleSegmentRow]:
         raw_path = PROJECT_ROOT / raw.raw_path
         soup = BeautifulSoup(raw_path.read_bytes(), "lxml")
         tables = soup.select("#txt table")
@@ -46,43 +46,144 @@ class ShuttleAdapter:
             raise ValueError("shuttle timetable tables not found")
         schedule_rows = _schedule_rows(tables[0])
         route_rows = _route_rows(tables[1])
-        rows: list[ShuttleRow] = []
+        rows: list[ShuttleRow | ShuttleSegmentRow] = []
         notes = _operation_notes(soup)
         for route_key, route_name, departure_times, schedule_evidence in schedule_rows:
             details = route_rows.get(route_key)
             if details is None:
                 continue
-            rows.append(
-                ShuttleRow.from_source_context(
+            route_row = ShuttleRow.from_source_context(
+                spec=spec,
+                raw=raw,
+                verification=verification,
+                row_id=shuttle_row_id(
+                    source_id=spec.source_id,
+                    route_key=route_key,
+                    valid_start=self.valid_start,
+                    valid_end=self.valid_end,
+                ),
+                evidence_text=f"{schedule_evidence} {details.route_text}".strip(),
+                route_key=route_key,
+                route_name=route_name,
+                departure_times=departure_times,
+                first_time=details.first_time,
+                last_time=details.last_time,
+                stops=details.stops,
+                operation_count=details.operation_count,
+                operation_period=details.operation_period,
+                operating_days=self.operating_days,
+                non_operating_days=self.non_operating_days,
+                valid_start=self.valid_start,
+                valid_end=self.valid_end,
+                notes=notes,
+            )
+            rows.append(route_row)
+            rows.extend(
+                _segment_rows(
                     spec=spec,
                     raw=raw,
                     verification=verification,
-                    row_id=shuttle_row_id(
-                        source_id=spec.source_id,
-                        route_key=route_key,
-                        valid_start=self.valid_start,
-                        valid_end=self.valid_end,
-                    ),
-                    evidence_text=f"{schedule_evidence} {details.route_text}".strip(),
                     route_key=route_key,
                     route_name=route_name,
                     departure_times=departure_times,
-                    first_time=details.first_time,
-                    last_time=details.last_time,
                     stops=details.stops,
-                    operation_count=details.operation_count,
-                    operation_period=details.operation_period,
-                    operating_days=self.operating_days,
-                    non_operating_days=self.non_operating_days,
                     valid_start=self.valid_start,
                     valid_end=self.valid_end,
-                    notes=notes,
+                    operating_days=self.operating_days,
                 )
             )
         return rows
 
-    def to_knowledge_docs(self, rows: list[ShuttleRow]) -> list[KnowledgeDoc]:
+    def to_knowledge_docs(self, rows: list[ShuttleRow | ShuttleSegmentRow]) -> list[KnowledgeDoc]:
         return [row.to_knowledge_doc() for row in rows]
+
+
+def _segment_rows(
+    *,
+    spec: SourceSpec,
+    raw: RawSource,
+    verification: SourceVerification,
+    route_key: str,
+    route_name: str,
+    departure_times: list[str],
+    stops: list[str],
+    valid_start: str,
+    valid_end: str,
+    operating_days: str,
+) -> list[ShuttleSegmentRow]:
+    rows: list[ShuttleSegmentRow] = []
+    for index, departure_time in enumerate(departure_times, start=1):
+        rows.append(
+            _segment_row(
+                spec=spec,
+                raw=raw,
+                verification=verification,
+                route_key=route_key,
+                route_name=route_name,
+                segment_kind="departure_time",
+                segment_value=departure_time,
+                segment_index=index,
+                valid_start=valid_start,
+                valid_end=valid_end,
+                operating_days=operating_days,
+            )
+        )
+    for index, stop in enumerate(stops, start=1):
+        rows.append(
+            _segment_row(
+                spec=spec,
+                raw=raw,
+                verification=verification,
+                route_key=route_key,
+                route_name=route_name,
+                segment_kind="stop",
+                segment_value=stop,
+                segment_index=index,
+                valid_start=valid_start,
+                valid_end=valid_end,
+                operating_days=operating_days,
+            )
+        )
+    return rows
+
+
+def _segment_row(
+    *,
+    spec: SourceSpec,
+    raw: RawSource,
+    verification: SourceVerification,
+    route_key: str,
+    route_name: str,
+    segment_kind: str,
+    segment_value: str,
+    segment_index: int,
+    valid_start: str,
+    valid_end: str,
+    operating_days: str,
+) -> ShuttleSegmentRow:
+    return ShuttleSegmentRow.from_source_context(
+        spec=spec,
+        raw=raw,
+        verification=verification,
+        row_id=shuttle_segment_row_id(
+            source_id=spec.source_id,
+            route_key=route_key,
+            segment_kind=segment_kind,
+            segment_value=segment_value,
+            segment_index=segment_index,
+            valid_start=valid_start,
+            valid_end=valid_end,
+        ),
+        evidence_text=f"{route_name} {segment_kind} {segment_value}",
+        route_key=route_key,
+        route_name=route_name,
+        segment_kind=segment_kind,
+        segment_value=segment_value,
+        segment_index=segment_index,
+        valid_start=valid_start,
+        valid_end=valid_end,
+        operating_days=operating_days,
+    )
 
 
 def _schedule_rows(table) -> list[tuple[str, str, list[str], str]]:

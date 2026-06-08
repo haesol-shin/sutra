@@ -49,6 +49,16 @@ SHUTTLE_STRUCTURED_FIELDS = [
     "valid_end",
     "notes",
 ]
+SHUTTLE_SEGMENT_STRUCTURED_FIELDS = [
+    "route_key",
+    "route_name",
+    "segment_kind",
+    "segment_value",
+    "segment_index",
+    "valid_start",
+    "valid_end",
+    "operating_days",
+]
 NOTICE_STRUCTURED_FIELDS = [
     "notice_no",
     "title",
@@ -488,6 +498,114 @@ class ShuttleRow(BaseStructuredRow):
         )
 
 
+class ShuttleSegmentRow(BaseStructuredRow):
+    row_type: Literal["shuttle_segment"] = "shuttle_segment"
+    route_key: str
+    route_name: str
+    segment_kind: Literal["departure_time", "stop"]
+    segment_value: str
+    segment_index: int
+    valid_start: str
+    valid_end: str
+    operating_days: str
+
+    @classmethod
+    def from_source_context(
+        cls,
+        *,
+        spec: SourceSpec,
+        raw: RawSource,
+        verification: SourceVerification,
+        row_id: str,
+        evidence_text: str,
+        route_key: str,
+        route_name: str,
+        segment_kind: Literal["departure_time", "stop"],
+        segment_value: str,
+        segment_index: int,
+        valid_start: str,
+        valid_end: str,
+        operating_days: str,
+    ) -> ShuttleSegmentRow:
+        provenance = BaseStructuredRow.provenance_from(
+            spec=spec,
+            raw=raw,
+            verification=verification,
+            row_id=row_id,
+            row_type="shuttle_segment",
+            evidence_text=evidence_text,
+        )
+        return cls(
+            **provenance,
+            route_key=route_key,
+            route_name=route_name,
+            segment_kind=segment_kind,
+            segment_value=segment_value,
+            segment_index=segment_index,
+            valid_start=valid_start,
+            valid_end=valid_end,
+            operating_days=operating_days,
+        )
+
+    def structured_payload(self) -> dict[str, Any]:
+        return {
+            "route_key": self.route_key,
+            "route_name": self.route_name,
+            "segment_kind": self.segment_kind,
+            "segment_value": self.segment_value,
+            "segment_index": self.segment_index,
+            "valid_start": self.valid_start,
+            "valid_end": self.valid_end,
+            "operating_days": self.operating_days,
+        }
+
+    def to_knowledge_doc(self) -> KnowledgeDoc:
+        metadata = {
+            "structured": self.structured_payload(),
+            "route_key": self.route_key,
+            "route_name": self.route_name,
+            "segment_kind": self.segment_kind,
+            "segment_value": self.segment_value,
+            "segment_index": self.segment_index,
+            "valid_start": self.valid_start,
+            "valid_end": self.valid_end,
+            "date_span": f"{self.valid_start}/{self.valid_end}",
+            "operating_days": self.operating_days,
+            "structured_fields": SHUTTLE_SEGMENT_STRUCTURED_FIELDS,
+            "raw_path": self.raw_path,
+            "raw_checksum": self.raw_checksum,
+            "raw_fetched_at": self.raw_fetched_at,
+            "verification_official_chain_ok": self.verification_official_chain_ok,
+            "verification_parser_name": self.parser_name,
+            "verification_parser_version": self.parser_version,
+            "source_freshness_policy": self.freshness_policy,
+            "parser": self.parser_name,
+            "generation_method": "structured_row",
+            "row_id": self.row_id,
+            "row_type": self.row_type,
+        }
+        label = "출발시각" if self.segment_kind == "departure_time" else "정류장"
+        return KnowledgeDoc(
+            doc_id=self.row_id,
+            label=self.label,
+            domain=self.domain,
+            title=f"2026학년도 셔틀버스 {self.route_name} {label} {self.segment_value}",
+            body=self._knowledge_body(label),
+            date=self.valid_start,
+            source_url=self.source_url,
+            source_id=self.source_id,
+            section=self.row_type,
+            metadata=metadata,
+        )
+
+    def _knowledge_body(self, label: str) -> str:
+        return (
+            f"2026학년도 셔틀버스 {self.route_name}의 {label}: {self.segment_value}. "
+            f"적용 기간은 {self.valid_start}부터 {self.valid_end}까지이고, "
+            f"운영일은 {self.operating_days}입니다."
+        )
+
+
 class NoticeRow(BaseStructuredRow):
     row_type: Literal["notice_board_item"] = "notice_board_item"
     notice_no: str
@@ -774,6 +892,31 @@ def shuttle_row_id(
         source_id,
         "shuttle_route",
         route_key,
+        valid_start,
+        valid_end,
+    ]
+    normalized = "__".join(_slug(part) for part in parts)
+    digest = sha1("|".join(parts).encode("utf-8")).hexdigest()[:10]
+    return f"{normalized}__{digest}"
+
+
+def shuttle_segment_row_id(
+    *,
+    source_id: str,
+    route_key: str,
+    segment_kind: str,
+    segment_value: str,
+    segment_index: int,
+    valid_start: str,
+    valid_end: str,
+) -> str:
+    parts = [
+        source_id,
+        "shuttle_segment",
+        route_key,
+        segment_kind,
+        segment_value,
+        str(segment_index),
         valid_start,
         valid_end,
     ]

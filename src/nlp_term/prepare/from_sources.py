@@ -162,7 +162,7 @@ def parse_structured_source(
     *,
     verification: SourceVerification,
 ) -> tuple[list[KnowledgeDoc], SourceParseFailure | None]:
-    adapter = GraduationRequirementAdapter() if raw.domain == "graduation" else STRUCTURED_ADAPTERS.get(raw.source_id)
+    adapter = _structured_adapter(raw)
     if adapter is None:
         return [], None
     try:
@@ -171,6 +171,16 @@ def parse_structured_source(
         return adapter.to_knowledge_docs(rows), None
     except Exception as exc:
         return [], SourceParseFailure(source_id=raw.source_id, raw_path=raw.raw_path, reason=f"structured parse failed: {exc}")
+
+
+def _structured_adapter(raw: RawSource):
+    if raw.domain == "graduation":
+        return GraduationRequirementAdapter()
+    if raw.domain == "dining":
+        return DiningAdapter()
+    if raw.domain == "shuttle":
+        return ShuttleAdapter()
+    return STRUCTURED_ADAPTERS.get(raw.source_id)
 
 
 def _raw_provenance_metadata(raw: RawSource, verification: SourceVerification) -> dict[str, object]:
