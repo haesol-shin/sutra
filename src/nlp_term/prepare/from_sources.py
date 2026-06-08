@@ -14,6 +14,10 @@ from nlp_term.prepare.document_parsers import document_to_text
 from nlp_term.prepare.normalize import clip_text
 from nlp_term.prepare.parsers import html_to_text, source_doc_from_text
 from nlp_term.schemas import KnowledgeDoc, RawSource, SourceVerification
+from nlp_term.collect.source_inventory import SourceSpec, iter_specs
+from nlp_term.structured.calendar import CalendarAdapter
+from nlp_term.structured.dining import DiningAdapter
+from nlp_term.structured.shuttle import ShuttleAdapter
 from nlp_term.validators import read_json
 
 
@@ -78,6 +82,13 @@ class SourceParseFailure(BaseModel):
     reason: str
 
 
+STRUCTURED_ADAPTERS = {
+    "academic_calendar": CalendarAdapter(),
+    "cnu_mobile_food": DiningAdapter(),
+    "shuttle_bus": ShuttleAdapter(),
+}
+
+
 def parse_source(raw: RawSource, *, chunks_per_source: int = 3) -> tuple[list[KnowledgeDoc], SourceParseFailure | None]:
     raw_path = PROJECT_ROOT / Path(raw.raw_path)
     try:
@@ -125,10 +136,14 @@ def build_knowledge_from_probe(
             raise ValueError(f"{source_probe_path} rows must be objects")
         raw = RawSource.model_validate(row.get("raw"))
         verification = SourceVerification.model_validate(row.get("verification"))
+        structured_docs, structured_failure = parse_structured_source(raw, verification=verification)
+        docs.extend(structured_docs)
+        if structured_failure:
+            failures.append(structured_failure)
         parsed_docs, failure = parse_source(raw, chunks_per_source=chunks_per_source)
         inventory = row.get("inventory")
         if isinstance(inventory, dict):
-            for doc in parsed_docs:
+            for doc in [*structured_docs, *parsed_docs]:
                 doc.metadata.update({f"source_{key}": value for key, value in inventory.items()})
         for doc in parsed_docs:
             doc.metadata.update(_raw_provenance_metadata(raw, verification))
@@ -136,6 +151,22 @@ def build_knowledge_from_probe(
         if failure:
             failures.append(failure)
     return docs, failures
+
+
+def parse_structured_source(
+    raw: RawSource,
+    *,
+    verification: SourceVerification,
+) -> tuple[list[KnowledgeDoc], SourceParseFailure | None]:
+    adapter = STRUCTURED_ADAPTERS.get(raw.source_id)
+    if adapter is None:
+        return [], None
+    try:
+        spec = _spec_for(raw.source_id)
+        rows = adapter.parse(spec=spec, raw=raw, verification=verification)
+        return adapter.to_knowledge_docs(rows), None
+    except Exception as exc:
+        return [], SourceParseFailure(source_id=raw.source_id, raw_path=raw.raw_path, reason=f"structured parse failed: {exc}")
 
 
 def _raw_provenance_metadata(raw: RawSource, verification: SourceVerification) -> dict[str, object]:
@@ -150,6 +181,13 @@ def _raw_provenance_metadata(raw: RawSource, verification: SourceVerification) -
         "verification_parser_version": verification.parser_version,
         "verification_verified_at": verification.verified_at,
     }
+
+
+def _spec_for(source_id: str) -> SourceSpec:
+    for spec in iter_specs(stage="all", active_only=False):
+        if spec.source_id == source_id:
+            return spec
+    raise ValueError(f"source spec not found: {source_id}")
 
 
 def write_payload(path: Path, payload: object) -> None:

@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import json
+
 from nlp_term.prepare.from_sources import parse_source
+from nlp_term.prepare.from_sources import build_knowledge_from_probe
 from nlp_term.schemas import RawSource
 
 
@@ -39,3 +42,50 @@ def test_parse_source_records_atomic_aware_chunking_provenance(tmp_path) -> None
     assert docs[0].metadata["chunking_strategy"] == "atomic_guard"
     assert docs[0].metadata["boundary_type"] == "calendar_row"
     assert docs[0].metadata["chunk_confidence"] == "high"
+
+
+def test_build_knowledge_from_probe_adds_structured_shuttle_docs(tmp_path) -> None:
+    probe_path = tmp_path / "source_probe.json"
+    probe_path.write_text(
+        json.dumps(
+            [
+                {
+                    "raw": {
+                        "source_id": "shuttle_bus",
+                        "label": 4,
+                        "domain": "shuttle",
+                        "url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+                        "fetched_at": "2026-06-06T17:55:39+00:00",
+                        "content_type": "text/html",
+                        "raw_path": "data/raw/shuttle/shuttle_bus.html",
+                        "status_code": 200,
+                        "checksum": "shuttle-raw-checksum",
+                    },
+                    "verification": {
+                        "source_id": "shuttle_bus",
+                        "official_chain_ok": True,
+                        "parser_name": "shuttle_stage_inventory",
+                        "parser_version": "0.1.0",
+                        "evidence": ["https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html"],
+                        "warnings": [],
+                        "verified_at": "2026-06-08T00:00:00+09:00",
+                    },
+                    "inventory": {
+                        "stage": "stage0",
+                        "active": True,
+                        "parser_type": "shuttle",
+                    },
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    docs, failures = build_knowledge_from_probe(probe_path, chunks_per_source=1)
+
+    structured_docs = [doc for doc in docs if doc.metadata.get("generation_method") == "structured_row"]
+    assert not failures
+    assert structured_docs
+    assert any(doc.source_id == "shuttle_bus" and doc.metadata["route_name"] == "교내 순환" for doc in structured_docs)
+    assert any(doc.metadata.get("generation_method") == "source_parse" for doc in docs)
