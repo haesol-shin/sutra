@@ -1,482 +1,482 @@
 [
   {
-    "id": "latest_notice_001",
-    "group": "latest_notice",
-    "question": "새로 올라온 학사 공지 있나요?",
-    "expected_label": 1,
-    "expected_domain": "notices",
-    "expected_temporal_type": "latest_item"
-  },
-  {
-    "id": "latest_notice_002",
-    "group": "latest_notice",
-    "question": "최근 게시된 공지는 뭐예요?",
-    "expected_label": 1,
-    "expected_domain": "notices",
-    "expected_temporal_type": "latest_item"
-  },
-  {
-    "id": "latest_notice_003",
-    "group": "latest_notice",
-    "question": "방금 등록된 공지사항 어디서 봐요?",
-    "expected_label": 1,
-    "expected_domain": "notices",
-    "expected_temporal_type": "latest_item"
-  },
-  {
-    "id": "latest_notice_004",
-    "group": "latest_notice",
-    "question": "이번에 올라온 학교 공지 링크 알려줘",
-    "expected_label": 1,
-    "expected_domain": "notices",
-    "expected_temporal_type": "latest_item"
-  },
-  {
-    "id": "latest_notice_005",
-    "group": "latest_notice",
-    "question": "가장 최근 학사정보 게시물은 언제 올라왔어?",
-    "expected_label": 1,
-    "expected_domain": "notices",
-    "expected_temporal_type": "latest_item"
-  },
-  {
-    "id": "latest_notice_006",
-    "group": "latest_notice",
-    "question": "최신 장학 공지사항 확인할 수 있어?",
-    "expected_label": 1,
-    "expected_domain": "notices",
-    "expected_temporal_type": "latest_item"
-  },
-  {
-    "id": "latest_notice_007",
-    "group": "latest_notice",
-    "question": "공지사항 게시판에서 제일 위에 새 글 뭐야?",
-    "expected_label": 1,
-    "expected_domain": "notices",
-    "expected_temporal_type": "latest_item"
-  },
-  {
-    "id": "latest_notice_008",
-    "group": "latest_notice",
-    "question": "오늘 기준으로 최근 공지 몇 개만 보여줘",
-    "expected_label": 1,
-    "expected_domain": "notices",
-    "expected_temporal_type": "latest_item"
-  },
-  {
-    "id": "latest_notice_009",
-    "group": "latest_notice",
-    "question": "학사지원과에서 최근 등록한 안내문 있나요?",
-    "expected_label": 1,
-    "expected_domain": "notices",
-    "expected_temporal_type": "latest_item"
-  },
-  {
-    "id": "latest_notice_010",
-    "group": "latest_notice",
-    "question": "가장 최신으로 게시된 충남대 공지사항 알려줘",
-    "expected_label": 1,
-    "expected_domain": "notices",
-    "expected_temporal_type": "latest_item"
-  },
-  {
-    "id": "changed_since_notice_001",
-    "group": "changed_since_notice",
-    "question": "최근에 바뀐 학사일정 있어요?",
-    "expected_label": 2,
-    "expected_domain": "academic_calendar",
-    "expected_temporal_type": "changed_since"
-  },
-  {
-    "id": "changed_since_notice_002",
-    "group": "changed_since_notice",
-    "question": "5월 이후로 변경된 학사 일정이 있나요?",
-    "expected_label": 2,
-    "expected_domain": "academic_calendar",
-    "expected_temporal_type": "changed_since"
-  },
-  {
-    "id": "changed_since_notice_003",
-    "group": "changed_since_notice",
-    "question": "이번 달에 업데이트된 수업 일정 공지 있나요?",
-    "expected_label": 2,
-    "expected_domain": "academic_calendar",
-    "expected_temporal_type": "changed_since"
-  },
-  {
-    "id": "changed_since_notice_004",
-    "group": "changed_since_notice",
-    "question": "수강신청 일정이 최근에 변경됐는지 확인해줘",
-    "expected_label": 2,
-    "expected_domain": "academic_calendar",
-    "expected_temporal_type": "changed_since"
-  },
-  {
-    "id": "changed_since_notice_005",
-    "group": "changed_since_notice",
-    "question": "지난달부터 달라진 학사 공지 있으면 알려줘",
-    "expected_label": 2,
-    "expected_domain": "academic_calendar",
-    "expected_temporal_type": "changed_since"
-  },
-  {
-    "id": "changed_since_notice_006",
-    "group": "changed_since_notice",
-    "question": "최근 변경 사항이 있는 학사일정만 정리해줘",
-    "expected_label": 2,
-    "expected_domain": "academic_calendar",
-    "expected_temporal_type": "changed_since"
-  },
-  {
-    "id": "changed_since_notice_007",
-    "group": "changed_since_notice",
-    "question": "개강이나 종강 일정이 새로 바뀐 게 있나요?",
-    "expected_label": 2,
-    "expected_domain": "academic_calendar",
-    "expected_temporal_type": "changed_since"
-  },
-  {
-    "id": "changed_since_notice_008",
-    "group": "changed_since_notice",
-    "question": "학사일정 변동 공지가 최근 올라왔는지 봐줘",
-    "expected_label": 2,
-    "expected_domain": "academic_calendar",
-    "expected_temporal_type": "changed_since"
-  },
-  {
-    "id": "changed_since_notice_009",
-    "group": "changed_since_notice",
-    "question": "등록 기간이 이후에 수정된 적 있나요?",
-    "expected_label": 2,
-    "expected_domain": "academic_calendar",
-    "expected_temporal_type": "changed_since"
-  },
-  {
-    "id": "changed_since_notice_010",
-    "group": "changed_since_notice",
-    "question": "최근 30일 안에 학사일정 변경 공지가 있었나요?",
-    "expected_label": 2,
-    "expected_domain": "academic_calendar",
-    "expected_temporal_type": "changed_since"
-  },
-  {
-    "id": "future_dining_001",
-    "group": "future_dining",
-    "question": "다음주 학식 뭐 나와요?",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "period_summary"
-  },
-  {
-    "id": "future_dining_002",
-    "group": "future_dining",
-    "question": "다음주 화요일 2학생회관 메뉴가 어떻게 되나요?",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "future_schedule"
-  },
-  {
-    "id": "future_dining_003",
-    "group": "future_dining",
-    "question": "다음 주 월요일 점심 학식 알려줘",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "future_schedule"
-  },
-  {
-    "id": "future_dining_004",
-    "group": "future_dining",
-    "question": "이번 주 금요일 저녁 학생회관 식단 있어?",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "future_schedule"
-  },
-  {
-    "id": "future_dining_005",
-    "group": "future_dining",
-    "question": "내일 점심 메뉴 뭐야?",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "future_schedule"
-  },
-  {
-    "id": "future_dining_006",
-    "group": "future_dining",
-    "question": "6월 16일 1학생회관 중식 메뉴 알려줘",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "future_schedule"
-  },
-  {
-    "id": "future_dining_007",
-    "group": "future_dining",
-    "question": "다음주 중식 식단을 학생회관별로 정리해줘",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "period_summary"
-  },
-  {
-    "id": "future_dining_008",
-    "group": "future_dining",
-    "question": "다음주 수요일 조식 운영하나요?",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "future_schedule"
-  },
-  {
-    "id": "future_dining_009",
-    "group": "future_dining",
-    "question": "월요일부터 금요일까지 학식 메뉴 알려줘",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "period_summary"
-  },
-  {
-    "id": "future_dining_010",
-    "group": "future_dining",
-    "question": "다음 주 3학생회관 석식 메뉴도 볼 수 있어?",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "period_summary"
-  },
-  {
-    "id": "current_dining_001",
-    "group": "current_dining",
-    "question": "오늘 학식 뭐 나와요?",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "current_snapshot"
-  },
-  {
-    "id": "current_dining_002",
-    "group": "current_dining",
-    "question": "지금 2학생회관 점심 메뉴 알려줘",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "current_snapshot"
-  },
-  {
-    "id": "current_dining_003",
-    "group": "current_dining",
-    "question": "현재 학생식당 운영 메뉴가 뭐야?",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "current_snapshot"
-  },
-  {
-    "id": "current_dining_004",
-    "group": "current_dining",
-    "question": "오늘 저녁 학식 있나요?",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "current_snapshot"
-  },
-  {
-    "id": "current_dining_005",
-    "group": "current_dining",
-    "question": "오늘 1학생회관 중식 메뉴 확인해줘",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "current_snapshot"
-  },
-  {
-    "id": "current_dining_006",
-    "group": "current_dining",
-    "question": "오늘 아침 메뉴는 뭐였어?",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "current_snapshot"
-  },
-  {
-    "id": "current_dining_007",
-    "group": "current_dining",
-    "question": "오늘 학생회관별 식단을 한 번에 알려줘",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "current_snapshot"
-  },
-  {
-    "id": "current_dining_008",
-    "group": "current_dining",
-    "question": "지금 먹을 수 있는 학식 메뉴가 있어?",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "current_snapshot"
-  },
-  {
-    "id": "current_dining_009",
-    "group": "current_dining",
-    "question": "오늘 점심 백반 메뉴 뭐야?",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "current_snapshot"
-  },
-  {
-    "id": "current_dining_010",
-    "group": "current_dining",
-    "question": "오늘 3학생회관 석식 운영해?",
-    "expected_label": 3,
-    "expected_domain": "dining",
-    "expected_temporal_type": "current_snapshot"
-  },
-  {
-    "id": "shuttle_status_001",
-    "group": "shuttle_status",
-    "question": "다음주에 셔틀버스는 정상 운행하나요?",
-    "expected_label": 4,
-    "expected_domain": "shuttle",
-    "expected_temporal_type": "ongoing_status"
-  },
-  {
-    "id": "shuttle_status_002",
-    "group": "shuttle_status",
-    "question": "오늘 셔틀 정상 운행 중인가요?",
-    "expected_label": 4,
-    "expected_domain": "shuttle",
-    "expected_temporal_type": "current_snapshot"
-  },
-  {
-    "id": "shuttle_status_003",
-    "group": "shuttle_status",
-    "question": "다음주 월요일 통학버스 운영하나요?",
-    "expected_label": 4,
-    "expected_domain": "shuttle",
-    "expected_temporal_type": "ongoing_status"
-  },
-  {
-    "id": "shuttle_status_004",
-    "group": "shuttle_status",
-    "question": "이번 주 금요일 교내순환 버스 탈 수 있어?",
-    "expected_label": 4,
-    "expected_domain": "shuttle",
-    "expected_temporal_type": "ongoing_status"
-  },
-  {
-    "id": "shuttle_status_005",
-    "group": "shuttle_status",
-    "question": "셔틀버스 운행 시간이 바뀌었나요?",
-    "expected_label": 4,
-    "expected_domain": "shuttle",
-    "expected_temporal_type": "changed_since"
-  },
-  {
-    "id": "shuttle_status_006",
-    "group": "shuttle_status",
-    "question": "새로 업데이트된 셔틀버스 정류장이 있을까요?",
-    "expected_label": 4,
-    "expected_domain": "shuttle",
-    "expected_temporal_type": "changed_since"
-  },
-  {
-    "id": "shuttle_status_007",
-    "group": "shuttle_status",
-    "question": "다음주 셔틀 미운영일이 있나요?",
-    "expected_label": 4,
-    "expected_domain": "shuttle",
-    "expected_temporal_type": "ongoing_status"
-  },
-  {
-    "id": "shuttle_status_008",
-    "group": "shuttle_status",
-    "question": "현재 월평역 셔틀 운행하나요?",
-    "expected_label": 4,
-    "expected_domain": "shuttle",
-    "expected_temporal_type": "current_snapshot"
-  },
-  {
-    "id": "shuttle_status_009",
-    "group": "shuttle_status",
-    "question": "방학에도 셔틀버스 운영해요?",
-    "expected_label": 4,
-    "expected_domain": "shuttle",
-    "expected_temporal_type": "ongoing_status"
-  },
-  {
-    "id": "shuttle_status_010",
-    "group": "shuttle_status",
-    "question": "공휴일에 교내 셔틀 정상 운행하나요?",
-    "expected_label": 4,
-    "expected_domain": "shuttle",
-    "expected_temporal_type": "ongoing_status"
-  },
-  {
-    "id": "graduation_versioned_001",
-    "group": "graduation_versioned",
-    "question": "24학번 인공지능학과 졸업까지 몇 학점 들어야 하나요?",
+    "id": "gp001",
+    "group": "graduation_general_requirements",
+    "question": "졸업하려면 총 몇 학점 채워야 하나요?",
     "expected_label": 0,
     "expected_domain": "graduation",
     "expected_temporal_type": "none"
   },
   {
-    "id": "graduation_versioned_002",
-    "group": "graduation_versioned",
-    "question": "2026 컴퓨터인공지능학과 졸업요건 알려줘",
+    "id": "gp002",
+    "group": "graduation_general_requirements",
+    "question": "졸업요건 중 교양 필수 영역은 어디에서 확인하나요?",
     "expected_label": 0,
     "expected_domain": "graduation",
     "expected_temporal_type": "none"
   },
   {
-    "id": "graduation_versioned_003",
-    "group": "graduation_versioned",
-    "question": "컴퓨터융합학부 23학번 전공 학점 기준이 뭐야?",
-    "expected_label": 0,
-    "expected_domain": "graduation",
-    "expected_temporal_type": "none"
-  },
-  {
-    "id": "graduation_versioned_004",
-    "group": "graduation_versioned",
-    "question": "인공지능학과 24학번 프로젝트 수업 몇 개 들어야 해?",
-    "expected_label": 0,
-    "expected_domain": "graduation",
-    "expected_temporal_type": "none"
-  },
-  {
-    "id": "graduation_versioned_005",
-    "group": "graduation_versioned",
-    "question": "2025 교육과정 기준 졸업학점 알려줘",
-    "expected_label": 0,
-    "expected_domain": "graduation",
-    "expected_temporal_type": "none"
-  },
-  {
-    "id": "graduation_versioned_006",
-    "group": "graduation_versioned",
-    "question": "컴퓨터인공지능학과 전공필수 이수 조건이 궁금해",
-    "expected_label": 0,
-    "expected_domain": "graduation",
-    "expected_temporal_type": "none"
-  },
-  {
-    "id": "graduation_versioned_007",
-    "group": "graduation_versioned",
-    "question": "졸업하려면 교양 몇 학점 채워야 해?",
-    "expected_label": 0,
-    "expected_domain": "graduation",
-    "expected_temporal_type": "none"
-  },
-  {
-    "id": "graduation_versioned_008",
-    "group": "graduation_versioned",
-    "question": "2024학번 기준 전공심화 졸업요건 있어?",
-    "expected_label": 0,
-    "expected_domain": "graduation",
-    "expected_temporal_type": "none"
-  },
-  {
-    "id": "graduation_versioned_009",
-    "group": "graduation_versioned",
+    "id": "gp003",
+    "group": "graduation_general_requirements",
     "question": "복수전공하면 졸업학점 기준이 달라지나요?",
     "expected_label": 0,
     "expected_domain": "graduation",
     "expected_temporal_type": "none"
   },
   {
-    "id": "graduation_versioned_010",
-    "group": "graduation_versioned",
-    "question": "2023학년도 교육과정에서 졸업인증 요건 확인해줘",
+    "id": "gp004",
+    "group": "graduation_general_requirements",
+    "question": "졸업하려면 영어 성적 같은 졸업인증을 꼭 내야 하나요?",
     "expected_label": 0,
     "expected_domain": "graduation",
+    "expected_temporal_type": "none"
+  },
+  {
+    "id": "gp005",
+    "group": "graduation_general_requirements",
+    "question": "2025 교육과정 기준 졸업학점 알려줘",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_temporal_type": "none"
+  },
+  {
+    "id": "gp006",
+    "group": "graduation_general_requirements",
+    "question": "졸업논문이나 졸업작품 제출이 필수인지 알려줘",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_temporal_type": "none"
+  },
+  {
+    "id": "gp007",
+    "group": "graduation_department_requirements",
+    "question": "24학번 인공지능학과 졸업까지 몇 학점 들어야 하나요?",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_temporal_type": "none"
+  },
+  {
+    "id": "gp008",
+    "group": "graduation_department_requirements",
+    "question": "컴퓨터융합학부 23학번 전공 학점 기준이 뭐야?",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_temporal_type": "none"
+  },
+  {
+    "id": "gp009",
+    "group": "graduation_department_requirements",
+    "question": "컴퓨터인공지능학과 전공필수 이수 조건이 궁금해",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_temporal_type": "none"
+  },
+  {
+    "id": "gp010",
+    "group": "graduation_department_requirements",
+    "question": "영어영문학과 졸업 인증 기준 지금 기준으로 확인해줘",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_temporal_type": "current_snapshot"
+  },
+  {
+    "id": "gp011",
+    "group": "graduation_department_requirements",
+    "question": "경영학부 복수전공 중인데 졸업요건이 어떻게 달라져?",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_temporal_type": "none"
+  },
+  {
+    "id": "gp012",
+    "group": "graduation_department_requirements",
+    "question": "기계공학과 졸업논문 제출 요건이 있나요?",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_temporal_type": "none"
+  },
+  {
+    "id": "gp013",
+    "group": "graduation_requirement_notices",
+    "question": "졸업요건 변경 안내 공지가 공지사항에 올라왔는지 찾아줘",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "current_snapshot"
+  },
+  {
+    "id": "gp014",
+    "group": "graduation_requirement_notices",
+    "question": "컴퓨터융합학부 졸업요건 관련 최신 학과 공지 있어?",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "latest_item"
+  },
+  {
+    "id": "gp015",
+    "group": "graduation_requirement_notices",
+    "question": "약학대 졸업예정자 안내 공지가 이번 주에 나온 거 있어?",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "latest_item"
+  },
+  {
+    "id": "gp016",
+    "group": "graduation_requirement_notices",
+    "question": "졸업인증제 기준 변경 공지가 작년 이후 있었나요?",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "changed_since"
+  },
+  {
+    "id": "gp017",
+    "group": "graduation_requirement_notices",
+    "question": "체육교육과 졸업 실기 관련 일정 공지 찾아줘",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "date_lookup"
+  },
+  {
+    "id": "gp018",
+    "group": "graduation_requirement_notices",
+    "question": "이번 학기 졸업사정 관련 공지들만 모아줘",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "period_summary"
+  },
+  {
+    "id": "gp019",
+    "group": "department_academic_notices",
+    "question": "정보통계학과 최신 학사 공지 뭐 올라왔어?",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "latest_item"
+  },
+  {
+    "id": "gp020",
+    "group": "department_academic_notices",
+    "question": "심리학과 공지 중에 수강신청 관련 새 글 있어?",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "latest_item"
+  },
+  {
+    "id": "gp021",
+    "group": "department_academic_notices",
+    "question": "건축공학과 학과 공지가 지난주 이후로 바뀐 거 있나?",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "changed_since"
+  },
+  {
+    "id": "gp022",
+    "group": "department_academic_notices",
+    "question": "오늘 기준 국제학부 공지사항 확인해줘",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "current_snapshot"
+  },
+  {
+    "id": "gp023",
+    "group": "department_academic_notices",
+    "question": "다음 주에 열리는 화학과 세미나 공지 있어?",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "future_schedule"
+  },
+  {
+    "id": "gp024",
+    "group": "department_academic_notices",
+    "question": "의과대 학사 공지 중 휴강 관련 오늘 기준 내용 알려줘",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "current_snapshot"
+  },
+  {
+    "id": "gp025",
+    "group": "scholarship_and_student_notices",
+    "question": "교내 장학금 신청 관련 제일 최근 공지 알려줘",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "latest_item"
+  },
+  {
+    "id": "gp026",
+    "group": "scholarship_and_student_notices",
+    "question": "토익 장학금을 받으려면 성적이 몇 점 이상이어야 하나요?",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "current_snapshot"
+  },
+  {
+    "id": "gp027",
+    "group": "scholarship_and_student_notices",
+    "question": "국가장학금 2차 신청 안내가 지금 진행 중이야?",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "ongoing_status"
+  },
+  {
+    "id": "gp028",
+    "group": "scholarship_and_student_notices",
+    "question": "이번 달 장학 관련 학교 공지들만 모아서 보여줘",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "period_summary"
+  },
+  {
+    "id": "gp029",
+    "group": "scholarship_and_student_notices",
+    "question": "근로장학생 모집 마감일이 언제인지 알려줘",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "date_lookup"
+  },
+  {
+    "id": "gp030",
+    "group": "scholarship_and_student_notices",
+    "question": "학생생활관 입사 안내 최신 공지 있으면 알려줘",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "latest_item"
+  },
+  {
+    "id": "gp031",
+    "group": "academic_calendar_dates",
+    "question": "이번 학기 수강신청은 언제 시작하나요?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_temporal_type": "date_lookup"
+  },
+  {
+    "id": "gp032",
+    "group": "academic_calendar_dates",
+    "question": "이번 학기 종강일이 언제인가요?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_temporal_type": "date_lookup"
+  },
+  {
+    "id": "gp033",
+    "group": "academic_calendar_dates",
+    "question": "이번 여름 계절학기 종강일이 언제인가요?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_temporal_type": "date_lookup"
+  },
+  {
+    "id": "gp034",
+    "group": "academic_calendar_dates",
+    "question": "2026학년도 1학기 중간고사 기간이 언제야?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_temporal_type": "date_lookup"
+  },
+  {
+    "id": "gp035",
+    "group": "academic_calendar_dates",
+    "question": "휴학 신청 마감일이 정확히 며칠이야?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_temporal_type": "date_lookup"
+  },
+  {
+    "id": "gp036",
+    "group": "academic_calendar_dates",
+    "question": "다음 학기 개강일과 종강일을 학사일정 기준으로 알려줘",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_temporal_type": "future_schedule"
+  },
+  {
+    "id": "gp037",
+    "group": "academic_calendar_changes",
+    "question": "최근에 바뀐 학사일정 있어요?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_temporal_type": "changed_since"
+  },
+  {
+    "id": "gp038",
+    "group": "academic_calendar_changes",
+    "question": "5월 이후로 변동된 학사일정이 있을까요?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_temporal_type": "changed_since"
+  },
+  {
+    "id": "gp039",
+    "group": "academic_calendar_changes",
+    "question": "수강신청 일정이 최근에 변경됐는지 확인해줘",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_temporal_type": "changed_since"
+  },
+  {
+    "id": "gp040",
+    "group": "academic_calendar_changes",
+    "question": "개강이나 종강 일정이 새로 바뀐 게 있나요?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_temporal_type": "changed_since"
+  },
+  {
+    "id": "gp041",
+    "group": "academic_calendar_changes",
+    "question": "등록 기간이 이후에 수정된 적 있나요?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_temporal_type": "changed_since"
+  },
+  {
+    "id": "gp042",
+    "group": "academic_calendar_changes",
+    "question": "최근 30일 안에 학사일정 변경 공지가 있었나요?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_temporal_type": "changed_since"
+  },
+  {
+    "id": "gp043",
+    "group": "dining_current_future",
+    "question": "오늘 학식 뭐 나와요?",
+    "expected_label": 3,
+    "expected_domain": "dining",
+    "expected_temporal_type": "current_snapshot"
+  },
+  {
+    "id": "gp044",
+    "group": "dining_current_future",
+    "question": "오늘 학생회관별 식단을 아침 점심 저녁으로 알려줘",
+    "expected_label": 3,
+    "expected_domain": "dining",
+    "expected_temporal_type": "current_snapshot"
+  },
+  {
+    "id": "gp045",
+    "group": "dining_current_future",
+    "question": "다음주 학식 뭐 나와요?",
+    "expected_label": 3,
+    "expected_domain": "dining",
+    "expected_temporal_type": "period_summary"
+  },
+  {
+    "id": "gp046",
+    "group": "dining_current_future",
+    "question": "다음주 화요일 2학생회관 메뉴가 어떻게 되나요?",
+    "expected_label": 3,
+    "expected_domain": "dining",
+    "expected_temporal_type": "future_schedule"
+  },
+  {
+    "id": "gp047",
+    "group": "dining_current_future",
+    "question": "오늘 저녁에 채식 메뉴 있는 식당 있어?",
+    "expected_label": 3,
+    "expected_domain": "dining",
+    "expected_temporal_type": "current_snapshot"
+  },
+  {
+    "id": "gp048",
+    "group": "dining_current_future",
+    "question": "이번 주 금요일 점심 메뉴 중에 돈가스 나오는 곳 알려줘",
+    "expected_label": 3,
+    "expected_domain": "dining",
+    "expected_temporal_type": "future_schedule"
+  },
+  {
+    "id": "gp049",
+    "group": "shuttle_status_schedule",
+    "question": "다음주에 셔틀버스는 정상 운행하나요?",
+    "expected_label": 4,
+    "expected_domain": "shuttle",
+    "expected_temporal_type": "ongoing_status"
+  },
+  {
+    "id": "gp050",
+    "group": "shuttle_status_schedule",
+    "question": "오늘 셔틀 정상 운행 중인가요?",
+    "expected_label": 4,
+    "expected_domain": "shuttle",
+    "expected_temporal_type": "current_snapshot"
+  },
+  {
+    "id": "gp051",
+    "group": "shuttle_status_schedule",
+    "question": "현재 월평역 셔틀 운행하나요?",
+    "expected_label": 4,
+    "expected_domain": "shuttle",
+    "expected_temporal_type": "current_snapshot"
+  },
+  {
+    "id": "gp052",
+    "group": "shuttle_status_schedule",
+    "question": "다음주 월요일 통학버스 운영하나요?",
+    "expected_label": 4,
+    "expected_domain": "shuttle",
+    "expected_temporal_type": "future_schedule"
+  },
+  {
+    "id": "gp053",
+    "group": "shuttle_status_schedule",
+    "question": "새로 업데이트된 셔틀버스 정류장이 있을까요?",
+    "expected_label": 4,
+    "expected_domain": "shuttle",
+    "expected_temporal_type": "changed_since"
+  },
+  {
+    "id": "gp054",
+    "group": "shuttle_status_schedule",
+    "question": "방학에도 셔틀버스 운영해요?",
+    "expected_label": 4,
+    "expected_domain": "shuttle",
+    "expected_temporal_type": "ongoing_status"
+  },
+  {
+    "id": "gp055",
+    "group": "source_navigation_and_scope",
+    "question": "컴퓨터융합학부 학사공지 게시판은 어디서 확인하나요?",
+    "expected_label": 1,
+    "expected_domain": "notices",
+    "expected_temporal_type": "none"
+  },
+  {
+    "id": "gp056",
+    "group": "source_navigation_and_scope",
+    "question": "학과별 졸업요건은 중앙 교육과정표와 학과 공지 중 어디를 봐야 하나요?",
+    "expected_label": 0,
+    "expected_domain": "graduation",
+    "expected_temporal_type": "none"
+  },
+  {
+    "id": "gp057",
+    "group": "source_navigation_and_scope",
+    "question": "학사일정표와 수강신청 공지가 다르면 어떤 기준으로 봐야 하나요?",
+    "expected_label": 2,
+    "expected_domain": "academic_calendar",
+    "expected_temporal_type": "none"
+  },
+  {
+    "id": "gp058",
+    "group": "source_navigation_and_scope",
+    "question": "식단표는 어느 공식 페이지 기준으로 확인해야 해?",
+    "expected_label": 3,
+    "expected_domain": "dining",
+    "expected_temporal_type": "none"
+  },
+  {
+    "id": "gp059",
+    "group": "source_navigation_and_scope",
+    "question": "셔틀버스 시간표 공식 페이지 알려줘",
+    "expected_label": 4,
+    "expected_domain": "shuttle",
+    "expected_temporal_type": "none"
+  },
+  {
+    "id": "gp060",
+    "group": "source_navigation_and_scope",
+    "question": "장학금 공지는 어느 게시판에서 찾는 게 맞나요?",
+    "expected_label": 1,
+    "expected_domain": "notices",
     "expected_temporal_type": "none"
   }
 ]
