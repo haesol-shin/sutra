@@ -9,6 +9,15 @@ This repository is for the Natural Language Processing term project: a Campus Ch
 - Treat Optional Task 3 as extra credit unless the user explicitly changes that priority.
 - Use `../aidm-term-proj` only as a reference for environment and workflow patterns, not as a source of project requirements.
 
+## Session Bootstrap
+
+- Read `docs/project_state.md` first.
+- Read `docs/doc_index.md` for document status.
+- Read `docs/term_project_requirements.md` for assignment constraints.
+- Use `docs/doc_index.md` `Read When` guidance for task-specific `Current`, `Reference`, or `Evidence` docs.
+- Do not execute old plans unless `docs/doc_index.md` marks them `Current`.
+- If docs conflict, `docs/project_state.md` and `docs/doc_index.md` override old in-document "current" claims.
+
 ## Project Conventions
 
 - Use `uv` for environment management and command execution.
