@@ -299,6 +299,46 @@ def test_harness_blocks_dining_evidence_for_wrong_target_date(tmp_path: Path) ->
     assert "백반" not in result.output.model
 
 
+def test_harness_accepts_shuttle_interval_overlap_for_next_week_status(tmp_path: Path) -> None:
+    knowledge_path = tmp_path / "knowledge.json"
+    knowledge_path.write_text(
+        "["
+        "{"
+        '"doc_id":"shuttle_doc",'
+        '"label":4,'
+        '"domain":"shuttle",'
+        '"title":"2026학년도 셔틀버스 교내 순환",'
+        '"body":"2026학년도 셔틀버스 교내 순환은 2026-03-03부터 2026-06-21까지 학기 중 평일 주간에 정상 운행합니다.",'
+        '"date":"2026-03-03",'
+        '"source_url":"https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",'
+        '"source_id":"shuttle_bus",'
+        '"metadata":{'
+        '"generation_method":"structured_row",'
+        '"structured_fields":["route_key","valid_start","valid_end"],'
+        '"valid_start":"2026-03-03",'
+        '"valid_end":"2026-06-21",'
+        '"date_span":"2026-03-03/2026-06-21",'
+        '"verification_official_chain_ok":true'
+        "}"
+        "}"
+        "]",
+        encoding="utf-8",
+    )
+
+    result = answer_with_harness(
+        "다음주에 셔틀버스는 정상 운행하나요?",
+        knowledge_path=knowledge_path,
+        generator=lambda prompt: "다음주 평일에는 학기 중 평일 주간 기준으로 셔틀버스가 운행합니다.",
+        question_time=datetime(2026, 6, 8, tzinfo=timezone.utc),
+    )
+
+    assert result.output_status == OutputStatus.ANSWERED
+    assert result.trace.temporal_type == "ongoing_status"
+    assert result.trace.target_start == "2026-06-15"
+    assert result.trace.target_end == "2026-06-21"
+    assert result.trace.evidence_sufficiency_status == EvidenceSufficiencyStatus.SUFFICIENT
+
+
 def test_harness_prompt_contains_user_safe_temporal_context(tmp_path: Path) -> None:
     knowledge_path = tmp_path / "knowledge.json"
     knowledge_path.write_text(

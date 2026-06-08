@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
-from datetime import datetime
+from datetime import date, datetime
+import re
 
 from nlp_term.chat.controlled_fetch import fetchable_specs
 from nlp_term.chat.state_contract import (
@@ -167,12 +168,50 @@ def _docs_match_temporal_target(docs: list[KnowledgeDoc], *, temporal_intent: Te
     if temporal_intent.target_start is None:
         return True
     target = temporal_intent.target_start.isoformat()
-    date_keys = ("menu_date", "operation_date", "valid_at", "effective_date", "date_span", "posted_date")
+    target_end = temporal_intent.target_end or temporal_intent.target_start
+    date_keys = ("menu_date", "operation_date", "valid_at", "effective_date", "posted_date")
     for doc in docs:
         values = [doc.date or "", *(str(doc.metadata.get(key, "")) for key in date_keys), doc.body]
         if any(target in value for value in values if value):
             return True
+        if _doc_interval_overlaps_target(doc, target_start=temporal_intent.target_start, target_end=target_end):
+            return True
     return False
+
+
+def _doc_interval_overlaps_target(doc: KnowledgeDoc, *, target_start: date, target_end: date) -> bool:
+    intervals: list[tuple[date, date]] = []
+    valid_start = _parse_iso_date(doc.metadata.get("valid_start"))
+    valid_end = _parse_iso_date(doc.metadata.get("valid_end"))
+    if valid_start and valid_end:
+        intervals.append((valid_start, valid_end))
+    date_span = doc.metadata.get("date_span")
+    if isinstance(date_span, str):
+        intervals.extend(_parse_date_span(date_span))
+    return any(_overlaps(start, end, target_start, target_end) for start, end in intervals)
+
+
+def _parse_date_span(value: str) -> list[tuple[date, date]]:
+    matches = [_parse_iso_date(item) for item in re.findall(r"\d{4}-\d{2}-\d{2}", value)]
+    dates = [item for item in matches if item is not None]
+    if len(dates) >= 2:
+        return [(dates[0], dates[1])]
+    if len(dates) == 1:
+        return [(dates[0], dates[0])]
+    return []
+
+
+def _parse_iso_date(value: object) -> date | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        return None
+
+
+def _overlaps(left_start: date, left_end: date, right_start: date, right_end: date) -> bool:
+    return left_start <= right_end and right_start <= left_end
 
 
 def _static_freshness(answer_kind: AnswerKind, source_statuses: list[SourceStatus]) -> FreshnessStatus:

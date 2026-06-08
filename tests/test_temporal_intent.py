@@ -60,6 +60,21 @@ def test_next_week_tuesday_uses_iso_week_policy() -> None:
     assert RetrievalRequirement.STRUCTURED_SOURCE_PREFERRED in intent.retrieval_requirements
 
 
+def test_next_week_shuttle_normal_operation_uses_ongoing_status() -> None:
+    intent = resolve_temporal_intent(
+        "다음주에 셔틀버스는 정상 운행하나요?",
+        route_domain="shuttle",
+        reference_time=REFERENCE_TIME,
+    )
+
+    assert intent.temporal_type == TemporalType.ONGOING_STATUS
+    assert intent.target_start == date(2026, 6, 15)
+    assert intent.target_end == date(2026, 6, 21)
+    assert intent.granularity == "week"
+    assert RetrievalRequirement.DATE_FILTERED_EVIDENCE_NEEDED in intent.retrieval_requirements
+    assert RetrievalRequirement.STRUCTURED_SOURCE_PREFERRED in intent.retrieval_requirements
+
+
 def test_changed_since_defaults_to_recent_30_day_window() -> None:
     intent = resolve_temporal_intent(
         "최근에 바뀐 학사일정 있어요?",

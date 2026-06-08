@@ -12,19 +12,19 @@
   "question_count": 14,
   "label_match_count": 13,
   "label_match_rate": 0.9285714285714286,
-  "temporal_match_count": 10,
-  "temporal_match_rate": 0.7142857142857143,
-  "answered_count": 6,
-  "answered_rate": 0.42857142857142855,
-  "fail_close_count": 8,
-  "fail_close_rate": 0.5714285714285714,
+  "temporal_match_count": 11,
+  "temporal_match_rate": 0.7857142857142857,
+  "answered_count": 7,
+  "answered_rate": 0.5,
+  "fail_close_count": 7,
+  "fail_close_rate": 0.5,
   "bottleneck_counts": {
     "classifier": 1,
     "data": 1,
     "evidence": 2,
-    "none": 4,
+    "none": 5,
     "retrieval": 2,
-    "temporal": 4
+    "temporal": 3
   },
   "rows": [
     {
@@ -789,8 +789,8 @@
       "label_match": true,
       "domain_match": true,
       "expected_temporal_type": "ongoing_status",
-      "actual_temporal_type": "period_summary",
-      "temporal_match": false,
+      "actual_temporal_type": "ongoing_status",
+      "temporal_match": true,
       "temporal_confidence": "high",
       "target_start": "2026-06-15",
       "target_end": "2026-06-21",
@@ -798,27 +798,21 @@
         "date_filtered_evidence_needed",
         "structured_source_preferred"
       ],
-      "output_status": "fail_closed",
-      "evidence_sufficiency_status": "insufficient",
-      "fetch_decision": "fetch_required_but_not_implemented",
-      "freshness_status": "unknown",
-      "answer_validation_status": "blocked",
+      "output_status": "answered",
+      "evidence_sufficiency_status": "sufficient",
+      "fetch_decision": "skipped_rag_sufficient",
+      "freshness_status": "not_required",
+      "answer_validation_status": "passed",
       "retrieved_doc_ids": [
         "shuttle_bus__shuttle_route__campus_loop__2026-03-03__2026-06-21__2a184c34ae",
         "shuttle_bus__shuttle_route__intercampus_loop__2026-03-03__2026-06-21__4b1ebb50cb",
         "shuttle_bus_chunk_1",
         "shuttle_bus_chunk_2",
-        "shuttle_bus_chunk_3",
-        "shuttle_bus_chunk_4",
-        "shuttle_bus_chunk_5",
-        "shuttle_bus_chunk_6"
+        "shuttle_bus_chunk_3"
       ],
       "retrieved_scores": [
         0.8421052631578947,
         0.8421052631578947,
-        0.42105263157894735,
-        0.42105263157894735,
-        0.42105263157894735,
         0.42105263157894735,
         0.42105263157894735,
         0.42105263157894735
@@ -838,26 +832,14 @@
         "graduation_biochemistry_requirements_chunk_1",
         "graduation_biochemistry_requirements_chunk_2",
         "graduation_biochemistry_requirements_chunk_3",
-        "graduation_biochemistry_requirements_chunk_4",
-        "graduation_biochemistry_requirements_chunk_5",
-        "graduation_biochemistry_requirements_chunk_6",
-        "graduation_biochemistry_requirements_chunk_7",
-        "graduation_biochemistry_requirements_chunk_8",
-        "graduation_biochemistry_requirements_chunk_9",
-        "graduation_curriculum_pdf_chunk_1",
-        "graduation_curriculum_pdf_chunk_2",
-        "graduation_curriculum_pdf_chunk_3",
-        "graduation_curriculum_pdf_chunk_4"
+        "graduation_biochemistry_requirements_chunk_4"
       ],
       "postfilter_retrieved_doc_ids": [
         "shuttle_bus__shuttle_route__campus_loop__2026-03-03__2026-06-21__2a184c34ae",
         "shuttle_bus__shuttle_route__intercampus_loop__2026-03-03__2026-06-21__4b1ebb50cb",
         "shuttle_bus_chunk_1",
         "shuttle_bus_chunk_2",
-        "shuttle_bus_chunk_3",
-        "shuttle_bus_chunk_4",
-        "shuttle_bus_chunk_5",
-        "shuttle_bus_chunk_6"
+        "shuttle_bus_chunk_3"
       ],
       "prefilter_retrieved_candidates": [
         {
@@ -1009,96 +991,6 @@
           "chunking_strategy": "recursive_prose",
           "boundary_type": "prose_sentence",
           "chunk_confidence": "medium"
-        },
-        {
-          "doc_id": "graduation_biochemistry_requirements_chunk_5",
-          "score": 0.0,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_biochemistry_requirements",
-          "chunking_strategy": "recursive_prose",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "medium"
-        },
-        {
-          "doc_id": "graduation_biochemistry_requirements_chunk_6",
-          "score": 0.0,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_biochemistry_requirements",
-          "chunking_strategy": "recursive_prose",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "medium"
-        },
-        {
-          "doc_id": "graduation_biochemistry_requirements_chunk_7",
-          "score": 0.0,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_biochemistry_requirements",
-          "chunking_strategy": "recursive_prose",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "medium"
-        },
-        {
-          "doc_id": "graduation_biochemistry_requirements_chunk_8",
-          "score": 0.0,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_biochemistry_requirements",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "graduation_biochemistry_requirements_chunk_9",
-          "score": 0.0,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_biochemistry_requirements",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "graduation_curriculum_pdf_chunk_1",
-          "score": 0.0,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_curriculum_pdf",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "graduation_curriculum_pdf_chunk_2",
-          "score": 0.0,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_curriculum_pdf",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "graduation_curriculum_pdf_chunk_3",
-          "score": 0.0,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_curriculum_pdf",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "graduation_curriculum_pdf_chunk_4",
-          "score": 0.0,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_curriculum_pdf",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
         }
       ],
       "postfilter_retrieved_candidates": [
@@ -1151,42 +1043,12 @@
           "chunking_strategy": "fallback_window",
           "boundary_type": "shuttle_time_row",
           "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "shuttle_bus_chunk_4",
-          "score": 0.42105263157894735,
-          "label": 4,
-          "domain": "shuttle",
-          "source_id": "shuttle_bus",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "shuttle_time_row",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "shuttle_bus_chunk_5",
-          "score": 0.42105263157894735,
-          "label": 4,
-          "domain": "shuttle",
-          "source_id": "shuttle_bus",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "shuttle_time_row",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "shuttle_bus_chunk_6",
-          "score": 0.42105263157894735,
-          "label": 4,
-          "domain": "shuttle",
-          "source_id": "shuttle_bus",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "shuttle_time_row",
-          "chunk_confidence": "low"
         }
       ],
-      "failure_reason": "date_filtered_evidence_missing_or_mismatched",
-      "bottleneck": "temporal",
+      "failure_reason": null,
+      "bottleneck": "none",
       "expected_behavior": "Resolve next ISO week and avoid normal-operation claims without timetable or effective-date evidence.",
-      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+      "answer": "2026학년도 셔틀버스 교내 순환은 2026-03-03부터 2026-06-21까지 학기 중 평일 주간에 정상 운행합니다. 평일 야간, 주말, 공휴일, 방학 등은 미운영입니다. 출발 시간표: 08:20 (월평역) 등교, 08:30, 09:30, 09:40, 10:30, 11:30, 13:30, 14:30, 15:30, 16:30, 17:30. 첫차 08:30, 막차 17:30. 정류장 및 운행 노선: 정심화 국제문화회관, 사회과 학대학 입구, 서문, 음악 2호관 앞, 공동동물실험센터, 체 육관 입구, 예술대학 앞, 도서 관 앞, 학생 생활관 3거리, 농업생명과학대학 앞, 동문주차장, 농업생명과 학대학 앞, 도서관 앞, 사회과학대학 입 구, 산학연교육연 구관 앞, 월평역. 운행횟수는 10회, 운영기간 표기는 학기 중 운영 (총 150일)입니다. 미운영 조건: 평일 야간, 주말, 공휴일, 방학, 수학능력시험일(10시 이전). 운영기준:학기 중 평일 주간 운영(평일 야간, 주말, 공휴일, 방학, 수학능력시험일(10시 이전) 등 미운영) ※ 운행 시간표는 학교 사정에 따라 변경될 수 있음 ※ 학사일정 변경 시 운행 기간 변경될 수 있음(총학생회, 총무과 등과 협의) ※ 운행시간은 천재지변, 학교행사, 교통상황, 탑승 인원 등에 따라 변경 가능 ※ 교통상황 등으로 인해 전 구간에서 5분 내외 오차가 발생할 수 있으니 탑승자 사전 대기 자세한 내용은 https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html에서 확인해 주세요."
     },
     {
       "id": "public_probe_05",

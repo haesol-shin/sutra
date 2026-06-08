@@ -84,17 +84,18 @@ def resolve_temporal_intent(
     if "다음주" in compact:
         start = _iso_week_start(reference_date) + timedelta(days=7)
         end = start + timedelta(days=6)
+        temporal_type = _schedule_type(route_domain, compact, granularity="week")
         return TemporalIntent(
             reference_time=normalized_reference,
             original_expression=_original_expression(question, default="다음주"),
-            temporal_type=TemporalType.PERIOD_SUMMARY,
+            temporal_type=temporal_type,
             explicitness="relative",
             target_start=start,
             target_end=end,
             granularity="week",
             resolution_policy="next_iso_week",
             freshness_required=route_domain in {"dining", "shuttle", "notices", "academic_calendar"},
-            retrieval_requirements=_requirements_for(route_domain, TemporalType.PERIOD_SUMMARY),
+            retrieval_requirements=_requirements_for(route_domain, temporal_type),
             confidence=TemporalConfidence.HIGH,
             confidence_reasons=["relative_week_expression_resolved", f"domain_{route_domain}", "week_range_target"],
         )
