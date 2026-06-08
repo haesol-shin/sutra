@@ -56,6 +56,19 @@
 
 위 즉시 goal들이 끝난 뒤 14개 public probe를 Qwen writer로 재실행한다. 현재 deterministic trace 진단은 Qwen 성능 claim이 아니며, Qwen baseline은 validator/evidence/chunking/retrieval 손실을 줄인 뒤 수행해야 한다.
 
+2026-06-08 실행 결과:
+
+- 결과 문서: [`docs/task2_public_probe_qwen_baseline_2026_06_08.md`](task2_public_probe_qwen_baseline_2026_06_08.md)
+- evidence artifact: [`docs/evidence/task2-public-probe-qwen-baseline-2026-06-08.json`](evidence/task2-public-probe-qwen-baseline-2026-06-08.json)
+- writer backend: `llama_server`
+- answered: `6 / 14`
+- fail-closed: `8 / 14`
+- Task1 label match: `13 / 14`
+- temporal type match: `10 / 14`
+- Qwen writer called: `6 / 14`
+
+해석: Qwen writer 자체는 호출된 6문항을 모두 생성했지만, 현재 병목은 writer보다 source coverage, structured metadata, temporal routing, Task1 boundary에 남아 있다. 따라서 이 baseline 이후의 다음 큰 작업은 Priority 1 데이터 확장이다.
+
 ### Data Expansion
 
 데이터 확장은 Qwen baseline 이후 실행한다. 단, source-specific parser 설계는 chunking goal 전에 문서로 고정한다. 구현은 source별 최소 serial loop가 통과한 뒤 넓힌다.

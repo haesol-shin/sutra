@@ -1,0 +1,3715 @@
+{
+  "evaluation_scope": "task2_public_probe_qwen_baseline",
+  "evaluation_set_type": "public_probe",
+  "dataset_origin": "discussion_fixed_probe",
+  "claim_level": "qwen_writer_baseline_not_final_performance",
+  "final_performance_claim_allowed": false,
+  "writer_backend": "llama_server",
+  "llama_server_url": "http://127.0.0.1:18080",
+  "reference_time": "2026-06-08T00:00:00+09:00",
+  "probe_path": "data\\gold\\task2_public_probe_eval.json",
+  "probe_checksum": "fa342d6e2e581823dbc3aabf3f5cabe7423a52f074920d83cf272883eab07e14",
+  "knowledge_path": "data\\knowledge_seed.json",
+  "knowledge_checksum": "7c3f4f353d5b6befd7ff51bd8e6e06195a1b13503215d43f8cd5342868275767",
+  "question_count": 14,
+  "label_match_count": 13,
+  "label_match_rate": 0.9285714285714286,
+  "temporal_match_count": 10,
+  "temporal_match_rate": 0.7142857142857143,
+  "answered_count": 6,
+  "answered_rate": 0.42857142857142855,
+  "fail_close_count": 8,
+  "fail_close_rate": 0.5714285714285714,
+  "writer_called_count": 6,
+  "writer_blocked_count": 0,
+  "bottleneck_counts": {
+    "classifier": 1,
+    "data": 1,
+    "evidence": 1,
+    "none": 4,
+    "retrieval": 3,
+    "temporal": 4
+  },
+  "rows": [
+    {
+      "id": "public_probe_01",
+      "question": "졸업까지 몇 학점 들어야 하나요?",
+      "expected_label": 0,
+      "actual_label": 0,
+      "expected_domain": "graduation",
+      "actual_domain": "graduation",
+      "label_match": true,
+      "domain_match": true,
+      "expected_temporal_type": "none",
+      "actual_temporal_type": "none",
+      "temporal_match": true,
+      "temporal_confidence": "high",
+      "target_start": null,
+      "target_end": null,
+      "retrieval_requirements": [
+        "rag_ok"
+      ],
+      "output_status": "answered",
+      "evidence_sufficiency_status": "sufficient",
+      "fetch_decision": "skipped_rag_sufficient",
+      "freshness_status": "not_required",
+      "answer_validation_status": "passed",
+      "trace_generation_backend": "injected",
+      "qwen_writer_called": true,
+      "qwen_writer_elapsed_seconds": 20.60643110000001,
+      "elapsed_seconds": 20.62601450000011,
+      "retrieved_doc_ids": [
+        "graduation_biochemistry_requirements_chunk_5",
+        "graduation_biochemistry_requirements_chunk_7",
+        "graduation_biochemistry_requirements_chunk_6"
+      ],
+      "retrieved_scores": [
+        0.4411764705882353,
+        0.4411764705882353,
+        0.38235294117647056
+      ],
+      "prefilter_retrieved_doc_ids": [
+        "graduation_biochemistry_requirements_chunk_5",
+        "graduation_biochemistry_requirements_chunk_7",
+        "graduation_biochemistry_requirements_chunk_6",
+        "graduation_english_requirements_chunk_3",
+        "graduation_english_requirements_chunk_4",
+        "graduation_english_requirements_chunk_5",
+        "graduation_english_requirements_chunk_6",
+        "graduation_english_requirements_chunk_7",
+        "graduation_biochemistry_requirements_chunk_1",
+        "graduation_biochemistry_requirements_chunk_3",
+        "graduation_english_requirements_chunk_8",
+        "graduation_english_requirements_chunk_9"
+      ],
+      "postfilter_retrieved_doc_ids": [
+        "graduation_biochemistry_requirements_chunk_5",
+        "graduation_biochemistry_requirements_chunk_7",
+        "graduation_biochemistry_requirements_chunk_6"
+      ],
+      "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_5",
+          "score": 0.4411764705882353,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_7",
+          "score": 0.4411764705882353,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_6",
+          "score": 0.38235294117647056,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_3",
+          "score": 0.38235294117647056,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_4",
+          "score": 0.38235294117647056,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_5",
+          "score": 0.38235294117647056,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_6",
+          "score": 0.38235294117647056,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_7",
+          "score": 0.38235294117647056,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_1",
+          "score": 0.3235294117647059,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_3",
+          "score": 0.3235294117647059,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_8",
+          "score": 0.3235294117647059,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_9",
+          "score": 0.3235294117647059,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        }
+      ],
+      "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_5",
+          "score": 0.4411764705882353,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_7",
+          "score": 0.4411764705882353,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_6",
+          "score": 0.38235294117647056,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        }
+      ],
+      "failure_reason": null,
+      "bottleneck": "none",
+      "expected_behavior": "Answer generally, mention department/admission-year differences, do not cite an unrelated department as if universal.",
+      "answer": "충남대학교 생화학과 졸업 요건은 입학 연도에 따라 다릅니다.\n\n**2015 학번 이후 (2013 학번 이후 교육과정 적용)**\n*   총 이수 학점: **130 학점 이상**\n*   세부 구성: 교양 42 학점 + 전공 78 학점 (총 120 학점)\n*   주의사항: 교양 과목에서 42 학점을 초과하여 이수한 학점은 졸업 이수 학점에 포함되지 않으므로, 부족한 10 학점은 일반 선택 또는 전공 과목을 초과하여 이수해야 합니다.\n\n**2014 학번 이전**\n*   총 이수 학점: **130 학점 이상**\n*   세부 구성: 교양 42 학점 + 기초 (9~12 학점) + 전공 81 학점\n*   특징: 일선 과목 구분 없이 원하는 과목을 수강하여 130 학점 이상이면 졸업 가능합니다.\n\n※ 학과 및 입학 연도에 따라 기준이 다를 수 있으므로, 정확한 정보는 반드시 **생화학과 사무실**에 문의하거나 공식 홈페이지 ([https://biochemistry.cnu.ac.kr"
+    },
+    {
+      "id": "public_probe_02",
+      "question": "이번 학기 수강신청은 언제 시작하나요?",
+      "expected_label": 2,
+      "actual_label": 2,
+      "expected_domain": "academic_calendar",
+      "actual_domain": "academic_calendar",
+      "label_match": true,
+      "domain_match": true,
+      "expected_temporal_type": "date_lookup",
+      "actual_temporal_type": "date_lookup",
+      "temporal_match": true,
+      "temporal_confidence": "medium",
+      "target_start": null,
+      "target_end": null,
+      "retrieval_requirements": [
+        "date_filtered_evidence_needed"
+      ],
+      "output_status": "answered",
+      "evidence_sufficiency_status": "sufficient",
+      "fetch_decision": "skipped_rag_sufficient",
+      "freshness_status": "not_required",
+      "answer_validation_status": "passed",
+      "trace_generation_backend": "injected",
+      "qwen_writer_called": true,
+      "qwen_writer_elapsed_seconds": 10.478484599999774,
+      "elapsed_seconds": 10.487028199999713,
+      "retrieved_doc_ids": [
+        "academic_calendar_chunk_5",
+        "academic_calendar_chunk_8",
+        "academic_calendar_chunk_4"
+      ],
+      "retrieved_scores": [
+        0.375,
+        0.375,
+        0.3194444444444444
+      ],
+      "prefilter_retrieved_doc_ids": [
+        "academic_notice_board_chunk_1",
+        "academic_notice_board_chunk_2",
+        "academic_calendar_chunk_5",
+        "academic_calendar_chunk_8",
+        "academic_calendar_chunk_4",
+        "academic_notice_detail_2511200_chunk_1",
+        "academic_notice_detail_2512124_chunk_1",
+        "academic_notice_detail_2512782_chunk_2",
+        "academic_notice_board_chunk_3",
+        "academic_notice_detail_2512782_chunk_1",
+        "academic_calendar_chunk_1",
+        "academic_calendar_chunk_2",
+        "academic_calendar_chunk_3",
+        "academic_calendar_chunk_6",
+        "academic_calendar_chunk_7"
+      ],
+      "postfilter_retrieved_doc_ids": [
+        "academic_calendar_chunk_5",
+        "academic_calendar_chunk_8",
+        "academic_calendar_chunk_4"
+      ],
+      "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_notice_board_chunk_1",
+          "score": 0.4027777777777778,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_2",
+          "score": 0.4027777777777778,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_5",
+          "score": 0.375,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_8",
+          "score": 0.375,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_4",
+          "score": 0.3194444444444444,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_notice_detail_2511200_chunk_1",
+          "score": 0.2361111111111111,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2511200",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "academic_notice_detail_2512124_chunk_1",
+          "score": 0.2361111111111111,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512124",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "academic_notice_detail_2512782_chunk_2",
+          "score": 0.2361111111111111,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512782",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_3",
+          "score": 0.18055555555555555,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_detail_2512782_chunk_1",
+          "score": 0.18055555555555555,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512782",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_1",
+          "score": 0.1527777777777778,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_2",
+          "score": 0.1527777777777778,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_3",
+          "score": 0.1527777777777778,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_6",
+          "score": 0.1527777777777778,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_7",
+          "score": 0.1527777777777778,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        }
+      ],
+      "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_calendar_chunk_5",
+          "score": 0.375,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_8",
+          "score": 0.375,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_4",
+          "score": 0.3194444444444444,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        }
+      ],
+      "failure_reason": null,
+      "bottleneck": "none",
+      "expected_behavior": "Return the matching course registration start date if calendar evidence supports it.",
+      "answer": "2026학년도 제1학기 수강신청은 2026년 2월 2일(월)부터 2월 6일(금)까지 진행됩니다.\n\n참고로, 1월 26일(월)부터 1월 28일(수)까지 예비수강신청이 먼저 열리며, 계절학기 수강신청은 5월 7일(목)부터 5월 11일(월)까지 이루어집니다. 정확한 일정은 충남대학교 공식 학사일정 페이지를 확인하시기 바랍니다."
+    },
+    {
+      "id": "public_probe_03",
+      "question": "오늘 학식 뭐 나와요?",
+      "expected_label": 3,
+      "actual_label": 3,
+      "expected_domain": "dining",
+      "actual_domain": "dining",
+      "label_match": true,
+      "domain_match": true,
+      "expected_temporal_type": "current_snapshot",
+      "actual_temporal_type": "current_snapshot",
+      "temporal_match": true,
+      "temporal_confidence": "high",
+      "target_start": "2026-06-08",
+      "target_end": "2026-06-08",
+      "retrieval_requirements": [
+        "date_filtered_evidence_needed",
+        "structured_source_preferred"
+      ],
+      "output_status": "fail_closed",
+      "evidence_sufficiency_status": "insufficient",
+      "fetch_decision": "fetch_blocked_unofficial",
+      "freshness_status": "unverified_source",
+      "answer_validation_status": "blocked",
+      "trace_generation_backend": null,
+      "qwen_writer_called": false,
+      "qwen_writer_elapsed_seconds": null,
+      "elapsed_seconds": 0.006658100000095146,
+      "retrieved_doc_ids": [
+        "cnu_mobile_food_chunk_1",
+        "cnu_mobile_food_chunk_2",
+        "cnu_mobile_food_chunk_3"
+      ],
+      "retrieved_scores": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "prefilter_retrieved_doc_ids": [
+        "cnu_mobile_food_chunk_1",
+        "cnu_mobile_food_chunk_2",
+        "cnu_mobile_food_chunk_3",
+        "graduation_biochemistry_requirements_chunk_1",
+        "graduation_biochemistry_requirements_chunk_2",
+        "graduation_biochemistry_requirements_chunk_3",
+        "graduation_biochemistry_requirements_chunk_4",
+        "graduation_biochemistry_requirements_chunk_5",
+        "graduation_biochemistry_requirements_chunk_6",
+        "graduation_biochemistry_requirements_chunk_7",
+        "graduation_biochemistry_requirements_chunk_8",
+        "graduation_biochemistry_requirements_chunk_9",
+        "graduation_curriculum_pdf_chunk_1",
+        "graduation_curriculum_pdf_chunk_2",
+        "graduation_curriculum_pdf_chunk_3"
+      ],
+      "postfilter_retrieved_doc_ids": [
+        "cnu_mobile_food_chunk_1",
+        "cnu_mobile_food_chunk_2",
+        "cnu_mobile_food_chunk_3"
+      ],
+      "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "cnu_mobile_food_chunk_1",
+          "score": 0.1,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "cnu_mobile_food_chunk_2",
+          "score": 0.1,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "cnu_mobile_food_chunk_3",
+          "score": 0.1,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_1",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_2",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_3",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_4",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_5",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_6",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_7",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_8",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_9",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_1",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_2",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_3",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        }
+      ],
+      "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "cnu_mobile_food_chunk_1",
+          "score": 0.1,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "cnu_mobile_food_chunk_2",
+          "score": 0.1,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "cnu_mobile_food_chunk_3",
+          "score": 0.1,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        }
+      ],
+      "failure_reason": "current_fact_source_not_official_chain_verified",
+      "bottleneck": "data",
+      "expected_behavior": "Resolve today from runtime context and use only same-date dining evidence or controlled fetch.",
+      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+    },
+    {
+      "id": "public_probe_04",
+      "question": "다음주에 셔틀버스는 정상 운행하나요?",
+      "expected_label": 4,
+      "actual_label": 4,
+      "expected_domain": "shuttle",
+      "actual_domain": "shuttle",
+      "label_match": true,
+      "domain_match": true,
+      "expected_temporal_type": "ongoing_status",
+      "actual_temporal_type": "period_summary",
+      "temporal_match": false,
+      "temporal_confidence": "high",
+      "target_start": "2026-06-15",
+      "target_end": "2026-06-21",
+      "retrieval_requirements": [
+        "date_filtered_evidence_needed",
+        "structured_source_preferred"
+      ],
+      "output_status": "fail_closed",
+      "evidence_sufficiency_status": "insufficient",
+      "fetch_decision": "fetch_required_but_not_implemented",
+      "freshness_status": "unknown",
+      "answer_validation_status": "blocked",
+      "trace_generation_backend": null,
+      "qwen_writer_called": false,
+      "qwen_writer_elapsed_seconds": null,
+      "elapsed_seconds": 0.006371200000103272,
+      "retrieved_doc_ids": [
+        "shuttle_bus_chunk_1",
+        "shuttle_bus_chunk_2",
+        "shuttle_bus_chunk_3",
+        "shuttle_bus_chunk_4",
+        "shuttle_bus_chunk_5",
+        "shuttle_bus_chunk_6",
+        "shuttle_bus_chunk_7",
+        "shuttle_bus_chunk_8"
+      ],
+      "retrieved_scores": [
+        0.42105263157894735,
+        0.42105263157894735,
+        0.42105263157894735,
+        0.42105263157894735,
+        0.42105263157894735,
+        0.42105263157894735,
+        0.42105263157894735,
+        0.42105263157894735
+      ],
+      "prefilter_retrieved_doc_ids": [
+        "shuttle_bus_chunk_1",
+        "shuttle_bus_chunk_2",
+        "shuttle_bus_chunk_3",
+        "shuttle_bus_chunk_4",
+        "shuttle_bus_chunk_5",
+        "shuttle_bus_chunk_6",
+        "shuttle_bus_chunk_7",
+        "shuttle_bus_chunk_8",
+        "shuttle_bus_chunk_9",
+        "graduation_biochemistry_requirements_chunk_1",
+        "graduation_biochemistry_requirements_chunk_2",
+        "graduation_biochemistry_requirements_chunk_3",
+        "graduation_biochemistry_requirements_chunk_4",
+        "graduation_biochemistry_requirements_chunk_5",
+        "graduation_biochemistry_requirements_chunk_6",
+        "graduation_biochemistry_requirements_chunk_7",
+        "graduation_biochemistry_requirements_chunk_8",
+        "graduation_biochemistry_requirements_chunk_9",
+        "graduation_curriculum_pdf_chunk_1",
+        "graduation_curriculum_pdf_chunk_2",
+        "graduation_curriculum_pdf_chunk_3",
+        "graduation_curriculum_pdf_chunk_4",
+        "graduation_curriculum_pdf_chunk_5",
+        "graduation_curriculum_pdf_chunk_6"
+      ],
+      "postfilter_retrieved_doc_ids": [
+        "shuttle_bus_chunk_1",
+        "shuttle_bus_chunk_2",
+        "shuttle_bus_chunk_3",
+        "shuttle_bus_chunk_4",
+        "shuttle_bus_chunk_5",
+        "shuttle_bus_chunk_6",
+        "shuttle_bus_chunk_7",
+        "shuttle_bus_chunk_8"
+      ],
+      "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "shuttle_bus_chunk_1",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_2",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_3",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_4",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_5",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_6",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_7",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_8",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_9",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_1",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_2",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_3",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_4",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_5",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_6",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_7",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_8",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_9",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_1",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_2",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_3",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_4",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_5",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_6",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        }
+      ],
+      "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "shuttle_bus_chunk_1",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_2",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_3",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_4",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_5",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_6",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_7",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_8",
+          "score": 0.42105263157894735,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        }
+      ],
+      "failure_reason": "date_filtered_evidence_missing_or_mismatched",
+      "bottleneck": "temporal",
+      "expected_behavior": "Resolve next ISO week and avoid normal-operation claims without timetable or effective-date evidence.",
+      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+    },
+    {
+      "id": "public_probe_05",
+      "question": "이번에 올라온 공지사항 어디서 볼 수 있어요?",
+      "expected_label": 1,
+      "actual_label": 1,
+      "expected_domain": "notices",
+      "actual_domain": "notices",
+      "label_match": true,
+      "domain_match": true,
+      "expected_temporal_type": "latest_item",
+      "actual_temporal_type": "none",
+      "temporal_match": false,
+      "temporal_confidence": "high",
+      "target_start": null,
+      "target_end": null,
+      "retrieval_requirements": [
+        "rag_ok"
+      ],
+      "output_status": "answered",
+      "evidence_sufficiency_status": "sufficient",
+      "fetch_decision": "skipped_rag_sufficient",
+      "freshness_status": "fresh",
+      "answer_validation_status": "passed",
+      "trace_generation_backend": "injected",
+      "qwen_writer_called": true,
+      "qwen_writer_elapsed_seconds": 7.299974499999735,
+      "elapsed_seconds": 7.3065231000000495,
+      "retrieved_doc_ids": [
+        "academic_notice_board_chunk_1",
+        "academic_notice_board_chunk_2"
+      ],
+      "retrieved_scores": [
+        0.15,
+        0.15
+      ],
+      "prefilter_retrieved_doc_ids": [
+        "academic_notice_board_chunk_1",
+        "academic_notice_board_chunk_2",
+        "graduation_biochemistry_requirements_chunk_8",
+        "graduation_biochemistry_requirements_chunk_9",
+        "graduation_english_requirements_chunk_7",
+        "graduation_english_requirements_chunk_8",
+        "academic_notice_detail_2512124_chunk_1",
+        "academic_notice_detail_2512782_chunk_1",
+        "graduation_biochemistry_requirements_chunk_1",
+        "shuttle_bus_chunk_1",
+        "shuttle_bus_chunk_2",
+        "shuttle_bus_chunk_5"
+      ],
+      "postfilter_retrieved_doc_ids": [
+        "academic_notice_board_chunk_1",
+        "academic_notice_board_chunk_2"
+      ],
+      "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_notice_board_chunk_1",
+          "score": 0.15,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_2",
+          "score": 0.15,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_8",
+          "score": 0.12,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_9",
+          "score": 0.12,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_7",
+          "score": 0.12,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_8",
+          "score": 0.12,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_detail_2512124_chunk_1",
+          "score": 0.11,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512124",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "academic_notice_detail_2512782_chunk_1",
+          "score": 0.11,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512782",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_1",
+          "score": 0.08,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_1",
+          "score": 0.08,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_2",
+          "score": 0.08,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_5",
+          "score": 0.08,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        }
+      ],
+      "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_notice_board_chunk_1",
+          "score": 0.15,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_2",
+          "score": 0.15,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        }
+      ],
+      "failure_reason": null,
+      "bottleneck": "temporal",
+      "expected_behavior": "Provide official notice board location or latest item source when available.",
+      "answer": "충남대학교 공지사항은 **학사정보게시판**에서 확인하실 수 있습니다.\n\n주요 공지사항 목록은 아래 링크를 통해 바로 보실 수 있습니다.\nhttps://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr"
+    },
+    {
+      "id": "public_probe_06",
+      "question": "새로 업데이트된 셔틀버스 정류장이 있을까요?",
+      "expected_label": 4,
+      "actual_label": 4,
+      "expected_domain": "shuttle",
+      "actual_domain": "shuttle",
+      "label_match": true,
+      "domain_match": true,
+      "expected_temporal_type": "changed_since",
+      "actual_temporal_type": "none",
+      "temporal_match": false,
+      "temporal_confidence": "high",
+      "target_start": null,
+      "target_end": null,
+      "retrieval_requirements": [
+        "rag_ok"
+      ],
+      "output_status": "answered",
+      "evidence_sufficiency_status": "sufficient",
+      "fetch_decision": "skipped_rag_sufficient",
+      "freshness_status": "not_required",
+      "answer_validation_status": "passed",
+      "trace_generation_backend": "injected",
+      "qwen_writer_called": true,
+      "qwen_writer_elapsed_seconds": 12.594131199999993,
+      "elapsed_seconds": 12.601025100000243,
+      "retrieved_doc_ids": [
+        "shuttle_bus_chunk_5",
+        "shuttle_bus_chunk_2",
+        "shuttle_bus_chunk_3"
+      ],
+      "retrieved_scores": [
+        0.40217391304347827,
+        0.31521739130434784,
+        0.31521739130434784
+      ],
+      "prefilter_retrieved_doc_ids": [
+        "shuttle_bus_chunk_5",
+        "shuttle_bus_chunk_2",
+        "shuttle_bus_chunk_3",
+        "shuttle_bus_chunk_4",
+        "shuttle_bus_chunk_7",
+        "shuttle_bus_chunk_8",
+        "shuttle_bus_chunk_9",
+        "shuttle_bus_chunk_1",
+        "shuttle_bus_chunk_6",
+        "graduation_biochemistry_requirements_chunk_8",
+        "graduation_biochemistry_requirements_chunk_9",
+        "graduation_biochemistry_requirements_chunk_1"
+      ],
+      "postfilter_retrieved_doc_ids": [
+        "shuttle_bus_chunk_5",
+        "shuttle_bus_chunk_2",
+        "shuttle_bus_chunk_3"
+      ],
+      "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "shuttle_bus_chunk_5",
+          "score": 0.40217391304347827,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_2",
+          "score": 0.31521739130434784,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_3",
+          "score": 0.31521739130434784,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_4",
+          "score": 0.31521739130434784,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_7",
+          "score": 0.31521739130434784,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_8",
+          "score": 0.31521739130434784,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_9",
+          "score": 0.31521739130434784,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_1",
+          "score": 0.2717391304347826,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_6",
+          "score": 0.2717391304347826,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_8",
+          "score": 0.043478260869565216,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_9",
+          "score": 0.043478260869565216,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_1",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        }
+      ],
+      "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "shuttle_bus_chunk_5",
+          "score": 0.40217391304347827,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_2",
+          "score": 0.31521739130434784,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_3",
+          "score": 0.31521739130434784,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        }
+      ],
+      "failure_reason": null,
+      "bottleneck": "temporal",
+      "expected_behavior": "Use a declared recent-change window and report verified stop changes only.",
+      "answer": "충남대학교 셔틀버스는 현재 **대덕캠퍼스 내 순환**과 **대덕캠퍼스 ↔ 보운캠퍼스 순환** 두 노선을 운영 중입니다.\n\n*   **대덕캠퍼스 내 순환**: 월평역 등교 시간 08:20 출발\n*   **캠퍼스 순환 (대덕 ↔ 보운)**: 골프연습장 출발 시간 08:10\n\n정류장 변경에 대한 최신 정보는 학교 사정에 따라 변동될 수 있으므로, **충남대학교 공식 셔틀버스 안내 페이지**를 확인하시는 것을 권장합니다."
+    },
+    {
+      "id": "public_probe_07",
+      "question": "5월 이후로 변동된 학사일정이 있을까요?",
+      "expected_label": 2,
+      "actual_label": 2,
+      "expected_domain": "academic_calendar",
+      "actual_domain": "academic_calendar",
+      "label_match": true,
+      "domain_match": true,
+      "expected_temporal_type": "changed_since",
+      "actual_temporal_type": "changed_since",
+      "temporal_match": true,
+      "temporal_confidence": "medium",
+      "target_start": "2026-05-09",
+      "target_end": "2026-06-08",
+      "retrieval_requirements": [
+        "date_filtered_evidence_needed",
+        "change_window_needed"
+      ],
+      "output_status": "fail_closed",
+      "evidence_sufficiency_status": "needs_fetch",
+      "fetch_decision": "fetch_required_but_not_implemented",
+      "freshness_status": "unknown",
+      "answer_validation_status": "blocked",
+      "trace_generation_backend": null,
+      "qwen_writer_called": false,
+      "qwen_writer_elapsed_seconds": null,
+      "elapsed_seconds": 0.006643600000188599,
+      "retrieved_doc_ids": [
+        "academic_calendar_chunk_1",
+        "academic_calendar_chunk_2",
+        "academic_calendar_chunk_3",
+        "academic_calendar_chunk_4",
+        "academic_calendar_chunk_5",
+        "academic_calendar_chunk_6",
+        "academic_calendar_chunk_7",
+        "academic_calendar_chunk_8"
+      ],
+      "retrieved_scores": [
+        0.15476190476190477,
+        0.15476190476190477,
+        0.15476190476190477,
+        0.15476190476190477,
+        0.15476190476190477,
+        0.15476190476190477,
+        0.15476190476190477,
+        0.15476190476190477
+      ],
+      "prefilter_retrieved_doc_ids": [
+        "academic_calendar_chunk_1",
+        "academic_calendar_chunk_2",
+        "academic_calendar_chunk_3",
+        "academic_calendar_chunk_4",
+        "academic_calendar_chunk_5",
+        "academic_calendar_chunk_6",
+        "academic_calendar_chunk_7",
+        "academic_calendar_chunk_8",
+        "academic_calendar_chunk_9",
+        "graduation_biochemistry_requirements_chunk_8",
+        "graduation_biochemistry_requirements_chunk_9",
+        "shuttle_bus_chunk_1",
+        "shuttle_bus_chunk_6",
+        "shuttle_bus_chunk_7",
+        "graduation_biochemistry_requirements_chunk_1",
+        "academic_notice_board_chunk_1",
+        "academic_notice_board_chunk_2",
+        "academic_notice_board_chunk_3",
+        "academic_notice_detail_2511200_chunk_1",
+        "academic_notice_detail_2512124_chunk_1",
+        "academic_notice_detail_2512782_chunk_1",
+        "graduation_biochemistry_requirements_chunk_2",
+        "graduation_biochemistry_requirements_chunk_5",
+        "graduation_biochemistry_requirements_chunk_6"
+      ],
+      "postfilter_retrieved_doc_ids": [
+        "academic_calendar_chunk_1",
+        "academic_calendar_chunk_2",
+        "academic_calendar_chunk_3",
+        "academic_calendar_chunk_4",
+        "academic_calendar_chunk_5",
+        "academic_calendar_chunk_6",
+        "academic_calendar_chunk_7",
+        "academic_calendar_chunk_8"
+      ],
+      "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_calendar_chunk_1",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_2",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_3",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_4",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_5",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_6",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_7",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_8",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_9",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_8",
+          "score": 0.14285714285714285,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_9",
+          "score": 0.14285714285714285,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_1",
+          "score": 0.14285714285714285,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_6",
+          "score": 0.14285714285714285,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_7",
+          "score": 0.14285714285714285,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_1",
+          "score": 0.09523809523809523,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_1",
+          "score": 0.08333333333333333,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_2",
+          "score": 0.08333333333333333,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_3",
+          "score": 0.08333333333333333,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_detail_2511200_chunk_1",
+          "score": 0.08333333333333333,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2511200",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "academic_notice_detail_2512124_chunk_1",
+          "score": 0.08333333333333333,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512124",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "academic_notice_detail_2512782_chunk_1",
+          "score": 0.08333333333333333,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512782",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_2",
+          "score": 0.047619047619047616,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_5",
+          "score": 0.047619047619047616,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_6",
+          "score": 0.047619047619047616,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        }
+      ],
+      "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_calendar_chunk_1",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_2",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_3",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_4",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_5",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_6",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_7",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_8",
+          "score": 0.15476190476190477,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        }
+      ],
+      "failure_reason": "top_score_below_threshold;controlled_fetch_candidate_exists",
+      "bottleneck": "retrieval",
+      "expected_behavior": "Search calendar or notice evidence since May and summarize verified changes.",
+      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+    },
+    {
+      "id": "public_probe_08",
+      "question": "다음주 학식 뭐 나와요?",
+      "expected_label": 3,
+      "actual_label": 3,
+      "expected_domain": "dining",
+      "actual_domain": "dining",
+      "label_match": true,
+      "domain_match": true,
+      "expected_temporal_type": "period_summary",
+      "actual_temporal_type": "period_summary",
+      "temporal_match": true,
+      "temporal_confidence": "high",
+      "target_start": "2026-06-15",
+      "target_end": "2026-06-21",
+      "retrieval_requirements": [
+        "date_filtered_evidence_needed",
+        "structured_source_preferred"
+      ],
+      "output_status": "fail_closed",
+      "evidence_sufficiency_status": "insufficient",
+      "fetch_decision": "fetch_blocked_no_registry",
+      "freshness_status": "unknown",
+      "answer_validation_status": "blocked",
+      "trace_generation_backend": null,
+      "qwen_writer_called": false,
+      "qwen_writer_elapsed_seconds": null,
+      "elapsed_seconds": 0.006486899999799789,
+      "retrieved_doc_ids": [
+        "cnu_mobile_food_chunk_1",
+        "cnu_mobile_food_chunk_2",
+        "cnu_mobile_food_chunk_3"
+      ],
+      "retrieved_scores": [
+        0.08333333333333333,
+        0.08333333333333333,
+        0.08333333333333333
+      ],
+      "prefilter_retrieved_doc_ids": [
+        "cnu_mobile_food_chunk_1",
+        "cnu_mobile_food_chunk_2",
+        "cnu_mobile_food_chunk_3",
+        "graduation_biochemistry_requirements_chunk_1",
+        "graduation_biochemistry_requirements_chunk_2",
+        "graduation_biochemistry_requirements_chunk_3",
+        "graduation_biochemistry_requirements_chunk_4",
+        "graduation_biochemistry_requirements_chunk_5",
+        "graduation_biochemistry_requirements_chunk_6",
+        "graduation_biochemistry_requirements_chunk_7",
+        "graduation_biochemistry_requirements_chunk_8",
+        "graduation_biochemistry_requirements_chunk_9",
+        "graduation_curriculum_pdf_chunk_1",
+        "graduation_curriculum_pdf_chunk_2",
+        "graduation_curriculum_pdf_chunk_3",
+        "graduation_curriculum_pdf_chunk_4",
+        "graduation_curriculum_pdf_chunk_5",
+        "graduation_curriculum_pdf_chunk_6",
+        "graduation_curriculum_pdf_chunk_7",
+        "graduation_english_requirements_chunk_1",
+        "graduation_english_requirements_chunk_2",
+        "graduation_english_requirements_chunk_3",
+        "graduation_english_requirements_chunk_4",
+        "graduation_english_requirements_chunk_5"
+      ],
+      "postfilter_retrieved_doc_ids": [
+        "cnu_mobile_food_chunk_1",
+        "cnu_mobile_food_chunk_2",
+        "cnu_mobile_food_chunk_3"
+      ],
+      "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "cnu_mobile_food_chunk_1",
+          "score": 0.08333333333333333,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "cnu_mobile_food_chunk_2",
+          "score": 0.08333333333333333,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "cnu_mobile_food_chunk_3",
+          "score": 0.08333333333333333,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_1",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_2",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_3",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_4",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_5",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_6",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_7",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_8",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_9",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_1",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_2",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_3",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_4",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_5",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_6",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_7",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_1",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_2",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_3",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_4",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_5",
+          "score": 0.0,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        }
+      ],
+      "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "cnu_mobile_food_chunk_1",
+          "score": 0.08333333333333333,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "cnu_mobile_food_chunk_2",
+          "score": 0.08333333333333333,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "cnu_mobile_food_chunk_3",
+          "score": 0.08333333333333333,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        }
+      ],
+      "failure_reason": "top_score_below_threshold;no_fetchable_registry_candidate",
+      "bottleneck": "retrieval",
+      "expected_behavior": "Resolve next ISO week and summarize date-matched dining evidence, fetching if needed.",
+      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+    },
+    {
+      "id": "public_probe_09",
+      "question": "가장 최근에 올라온 공지사항은 언제 게시되었나요?",
+      "expected_label": 1,
+      "actual_label": 1,
+      "expected_domain": "notices",
+      "actual_domain": "notices",
+      "label_match": true,
+      "domain_match": true,
+      "expected_temporal_type": "latest_item",
+      "actual_temporal_type": "none",
+      "temporal_match": false,
+      "temporal_confidence": "high",
+      "target_start": null,
+      "target_end": null,
+      "retrieval_requirements": [
+        "rag_ok"
+      ],
+      "output_status": "fail_closed",
+      "evidence_sufficiency_status": "needs_fetch",
+      "fetch_decision": "fetch_required_but_not_implemented",
+      "freshness_status": "unknown",
+      "answer_validation_status": "blocked",
+      "trace_generation_backend": null,
+      "qwen_writer_called": false,
+      "qwen_writer_elapsed_seconds": null,
+      "elapsed_seconds": 0.006235699999706412,
+      "retrieved_doc_ids": [
+        "academic_notice_board_chunk_1",
+        "academic_notice_board_chunk_2"
+      ],
+      "retrieved_scores": [
+        0.19,
+        0.15
+      ],
+      "prefilter_retrieved_doc_ids": [
+        "academic_notice_board_chunk_1",
+        "graduation_biochemistry_requirements_chunk_8",
+        "graduation_biochemistry_requirements_chunk_9",
+        "academic_notice_board_chunk_2",
+        "graduation_english_requirements_chunk_7",
+        "graduation_english_requirements_chunk_8",
+        "academic_notice_detail_2512124_chunk_1",
+        "academic_notice_detail_2512782_chunk_1",
+        "graduation_biochemistry_requirements_chunk_1",
+        "graduation_english_requirements_chunk_1",
+        "academic_notice_board_chunk_3",
+        "academic_notice_detail_2511200_chunk_1"
+      ],
+      "postfilter_retrieved_doc_ids": [
+        "academic_notice_board_chunk_1",
+        "academic_notice_board_chunk_2"
+      ],
+      "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_notice_board_chunk_1",
+          "score": 0.19,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_8",
+          "score": 0.16,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_9",
+          "score": 0.16,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_2",
+          "score": 0.15,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_7",
+          "score": 0.12,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_8",
+          "score": 0.12,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_detail_2512124_chunk_1",
+          "score": 0.11,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512124",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "academic_notice_detail_2512782_chunk_1",
+          "score": 0.11,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512782",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_1",
+          "score": 0.08,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_1",
+          "score": 0.08,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_3",
+          "score": 0.07,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_detail_2511200_chunk_1",
+          "score": 0.07,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2511200",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        }
+      ],
+      "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_notice_board_chunk_1",
+          "score": 0.19,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_2",
+          "score": 0.15,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        }
+      ],
+      "failure_reason": "top_score_below_threshold;controlled_fetch_candidate_exists",
+      "bottleneck": "temporal",
+      "expected_behavior": "Use posted_date evidence and include the latest verified posted date.",
+      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+    },
+    {
+      "id": "public_probe_10",
+      "question": "충남대학교 인공지능학과 24학번의 경우 프로젝트 수업을 몇 개 들어야 하나요?",
+      "expected_label": 0,
+      "actual_label": 1,
+      "expected_domain": "graduation",
+      "actual_domain": "notices",
+      "label_match": false,
+      "domain_match": false,
+      "expected_temporal_type": "none",
+      "actual_temporal_type": "none",
+      "temporal_match": true,
+      "temporal_confidence": "high",
+      "target_start": null,
+      "target_end": null,
+      "retrieval_requirements": [
+        "rag_ok"
+      ],
+      "output_status": "fail_closed",
+      "evidence_sufficiency_status": "needs_fetch",
+      "fetch_decision": "fetch_required_but_not_implemented",
+      "freshness_status": "unknown",
+      "answer_validation_status": "blocked",
+      "trace_generation_backend": null,
+      "qwen_writer_called": false,
+      "qwen_writer_elapsed_seconds": null,
+      "elapsed_seconds": 0.006161100000099395,
+      "retrieved_doc_ids": [
+        "academic_notice_detail_2512782_chunk_2"
+      ],
+      "retrieved_scores": [
+        0.18452380952380953
+      ],
+      "prefilter_retrieved_doc_ids": [
+        "graduation_biochemistry_requirements_chunk_7",
+        "graduation_biochemistry_requirements_chunk_8",
+        "graduation_english_requirements_chunk_1",
+        "graduation_english_requirements_chunk_2",
+        "academic_notice_detail_2512782_chunk_2",
+        "graduation_biochemistry_requirements_chunk_5",
+        "academic_notice_board_chunk_3",
+        "graduation_biochemistry_requirements_chunk_1",
+        "graduation_english_requirements_chunk_7",
+        "graduation_english_requirements_chunk_8",
+        "graduation_biochemistry_requirements_chunk_2",
+        "graduation_curriculum_pdf_chunk_1"
+      ],
+      "postfilter_retrieved_doc_ids": [
+        "academic_notice_detail_2512782_chunk_2"
+      ],
+      "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_7",
+          "score": 0.20238095238095238,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_8",
+          "score": 0.20238095238095238,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_1",
+          "score": 0.20238095238095238,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_2",
+          "score": 0.20238095238095238,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_detail_2512782_chunk_2",
+          "score": 0.18452380952380953,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512782",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_5",
+          "score": 0.17857142857142858,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_3",
+          "score": 0.16071428571428573,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_1",
+          "score": 0.15476190476190477,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_7",
+          "score": 0.15476190476190477,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_8",
+          "score": 0.15476190476190477,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_2",
+          "score": 0.13095238095238096,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_curriculum_pdf_chunk_1",
+          "score": 0.11904761904761904,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_curriculum_pdf",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        }
+      ],
+      "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_notice_detail_2512782_chunk_2",
+          "score": 0.18452380952380953,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512782",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        }
+      ],
+      "failure_reason": "top_score_below_threshold;controlled_fetch_candidate_exists",
+      "bottleneck": "classifier",
+      "expected_behavior": "Require department and admission-year matched curriculum evidence; do not answer from unrelated departments.",
+      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+    },
+    {
+      "id": "public_probe_11",
+      "question": "이번 학기 종강일이 언제인가요?",
+      "expected_label": 2,
+      "actual_label": 2,
+      "expected_domain": "academic_calendar",
+      "actual_domain": "academic_calendar",
+      "label_match": true,
+      "domain_match": true,
+      "expected_temporal_type": "date_lookup",
+      "actual_temporal_type": "date_lookup",
+      "temporal_match": true,
+      "temporal_confidence": "medium",
+      "target_start": null,
+      "target_end": null,
+      "retrieval_requirements": [
+        "date_filtered_evidence_needed"
+      ],
+      "output_status": "answered",
+      "evidence_sufficiency_status": "sufficient",
+      "fetch_decision": "skipped_rag_sufficient",
+      "freshness_status": "not_required",
+      "answer_validation_status": "passed",
+      "trace_generation_backend": "injected",
+      "qwen_writer_called": true,
+      "qwen_writer_elapsed_seconds": 7.841234900000018,
+      "elapsed_seconds": 7.847802299999785,
+      "retrieved_doc_ids": [
+        "academic_calendar_chunk_7",
+        "academic_calendar_chunk_1",
+        "academic_calendar_chunk_2",
+        "academic_calendar_chunk_3",
+        "academic_calendar_chunk_4"
+      ],
+      "retrieved_scores": [
+        0.3,
+        0.23333333333333334,
+        0.23333333333333334,
+        0.23333333333333334,
+        0.23333333333333334
+      ],
+      "prefilter_retrieved_doc_ids": [
+        "academic_calendar_chunk_7",
+        "academic_calendar_chunk_1",
+        "academic_calendar_chunk_2",
+        "academic_calendar_chunk_3",
+        "academic_calendar_chunk_4",
+        "academic_calendar_chunk_5",
+        "academic_calendar_chunk_6",
+        "academic_calendar_chunk_8",
+        "academic_calendar_chunk_9",
+        "graduation_biochemistry_requirements_chunk_4",
+        "graduation_biochemistry_requirements_chunk_6",
+        "graduation_biochemistry_requirements_chunk_7",
+        "academic_notice_board_chunk_1",
+        "academic_notice_board_chunk_2",
+        "academic_notice_board_chunk_3"
+      ],
+      "postfilter_retrieved_doc_ids": [
+        "academic_calendar_chunk_7",
+        "academic_calendar_chunk_1",
+        "academic_calendar_chunk_2",
+        "academic_calendar_chunk_3",
+        "academic_calendar_chunk_4"
+      ],
+      "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_calendar_chunk_7",
+          "score": 0.3,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_1",
+          "score": 0.23333333333333334,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_2",
+          "score": 0.23333333333333334,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_3",
+          "score": 0.23333333333333334,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_4",
+          "score": 0.23333333333333334,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_5",
+          "score": 0.23333333333333334,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_6",
+          "score": 0.23333333333333334,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_8",
+          "score": 0.23333333333333334,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_9",
+          "score": 0.23333333333333334,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_4",
+          "score": 0.06666666666666667,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_6",
+          "score": 0.06666666666666667,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_7",
+          "score": 0.06666666666666667,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_1",
+          "score": 0.06666666666666667,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_2",
+          "score": 0.06666666666666667,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_3",
+          "score": 0.06666666666666667,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        }
+      ],
+      "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_calendar_chunk_7",
+          "score": 0.3,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_1",
+          "score": 0.23333333333333334,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_2",
+          "score": 0.23333333333333334,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_3",
+          "score": 0.23333333333333334,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_4",
+          "score": 0.23333333333333334,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        }
+      ],
+      "failure_reason": null,
+      "bottleneck": "none",
+      "expected_behavior": "Return the semester end date from academic calendar evidence.",
+      "answer": "제공된 근거에는 이번 학기 (제 1 학기) 의 종강일 정보가 포함되어 있지 않습니다.\n\n충남대학교 공식 학사일정 페이지 (https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr) 를 통해 정확한 날짜를 확인하시기 바랍니다."
+    },
+    {
+      "id": "public_probe_12",
+      "question": "이번 여름 계절학기 종강일이 언제인 가요?",
+      "expected_label": 2,
+      "actual_label": 2,
+      "expected_domain": "academic_calendar",
+      "actual_domain": "academic_calendar",
+      "label_match": true,
+      "domain_match": true,
+      "expected_temporal_type": "date_lookup",
+      "actual_temporal_type": "date_lookup",
+      "temporal_match": true,
+      "temporal_confidence": "medium",
+      "target_start": null,
+      "target_end": null,
+      "retrieval_requirements": [
+        "date_filtered_evidence_needed"
+      ],
+      "output_status": "answered",
+      "evidence_sufficiency_status": "sufficient",
+      "fetch_decision": "skipped_rag_sufficient",
+      "freshness_status": "not_required",
+      "answer_validation_status": "passed",
+      "trace_generation_backend": "injected",
+      "qwen_writer_called": true,
+      "qwen_writer_elapsed_seconds": 10.00761440000042,
+      "elapsed_seconds": 10.014452800000072,
+      "retrieved_doc_ids": [
+        "academic_calendar_chunk_2",
+        "academic_calendar_chunk_8",
+        "academic_calendar_chunk_9",
+        "academic_calendar_chunk_7",
+        "academic_calendar_chunk_1"
+      ],
+      "retrieved_scores": [
+        0.4166666666666667,
+        0.4166666666666667,
+        0.4166666666666667,
+        0.32142857142857145,
+        0.27380952380952384
+      ],
+      "prefilter_retrieved_doc_ids": [
+        "academic_calendar_chunk_2",
+        "academic_calendar_chunk_8",
+        "academic_calendar_chunk_9",
+        "academic_calendar_chunk_7",
+        "academic_calendar_chunk_1",
+        "academic_calendar_chunk_3",
+        "academic_calendar_chunk_4",
+        "academic_calendar_chunk_5",
+        "academic_calendar_chunk_6",
+        "academic_notice_board_chunk_1",
+        "academic_notice_board_chunk_2",
+        "academic_notice_detail_2512782_chunk_1",
+        "graduation_biochemistry_requirements_chunk_6",
+        "graduation_biochemistry_requirements_chunk_7",
+        "academic_notice_board_chunk_3"
+      ],
+      "postfilter_retrieved_doc_ids": [
+        "academic_calendar_chunk_2",
+        "academic_calendar_chunk_8",
+        "academic_calendar_chunk_9",
+        "academic_calendar_chunk_7",
+        "academic_calendar_chunk_1"
+      ],
+      "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_calendar_chunk_2",
+          "score": 0.4166666666666667,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_8",
+          "score": 0.4166666666666667,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_9",
+          "score": 0.4166666666666667,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_7",
+          "score": 0.32142857142857145,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_1",
+          "score": 0.27380952380952384,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_3",
+          "score": 0.27380952380952384,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_4",
+          "score": 0.27380952380952384,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_5",
+          "score": 0.27380952380952384,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_6",
+          "score": 0.27380952380952384,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_1",
+          "score": 0.19047619047619047,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_2",
+          "score": 0.19047619047619047,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_detail_2512782_chunk_1",
+          "score": 0.19047619047619047,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512782",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_6",
+          "score": 0.14285714285714285,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_7",
+          "score": 0.14285714285714285,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_3",
+          "score": 0.14285714285714285,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        }
+      ],
+      "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_calendar_chunk_2",
+          "score": 0.4166666666666667,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_8",
+          "score": 0.4166666666666667,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_9",
+          "score": 0.4166666666666667,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_7",
+          "score": 0.32142857142857145,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        },
+        {
+          "doc_id": "academic_calendar_chunk_1",
+          "score": 0.27380952380952384,
+          "label": 2,
+          "domain": "academic_calendar",
+          "source_id": "academic_calendar",
+          "chunking_strategy": "atomic_guard",
+          "boundary_type": "calendar_row",
+          "chunk_confidence": "high"
+        }
+      ],
+      "failure_reason": null,
+      "bottleneck": "none",
+      "expected_behavior": "Return the summer session end date, not grade announcement date.",
+      "answer": "제공된 근거에는 '이번 여름 계절학기'의 '종강일'에 대한 구체적인 날짜가 명시되어 있지 않습니다.\n\n참고로 근거 자료에는 하기 계절학기가 6 월 22 일 (월) 에 시작한다는 정보와 동기 계절학기 성적 발표가 1 월 20 일 (화) 에 있다는 정보가 있으나, 여름 계절학기의 종료 시점은 확인되지 않았습니다. 정확한 종강일을 확인하시려면 충남대학교 공식 학사일정 페이지를 다시 한번 확인해 주시기 바랍니다."
+    },
+    {
+      "id": "public_probe_13",
+      "question": "다음주 화요일 2학생회관 메뉴가 어떻게 되나요?",
+      "expected_label": 3,
+      "actual_label": 3,
+      "expected_domain": "dining",
+      "actual_domain": "dining",
+      "label_match": true,
+      "domain_match": true,
+      "expected_temporal_type": "future_schedule",
+      "actual_temporal_type": "future_schedule",
+      "temporal_match": true,
+      "temporal_confidence": "high",
+      "target_start": "2026-06-16",
+      "target_end": "2026-06-16",
+      "retrieval_requirements": [
+        "date_filtered_evidence_needed",
+        "structured_source_preferred"
+      ],
+      "output_status": "fail_closed",
+      "evidence_sufficiency_status": "insufficient",
+      "fetch_decision": "fetch_required_but_not_implemented",
+      "freshness_status": "unknown",
+      "answer_validation_status": "blocked",
+      "trace_generation_backend": null,
+      "qwen_writer_called": false,
+      "qwen_writer_elapsed_seconds": null,
+      "elapsed_seconds": 0.007226700000046549,
+      "retrieved_doc_ids": [
+        "cnu_mobile_food_chunk_1",
+        "cnu_mobile_food_chunk_2",
+        "cnu_mobile_food_chunk_3"
+      ],
+      "retrieved_scores": [
+        0.4230769230769231,
+        0.38461538461538464,
+        0.19230769230769232
+      ],
+      "prefilter_retrieved_doc_ids": [
+        "cnu_mobile_food_chunk_1",
+        "cnu_mobile_food_chunk_2",
+        "cnu_mobile_food_chunk_3",
+        "shuttle_bus_chunk_5",
+        "graduation_biochemistry_requirements_chunk_9",
+        "graduation_english_requirements_chunk_1",
+        "graduation_biochemistry_requirements_chunk_1",
+        "graduation_biochemistry_requirements_chunk_3",
+        "graduation_biochemistry_requirements_chunk_8",
+        "graduation_english_requirements_chunk_6",
+        "academic_notice_detail_2512124_chunk_1",
+        "academic_notice_detail_2512782_chunk_1",
+        "shuttle_bus_chunk_1",
+        "shuttle_bus_chunk_6",
+        "shuttle_bus_chunk_7"
+      ],
+      "postfilter_retrieved_doc_ids": [
+        "cnu_mobile_food_chunk_1",
+        "cnu_mobile_food_chunk_2",
+        "cnu_mobile_food_chunk_3"
+      ],
+      "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "cnu_mobile_food_chunk_1",
+          "score": 0.4230769230769231,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "cnu_mobile_food_chunk_2",
+          "score": 0.38461538461538464,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "cnu_mobile_food_chunk_3",
+          "score": 0.19230769230769232,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_5",
+          "score": 0.15384615384615385,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_9",
+          "score": 0.11538461538461539,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_1",
+          "score": 0.11538461538461539,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_1",
+          "score": 0.07692307692307693,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_3",
+          "score": 0.07692307692307693,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_8",
+          "score": 0.07692307692307693,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_6",
+          "score": 0.07692307692307693,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_detail_2512124_chunk_1",
+          "score": 0.07692307692307693,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512124",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "academic_notice_detail_2512782_chunk_1",
+          "score": 0.07692307692307693,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512782",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_1",
+          "score": 0.07692307692307693,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_6",
+          "score": 0.07692307692307693,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "shuttle_bus_chunk_7",
+          "score": 0.07692307692307693,
+          "label": 4,
+          "domain": "shuttle",
+          "source_id": "shuttle_bus",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "shuttle_time_row",
+          "chunk_confidence": "low"
+        }
+      ],
+      "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "cnu_mobile_food_chunk_1",
+          "score": 0.4230769230769231,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "cnu_mobile_food_chunk_2",
+          "score": 0.38461538461538464,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "cnu_mobile_food_chunk_3",
+          "score": 0.19230769230769232,
+          "label": 3,
+          "domain": "dining",
+          "source_id": "cnu_mobile_food",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "dining_menu_row",
+          "chunk_confidence": "low"
+        }
+      ],
+      "failure_reason": "date_filtered_evidence_missing_or_mismatched",
+      "bottleneck": "evidence",
+      "expected_behavior": "Resolve next ISO week Tuesday and use same-date same-location dining evidence or fetch.",
+      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+    },
+    {
+      "id": "public_probe_14",
+      "question": "토익 장학금을 받으려면 성적이 몇 점 이상이어야 하나요?",
+      "expected_label": 1,
+      "actual_label": 1,
+      "expected_domain": "notices",
+      "actual_domain": "notices",
+      "label_match": true,
+      "domain_match": true,
+      "expected_temporal_type": "none",
+      "actual_temporal_type": "none",
+      "temporal_match": true,
+      "temporal_confidence": "high",
+      "target_start": null,
+      "target_end": null,
+      "retrieval_requirements": [
+        "rag_ok"
+      ],
+      "output_status": "fail_closed",
+      "evidence_sufficiency_status": "needs_fetch",
+      "fetch_decision": "fetch_required_but_not_implemented",
+      "freshness_status": "unknown",
+      "answer_validation_status": "blocked",
+      "trace_generation_backend": null,
+      "qwen_writer_called": false,
+      "qwen_writer_elapsed_seconds": null,
+      "elapsed_seconds": 0.006198699999913515,
+      "retrieved_doc_ids": [
+        "academic_notice_detail_2512782_chunk_1"
+      ],
+      "retrieved_scores": [
+        0.15833333333333333
+      ],
+      "prefilter_retrieved_doc_ids": [
+        "graduation_english_requirements_chunk_4",
+        "graduation_english_requirements_chunk_5",
+        "graduation_english_requirements_chunk_7",
+        "academic_notice_detail_2512782_chunk_1",
+        "graduation_biochemistry_requirements_chunk_1",
+        "graduation_english_requirements_chunk_8",
+        "graduation_english_requirements_chunk_9",
+        "graduation_biochemistry_requirements_chunk_4",
+        "graduation_biochemistry_requirements_chunk_5",
+        "graduation_biochemistry_requirements_chunk_6",
+        "academic_notice_board_chunk_2",
+        "academic_notice_board_chunk_3"
+      ],
+      "postfilter_retrieved_doc_ids": [
+        "academic_notice_detail_2512782_chunk_1"
+      ],
+      "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "graduation_english_requirements_chunk_4",
+          "score": 0.16666666666666666,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_5",
+          "score": 0.16666666666666666,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_7",
+          "score": 0.16666666666666666,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_detail_2512782_chunk_1",
+          "score": 0.15833333333333333,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512782",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_1",
+          "score": 0.13333333333333333,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_8",
+          "score": 0.13333333333333333,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_english_requirements_chunk_9",
+          "score": 0.13333333333333333,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_english_requirements",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_4",
+          "score": 0.1,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_5",
+          "score": 0.1,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "graduation_biochemistry_requirements_chunk_6",
+          "score": 0.1,
+          "label": 0,
+          "domain": "graduation",
+          "source_id": "graduation_biochemistry_requirements",
+          "chunking_strategy": "recursive_prose",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "medium"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_2",
+          "score": 0.09166666666666666,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        },
+        {
+          "doc_id": "academic_notice_board_chunk_3",
+          "score": 0.09166666666666666,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        }
+      ],
+      "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_notice_detail_2512782_chunk_1",
+          "score": 0.15833333333333333,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_detail_2512782",
+          "chunking_strategy": "fallback_window",
+          "boundary_type": "prose_sentence",
+          "chunk_confidence": "low"
+        }
+      ],
+      "failure_reason": "top_score_below_threshold;controlled_fetch_candidate_exists",
+      "bottleneck": "retrieval",
+      "expected_behavior": "Answer only from scholarship evidence; do not reuse graduation TOEIC requirements.",
+      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+    }
+  ]
+}
