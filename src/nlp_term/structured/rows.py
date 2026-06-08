@@ -21,6 +21,15 @@ DINING_STRUCTURED_FIELDS = [
     "is_closed",
     "closed_reason",
 ]
+CALENDAR_STRUCTURED_FIELDS = [
+    "academic_year",
+    "month",
+    "event_name",
+    "start_date",
+    "end_date",
+    "semester",
+    "is_range",
+]
 
 
 class BaseStructuredRow(BaseModel):
@@ -183,6 +192,109 @@ class DiningRow(BaseStructuredRow):
         return f"{subject} {menu_label}: {items}."
 
 
+class CalendarRow(BaseStructuredRow):
+    row_type: Literal["academic_calendar_event"] = "academic_calendar_event"
+    academic_year: int
+    month: int
+    event_name: str
+    start_date: str
+    end_date: str
+    semester: str | None = None
+    is_range: bool = False
+
+    @classmethod
+    def from_source_context(
+        cls,
+        *,
+        spec: SourceSpec,
+        raw: RawSource,
+        verification: SourceVerification,
+        row_id: str,
+        evidence_text: str,
+        academic_year: int,
+        month: int,
+        event_name: str,
+        start_date: str,
+        end_date: str,
+        semester: str | None,
+        is_range: bool,
+    ) -> CalendarRow:
+        provenance = BaseStructuredRow.provenance_from(
+            spec=spec,
+            raw=raw,
+            verification=verification,
+            row_id=row_id,
+            row_type="academic_calendar_event",
+            evidence_text=evidence_text,
+        )
+        return cls(
+            **provenance,
+            academic_year=academic_year,
+            month=month,
+            event_name=event_name,
+            start_date=start_date,
+            end_date=end_date,
+            semester=semester,
+            is_range=is_range,
+        )
+
+    def structured_payload(self) -> dict[str, Any]:
+        return {
+            "academic_year": self.academic_year,
+            "month": self.month,
+            "event_name": self.event_name,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+            "semester": self.semester,
+            "is_range": self.is_range,
+        }
+
+    def to_knowledge_doc(self) -> KnowledgeDoc:
+        date_span = self.start_date if self.start_date == self.end_date else f"{self.start_date}/{self.end_date}"
+        metadata = {
+            "structured": self.structured_payload(),
+            "event_name": self.event_name,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+            "date_span": date_span,
+            "academic_year": self.academic_year,
+            "month": self.month,
+            "semester": self.semester,
+            "structured_fields": CALENDAR_STRUCTURED_FIELDS,
+            "raw_path": self.raw_path,
+            "raw_checksum": self.raw_checksum,
+            "raw_fetched_at": self.raw_fetched_at,
+            "verification_official_chain_ok": self.verification_official_chain_ok,
+            "verification_parser_name": self.parser_name,
+            "verification_parser_version": self.parser_version,
+            "source_freshness_policy": self.freshness_policy,
+            "parser": self.parser_name,
+            "generation_method": "structured_row",
+            "row_id": self.row_id,
+            "row_type": self.row_type,
+        }
+        return KnowledgeDoc(
+            doc_id=self.row_id,
+            label=self.label,
+            domain=self.domain,
+            title=f"{self.start_date} {self.event_name}",
+            body=self._knowledge_body(),
+            date=self.start_date,
+            source_url=self.source_url,
+            source_id=self.source_id,
+            section=self.row_type,
+            metadata=metadata,
+        )
+
+    def _knowledge_body(self) -> str:
+        if self.start_date == self.end_date:
+            return f"{self.academic_year}학년도 학사일정: {self.start_date} {self.event_name}."
+        return (
+            f"{self.academic_year}학년도 학사일정: {self.event_name}은 "
+            f"{self.start_date}부터 {self.end_date}까지입니다."
+        )
+
+
 def dining_row_id(
     *,
     source_id: str,
@@ -200,6 +312,29 @@ def dining_row_id(
         meal_type,
         user_type or "",
         ordinal_or_menu_key,
+    ]
+    normalized = "__".join(_slug(part) for part in parts)
+    digest = sha1("|".join(parts).encode("utf-8")).hexdigest()[:10]
+    return f"{normalized}__{digest}"
+
+
+def calendar_row_id(
+    *,
+    source_id: str,
+    academic_year: int,
+    start_date: str,
+    end_date: str,
+    event_name: str,
+    ordinal: int,
+) -> str:
+    parts = [
+        source_id,
+        "academic_calendar_event",
+        str(academic_year),
+        start_date,
+        end_date,
+        event_name,
+        str(ordinal),
     ]
     normalized = "__".join(_slug(part) for part in parts)
     digest = sha1("|".join(parts).encode("utf-8")).hexdigest()[:10]
