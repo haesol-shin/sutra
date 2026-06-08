@@ -13,6 +13,7 @@
 - Stage 0은 8-12개 active source, 다섯 라벨 전체, 졸업요건 중앙 PDF와 학과 1-2개를 포함해야 한다.
 - Stage 1/2 후보는 기본 fetch 대상이 아니며 `active=False`로 둔다.
 - `official_chain_ok` 기본값은 `False`이다. 공식 chain이 확인된 active source만 명시적으로 `True`로 둔다.
+- 2026-06-08 audit 기준 Stage 0 active source는 이미 10개이므로 새 source는 먼저 후보로만 두고, promote/replace/defer 결정을 문서화한 뒤 active화한다.
 
 ## Stage 0 Active Sources
 
@@ -26,7 +27,7 @@
 | 1 | notices | `academic_notice_detail_2512124` | `board_detail` | `https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512124&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702` | 최근 학사공지 상세 |
 | 1 | notices | `academic_notice_detail_2511200` | `board_detail` | `https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2511200&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702` | 최근 학사공지 상세 |
 | 2 | academic_calendar | `academic_calendar` | `calendar` | `https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr` | 공식 학사일정 |
-| 3 | dining | `cnu_mobile_food` | `dining` | `https://mobileadmin.cnu.ac.kr/food/index.jsp` | 최신 식단 snapshot |
+| 3 | dining | `cnu_mobile_food` | `dining` | `https://mobileadmin.cnu.ac.kr/food/index.jsp` | 최신 식단 snapshot; CNU 복지 페이지의 `금주의식단` 링크로 official-linked 확인 |
 | 4 | shuttle | `shuttle_bus` | `shuttle` | `https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html` | 공식 셔틀 시간표 |
 
 ## Stage 1 Inactive Candidates
@@ -63,6 +64,7 @@
 ## Validation Contract
 
 - `uv run python -m nlp_term.collect.run_collect --fetch --output data/sources/source_probe.json`
+- `uv run python -m nlp_term.collect.source_audit --source-probe data/sources/source_probe.json --output docs/evidence/source-fetch-audit-2026-06-08.json --markdown docs/source_fetch_audit_2026_06_08.md`
 - `uv run python -m nlp_term.validators --source-inventory --min-stage1-candidates 5 --min-stage2-candidates 5 --require-stage-candidate-labels`
 - `uv run python -m nlp_term.validators --source-probe data/sources/source_probe.json --require-raw-files --require-official-chain-evidence`
 - `uv run python -m nlp_term.validators --knowledge-provenance data/sources/source_probe.json --data-dir data --require-raw-provenance`

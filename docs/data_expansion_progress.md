@@ -122,3 +122,36 @@
   - ruff reported `All checks passed!`
 - gate:
   - pass: modified code compiles and passes lint.
+
+## 2026-06-08 Work Unit A: Source Freeze And Fetch Audit
+
+- status: pass
+- rationale:
+  - Data expansion is now prioritized before Qwen prompt tuning, embedding retrieval, reranking, or exact-calendar harness hardening.
+  - Critic review rejected the earlier broad plan because Stage 0 already has 10 active sources.
+  - The revised Work Unit A freezes Stage 0 first and audits source reliability before promoting more sources.
+- artifacts:
+  - `docs/evidence/source-fetch-audit-2026-06-08.json`
+  - `docs/source_fetch_audit_2026_06_08.md`
+  - `docs/superpowers/plans/2026-06-08-source-data-expansion-first.md`
+- command:
+  - `uv run python -X utf8 -m nlp_term.collect.run_collect --fetch --stage stage0 --output data/sources/source_probe.json`
+  - `uv run python -X utf8 -m nlp_term.collect.source_audit --source-probe data/sources/source_probe.json --output docs/evidence/source-fetch-audit-2026-06-08.json --markdown docs/source_fetch_audit_2026_06_08.md`
+  - `uv run python -m nlp_term.validators --source-probe data/sources/source_probe.json --require-raw-files`
+  - `uv run python -m nlp_term.validators --source-stage-coverage data/sources/source_probe.json --stage stage0 --min-stage-sources 8 --max-stage-sources 12 --require-stage-labels --require-graduation-departments 2`
+  - `uv run pytest tests/test_source_audit.py -q`
+- result:
+  - baseline knowledge docs: 53
+  - Stage 0 active sources: 10
+  - audit rows: 21
+  - decisions: 10 `retain`, 11 `defer`
+  - official status: 9 `verified`, 1 `official_linked`, 11 `unverified`
+  - `cnu_mobile_food` is `official_linked` because CNU `plus.cnu.ac.kr/html/kr/sub05/sub05_050401.html` links to `mobileadmin.cnu.ac.kr/food/index.jsp`.
+  - several Stage 0 fetch attempts reused cached raw snapshots because of `ReadTimeout` or `ConnectionError`; the audit preserves those warnings instead of hiding them.
+- gate:
+  - pass: Stage 0 remained frozen at 10 active sources.
+  - pass: every active Stage 0 source has a raw snapshot and checksum.
+  - pass: inactive candidates stayed deferred.
+  - pass: the next implementation unit can parse existing active sources before any promotion.
+- next:
+  - Work Unit B: structured parsers for already-active dining, academic calendar, and shuttle sources using saved raw snapshots.

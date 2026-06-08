@@ -1,0 +1,536 @@
+{
+  "baseline_knowledge_docs": 53,
+  "stage0_active_count": 10,
+  "stage0_active_cap": 10,
+  "stage0_policy": "freeze current Stage 0; classify new sources as candidate until a promotion/replacement decision is reviewed",
+  "rows": [
+    {
+      "source_id": "graduation_biochemistry_requirements",
+      "label": 0,
+      "domain": "graduation",
+      "url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do",
+      "stage": "stage0",
+      "active": true,
+      "parser_type": "html",
+      "decision": "retain",
+      "decision_reason": "current Stage 0 source is frozen for Work Unit A audit",
+      "official_chain_status": "verified",
+      "official_chain_evidence": [
+        "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do"
+      ],
+      "warnings": [
+        "fetch failed; reused cached raw snapshot: ReadTimeout"
+      ],
+      "raw_status_code": 200,
+      "raw_content_type": "text/html; charset=UTF-8",
+      "raw_path": "data\\raw\\graduation\\graduation_biochemistry_requirements.html",
+      "raw_checksum": "861bc6b3469b2f522b67420875b5a017724e6c007de5fc23b3b4681ff3abca63",
+      "raw_fetched_at": "2026-06-06T17:55:11.800500+00:00",
+      "raw_file_exists": true,
+      "parser_name": "html_stage_inventory",
+      "parser_version": "0.1.0"
+    },
+    {
+      "source_id": "graduation_curriculum_pdf",
+      "label": 0,
+      "domain": "graduation",
+      "url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+      "stage": "stage0",
+      "active": true,
+      "parser_type": "pdf",
+      "decision": "retain",
+      "decision_reason": "current Stage 0 source is frozen for Work Unit A audit",
+      "official_chain_status": "verified",
+      "official_chain_evidence": [
+        "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf"
+      ],
+      "warnings": [
+        "fetch failed; reused cached raw snapshot: ReadTimeout"
+      ],
+      "raw_status_code": 200,
+      "raw_content_type": "application/pdf",
+      "raw_path": "data\\raw\\graduation\\graduation_curriculum_pdf.pdf",
+      "raw_checksum": "ec67193f7a9a8a89fb84df62b6d032fc94de3eff8455dc9b5167061e1925a653",
+      "raw_fetched_at": "2026-06-06T17:14:27.616146+00:00",
+      "raw_file_exists": true,
+      "parser_name": "pdf_stage_inventory",
+      "parser_version": "0.1.0"
+    },
+    {
+      "source_id": "graduation_english_requirements",
+      "label": 0,
+      "domain": "graduation",
+      "url": "https://english.cnu.ac.kr/english/edu/undergraduate02.do",
+      "stage": "stage0",
+      "active": true,
+      "parser_type": "html",
+      "decision": "retain",
+      "decision_reason": "current Stage 0 source is frozen for Work Unit A audit",
+      "official_chain_status": "verified",
+      "official_chain_evidence": [
+        "https://english.cnu.ac.kr/english/edu/undergraduate02.do"
+      ],
+      "warnings": [],
+      "raw_status_code": 200,
+      "raw_content_type": "text/html; charset=UTF-8",
+      "raw_path": "data\\raw\\graduation\\graduation_english_requirements.html",
+      "raw_checksum": "3bb02d31bdb104839c167efc19e95d9d98396ce9268e1b25f4cf8e99e96108ba",
+      "raw_fetched_at": "2026-06-08T02:00:59.351482+00:00",
+      "raw_file_exists": true,
+      "parser_name": "html_stage_inventory",
+      "parser_version": "0.1.0"
+    },
+    {
+      "source_id": "academic_notice_board",
+      "label": 1,
+      "domain": "notices",
+      "url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+      "stage": "stage0",
+      "active": true,
+      "parser_type": "html",
+      "decision": "retain",
+      "decision_reason": "current Stage 0 source is frozen for Work Unit A audit",
+      "official_chain_status": "verified",
+      "official_chain_evidence": [
+        "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr"
+      ],
+      "warnings": [
+        "freshness policy: latest_snapshot",
+        "fetch failed; reused cached raw snapshot: ReadTimeout"
+      ],
+      "raw_status_code": 200,
+      "raw_content_type": "text/html",
+      "raw_path": "data\\raw\\notices\\academic_notice_board.html",
+      "raw_checksum": "98da5254a281df5fd9efd6cf5d168f5af6a142f595dbcbaf5651e588b8a72b1e",
+      "raw_fetched_at": "2026-06-06T17:55:34.305800+00:00",
+      "raw_file_exists": true,
+      "parser_name": "html_stage_inventory",
+      "parser_version": "0.1.0"
+    },
+    {
+      "source_id": "academic_notice_detail_2511200",
+      "label": 1,
+      "domain": "notices",
+      "url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2511200&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
+      "stage": "stage0",
+      "active": true,
+      "parser_type": "board_detail",
+      "decision": "retain",
+      "decision_reason": "current Stage 0 source is frozen for Work Unit A audit",
+      "official_chain_status": "verified",
+      "official_chain_evidence": [
+        "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2511200&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702"
+      ],
+      "warnings": [
+        "freshness policy: latest_snapshot",
+        "fetch failed; reused cached raw snapshot: ConnectionError"
+      ],
+      "raw_status_code": 200,
+      "raw_content_type": "text/html",
+      "raw_path": "data\\raw\\notices\\academic_notice_detail_2511200.html",
+      "raw_checksum": "716ea2b19446fad4524d14887b4c00bf871343392075c25481ffd80cf2308a34",
+      "raw_fetched_at": "2026-06-06T17:55:35.101304+00:00",
+      "raw_file_exists": true,
+      "parser_name": "board_detail_stage_inventory",
+      "parser_version": "0.1.0"
+    },
+    {
+      "source_id": "academic_notice_detail_2512124",
+      "label": 1,
+      "domain": "notices",
+      "url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512124&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
+      "stage": "stage0",
+      "active": true,
+      "parser_type": "board_detail",
+      "decision": "retain",
+      "decision_reason": "current Stage 0 source is frozen for Work Unit A audit",
+      "official_chain_status": "verified",
+      "official_chain_evidence": [
+        "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512124&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702"
+      ],
+      "warnings": [
+        "freshness policy: latest_snapshot",
+        "fetch failed; reused cached raw snapshot: ConnectionError"
+      ],
+      "raw_status_code": 200,
+      "raw_content_type": "text/html",
+      "raw_path": "data\\raw\\notices\\academic_notice_detail_2512124.html",
+      "raw_checksum": "042e34f557d8e9882647eefcf7013fb22391cb5b03bd64f0b8327a1d993e921f",
+      "raw_fetched_at": "2026-06-06T17:55:35.944229+00:00",
+      "raw_file_exists": true,
+      "parser_name": "board_detail_stage_inventory",
+      "parser_version": "0.1.0"
+    },
+    {
+      "source_id": "academic_notice_detail_2512782",
+      "label": 1,
+      "domain": "notices",
+      "url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512782&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
+      "stage": "stage0",
+      "active": true,
+      "parser_type": "board_detail",
+      "decision": "retain",
+      "decision_reason": "current Stage 0 source is frozen for Work Unit A audit",
+      "official_chain_status": "verified",
+      "official_chain_evidence": [
+        "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512782&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702"
+      ],
+      "warnings": [
+        "freshness policy: latest_snapshot",
+        "fetch failed; reused cached raw snapshot: ConnectionError"
+      ],
+      "raw_status_code": 200,
+      "raw_content_type": "text/html",
+      "raw_path": "data\\raw\\notices\\academic_notice_detail_2512782.html",
+      "raw_checksum": "3ab0a1e2d70f9b2284a89a7fac96f1e8b73715b24b720f52c5bf332f9d4dad97",
+      "raw_fetched_at": "2026-06-06T17:55:38.149232+00:00",
+      "raw_file_exists": true,
+      "parser_name": "board_detail_stage_inventory",
+      "parser_version": "0.1.0"
+    },
+    {
+      "source_id": "academic_calendar",
+      "label": 2,
+      "domain": "academic_calendar",
+      "url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+      "stage": "stage0",
+      "active": true,
+      "parser_type": "calendar",
+      "decision": "retain",
+      "decision_reason": "current Stage 0 source is frozen for Work Unit A audit",
+      "official_chain_status": "verified",
+      "official_chain_evidence": [
+        "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr"
+      ],
+      "warnings": [
+        "fetch failed; reused cached raw snapshot: ConnectionError"
+      ],
+      "raw_status_code": 200,
+      "raw_content_type": "text/html",
+      "raw_path": "data\\raw\\academic_calendar\\academic_calendar.html",
+      "raw_checksum": "915b349966fbc716eb5415396d18d28f534ab96c6e364beb15b96d1c24b832e0",
+      "raw_fetched_at": "2026-06-06T17:55:38.957302+00:00",
+      "raw_file_exists": true,
+      "parser_name": "calendar_stage_inventory",
+      "parser_version": "0.1.0"
+    },
+    {
+      "source_id": "cnu_mobile_food",
+      "label": 3,
+      "domain": "dining",
+      "url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "stage": "stage0",
+      "active": true,
+      "parser_type": "dining",
+      "decision": "retain",
+      "decision_reason": "current Stage 0 source is frozen for Work Unit A audit",
+      "official_chain_status": "official_linked",
+      "official_chain_evidence": [
+        "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+        "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050401.html links to https://mobileadmin.cnu.ac.kr/food/index.jsp"
+      ],
+      "warnings": [
+        "source is not official-chain verified",
+        "freshness policy: short_ttl"
+      ],
+      "raw_status_code": 200,
+      "raw_content_type": "text/html; charset=UTF-8",
+      "raw_path": "data\\raw\\dining\\cnu_mobile_food.html",
+      "raw_checksum": "e30a28b4e604460d8903b8dfc2896e9fd7fdfde138e550cc1adac47b19305124",
+      "raw_fetched_at": "2026-06-08T02:02:37.710977+00:00",
+      "raw_file_exists": true,
+      "parser_name": "dining_stage_inventory",
+      "parser_version": "0.1.0"
+    },
+    {
+      "source_id": "shuttle_bus",
+      "label": 4,
+      "domain": "shuttle",
+      "url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+      "stage": "stage0",
+      "active": true,
+      "parser_type": "shuttle",
+      "decision": "retain",
+      "decision_reason": "current Stage 0 source is frozen for Work Unit A audit",
+      "official_chain_status": "verified",
+      "official_chain_evidence": [
+        "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html"
+      ],
+      "warnings": [
+        "fetch failed; reused cached raw snapshot: ConnectionError"
+      ],
+      "raw_status_code": 200,
+      "raw_content_type": "text/html",
+      "raw_path": "data\\raw\\shuttle\\shuttle_bus.html",
+      "raw_checksum": "d948bebf245bed00263c693a4bd822b6117d6f199e5751be15f881885f6edf67",
+      "raw_fetched_at": "2026-06-06T17:55:39.717849+00:00",
+      "raw_file_exists": true,
+      "parser_name": "shuttle_stage_inventory",
+      "parser_version": "0.1.0"
+    },
+    {
+      "source_id": "graduation_energy_requirements",
+      "label": 0,
+      "domain": "graduation",
+      "url": "https://energy.cnu.ac.kr/energy/department/graduate.do",
+      "stage": "stage1",
+      "active": false,
+      "parser_type": "html",
+      "decision": "defer",
+      "decision_reason": "stage1 candidate remains inactive until a reviewed promotion/replacement decision",
+      "official_chain_status": "unverified",
+      "official_chain_evidence": [],
+      "warnings": [
+        "official-chain evidence is missing or insufficient"
+      ],
+      "raw_status_code": null,
+      "raw_content_type": null,
+      "raw_path": null,
+      "raw_checksum": null,
+      "raw_fetched_at": null,
+      "raw_file_exists": false,
+      "parser_name": null,
+      "parser_version": null
+    },
+    {
+      "source_id": "graduation_horticulture_counsel",
+      "label": 0,
+      "domain": "graduation",
+      "url": "https://horti.cnu.ac.kr/horti/college/college04.do",
+      "stage": "stage1",
+      "active": false,
+      "parser_type": "html",
+      "decision": "defer",
+      "decision_reason": "stage1 candidate remains inactive until a reviewed promotion/replacement decision",
+      "official_chain_status": "unverified",
+      "official_chain_evidence": [],
+      "warnings": [
+        "official-chain evidence is missing or insufficient"
+      ],
+      "raw_status_code": null,
+      "raw_content_type": null,
+      "raw_path": null,
+      "raw_checksum": null,
+      "raw_fetched_at": null,
+      "raw_file_exists": false,
+      "parser_name": null,
+      "parser_version": null
+    },
+    {
+      "source_id": "notice_energy_academic",
+      "label": 1,
+      "domain": "notices",
+      "url": "https://energy.cnu.ac.kr/energy/department/academic.do",
+      "stage": "stage1",
+      "active": false,
+      "parser_type": "html",
+      "decision": "defer",
+      "decision_reason": "stage1 candidate remains inactive until a reviewed promotion/replacement decision",
+      "official_chain_status": "unverified",
+      "official_chain_evidence": [],
+      "warnings": [
+        "official-chain evidence is missing or insufficient"
+      ],
+      "raw_status_code": null,
+      "raw_content_type": null,
+      "raw_path": null,
+      "raw_checksum": null,
+      "raw_fetched_at": null,
+      "raw_file_exists": false,
+      "parser_name": null,
+      "parser_version": null
+    },
+    {
+      "source_id": "academic_calendar_dance",
+      "label": 2,
+      "domain": "academic_calendar",
+      "url": "https://dance.cnu.ac.kr/dance/academiccal/calendar/academiccal02.do",
+      "stage": "stage1",
+      "active": false,
+      "parser_type": "calendar",
+      "decision": "defer",
+      "decision_reason": "stage1 candidate remains inactive until a reviewed promotion/replacement decision",
+      "official_chain_status": "unverified",
+      "official_chain_evidence": [],
+      "warnings": [
+        "official-chain evidence is missing or insufficient"
+      ],
+      "raw_status_code": null,
+      "raw_content_type": null,
+      "raw_path": null,
+      "raw_checksum": null,
+      "raw_fetched_at": null,
+      "raw_file_exists": false,
+      "parser_name": null,
+      "parser_version": null
+    },
+    {
+      "source_id": "shuttle_geo_notice_2026",
+      "label": 4,
+      "domain": "shuttle",
+      "url": "https://geo.cnu.ac.kr/notice/?vid=956",
+      "stage": "stage1",
+      "active": false,
+      "parser_type": "board_detail",
+      "decision": "defer",
+      "decision_reason": "stage1 candidate remains inactive until a reviewed promotion/replacement decision",
+      "official_chain_status": "unverified",
+      "official_chain_evidence": [],
+      "warnings": [
+        "official-chain evidence is missing or insufficient"
+      ],
+      "raw_status_code": null,
+      "raw_content_type": null,
+      "raw_path": null,
+      "raw_checksum": null,
+      "raw_fetched_at": null,
+      "raw_file_exists": false,
+      "parser_name": null,
+      "parser_version": null
+    },
+    {
+      "source_id": "dining_mobile_candidate",
+      "label": 3,
+      "domain": "dining",
+      "url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "stage": "stage1",
+      "active": false,
+      "parser_type": "dining",
+      "decision": "defer",
+      "decision_reason": "stage1 candidate remains inactive until a reviewed promotion/replacement decision",
+      "official_chain_status": "unverified",
+      "official_chain_evidence": [],
+      "warnings": [
+        "official-chain evidence is missing or insufficient"
+      ],
+      "raw_status_code": null,
+      "raw_content_type": null,
+      "raw_path": null,
+      "raw_checksum": null,
+      "raw_fetched_at": null,
+      "raw_file_exists": false,
+      "parser_name": null,
+      "parser_version": null
+    },
+    {
+      "source_id": "curriculum_2025_pdf_candidate",
+      "label": 0,
+      "domain": "graduation",
+      "url": "https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf",
+      "stage": "stage2",
+      "active": false,
+      "parser_type": "pdf",
+      "decision": "defer",
+      "decision_reason": "stage2 candidate remains inactive until a reviewed promotion/replacement decision",
+      "official_chain_status": "unverified",
+      "official_chain_evidence": [],
+      "warnings": [
+        "official-chain evidence is missing or insufficient"
+      ],
+      "raw_status_code": null,
+      "raw_content_type": null,
+      "raw_path": null,
+      "raw_checksum": null,
+      "raw_fetched_at": null,
+      "raw_file_exists": false,
+      "parser_name": null,
+      "parser_version": null
+    },
+    {
+      "source_id": "sugang_entry_2025_pdf",
+      "label": 1,
+      "domain": "notices",
+      "url": "https://sugang.cnu.ac.kr/login/data/2025_SugangEntry.pdf",
+      "stage": "stage2",
+      "active": false,
+      "parser_type": "pdf",
+      "decision": "defer",
+      "decision_reason": "stage2 candidate remains inactive until a reviewed promotion/replacement decision",
+      "official_chain_status": "unverified",
+      "official_chain_evidence": [],
+      "warnings": [
+        "official-chain evidence is missing or insufficient"
+      ],
+      "raw_status_code": null,
+      "raw_content_type": null,
+      "raw_path": null,
+      "raw_checksum": null,
+      "raw_fetched_at": null,
+      "raw_file_exists": false,
+      "parser_name": null,
+      "parser_version": null
+    },
+    {
+      "source_id": "academic_calendar_cic",
+      "label": 2,
+      "domain": "academic_calendar",
+      "url": "https://cic.cnu.ac.kr/",
+      "stage": "stage2",
+      "active": false,
+      "parser_type": "html",
+      "decision": "defer",
+      "decision_reason": "stage2 candidate remains inactive until a reviewed promotion/replacement decision",
+      "official_chain_status": "unverified",
+      "official_chain_evidence": [],
+      "warnings": [
+        "official-chain evidence is missing or insufficient"
+      ],
+      "raw_status_code": null,
+      "raw_content_type": null,
+      "raw_path": null,
+      "raw_checksum": null,
+      "raw_fetched_at": null,
+      "raw_file_exists": false,
+      "parser_name": null,
+      "parser_version": null
+    },
+    {
+      "source_id": "dining_plus_welfare_candidate",
+      "label": 3,
+      "domain": "dining",
+      "url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050401.html",
+      "stage": "stage2",
+      "active": false,
+      "parser_type": "dining",
+      "decision": "defer",
+      "decision_reason": "stage2 candidate remains inactive until a reviewed promotion/replacement decision",
+      "official_chain_status": "unverified",
+      "official_chain_evidence": [],
+      "warnings": [
+        "official-chain evidence is missing or insufficient"
+      ],
+      "raw_status_code": null,
+      "raw_content_type": null,
+      "raw_path": null,
+      "raw_checksum": null,
+      "raw_fetched_at": null,
+      "raw_file_exists": false,
+      "parser_name": null,
+      "parser_version": null
+    },
+    {
+      "source_id": "shuttle_plus_main_candidate",
+      "label": 4,
+      "domain": "shuttle",
+      "url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
+      "stage": "stage2",
+      "active": false,
+      "parser_type": "shuttle",
+      "decision": "defer",
+      "decision_reason": "stage2 candidate remains inactive until a reviewed promotion/replacement decision",
+      "official_chain_status": "unverified",
+      "official_chain_evidence": [],
+      "warnings": [
+        "official-chain evidence is missing or insufficient"
+      ],
+      "raw_status_code": null,
+      "raw_content_type": null,
+      "raw_path": null,
+      "raw_checksum": null,
+      "raw_fetched_at": null,
+      "raw_file_exists": false,
+      "parser_name": null,
+      "parser_version": null
+    }
+  ]
+}
