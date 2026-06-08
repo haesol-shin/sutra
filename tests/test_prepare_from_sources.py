@@ -89,3 +89,55 @@ def test_build_knowledge_from_probe_adds_structured_shuttle_docs(tmp_path) -> No
     assert structured_docs
     assert any(doc.source_id == "shuttle_bus" and doc.metadata["route_name"] == "교내 순환" for doc in structured_docs)
     assert any(doc.metadata.get("generation_method") == "source_parse" for doc in docs)
+
+
+def test_build_knowledge_from_probe_adds_structured_notice_docs(tmp_path) -> None:
+    probe_path = tmp_path / "source_probe.json"
+    probe_path.write_text(
+        json.dumps(
+            [
+                {
+                    "raw": {
+                        "source_id": "academic_notice_board",
+                        "label": 1,
+                        "domain": "notices",
+                        "url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr",
+                        "fetched_at": "2026-06-08T00:00:00+09:00",
+                        "content_type": "text/html",
+                        "raw_path": "data/raw/notices/academic_notice_board.html",
+                        "status_code": 200,
+                        "checksum": "notice-board-checksum",
+                    },
+                    "verification": {
+                        "source_id": "academic_notice_board",
+                        "official_chain_ok": True,
+                        "parser_name": "html_stage_inventory",
+                        "parser_version": "0.1.0",
+                        "evidence": [
+                            "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr"
+                        ],
+                        "warnings": [],
+                        "verified_at": "2026-06-08T00:00:01+09:00",
+                    },
+                    "inventory": {
+                        "stage": "stage0",
+                        "active": True,
+                        "parser_type": "html",
+                    },
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    docs, failures = build_knowledge_from_probe(probe_path, chunks_per_source=1)
+
+    structured_docs = [doc for doc in docs if doc.metadata.get("generation_method") == "structured_row"]
+    assert not failures
+    assert any(
+        doc.source_id == "academic_notice_board"
+        and doc.metadata.get("row_type") == "notice_board_item"
+        and doc.metadata.get("posted_date") == "2026-06-05"
+        for doc in structured_docs
+    )

@@ -17,6 +17,7 @@ from nlp_term.schemas import KnowledgeDoc, RawSource, SourceVerification
 from nlp_term.collect.source_inventory import SourceSpec, iter_specs
 from nlp_term.structured.calendar import CalendarAdapter
 from nlp_term.structured.dining import DiningAdapter
+from nlp_term.structured.notices import NoticeAdapter
 from nlp_term.structured.shuttle import ShuttleAdapter
 from nlp_term.validators import read_json
 
@@ -85,6 +86,7 @@ class SourceParseFailure(BaseModel):
 STRUCTURED_ADAPTERS = {
     "academic_calendar": CalendarAdapter(),
     "cnu_mobile_food": DiningAdapter(),
+    "academic_notice_board": NoticeAdapter(),
     "shuttle_bus": ShuttleAdapter(),
 }
 

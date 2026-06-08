@@ -62,6 +62,20 @@ def resolve_temporal_intent(
             confidence_reasons=["ambiguous_recent_resolved_by_30_day_policy", f"domain_{route_domain}"],
         )
 
+    if _is_latest_item(compact, route_domain=route_domain):
+        return TemporalIntent(
+            reference_time=normalized_reference,
+            original_expression=_original_expression(question, default="최근"),
+            temporal_type=TemporalType.LATEST_ITEM,
+            explicitness="relative",
+            granularity="none",
+            resolution_policy="sort_structured_rows_by_posted_date_desc",
+            freshness_required=True,
+            retrieval_requirements=_requirements_for(route_domain, TemporalType.LATEST_ITEM),
+            confidence=TemporalConfidence.HIGH,
+            confidence_reasons=["latest_item_expression_detected", f"domain_{route_domain}"],
+        )
+
     weekday = _extract_weekday(compact)
     if "다음주" in compact and weekday is not None:
         target = _iso_week_start(reference_date) + timedelta(days=7 + weekday)
@@ -165,6 +179,14 @@ def _is_changed_since(compact: str) -> bool:
     return any(cue in compact for cue in change_cues) and any(cue in compact for cue in range_cues)
 
 
+def _is_latest_item(compact: str, *, route_domain: Domain) -> bool:
+    if route_domain != "notices":
+        return False
+    latest_cues = ("가장최근", "최근", "최신", "이번에", "방금")
+    item_cues = ("공지", "올라온", "게시", "등록")
+    return any(cue in compact for cue in latest_cues) and any(cue in compact for cue in item_cues)
+
+
 def _schedule_type(route_domain: Domain, compact: str, *, granularity: str) -> TemporalType:
     if route_domain == "shuttle" and any(token in compact for token in ("정상운행", "운행하", "운영하")):
         return TemporalType.ONGOING_STATUS
@@ -182,11 +204,13 @@ def _requirements_for(route_domain: Domain, temporal_type: TemporalType) -> list
         requirements.append(RetrievalRequirement.STRUCTURED_SOURCE_PREFERRED)
     if temporal_type == TemporalType.LATEST_ITEM:
         requirements.append(RetrievalRequirement.LATEST_LIST_NEEDED)
+        if route_domain == "notices":
+            requirements.append(RetrievalRequirement.STRUCTURED_SOURCE_PREFERRED)
     return requirements
 
 
 def _original_expression(question: str, *, default: str) -> str:
-    for token in ("다음주 화요일", "다음주", "이번 학기", "오늘", "최근"):
+    for token in ("다음주 화요일", "다음주", "이번 학기", "오늘", "가장 최근", "이번에", "최근", "최신"):
         if token in question:
             return token
     return default

@@ -23,6 +23,7 @@ from nlp_term.chat.state_contract import (
     PackStatus,
     RetrievalCandidateTrace,
     SourceStatus,
+    TemporalType,
 )
 from nlp_term.chat.temporal_intent import resolve_temporal_intent
 from nlp_term.collect.source_inventory import SourceSpec, Stage, iter_specs
@@ -71,6 +72,7 @@ def answer_with_harness(
         for row in decision_retrieved
         if row.doc_id in docs_by_id and docs_by_id[row.doc_id].label == route.label
     ][:evidence_pack_size]
+    retrieved_pairs = _order_retrieved_pairs(retrieved_pairs, temporal_type=temporal_intent.temporal_type)
     retrieved_docs = [doc for doc, _score in retrieved_pairs]
     retrieved_scores = [score for _doc, score in retrieved_pairs]
     postfilter_candidates = _selected_candidate_trace_rows(retrieved_pairs)
@@ -290,6 +292,23 @@ def _selected_candidate_trace_rows(retrieved_pairs: list[tuple[KnowledgeDoc, flo
         )
         for doc, score in retrieved_pairs
     ]
+
+
+def _order_retrieved_pairs(
+    retrieved_pairs: list[tuple[KnowledgeDoc, float]],
+    *,
+    temporal_type: TemporalType,
+) -> list[tuple[KnowledgeDoc, float]]:
+    if temporal_type != TemporalType.LATEST_ITEM:
+        return retrieved_pairs
+    return sorted(retrieved_pairs, key=lambda pair: (_posted_date_key(pair[0]), pair[1]), reverse=True)
+
+
+def _posted_date_key(doc: KnowledgeDoc) -> str:
+    posted_date = doc.metadata.get("posted_date")
+    if isinstance(posted_date, str):
+        return posted_date
+    return doc.date or ""
 
 
 def _optional_metadata_text(doc: KnowledgeDoc, key: str) -> str | None:

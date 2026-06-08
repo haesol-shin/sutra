@@ -8,23 +8,24 @@
   "probe_path": "data\\gold\\task2_public_probe_eval.json",
   "probe_checksum": "fa342d6e2e581823dbc3aabf3f5cabe7423a52f074920d83cf272883eab07e14",
   "knowledge_path": "data\\knowledge_seed.json",
-  "knowledge_checksum": "935cfbbb4069e07eed9e013bd44fc8623433973a36b58f6636a237e68b73630e",
+  "knowledge_checksum": "658277bb4b2d428dde343fa1d6f44cbe3ab5a7d93106027f2d76df9c9f65d2ae",
   "question_count": 14,
   "label_match_count": 13,
   "label_match_rate": 0.9285714285714286,
-  "temporal_match_count": 11,
-  "temporal_match_rate": 0.7857142857142857,
-  "answered_count": 7,
-  "answered_rate": 0.5,
-  "fail_close_count": 7,
-  "fail_close_rate": 0.5,
+  "temporal_match_count": 13,
+  "temporal_match_rate": 0.9285714285714286,
+  "answered_count": 9,
+  "answered_rate": 0.6428571428571429,
+  "fail_close_count": 5,
+  "fail_close_rate": 0.35714285714285715,
   "bottleneck_counts": {
     "classifier": 1,
     "data": 1,
     "evidence": 2,
-    "none": 5,
-    "retrieval": 2,
-    "temporal": 3
+    "none": 7,
+    "retrieval": 1,
+    "temporal": 1,
+    "writer": 1
   },
   "rows": [
     {
@@ -276,21 +277,21 @@
         0.8194444444444444
       ],
       "prefilter_retrieved_doc_ids": [
+        "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
         "academic_calendar__academic_calendar_event__2026__2026-02-02__2026-02-06__2026학년도_제1학기_수강신청__9__8a0295927b",
         "academic_calendar__academic_calendar_event__2026__2026-05-07__2026-05-11__하기_계절학기_수강신청__29__b9e6bbac63",
         "academic_calendar__academic_calendar_event__2026__2026-08-03__2026-08-07__제2학기_수강신청__42__fe2aecb134",
         "academic_calendar__academic_calendar_event__2026__2026-11-05__2026-11-10__동기_계절학기_수강신청__63__6b6e442bf4",
         "academic_calendar__academic_calendar_event__2026__2026-01-26__2026-01-28__2026학년도_제1학기_예비수강신청__6__7765300322",
         "academic_calendar__academic_calendar_event__2026__2026-07-27__2026-07-29__제2학기_예비수강신청__41__e1624ae419",
+        "academic_notice_board__notice_board_item__공지__2026-03-05__2026학년도_제1학기_학생_출석인정_신청_변경_사항_안내__4898d48afa",
+        "academic_notice_board__notice_board_item__공지__2026-01-14__2026학년도_제1학기_휴학_및_복학_신청_안내__4ef151e604",
         "academic_calendar__academic_calendar_event__2026__2026-03-03__2026-03-09__수강신청_확인_및_변경__18__c738449c0b",
         "academic_calendar__academic_calendar_event__2026__2026-03-23__2026-03-26__수강신청_취소__22__9c8cb1ef25",
         "academic_calendar__academic_calendar_event__2026__2026-09-01__2026-09-07__수강신청_확인_및_변경__50__71d86f4c6d",
         "academic_calendar__academic_calendar_event__2026__2026-09-21__2026-09-28__수강신청_취소__54__70a1c9cbc2",
         "academic_notice_board_chunk_1",
-        "academic_notice_board_chunk_2",
-        "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__964c89f954",
-        "academic_calendar__academic_calendar_event__2026__2026-12-21__2026-12-21__동기방학__67__d4f43a8b00",
-        "academic_calendar_chunk_5"
+        "academic_notice_board_chunk_2"
       ],
       "postfilter_retrieved_doc_ids": [
         "academic_calendar__academic_calendar_event__2026__2026-02-02__2026-02-06__2026학년도_제1학기_수강신청__9__8a0295927b",
@@ -300,6 +301,16 @@
         "academic_calendar__academic_calendar_event__2026__2026-01-26__2026-01-28__2026학년도_제1학기_예비수강신청__6__7765300322"
       ],
       "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
+          "score": 1.375,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
         {
           "doc_id": "academic_calendar__academic_calendar_event__2026__2026-02-02__2026-02-06__2026학년도_제1학기_수강신청__9__8a0295927b",
           "score": 1.0416666666666667,
@@ -356,6 +367,26 @@
           "label": 2,
           "domain": "academic_calendar",
           "source_id": "academic_calendar",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__공지__2026-03-05__2026학년도_제1학기_학생_출석인정_신청_변경_사항_안내__4898d48afa",
+          "score": 0.625,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__공지__2026-01-14__2026학년도_제1학기_휴학_및_복학_신청_안내__4ef151e604",
+          "score": 0.625,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
           "chunking_strategy": null,
           "boundary_type": null,
           "chunk_confidence": null
@@ -419,36 +450,6 @@
           "chunking_strategy": "fallback_window",
           "boundary_type": "prose_sentence",
           "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__964c89f954",
-          "score": 0.375,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": null,
-          "boundary_type": null,
-          "chunk_confidence": null
-        },
-        {
-          "doc_id": "academic_calendar__academic_calendar_event__2026__2026-12-21__2026-12-21__동기방학__67__d4f43a8b00",
-          "score": 0.375,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": null,
-          "boundary_type": null,
-          "chunk_confidence": null
-        },
-        {
-          "doc_id": "academic_calendar_chunk_5",
-          "score": 0.375,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": "atomic_guard",
-          "boundary_type": "calendar_row",
-          "chunk_confidence": "high"
         }
       ],
       "postfilter_retrieved_candidates": [
@@ -1060,13 +1061,15 @@
       "label_match": true,
       "domain_match": true,
       "expected_temporal_type": "latest_item",
-      "actual_temporal_type": "none",
-      "temporal_match": false,
+      "actual_temporal_type": "latest_item",
+      "temporal_match": true,
       "temporal_confidence": "high",
       "target_start": null,
       "target_end": null,
       "retrieval_requirements": [
-        "rag_ok"
+        "date_filtered_evidence_needed",
+        "latest_list_needed",
+        "structured_source_preferred"
       ],
       "output_status": "answered",
       "evidence_sufficiency_status": "sufficient",
@@ -1074,32 +1077,144 @@
       "freshness_status": "fresh",
       "answer_validation_status": "passed",
       "retrieved_doc_ids": [
-        "academic_notice_board_chunk_1",
-        "academic_notice_board_chunk_2"
+        "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
+        "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
+        "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
+        "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48",
+        "academic_notice_board__notice_board_item__1810__2026-06-02__2026년도_리빙랩_기초과정_참가자_모집_공고__2e970576db"
       ],
       "retrieved_scores": [
-        0.15,
-        0.15
+        1.75,
+        1.75,
+        1.74,
+        1.74,
+        1.72
       ],
       "prefilter_retrieved_doc_ids": [
+        "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
+        "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
+        "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
+        "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48",
+        "academic_notice_board__notice_board_item__1810__2026-06-02__2026년도_리빙랩_기초과정_참가자_모집_공고__2e970576db",
+        "academic_notice_board__notice_board_item__1809__2026-06-02__2026년_6월_인재개발원_진로취업_프로그램_안내__3f38642d4c",
+        "academic_notice_board__notice_board_item__1808__2026-06-01__2026학년도_dsc공유대학_융합전공복수전공_학생모집_안내__07df5caf84",
+        "academic_notice_board__notice_board_item__공지__2026-04-16__2026학년도_하기_계절학기_국내_다른_대학_수학_안내__8b9f10574f",
+        "academic_notice_board__notice_board_item__공지__2026-03-05__2026학년도_제1학기_학생_출석인정_신청_변경_사항_안내__4898d48afa",
+        "academic_notice_board__notice_board_item__공지__2026-01-14__2026학년도_제1학기_휴학_및_복학_신청_안내__4ef151e604",
         "academic_notice_board_chunk_1",
         "academic_notice_board_chunk_2",
         "graduation_biochemistry_requirements_chunk_8",
         "graduation_biochemistry_requirements_chunk_9",
-        "graduation_english_requirements_chunk_7",
-        "graduation_english_requirements_chunk_8",
-        "academic_notice_detail_2512124_chunk_1",
-        "academic_notice_detail_2512782_chunk_1",
-        "graduation_biochemistry_requirements_chunk_1",
-        "shuttle_bus__shuttle_route__campus_loop__2026-03-03__2026-06-21__2a184c34ae",
-        "shuttle_bus__shuttle_route__intercampus_loop__2026-03-03__2026-06-21__4b1ebb50cb",
-        "shuttle_bus_chunk_1"
+        "graduation_english_requirements_chunk_7"
       ],
       "postfilter_retrieved_doc_ids": [
-        "academic_notice_board_chunk_1",
-        "academic_notice_board_chunk_2"
+        "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
+        "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
+        "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
+        "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48",
+        "academic_notice_board__notice_board_item__1810__2026-06-02__2026년도_리빙랩_기초과정_참가자_모집_공고__2e970576db"
       ],
       "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
+          "score": 1.75,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
+          "score": 1.75,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
+          "score": 1.74,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48",
+          "score": 1.74,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1810__2026-06-02__2026년도_리빙랩_기초과정_참가자_모집_공고__2e970576db",
+          "score": 1.72,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1809__2026-06-02__2026년_6월_인재개발원_진로취업_프로그램_안내__3f38642d4c",
+          "score": 1.72,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1808__2026-06-01__2026학년도_dsc공유대학_융합전공복수전공_학생모집_안내__07df5caf84",
+          "score": 1.71,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__공지__2026-04-16__2026학년도_하기_계절학기_국내_다른_대학_수학_안내__8b9f10574f",
+          "score": 1.25,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__공지__2026-03-05__2026학년도_제1학기_학생_출석인정_신청_변경_사항_안내__4898d48afa",
+          "score": 0.97,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__공지__2026-01-14__2026학년도_제1학기_휴학_및_복학_신청_안내__4ef151e604",
+          "score": 0.33,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
         {
           "doc_id": "academic_notice_board_chunk_1",
           "score": 0.15,
@@ -1149,104 +1264,64 @@
           "chunking_strategy": "fallback_window",
           "boundary_type": "prose_sentence",
           "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "graduation_english_requirements_chunk_8",
-          "score": 0.12,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_english_requirements",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "academic_notice_detail_2512124_chunk_1",
-          "score": 0.11,
-          "label": 1,
-          "domain": "notices",
-          "source_id": "academic_notice_detail_2512124",
-          "chunking_strategy": "recursive_prose",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "medium"
-        },
-        {
-          "doc_id": "academic_notice_detail_2512782_chunk_1",
-          "score": 0.11,
-          "label": 1,
-          "domain": "notices",
-          "source_id": "academic_notice_detail_2512782",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "graduation_biochemistry_requirements_chunk_1",
-          "score": 0.08,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_biochemistry_requirements",
-          "chunking_strategy": "recursive_prose",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "medium"
-        },
-        {
-          "doc_id": "shuttle_bus__shuttle_route__campus_loop__2026-03-03__2026-06-21__2a184c34ae",
-          "score": 0.08,
-          "label": 4,
-          "domain": "shuttle",
-          "source_id": "shuttle_bus",
-          "chunking_strategy": null,
-          "boundary_type": null,
-          "chunk_confidence": null
-        },
-        {
-          "doc_id": "shuttle_bus__shuttle_route__intercampus_loop__2026-03-03__2026-06-21__4b1ebb50cb",
-          "score": 0.08,
-          "label": 4,
-          "domain": "shuttle",
-          "source_id": "shuttle_bus",
-          "chunking_strategy": null,
-          "boundary_type": null,
-          "chunk_confidence": null
-        },
-        {
-          "doc_id": "shuttle_bus_chunk_1",
-          "score": 0.08,
-          "label": 4,
-          "domain": "shuttle",
-          "source_id": "shuttle_bus",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "shuttle_time_row",
-          "chunk_confidence": "low"
         }
       ],
       "postfilter_retrieved_candidates": [
         {
-          "doc_id": "academic_notice_board_chunk_1",
-          "score": 0.15,
+          "doc_id": "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
+          "score": 1.75,
           "label": 1,
           "domain": "notices",
           "source_id": "academic_notice_board",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
         },
         {
-          "doc_id": "academic_notice_board_chunk_2",
-          "score": 0.15,
+          "doc_id": "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
+          "score": 1.75,
           "label": 1,
           "domain": "notices",
           "source_id": "academic_notice_board",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
+          "score": 1.74,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48",
+          "score": 1.74,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1810__2026-06-02__2026년도_리빙랩_기초과정_참가자_모집_공고__2e970576db",
+          "score": 1.72,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
         }
       ],
       "failure_reason": null,
-      "bottleneck": "temporal",
+      "bottleneck": "none",
       "expected_behavior": "Provide official notice board location or latest item source when available.",
-      "answer": "학사정보게시판 목록 번호 제목 작성자 작성일 조회수 공지 2026학년도 하기 계절학기 국내 다른 대학 수학 안내 학사지원과 2026-04-16 4567 공지 2026학년도 제1학기 학생 출석인정 신청 변경 사항 안내 학사지원과 2026-03-05 5668 공지 2026학년도 제1학기 휴학 및 복학 신청 안내 학사지원과 2026-01-14 4806 1814 2026학년도 하기 계절학기 수강신청 자세한 내용은 https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr에서 확인해 주세요."
+      "answer": "2026학년도 하기 계절학기 수강신청 취소(1~3차)기간 안내 공지사항의 게시일은 2026-06-05입니다. 작성자는 학사지원과이고, 번호는 1814입니다. 일반 공지이며 첨부파일이 있습니다. 상세 링크: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2513490&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage= 자세한 내용은 https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2513490&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage=에서 확인해 주세요."
     },
     {
       "id": "public_probe_06",
@@ -2274,46 +2349,160 @@
       "label_match": true,
       "domain_match": true,
       "expected_temporal_type": "latest_item",
-      "actual_temporal_type": "none",
-      "temporal_match": false,
+      "actual_temporal_type": "latest_item",
+      "temporal_match": true,
       "temporal_confidence": "high",
       "target_start": null,
       "target_end": null,
       "retrieval_requirements": [
-        "rag_ok"
+        "date_filtered_evidence_needed",
+        "latest_list_needed",
+        "structured_source_preferred"
       ],
-      "output_status": "fail_closed",
-      "evidence_sufficiency_status": "needs_fetch",
-      "fetch_decision": "fetch_required_but_not_implemented",
-      "freshness_status": "unknown",
-      "answer_validation_status": "blocked",
+      "output_status": "answered",
+      "evidence_sufficiency_status": "sufficient",
+      "fetch_decision": "skipped_rag_sufficient",
+      "freshness_status": "not_required",
+      "answer_validation_status": "passed",
       "retrieved_doc_ids": [
-        "academic_notice_board_chunk_1",
-        "academic_notice_board_chunk_2"
+        "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
+        "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
+        "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
+        "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48",
+        "academic_notice_board__notice_board_item__1810__2026-06-02__2026년도_리빙랩_기초과정_참가자_모집_공고__2e970576db"
       ],
       "retrieved_scores": [
-        0.19,
-        0.15
+        1.79,
+        1.79,
+        1.78,
+        1.78,
+        1.76
       ],
       "prefilter_retrieved_doc_ids": [
+        "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
+        "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
+        "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
+        "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48",
+        "academic_notice_board__notice_board_item__1810__2026-06-02__2026년도_리빙랩_기초과정_참가자_모집_공고__2e970576db",
+        "academic_notice_board__notice_board_item__1809__2026-06-02__2026년_6월_인재개발원_진로취업_프로그램_안내__3f38642d4c",
+        "academic_notice_board__notice_board_item__1808__2026-06-01__2026학년도_dsc공유대학_융합전공복수전공_학생모집_안내__07df5caf84",
+        "academic_notice_board__notice_board_item__공지__2026-04-16__2026학년도_하기_계절학기_국내_다른_대학_수학_안내__8b9f10574f",
+        "academic_notice_board__notice_board_item__공지__2026-03-05__2026학년도_제1학기_학생_출석인정_신청_변경_사항_안내__4898d48afa",
+        "academic_notice_board__notice_board_item__공지__2026-01-14__2026학년도_제1학기_휴학_및_복학_신청_안내__4ef151e604",
         "academic_notice_board_chunk_1",
         "graduation_biochemistry_requirements_chunk_8",
         "graduation_biochemistry_requirements_chunk_9",
         "academic_notice_board_chunk_2",
-        "graduation_english_requirements_chunk_7",
-        "graduation_english_requirements_chunk_8",
-        "academic_notice_detail_2512124_chunk_1",
-        "academic_notice_detail_2512782_chunk_1",
-        "graduation_biochemistry_requirements_chunk_1",
-        "graduation_english_requirements_chunk_1",
-        "academic_notice_board_chunk_3",
-        "academic_notice_detail_2511200_chunk_1"
+        "graduation_english_requirements_chunk_7"
       ],
       "postfilter_retrieved_doc_ids": [
-        "academic_notice_board_chunk_1",
-        "academic_notice_board_chunk_2"
+        "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
+        "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
+        "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
+        "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48",
+        "academic_notice_board__notice_board_item__1810__2026-06-02__2026년도_리빙랩_기초과정_참가자_모집_공고__2e970576db"
       ],
       "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
+          "score": 1.79,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
+          "score": 1.79,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
+          "score": 1.78,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48",
+          "score": 1.78,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1810__2026-06-02__2026년도_리빙랩_기초과정_참가자_모집_공고__2e970576db",
+          "score": 1.76,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1809__2026-06-02__2026년_6월_인재개발원_진로취업_프로그램_안내__3f38642d4c",
+          "score": 1.76,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1808__2026-06-01__2026학년도_dsc공유대학_융합전공복수전공_학생모집_안내__07df5caf84",
+          "score": 1.75,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__공지__2026-04-16__2026학년도_하기_계절학기_국내_다른_대학_수학_안내__8b9f10574f",
+          "score": 1.29,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__공지__2026-03-05__2026학년도_제1학기_학생_출석인정_신청_변경_사항_안내__4898d48afa",
+          "score": 1.01,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__공지__2026-01-14__2026학년도_제1학기_휴학_및_복학_신청_안내__4ef151e604",
+          "score": 0.37,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
         {
           "doc_id": "academic_notice_board_chunk_1",
           "score": 0.19,
@@ -2363,104 +2552,64 @@
           "chunking_strategy": "fallback_window",
           "boundary_type": "prose_sentence",
           "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "graduation_english_requirements_chunk_8",
-          "score": 0.12,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_english_requirements",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "academic_notice_detail_2512124_chunk_1",
-          "score": 0.11,
-          "label": 1,
-          "domain": "notices",
-          "source_id": "academic_notice_detail_2512124",
-          "chunking_strategy": "recursive_prose",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "medium"
-        },
-        {
-          "doc_id": "academic_notice_detail_2512782_chunk_1",
-          "score": 0.11,
-          "label": 1,
-          "domain": "notices",
-          "source_id": "academic_notice_detail_2512782",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "graduation_biochemistry_requirements_chunk_1",
-          "score": 0.08,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_biochemistry_requirements",
-          "chunking_strategy": "recursive_prose",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "medium"
-        },
-        {
-          "doc_id": "graduation_english_requirements_chunk_1",
-          "score": 0.08,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_english_requirements",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "academic_notice_board_chunk_3",
-          "score": 0.07,
-          "label": 1,
-          "domain": "notices",
-          "source_id": "academic_notice_board",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "academic_notice_detail_2511200_chunk_1",
-          "score": 0.07,
-          "label": 1,
-          "domain": "notices",
-          "source_id": "academic_notice_detail_2511200",
-          "chunking_strategy": "recursive_prose",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "medium"
         }
       ],
       "postfilter_retrieved_candidates": [
         {
-          "doc_id": "academic_notice_board_chunk_1",
-          "score": 0.19,
+          "doc_id": "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
+          "score": 1.79,
           "label": 1,
           "domain": "notices",
           "source_id": "academic_notice_board",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
         },
         {
-          "doc_id": "academic_notice_board_chunk_2",
-          "score": 0.15,
+          "doc_id": "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
+          "score": 1.79,
           "label": 1,
           "domain": "notices",
           "source_id": "academic_notice_board",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
+          "score": 1.78,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48",
+          "score": 1.78,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1810__2026-06-02__2026년도_리빙랩_기초과정_참가자_모집_공고__2e970576db",
+          "score": 1.76,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
         }
       ],
-      "failure_reason": "top_score_below_threshold;controlled_fetch_candidate_exists",
-      "bottleneck": "temporal",
+      "failure_reason": null,
+      "bottleneck": "none",
       "expected_behavior": "Use posted_date evidence and include the latest verified posted date.",
-      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+      "answer": "2026학년도 하기 계절학기 수강신청 취소(1~3차)기간 안내 공지사항의 게시일은 2026-06-05입니다. 작성자는 학사지원과이고, 번호는 1814입니다. 일반 공지이며 첨부파일이 있습니다. 상세 링크: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2513490&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage= 자세한 내용은 https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2513490&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage=에서 확인해 주세요."
     },
     {
       "id": "public_probe_10",
@@ -2480,35 +2629,48 @@
       "retrieval_requirements": [
         "rag_ok"
       ],
-      "output_status": "fail_closed",
-      "evidence_sufficiency_status": "needs_fetch",
-      "fetch_decision": "fetch_required_but_not_implemented",
-      "freshness_status": "unknown",
-      "answer_validation_status": "blocked",
+      "output_status": "answered",
+      "evidence_sufficiency_status": "sufficient",
+      "fetch_decision": "skipped_rag_sufficient",
+      "freshness_status": "not_required",
+      "answer_validation_status": "passed",
       "retrieved_doc_ids": [
+        "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
         "academic_notice_detail_2512782_chunk_2"
       ],
       "retrieved_scores": [
+        0.49404761904761907,
         0.18452380952380953
       ],
       "prefilter_retrieved_doc_ids": [
+        "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
         "graduation_biochemistry_requirements_chunk_7",
         "graduation_biochemistry_requirements_chunk_8",
         "graduation_english_requirements_chunk_1",
         "graduation_english_requirements_chunk_2",
         "academic_notice_detail_2512782_chunk_2",
         "graduation_biochemistry_requirements_chunk_5",
+        "academic_notice_board__notice_board_item__공지__2026-04-16__2026학년도_하기_계절학기_국내_다른_대학_수학_안내__8b9f10574f",
+        "academic_notice_board__notice_board_item__1809__2026-06-02__2026년_6월_인재개발원_진로취업_프로그램_안내__3f38642d4c",
+        "academic_notice_board__notice_board_item__1808__2026-06-01__2026학년도_dsc공유대학_융합전공복수전공_학생모집_안내__07df5caf84",
         "academic_notice_board_chunk_3",
-        "graduation_biochemistry_requirements_chunk_1",
-        "graduation_english_requirements_chunk_7",
-        "graduation_english_requirements_chunk_8",
-        "academic_calendar__academic_calendar_event__2026__2026-11-24__2026-11-24__수업일수_34선__65__3f0b05c0d5",
-        "graduation_biochemistry_requirements_chunk_2"
+        "graduation_biochemistry_requirements_chunk_1"
       ],
       "postfilter_retrieved_doc_ids": [
+        "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
         "academic_notice_detail_2512782_chunk_2"
       ],
       "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
+          "score": 0.49404761904761907,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
         {
           "doc_id": "graduation_biochemistry_requirements_chunk_7",
           "score": 0.20238095238095238,
@@ -2570,6 +2732,36 @@
           "chunk_confidence": "medium"
         },
         {
+          "doc_id": "academic_notice_board__notice_board_item__공지__2026-04-16__2026학년도_하기_계절학기_국내_다른_대학_수학_안내__8b9f10574f",
+          "score": 0.17261904761904762,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1809__2026-06-02__2026년_6월_인재개발원_진로취업_프로그램_안내__3f38642d4c",
+          "score": 0.17261904761904762,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1808__2026-06-01__2026학년도_dsc공유대학_융합전공복수전공_학생모집_안내__07df5caf84",
+          "score": 0.17261904761904762,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
           "doc_id": "academic_notice_board_chunk_3",
           "score": 0.16071428571428573,
           "label": 1,
@@ -2588,49 +2780,19 @@
           "chunking_strategy": "recursive_prose",
           "boundary_type": "prose_sentence",
           "chunk_confidence": "medium"
-        },
+        }
+      ],
+      "postfilter_retrieved_candidates": [
         {
-          "doc_id": "graduation_english_requirements_chunk_7",
-          "score": 0.15476190476190477,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_english_requirements",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "graduation_english_requirements_chunk_8",
-          "score": 0.15476190476190477,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_english_requirements",
-          "chunking_strategy": "fallback_window",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "low"
-        },
-        {
-          "doc_id": "academic_calendar__academic_calendar_event__2026__2026-11-24__2026-11-24__수업일수_34선__65__3f0b05c0d5",
-          "score": 0.14285714285714285,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
+          "doc_id": "academic_notice_board__notice_board_item__1812__2026-06-04__2026년도_학부생_미니_연구_프로젝트_지원사업_실행_계획_안내__ea4c1aaa77",
+          "score": 0.49404761904761907,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
           "chunking_strategy": null,
           "boundary_type": null,
           "chunk_confidence": null
         },
-        {
-          "doc_id": "graduation_biochemistry_requirements_chunk_2",
-          "score": 0.13095238095238096,
-          "label": 0,
-          "domain": "graduation",
-          "source_id": "graduation_biochemistry_requirements",
-          "chunking_strategy": "recursive_prose",
-          "boundary_type": "prose_sentence",
-          "chunk_confidence": "medium"
-        }
-      ],
-      "postfilter_retrieved_candidates": [
         {
           "doc_id": "academic_notice_detail_2512782_chunk_2",
           "score": 0.18452380952380953,
@@ -2642,10 +2804,10 @@
           "chunk_confidence": "medium"
         }
       ],
-      "failure_reason": "top_score_below_threshold;controlled_fetch_candidate_exists",
+      "failure_reason": null,
       "bottleneck": "classifier",
       "expected_behavior": "Require department and admission-year matched curriculum evidence; do not answer from unrelated departments.",
-      "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
+      "answer": "2026년도 학부생 미니 연구 프로젝트 지원사업 실행 계획 안내 공지사항의 게시일은 2026-06-04입니다. 작성자는 융복합과학원이고, 번호는 1812입니다. 일반 공지이며 첨부파일이 있습니다. 상세 링크: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2513477&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage= 자세한 내용은 https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2513477&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage=에서 확인해 주세요."
     },
     {
       "id": "public_probe_11",
@@ -2674,39 +2836,36 @@
         "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__964c89f954",
         "academic_calendar__academic_calendar_event__2026__2026-12-21__2026-12-21__동기방학__67__d4f43a8b00",
         "academic_calendar__academic_calendar_event__2026__2026-03-03__2026-03-03__제1학기_개강일__16__6d4a9b4f7f",
-        "academic_calendar__academic_calendar_event__2026__2026-09-01__2026-09-01__제2학기_개강일__48__10c6bd5f0c",
-        "academic_calendar__academic_calendar_event__2026__2025-12-22__2026-01-13__동기_계절학기__1__58dc59a409"
+        "academic_calendar__academic_calendar_event__2026__2026-09-01__2026-09-01__제2학기_개강일__48__10c6bd5f0c"
       ],
       "retrieved_scores": [
         0.8333333333333334,
         0.8333333333333334,
         0.5666666666666667,
-        0.5666666666666667,
-        0.36666666666666664
+        0.5666666666666667
       ],
       "prefilter_retrieved_doc_ids": [
         "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__964c89f954",
         "academic_calendar__academic_calendar_event__2026__2026-12-21__2026-12-21__동기방학__67__d4f43a8b00",
         "academic_calendar__academic_calendar_event__2026__2026-03-03__2026-03-03__제1학기_개강일__16__6d4a9b4f7f",
         "academic_calendar__academic_calendar_event__2026__2026-09-01__2026-09-01__제2학기_개강일__48__10c6bd5f0c",
+        "academic_notice_board__notice_board_item__공지__2026-04-16__2026학년도_하기_계절학기_국내_다른_대학_수학_안내__8b9f10574f",
+        "academic_notice_board__notice_board_item__공지__2026-03-05__2026학년도_제1학기_학생_출석인정_신청_변경_사항_안내__4898d48afa",
+        "academic_notice_board__notice_board_item__공지__2026-01-14__2026학년도_제1학기_휴학_및_복학_신청_안내__4ef151e604",
+        "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
+        "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48",
         "academic_calendar__academic_calendar_event__2026__2025-12-22__2026-01-13__동기_계절학기__1__58dc59a409",
         "academic_calendar__academic_calendar_event__2026__2026-01-13__2026-01-13__제2학기_성적발표__3__d07ae74ca2",
         "academic_calendar__academic_calendar_event__2026__2026-01-20__2026-01-20__동기_계절학기_성적발표__4__0a99a81068",
         "academic_calendar__academic_calendar_event__2026__2026-01-21__2026-02-10__2025학년도_특별학기신입학예정자__5__547f37e2b9",
         "academic_calendar__academic_calendar_event__2026__2026-01-26__2026-01-28__2026학년도_제1학기_예비수강신청__6__7765300322",
-        "academic_calendar__academic_calendar_event__2026__2026-02-02__2026-02-06__2026학년도_제1학기_수강신청__9__8a0295927b",
-        "academic_calendar__academic_calendar_event__2026__2026-02-24__2026-02-27__2026학년도_제1학기_재학생_등록금_납부__11__b11f3da091",
-        "academic_calendar__academic_calendar_event__2026__2026-05-07__2026-05-11__하기_계절학기_수강신청__29__b9e6bbac63",
-        "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__169fbd8705",
-        "academic_calendar__academic_calendar_event__2026__2026-07-10__2026-07-10__제1학기_성적발표__39__f0b3324b28",
-        "academic_calendar__academic_calendar_event__2026__2026-07-20__2026-07-20__하기_계절학기_성적발표__40__c760804f5b"
+        "academic_calendar__academic_calendar_event__2026__2026-02-02__2026-02-06__2026학년도_제1학기_수강신청__9__8a0295927b"
       ],
       "postfilter_retrieved_doc_ids": [
         "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__964c89f954",
         "academic_calendar__academic_calendar_event__2026__2026-12-21__2026-12-21__동기방학__67__d4f43a8b00",
         "academic_calendar__academic_calendar_event__2026__2026-03-03__2026-03-03__제1학기_개강일__16__6d4a9b4f7f",
-        "academic_calendar__academic_calendar_event__2026__2026-09-01__2026-09-01__제2학기_개강일__48__10c6bd5f0c",
-        "academic_calendar__academic_calendar_event__2026__2025-12-22__2026-01-13__동기_계절학기__1__58dc59a409"
+        "academic_calendar__academic_calendar_event__2026__2026-09-01__2026-09-01__제2학기_개강일__48__10c6bd5f0c"
       ],
       "prefilter_retrieved_candidates": [
         {
@@ -2745,6 +2904,56 @@
           "label": 2,
           "domain": "academic_calendar",
           "source_id": "academic_calendar",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__공지__2026-04-16__2026학년도_하기_계절학기_국내_다른_대학_수학_안내__8b9f10574f",
+          "score": 0.36666666666666664,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__공지__2026-03-05__2026학년도_제1학기_학생_출석인정_신청_변경_사항_안내__4898d48afa",
+          "score": 0.36666666666666664,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__공지__2026-01-14__2026학년도_제1학기_휴학_및_복학_신청_안내__4ef151e604",
+          "score": 0.36666666666666664,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
+          "score": 0.36666666666666664,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48",
+          "score": 0.36666666666666664,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
           "chunking_strategy": null,
           "boundary_type": null,
           "chunk_confidence": null
@@ -2808,56 +3017,6 @@
           "chunking_strategy": null,
           "boundary_type": null,
           "chunk_confidence": null
-        },
-        {
-          "doc_id": "academic_calendar__academic_calendar_event__2026__2026-02-24__2026-02-27__2026학년도_제1학기_재학생_등록금_납부__11__b11f3da091",
-          "score": 0.36666666666666664,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": null,
-          "boundary_type": null,
-          "chunk_confidence": null
-        },
-        {
-          "doc_id": "academic_calendar__academic_calendar_event__2026__2026-05-07__2026-05-11__하기_계절학기_수강신청__29__b9e6bbac63",
-          "score": 0.36666666666666664,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": null,
-          "boundary_type": null,
-          "chunk_confidence": null
-        },
-        {
-          "doc_id": "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__169fbd8705",
-          "score": 0.36666666666666664,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": null,
-          "boundary_type": null,
-          "chunk_confidence": null
-        },
-        {
-          "doc_id": "academic_calendar__academic_calendar_event__2026__2026-07-10__2026-07-10__제1학기_성적발표__39__f0b3324b28",
-          "score": 0.36666666666666664,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": null,
-          "boundary_type": null,
-          "chunk_confidence": null
-        },
-        {
-          "doc_id": "academic_calendar__academic_calendar_event__2026__2026-07-20__2026-07-20__하기_계절학기_성적발표__40__c760804f5b",
-          "score": 0.36666666666666664,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": null,
-          "boundary_type": null,
-          "chunk_confidence": null
         }
       ],
       "postfilter_retrieved_candidates": [
@@ -2900,16 +3059,6 @@
           "chunking_strategy": null,
           "boundary_type": null,
           "chunk_confidence": null
-        },
-        {
-          "doc_id": "academic_calendar__academic_calendar_event__2026__2025-12-22__2026-01-13__동기_계절학기__1__58dc59a409",
-          "score": 0.36666666666666664,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": null,
-          "boundary_type": null,
-          "chunk_confidence": null
         }
       ],
       "failure_reason": null,
@@ -2944,17 +3093,17 @@
         "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__964c89f954",
         "academic_calendar__academic_calendar_event__2026__2026-01-20__2026-01-20__동기_계절학기_성적발표__4__0a99a81068",
         "academic_calendar__academic_calendar_event__2026__2026-05-07__2026-05-11__하기_계절학기_수강신청__29__b9e6bbac63",
-        "academic_calendar__academic_calendar_event__2026__2026-07-20__2026-07-20__하기_계절학기_성적발표__40__c760804f5b",
-        "academic_calendar__academic_calendar_event__2026__2026-11-05__2026-11-10__동기_계절학기_수강신청__63__6b6e442bf4"
+        "academic_calendar__academic_calendar_event__2026__2026-07-20__2026-07-20__하기_계절학기_성적발표__40__c760804f5b"
       ],
       "retrieved_scores": [
         0.8214285714285714,
         0.7976190476190477,
         0.7976190476190477,
-        0.7976190476190477,
         0.7976190476190477
       ],
       "prefilter_retrieved_doc_ids": [
+        "academic_notice_board__notice_board_item__공지__2026-04-16__2026학년도_하기_계절학기_국내_다른_대학_수학_안내__8b9f10574f",
+        "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
         "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__964c89f954",
         "academic_calendar__academic_calendar_event__2026__2026-01-20__2026-01-20__동기_계절학기_성적발표__4__0a99a81068",
         "academic_calendar__academic_calendar_event__2026__2026-05-07__2026-05-11__하기_계절학기_수강신청__29__b9e6bbac63",
@@ -2964,21 +3113,38 @@
         "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-07-10__하기_계절학기__38__169fbd8705",
         "academic_calendar__academic_calendar_event__2026__2026-12-21__2027-01-12__동기_계절학기__68__a344992106",
         "academic_calendar__academic_calendar_event__2026__2026-12-21__2026-12-21__동기방학__67__d4f43a8b00",
+        "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48",
         "academic_calendar__academic_calendar_event__2026__2026-03-03__2026-03-03__제1학기_개강일__16__6d4a9b4f7f",
         "academic_calendar__academic_calendar_event__2026__2026-09-01__2026-09-01__제2학기_개강일__48__10c6bd5f0c",
-        "academic_calendar_chunk_2",
-        "academic_calendar_chunk_8",
-        "academic_calendar_chunk_9",
-        "academic_calendar__academic_calendar_event__2026__2026-01-13__2026-01-13__제2학기_성적발표__3__d07ae74ca2"
+        "academic_calendar_chunk_2"
       ],
       "postfilter_retrieved_doc_ids": [
         "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__964c89f954",
         "academic_calendar__academic_calendar_event__2026__2026-01-20__2026-01-20__동기_계절학기_성적발표__4__0a99a81068",
         "academic_calendar__academic_calendar_event__2026__2026-05-07__2026-05-11__하기_계절학기_수강신청__29__b9e6bbac63",
-        "academic_calendar__academic_calendar_event__2026__2026-07-20__2026-07-20__하기_계절학기_성적발표__40__c760804f5b",
-        "academic_calendar__academic_calendar_event__2026__2026-11-05__2026-11-10__동기_계절학기_수강신청__63__6b6e442bf4"
+        "academic_calendar__academic_calendar_event__2026__2026-07-20__2026-07-20__하기_계절학기_성적발표__40__c760804f5b"
       ],
       "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_notice_board__notice_board_item__공지__2026-04-16__2026학년도_하기_계절학기_국내_다른_대학_수학_안내__8b9f10574f",
+          "score": 0.9047619047619048,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1814__2026-06-05__2026학년도_하기_계절학기_수강신청_취소13차기간_안내__d93ad5b0e1",
+          "score": 0.9047619047619048,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
         {
           "doc_id": "academic_calendar__academic_calendar_event__2026__2026-06-22__2026-06-22__하기방학__37__964c89f954",
           "score": 0.8214285714285714,
@@ -3070,6 +3236,16 @@
           "chunk_confidence": null
         },
         {
+          "doc_id": "academic_notice_board__notice_board_item__1811__2026-06-04__2026학년도_국제하기계절학기ssis_초청학생_도우미_선발_안내__b976777f48",
+          "score": 0.6904761904761905,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
+        {
           "doc_id": "academic_calendar__academic_calendar_event__2026__2026-03-03__2026-03-03__제1학기_개강일__16__6d4a9b4f7f",
           "score": 0.5119047619047619,
           "label": 2,
@@ -3098,36 +3274,6 @@
           "chunking_strategy": "atomic_guard",
           "boundary_type": "calendar_row",
           "chunk_confidence": "high"
-        },
-        {
-          "doc_id": "academic_calendar_chunk_8",
-          "score": 0.4166666666666667,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": "atomic_guard",
-          "boundary_type": "calendar_row",
-          "chunk_confidence": "high"
-        },
-        {
-          "doc_id": "academic_calendar_chunk_9",
-          "score": 0.4166666666666667,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": "atomic_guard",
-          "boundary_type": "calendar_row",
-          "chunk_confidence": "high"
-        },
-        {
-          "doc_id": "academic_calendar__academic_calendar_event__2026__2026-01-13__2026-01-13__제2학기_성적발표__3__d07ae74ca2",
-          "score": 0.36904761904761907,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": null,
-          "boundary_type": null,
-          "chunk_confidence": null
         }
       ],
       "postfilter_retrieved_candidates": [
@@ -3163,16 +3309,6 @@
         },
         {
           "doc_id": "academic_calendar__academic_calendar_event__2026__2026-07-20__2026-07-20__하기_계절학기_성적발표__40__c760804f5b",
-          "score": 0.7976190476190477,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": null,
-          "boundary_type": null,
-          "chunk_confidence": null
-        },
-        {
-          "doc_id": "academic_calendar__academic_calendar_event__2026__2026-11-05__2026-11-10__동기_계절학기_수강신청__63__6b6e442bf4",
           "score": 0.7976190476190477,
           "label": 2,
           "domain": "academic_calendar",
@@ -3477,17 +3613,20 @@
         "rag_ok"
       ],
       "output_status": "fail_closed",
-      "evidence_sufficiency_status": "needs_fetch",
-      "fetch_decision": "fetch_required_but_not_implemented",
-      "freshness_status": "unknown",
-      "answer_validation_status": "blocked",
+      "evidence_sufficiency_status": "sufficient",
+      "fetch_decision": "skipped_rag_sufficient",
+      "freshness_status": "not_required",
+      "answer_validation_status": "failed_unsupported_claim",
       "retrieved_doc_ids": [
+        "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
         "academic_notice_detail_2512782_chunk_1"
       ],
       "retrieved_scores": [
+        0.20833333333333334,
         0.15833333333333333
       ],
       "prefilter_retrieved_doc_ids": [
+        "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
         "graduation_english_requirements_chunk_4",
         "graduation_english_requirements_chunk_5",
         "graduation_english_requirements_chunk_7",
@@ -3498,13 +3637,23 @@
         "graduation_biochemistry_requirements_chunk_4",
         "graduation_biochemistry_requirements_chunk_5",
         "graduation_biochemistry_requirements_chunk_6",
-        "academic_calendar__academic_calendar_event__2026__2026-01-13__2026-01-13__제2학기_성적발표__3__d07ae74ca2",
-        "academic_calendar__academic_calendar_event__2026__2026-01-20__2026-01-20__동기_계절학기_성적발표__4__0a99a81068"
+        "academic_calendar__academic_calendar_event__2026__2026-01-13__2026-01-13__제2학기_성적발표__3__d07ae74ca2"
       ],
       "postfilter_retrieved_doc_ids": [
+        "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
         "academic_notice_detail_2512782_chunk_1"
       ],
       "prefilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
+          "score": 0.20833333333333334,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
         {
           "doc_id": "graduation_english_requirements_chunk_4",
           "score": 0.16666666666666666,
@@ -3614,19 +3763,19 @@
           "chunking_strategy": null,
           "boundary_type": null,
           "chunk_confidence": null
-        },
-        {
-          "doc_id": "academic_calendar__academic_calendar_event__2026__2026-01-20__2026-01-20__동기_계절학기_성적발표__4__0a99a81068",
-          "score": 0.1,
-          "label": 2,
-          "domain": "academic_calendar",
-          "source_id": "academic_calendar",
-          "chunking_strategy": null,
-          "boundary_type": null,
-          "chunk_confidence": null
         }
       ],
       "postfilter_retrieved_candidates": [
+        {
+          "doc_id": "academic_notice_board__notice_board_item__1813__2026-06-05__화성시인재육성재단_2026년_화성_into_테크노폴_11기12기_해외탐방_장학생_모집_안내__80241b456a",
+          "score": 0.20833333333333334,
+          "label": 1,
+          "domain": "notices",
+          "source_id": "academic_notice_board",
+          "chunking_strategy": null,
+          "boundary_type": null,
+          "chunk_confidence": null
+        },
         {
           "doc_id": "academic_notice_detail_2512782_chunk_1",
           "score": 0.15833333333333333,
@@ -3638,8 +3787,8 @@
           "chunk_confidence": "low"
         }
       ],
-      "failure_reason": "top_score_below_threshold;controlled_fetch_candidate_exists",
-      "bottleneck": "retrieval",
+      "failure_reason": "raw_json_or_template_text",
+      "bottleneck": "writer",
       "expected_behavior": "Answer only from scholarship evidence; do not reuse graduation TOEIC requirements.",
       "answer": "공식 근거가 충분하지 않아 확답하기 어렵습니다. 충남대학교 공식 출처를 기준으로 다시 확인해 주세요."
     }

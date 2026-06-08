@@ -339,6 +339,69 @@ def test_harness_accepts_shuttle_interval_overlap_for_next_week_status(tmp_path:
     assert result.trace.evidence_sufficiency_status == EvidenceSufficiencyStatus.SUFFICIENT
 
 
+def test_harness_prefers_newest_notice_row_for_latest_item_question(tmp_path: Path) -> None:
+    knowledge_path = tmp_path / "knowledge.json"
+    knowledge_path.write_text(
+        json.dumps(
+            [
+                {
+                    "doc_id": "old_notice_doc",
+                    "label": 1,
+                    "domain": "notices",
+                    "title": "공지사항 안내",
+                    "body": "공지사항 안내입니다. 게시일은 2026-05-01입니다.",
+                    "date": "2026-05-01",
+                    "source_url": "https://plus.cnu.ac.kr/old",
+                    "source_id": "academic_notice_board",
+                    "metadata": {
+                        "generation_method": "structured_row",
+                        "row_type": "notice_board_item",
+                        "posted_date": "2026-05-01",
+                        "structured_fields": ["posted_date", "title", "detail_url"],
+                        "verification_official_chain_ok": True,
+                    },
+                },
+                {
+                    "doc_id": "new_notice_doc",
+                    "label": 1,
+                    "domain": "notices",
+                    "title": "공지사항 안내",
+                    "body": "가장 최근에 올라온 공지사항입니다. 게시일은 2026-06-05입니다.",
+                    "date": "2026-06-05",
+                    "source_url": "https://plus.cnu.ac.kr/new",
+                    "source_id": "academic_notice_board",
+                    "metadata": {
+                        "generation_method": "structured_row",
+                        "row_type": "notice_board_item",
+                        "posted_date": "2026-06-05",
+                        "structured_fields": ["posted_date", "title", "detail_url"],
+                        "verification_official_chain_ok": True,
+                    },
+                },
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    captured: dict[str, str] = {}
+
+    def writer(prompt: str) -> str:
+        captured["prompt"] = prompt
+        return "가장 최근에 올라온 공지사항은 2026년 6월 5일에 게시되었습니다."
+
+    result = answer_with_harness(
+        "가장 최근에 올라온 공지사항은 언제 게시되었나요?",
+        knowledge_path=knowledge_path,
+        generator=writer,
+        question_time=datetime(2026, 6, 8, tzinfo=timezone.utc),
+    )
+
+    assert result.output_status == OutputStatus.ANSWERED
+    assert result.trace.temporal_type == "latest_item"
+    assert result.trace.retrieved_doc_ids[0] == "new_notice_doc"
+    assert captured["prompt"].find("2026-06-05") < captured["prompt"].find("2026-05-01")
+
+
 def test_harness_prompt_contains_user_safe_temporal_context(tmp_path: Path) -> None:
     knowledge_path = tmp_path / "knowledge.json"
     knowledge_path.write_text(

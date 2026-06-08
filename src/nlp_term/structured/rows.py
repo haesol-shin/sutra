@@ -49,6 +49,16 @@ SHUTTLE_STRUCTURED_FIELDS = [
     "valid_end",
     "notes",
 ]
+NOTICE_STRUCTURED_FIELDS = [
+    "notice_no",
+    "title",
+    "posted_date",
+    "author",
+    "detail_url",
+    "is_pinned",
+    "hits",
+    "has_attachment",
+]
 
 
 class BaseStructuredRow(BaseModel):
@@ -465,6 +475,114 @@ class ShuttleRow(BaseStructuredRow):
         )
 
 
+class NoticeRow(BaseStructuredRow):
+    row_type: Literal["notice_board_item"] = "notice_board_item"
+    notice_no: str
+    title: str
+    posted_date: str
+    author: str
+    detail_url: str
+    is_pinned: bool = False
+    hits: int | None = None
+    has_attachment: bool = False
+
+    @classmethod
+    def from_source_context(
+        cls,
+        *,
+        spec: SourceSpec,
+        raw: RawSource,
+        verification: SourceVerification,
+        row_id: str,
+        evidence_text: str,
+        notice_no: str,
+        title: str,
+        posted_date: str,
+        author: str,
+        detail_url: str,
+        is_pinned: bool,
+        hits: int | None,
+        has_attachment: bool,
+    ) -> NoticeRow:
+        provenance = BaseStructuredRow.provenance_from(
+            spec=spec,
+            raw=raw,
+            verification=verification,
+            row_id=row_id,
+            row_type="notice_board_item",
+            evidence_text=evidence_text,
+        )
+        return cls(
+            **provenance,
+            notice_no=notice_no,
+            title=title,
+            posted_date=posted_date,
+            author=author,
+            detail_url=detail_url,
+            is_pinned=is_pinned,
+            hits=hits,
+            has_attachment=has_attachment,
+        )
+
+    def structured_payload(self) -> dict[str, Any]:
+        return {
+            "notice_no": self.notice_no,
+            "title": self.title,
+            "posted_date": self.posted_date,
+            "author": self.author,
+            "detail_url": self.detail_url,
+            "is_pinned": self.is_pinned,
+            "hits": self.hits,
+            "has_attachment": self.has_attachment,
+        }
+
+    def to_knowledge_doc(self) -> KnowledgeDoc:
+        metadata = {
+            "structured": self.structured_payload(),
+            "notice_no": self.notice_no,
+            "notice_title": self.title,
+            "posted_date": self.posted_date,
+            "author": self.author,
+            "detail_url": self.detail_url,
+            "is_pinned": self.is_pinned,
+            "hits": self.hits,
+            "has_attachment": self.has_attachment,
+            "structured_fields": NOTICE_STRUCTURED_FIELDS,
+            "raw_path": self.raw_path,
+            "raw_checksum": self.raw_checksum,
+            "raw_fetched_at": self.raw_fetched_at,
+            "verification_official_chain_ok": self.verification_official_chain_ok,
+            "verification_parser_name": self.parser_name,
+            "verification_parser_version": self.parser_version,
+            "source_freshness_policy": self.freshness_policy,
+            "parser": self.parser_name,
+            "generation_method": "structured_row",
+            "row_id": self.row_id,
+            "row_type": self.row_type,
+        }
+        return KnowledgeDoc(
+            doc_id=self.row_id,
+            label=self.label,
+            domain=self.domain,
+            title=self.title,
+            body=self._knowledge_body(),
+            date=self.posted_date,
+            source_url=self.detail_url,
+            source_id=self.source_id,
+            section=self.row_type,
+            metadata=metadata,
+        )
+
+    def _knowledge_body(self) -> str:
+        pinned = "상단 고정 공지" if self.is_pinned else "일반 공지"
+        attachment = "첨부파일이 있습니다" if self.has_attachment else "첨부파일 표시는 없습니다"
+        return (
+            f"{self.title} 공지사항의 게시일은 {self.posted_date}입니다. "
+            f"작성자는 {self.author}이고, 번호는 {self.notice_no}입니다. "
+            f"{pinned}이며 {attachment}. 상세 링크: {self.detail_url}"
+        )
+
+
 def dining_row_id(
     *,
     source_id: str,
@@ -524,6 +642,25 @@ def shuttle_row_id(
         route_key,
         valid_start,
         valid_end,
+    ]
+    normalized = "__".join(_slug(part) for part in parts)
+    digest = sha1("|".join(parts).encode("utf-8")).hexdigest()[:10]
+    return f"{normalized}__{digest}"
+
+
+def notice_row_id(
+    *,
+    source_id: str,
+    notice_no: str,
+    posted_date: str,
+    title: str,
+) -> str:
+    parts = [
+        source_id,
+        "notice_board_item",
+        notice_no,
+        posted_date,
+        title,
     ]
     normalized = "__".join(_slug(part) for part in parts)
     digest = sha1("|".join(parts).encode("utf-8")).hexdigest()[:10]
