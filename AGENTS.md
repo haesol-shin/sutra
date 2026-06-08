@@ -48,6 +48,14 @@ Prefer conventional commit-style subjects when committing, for example `env: con
 - Define success criteria for multi-step work before editing. Tie each step to a concrete check such as a test, import check, CLI command, or file inspection.
 - Verify before completion. Run the smallest relevant command that proves the change works, and report any verification that could not be run.
 
+## Delegation Policy
+
+- When `codex-spark` is available, delegate low-judgment execution tasks to it before doing them inline.
+- Good `codex-spark` tasks include crawling/fetching candidate pages, exploratory source discovery, repetitive parser trials, mechanical code edits from an already-approved design, and routine verification command runs.
+- Keep architecture, tradeoff decisions, task prioritization, final acceptance, commits, and user-facing summaries with the main Codex agent unless the user explicitly asks otherwise.
+- Give delegated tasks narrow inputs, expected outputs, and stop conditions. Require concrete evidence such as fetched URLs, file paths, count tables, failing/passing commands, or short implementation diffs.
+- If `codex-spark` is unavailable, continue inline and note that the work was not delegated.
+
 ## Documentation Roles
 
 - `README.md`: short project overview and commands for humans.
