@@ -20,6 +20,10 @@ Current implementation direction:
 - The active Task 2 path should stay simple: retrieve evidence -> build context -> prompt Qwen -> answer with trace.
 - Keep useful source collection, explicit structured rows, plain chunks, evidence context, Qwen backend, and active probe runners.
 - Do not restart the implementation from scratch unless the user explicitly requests it.
+- Generation-blocking sufficiency and validation gates have been removed from the normal Task 2 path; evidence absence remains the minimal pre-generation block.
+- Retrieval ranking no longer calls the Task 1 classifier internally.
+- Graduation prose is no longer promoted into structured rows.
+- Source chunks are plain recursive/plain-window chunks without confidence labels.
 
 ## Do Not Follow Without Review
 
@@ -34,7 +38,7 @@ Current implementation direction:
 
 ## Next Action
 
-- docs: keep `AGENTS.md`, `docs/project_state.md`, `docs/doc_index.md`, and `docs/decision_log.md` synchronized when the user makes a durable project-direction decision.
+- test: run the 14 public probes and selected 39-set probes against the simplified Qwen evidence path, then inspect failures by retrieved evidence quality.
 
 ## Required Reading For Next Session
 

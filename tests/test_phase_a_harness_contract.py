@@ -139,12 +139,12 @@ def test_harness_generates_from_sufficient_evidence_with_injected_writer(tmp_pat
 
     assert result.output_status == OutputStatus.ANSWERED
     assert "공식 셔틀 안내" in result.output.model
-    assert result.trace.answer_kind == AnswerKind.SOURCE_NAVIGATION
+    assert result.trace.answer_kind == AnswerKind.STATIC_FACT
     assert result.trace.evidence_sufficiency_status == EvidenceSufficiencyStatus.SUFFICIENT
     assert result.trace.generation_backend == "injected"
 
 
-def test_harness_current_dining_question_fails_closed_without_structured_menu_row(tmp_path: Path) -> None:
+def test_harness_current_dining_question_passes_evidence_to_writer_without_structured_menu_row(tmp_path: Path) -> None:
     knowledge_path = tmp_path / "knowledge.json"
     knowledge_path.write_text(
         "["
@@ -170,12 +170,11 @@ def test_harness_current_dining_question_fails_closed_without_structured_menu_ro
         question_time=datetime(2026, 6, 7, tzinfo=timezone.utc),
     )
 
-    assert result.output_status == OutputStatus.FAIL_CLOSED
-    assert "공식 근거가 충분하지 않아 확답하기 어렵습니다" in result.output.model
-    assert "김치찌개" not in result.output.model
-    assert result.trace.answer_kind == AnswerKind.CURRENT_FACT
-    assert result.trace.fetch_decision == FetchDecision.FETCH_REQUIRED_BUT_NOT_IMPLEMENTED
-    assert result.trace.generation_status == "skipped_blocked"
+    assert result.output_status == OutputStatus.ANSWERED
+    assert "김치찌개" in result.output.model
+    assert result.trace.answer_kind == AnswerKind.STATIC_FACT
+    assert result.trace.fetch_decision == FetchDecision.SKIPPED_RAG_SUFFICIENT
+    assert result.trace.generation_status == "generated"
 
 
 def test_harness_current_dining_question_accepts_official_structured_menu_row(tmp_path: Path) -> None:
@@ -247,7 +246,7 @@ def test_harness_does_not_accept_safe_source_from_wrong_domain(tmp_path: Path) -
     assert result.trace.evidence_lookup_status == "no_docs"
 
 
-def test_harness_fails_closed_for_cross_domain_source_navigation(tmp_path: Path) -> None:
+def test_harness_does_not_block_cross_domain_question_when_evidence_is_retrieved(tmp_path: Path) -> None:
     knowledge_path = tmp_path / "knowledge.json"
     knowledge_path.write_text(
         "["
@@ -271,9 +270,9 @@ def test_harness_fails_closed_for_cross_domain_source_navigation(tmp_path: Path)
         generator=lambda prompt: "졸업요건 페이지에서 셔틀 시간표를 확인하면 됩니다.",
     )
 
-    assert result.output_status == OutputStatus.FAIL_CLOSED
-    assert result.trace.answer_kind == AnswerKind.UNSUPPORTED
-    assert "셔틀 시간표" not in result.output.model
+    assert result.output_status == OutputStatus.ANSWERED
+    assert result.trace.answer_kind == AnswerKind.STATIC_FACT
+    assert "셔틀 시간표" in result.output.model
 
 
 def test_harness_trace_records_next_week_temporal_intent(tmp_path: Path) -> None:
@@ -310,7 +309,7 @@ def test_harness_trace_records_next_week_temporal_intent(tmp_path: Path) -> None
     assert "date_filtered_evidence_needed" in result.trace.retrieval_requirements
 
 
-def test_harness_blocks_dining_evidence_for_wrong_target_date(tmp_path: Path) -> None:
+def test_harness_records_wrong_target_date_but_does_not_block_generation(tmp_path: Path) -> None:
     knowledge_path = tmp_path / "knowledge.json"
     knowledge_path.write_text(
         "["
@@ -335,10 +334,10 @@ def test_harness_blocks_dining_evidence_for_wrong_target_date(tmp_path: Path) ->
         question_time=datetime(2026, 6, 8, tzinfo=timezone.utc),
     )
 
-    assert result.output_status == OutputStatus.FAIL_CLOSED
+    assert result.output_status == OutputStatus.ANSWERED
     assert result.trace.target_start == "2026-06-16"
-    assert result.trace.evidence_sufficiency_status == EvidenceSufficiencyStatus.INSUFFICIENT
-    assert "백반" not in result.output.model
+    assert result.trace.evidence_sufficiency_status == EvidenceSufficiencyStatus.SUFFICIENT
+    assert "백반" in result.output.model
 
 
 def test_harness_accepts_shuttle_interval_overlap_for_next_week_status(tmp_path: Path) -> None:

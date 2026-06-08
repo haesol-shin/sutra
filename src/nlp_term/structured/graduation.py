@@ -102,12 +102,8 @@ def _source_text(raw: RawSource) -> str:
 
 
 def _requirement_snippets(text: str) -> list[str]:
-    snippets = []
-    for match in SNIPPET_RE.finditer(text):
-        snippet = _clean_snippet(match.group(0))
-        if _is_requirement_snippet(snippet):
-            snippets.append(snippet)
-    return snippets
+    del text
+    return []
 
 
 def _clean_snippet(value: str) -> str:

@@ -3,7 +3,6 @@ from __future__ import annotations
 from datetime import date
 
 from nlp_term.schemas import KnowledgeDoc, RetrievedDoc
-from nlp_term.classify.predict import predict_label
 from nlp_term.retrieve.knowledge import load_knowledge
 
 
@@ -41,7 +40,6 @@ def tokenize(text: str) -> set[str]:
 def rank_docs(question: str, docs: list[KnowledgeDoc] | None = None, *, top_k: int = 3) -> list[RetrievedDoc]:
     candidates = load_knowledge() if docs is None else docs
     query_tokens = tokenize(question)
-    predicted_label = predict_label(question)
     latest_query = _is_latest_query(question)
     ranked: list[RetrievedDoc] = []
     for doc in candidates:
@@ -58,7 +56,6 @@ def rank_docs(question: str, docs: list[KnowledgeDoc] | None = None, *, top_k: i
             + body_overlap
             + metadata_overlap * 1.5
             + label_overlap * 0.75
-            + (1.0 if doc.label == predicted_label else 0.0)
         ) / max(len(query_tokens), 1)
         if latest_query and doc.domain == "notices":
             score += _posted_date_bonus(doc)

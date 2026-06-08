@@ -46,7 +46,7 @@ class SourceChunk:
     strategy: str
     index: int
     boundary_type: str
-    chunk_confidence: str
+    chunk_confidence: str | None = None
     char_start: int | None = None
     char_end: int | None = None
 
@@ -60,9 +60,6 @@ def split_source_text(
 ) -> list[SourceChunk]:
     if _is_page_chrome_only(text):
         return []
-    guarded = _atomic_guard_chunks(text, label=label, max_chunk_chars=max_chunk_chars, max_chunks=max_chunks)
-    if guarded:
-        return guarded
     recursive = _recursive_prose_chunks(text, max_chunk_chars=max_chunk_chars, max_chunks=max_chunks)
     if recursive:
         return recursive
@@ -180,8 +177,8 @@ def _recursive_prose_chunks(text: str, *, max_chunk_chars: int, max_chunks: int)
     units = [(part, "prose_sentence") for part in _merge_parts(parts, max_chunk_chars=max_chunk_chars)]
     return _materialize_units(
         units,
-        strategy="recursive_prose",
-        confidence="medium",
+        strategy="recursive_plain",
+        confidence=None,
         max_chunk_chars=max_chunk_chars,
         max_chunks=max_chunks,
     )
@@ -210,7 +207,7 @@ def _materialize_units(
     units: list[tuple[str, str]],
     *,
     strategy: str,
-    confidence: str,
+    confidence: str | None,
     max_chunk_chars: int,
     max_chunks: int,
 ) -> list[SourceChunk]:
@@ -234,7 +231,7 @@ def _materialize_units(
                     text=normalized,
                     strategy=strategy,
                     index=len(chunks) + 1,
-                    boundary_type=boundary_type,
+                    boundary_type="plain_text",
                     chunk_confidence=confidence,
                 )
             )
@@ -262,10 +259,9 @@ def _fallback_window_chunks(
         chunks.append(
             SourceChunk(
                 text=body,
-                strategy="fallback_window",
+                strategy="recursive_plain_window",
                 index=len(chunks) + 1,
-                boundary_type=boundary_type,
-                chunk_confidence="low",
+                boundary_type="plain_text",
                 char_start=start,
                 char_end=start + len(body),
             )

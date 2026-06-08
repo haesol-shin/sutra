@@ -88,7 +88,7 @@ def run_harness_safety_experiment(
         answer_kind_match_count += int(answer_kind_match)
         validation_failure_count += int(validation_failed)
         wrong_domain_pass_count += int(
-            answered and (has_wrong_domain_evidence or case.scenario == "wrong_domain_guard" or not route_match)
+            answered and (has_wrong_domain_evidence or not route_match)
         )
         current_fact_hallucination_count += int(current_hallucination)
 

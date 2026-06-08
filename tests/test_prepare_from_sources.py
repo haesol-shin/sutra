@@ -7,7 +7,7 @@ from nlp_term.prepare.from_sources import build_knowledge_from_probe
 from nlp_term.schemas import RawSource
 
 
-def test_parse_source_records_atomic_aware_chunking_provenance(tmp_path) -> None:
+def test_parse_source_records_plain_recursive_chunking_provenance(tmp_path) -> None:
     raw_path = tmp_path / "academic_calendar.html"
     raw_path.write_text(
         """
@@ -39,9 +39,9 @@ def test_parse_source_records_atomic_aware_chunking_provenance(tmp_path) -> None
 
     assert failure is None
     assert docs
-    assert docs[0].metadata["chunking_strategy"] == "atomic_guard"
-    assert docs[0].metadata["boundary_type"] == "calendar_row"
-    assert docs[0].metadata["chunk_confidence"] == "high"
+    assert docs[0].metadata["chunking_strategy"] == "recursive_plain"
+    assert docs[0].metadata["boundary_type"] == "plain_text"
+    assert "chunk_confidence" not in docs[0].metadata
 
 
 def test_build_knowledge_from_probe_adds_structured_shuttle_docs(tmp_path) -> None:

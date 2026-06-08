@@ -25,3 +25,11 @@ Decision: Mark stale or conflicting plans as `Do Not Execute` until explicitly r
 Reason: Several older plans contain checklist-style implementation instructions that conflict with the current simplification direction.
 Supersedes: Treating all files under `docs/superpowers/plans/` as executable.
 Links: `docs/doc_index.md`
+
+## 2026-06-09
+
+Type: refactor
+Decision: Simplify the Task 2 active path so retrieved evidence is passed to Qwen unless no evidence exists.
+Reason: Policy-heavy sufficiency, answer-kind, temporal, and validator gates were suppressing or replacing generated answers before Qwen could use the evidence.
+Supersedes: Harness behavior that fail-closed on current-fact, wrong-domain, temporal mismatch, or validator warning cases.
+Links: `docs/task2_simplification_direction_2026_06_09.md`, `src/nlp_term/chat/orchestrator.py`

@@ -1,171 +1,40 @@
 {
-  "report_scope": "qwen_data_readiness_reset",
+  "report_scope": "qwen_data_readiness_after_simplification",
   "claim_level": "diagnostic_not_final_performance",
-  "generated_at": "2026-06-09T00:34:55",
+  "generated_at": "2026-06-09T00:00:00",
   "knowledge_path": "data\\knowledge_seed.json",
-  "knowledge_doc_count": 2162,
+  "knowledge_doc_count": 2414,
   "definition": {
-    "good_data": "official/source-backed, relevant, Qwen-readable answer-unit data with preserved scope and freshness/provenance caveats",
-    "answer_unit": "a document likely usable directly in a Qwen evidence pack without requiring row-level reassembly",
-    "fragment": "raw source_parse or overly small row-level docs likely to pollute writer context if passed directly"
+    "good_data": "official/source-backed, relevant, Qwen-readable evidence with preserved scope and provenance",
+    "answer_unit": "a document likely usable directly in a Qwen evidence pack without row-level reassembly",
+    "fragment": "plain source_parse chunk or small row-level doc that may need surrounding evidence"
   },
   "domain_readiness": {
-    "graduation": {
-      "domain": "graduation",
-      "total_docs": 325,
-      "generation_method_counts": {
-        "structured_row": 244,
-        "source_parse": 81
-      },
-      "row_type_counts": {
-        "graduation_requirement": 244,
-        "<missing>": 81
-      },
-      "answer_unit_doc_count": 0,
-      "fragment_doc_count": 81,
-      "source_url_missing_count": 0,
-      "official_chain_ok_counts": {
-        "true": 325
-      },
-      "coverage": {},
-      "structured_field_completeness": {
-        "department": {
-          "present": 244,
-          "checked": 244
-        },
-        "curriculum_year": {
-          "present": 244,
-          "checked": 244
-        },
-        "requirement_type": {
-          "present": 0,
-          "checked": 244
-        }
-      },
-      "qwen_ready_verdict": "not_ready_until_audited",
-      "blockers_or_caveats": [
-        "extraction accuracy is not reliable enough; some rows misread local credit mentions as requirements",
-        "department/year scope must be preserved; unrelated department rows should not be universalized"
-      ],
-      "next_transformation": "Add high-confidence extraction filters and audit representative rows before treating graduation_requirement rows as Qwen-ready.",
-      "clean_sample": {
-        "doc_id": "graduation_biochemistry_requirements__graduation_requirement__생화학과__unknown__교양_이수학점__1__fceefcb2a7",
-        "title": "생화학과 unknown 교양 이수학점",
-        "row_type": "graduation_requirement",
-        "generation_method": "structured_row",
-        "body_excerpt": "생화학과 unknown 교육과정의 general_education 요건: 교양 이수학점은 3학점 기준입니다. 적용 대상은 생화학과 적용자입니다. 원문 문장: '이수구분이 바르게 표시 되었는지 먼저 확인하세요! 13학년도 교육과정 이전학생은 교양에서 국어 관련3학점, 영어 관련 6학점이상 이수하여 교양이 합계 24학점이 되어야 합니다'.",
-        "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do"
-      },
-      "noisy_sample": {
-        "doc_id": "graduation_biochemistry_requirements_chunk_1",
-        "title": "graduation source 1",
-        "row_type": "<missing>",
-        "generation_method": "source_parse",
-        "body_excerpt": "교육과정에 따라 이수해야 할 과목이 많이 다릅니다. (보통은 학번 앞자리이지만 변경한 경우 학번과 다를 수 있습니다.) F학점은 제외하고 확인합니다. 이수구분이 바르게 표시 되었는지 먼저 확인하세요! 13학년도 교육과정 이전학생은 교양에서 국어 관련3학점, 영어 관련 6학점이상 이수하여 교양이 합계 24학점이 되어야 합니다. (1~5영역 골로루 이수 안 해도 됩니다.) 그리고 기초과목은 정해",
-        "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do"
-      },
-      "candidate_answer_unit_doc_count": 244
-    },
-    "notices": {
-      "domain": "notices",
-      "total_docs": 203,
-      "generation_method_counts": {
-        "structured_row": 60,
-        "source_parse": 143
-      },
-      "row_type_counts": {
-        "notice_board_item": 60,
-        "<missing>": 143
-      },
-      "answer_unit_doc_count": 60,
-      "fragment_doc_count": 143,
-      "source_url_missing_count": 0,
-      "official_chain_ok_counts": {
-        "true": 203
-      },
-      "coverage": {
-        "date_min": "2026-01-14",
-        "date_max": "2026-06-08",
-        "distinct_date_count": 39
-      },
-      "structured_field_completeness": {
-        "notice_title": {
-          "present": 60,
-          "checked": 60
-        },
-        "posted_date": {
-          "present": 60,
-          "checked": 60
-        },
-        "detail_url": {
-          "present": 60,
-          "checked": 60
-        }
-      },
-      "qwen_ready_verdict": "not_ready",
-      "blockers_or_caveats": [
-        "structured notice coverage is low"
-      ],
-      "next_transformation": "Prefer notice_board_item; rebuild/extract more board items from raw notice list chunks.",
-      "clean_sample": {
-        "doc_id": "academic_notice_board__notice_board_item__공지__2026-04-16__2026학년도_하기_계절학기_국내_다른_대학_수학_안내__8b9f10574f",
-        "title": "2026학년도 하기 계절학기 국내 다른 대학 수학 안내",
-        "row_type": "notice_board_item",
-        "generation_method": "structured_row",
-        "body_excerpt": "2026학년도 하기 계절학기 국내 다른 대학 수학 안내 공지사항의 게시일은 2026-04-16입니다. 작성자는 학사지원과이고, 번호는 공지입니다. 상단 고정 공지이며 첨부파일이 있습니다. 상세 링크: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512782&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=",
-        "source_url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512782&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage="
-      },
-      "noisy_sample": {
-        "doc_id": "academic_notice_board_chunk_1",
-        "title": "notices source 1",
-        "row_type": "<missing>",
-        "generation_method": "source_parse",
-        "body_excerpt": "학사정보게시판 목록 번호 제목 작성자 작성일 조회수 공지 2026학년도 하기 계절학기 국내 다른 대학 수학 안내 학사지원과 2026-04-16 4616 공지 2026학년도 제1학기 학생 출석인정 신청 변경 사항 안내 학사지원과 2026-03-05 5720 공지 2026학년도 제1학기 휴학 및 복학 신청 안내 학사지원과 2026-01-14 4837 1815 2026학년도 하기 계절학기 2차 폐",
-        "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr"
-      }
-    },
     "academic_calendar": {
       "domain": "academic_calendar",
-      "total_docs": 465,
+      "total_docs": 480,
       "generation_method_counts": {
         "structured_row": 348,
         "structured_aggregate": 70,
-        "source_parse": 47
+        "source_parse": 62
       },
       "row_type_counts": {
         "academic_calendar_event": 348,
         "academic_calendar_monthly": 60,
         "academic_calendar_semester": 10,
-        "<missing>": 47
+        "<missing>": 62
       },
       "answer_unit_doc_count": 418,
-      "fragment_doc_count": 47,
+      "fragment_doc_count": 62,
       "source_url_missing_count": 0,
       "official_chain_ok_counts": {
-        "true": 465
-      },
-      "coverage": {
-        "date_min": "2022-12-21",
-        "date_max": "2026-12-25",
-        "distinct_date_count": 256
-      },
-      "structured_field_completeness": {
-        "start_date": {
-          "present": 348,
-          "checked": 418
-        },
-        "end_date": {
-          "present": 348,
-          "checked": 418
-        },
-        "event_name": {
-          "present": 348,
-          "checked": 418
-        }
+        "true": 480
       },
       "qwen_ready_verdict": "ready",
-      "blockers_or_caveats": [],
-      "next_transformation": "Prefer semester/month aggregate docs for broad questions and event rows for direct date lookup; suppress raw source_parse chunks.",
+      "blockers_or_caveats": [
+        "calendar has source-native event and aggregate rows; use chunks only as supporting context"
+      ],
+      "next_transformation": "Inspect retrieval quality before adding more transformations.",
       "clean_sample": {
         "doc_id": "academic_calendar__academic_calendar_event__2026__2025-12-22__2026-01-13__동기_계절학기__1__58dc59a409",
         "title": "2025-12-22 동기 계절학기",
@@ -179,477 +48,166 @@
         "title": "academic_calendar source 1",
         "row_type": "<missing>",
         "generation_method": "source_parse",
-        "body_excerpt": "01.13(화) 제2학기 성적발표",
+        "body_excerpt": "01월 January 01.01(목) 신정 01.13(화) 제2학기 성적발표 01.20(화) 동기 계절학기 성적발표 01.21(수) ~ 02.10(화) 2025학년도 특별학기(신입학예정자) 01.26(월) ~ 01.28(수) 2026학년도 제1학기 예비수강신청 01.29(목) ~ 02.04(수) 학사학위취득 유예 신청 02월 February 02.02(월) ~ 02.27(금) 휴학 및 복학 신청 02.02(월) ~ 02.06(금) 2026학년도 제1학기 수강신청 02.17(화) 설날 02.24(화) ~ 02.27(금) 2026학년도",
         "source_url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr"
       }
     },
     "dining": {
       "domain": "dining",
-      "total_docs": 1110,
+      "total_docs": 1145,
       "generation_method_counts": {
         "structured_row": 925,
-        "source_parse": 160,
+        "source_parse": 195,
         "structured_aggregate": 25
       },
       "row_type_counts": {
         "dining_menu": 925,
-        "<missing>": 160,
+        "<missing>": 195,
         "dining_weekly_menu": 25
       },
       "answer_unit_doc_count": 25,
-      "fragment_doc_count": 1085,
+      "fragment_doc_count": 195,
       "source_url_missing_count": 0,
       "official_chain_ok_counts": {
-        "true": 1110
-      },
-      "coverage": {
-        "date_scope": "June 2026 menu snapshots from current indexed dining sources"
-      },
-      "structured_field_completeness": {
-        "meal_date": {
-          "present": 925,
-          "checked": 950
-        },
-        "cafeteria": {
-          "present": 950,
-          "checked": 950
-        },
-        "meal_type": {
-          "present": 925,
-          "checked": 950
-        },
-        "user_type": {
-          "present": 925,
-          "checked": 950
-        },
-        "menu_items": {
-          "present": 230,
-          "checked": 950
-        },
-        "is_closed": {
-          "present": 925,
-          "checked": 950
-        }
+        "true": 1145
       },
       "qwen_ready_verdict": "usable_with_caveat",
       "blockers_or_caveats": [
-        "weekly bundles already exist, but row-level dining_menu fragments can still dominate broad retrieval if not prioritized correctly",
-        "use weekly/daily bundles for Qwen-facing evidence; keep dining_menu rows as bundle details"
+        "weekly bundles are answer-sized; row-level menu docs should support exact date/cafeteria questions"
       ],
-      "next_transformation": "Prefer dining_weekly_menu for broad/current-week questions; use dining_menu rows only inside a date/cafeteria/meal bundle.",
+      "next_transformation": "Inspect retrieval quality before adding more transformations.",
       "clean_sample": {
         "doc_id": "cnu_mobile_food_week_2026_06_08_1st__dining_weekly_menu__2026-06-08__2026-06-13__제1학생회관",
         "title": "2026-06-08~2026-06-13 제1학생회관 주간 식단",
         "row_type": "dining_weekly_menu",
         "generation_method": "structured_aggregate",
-        "body_excerpt": "2026-06-08~2026-06-13 제1학생회관 주간 식단 요약:\n- 2026-06-08 제1학생회관 조식 직원 식단은 운영안함입니다.\n- 2026-06-08 제1학생회관 조식 학생 식단은 운영안함입니다.\n- 2026-06-08 제1학생회관 중식 직원 식단은 운영안함입니다.\n- 2026-06-08 제1학생회관 중식 학생 식단은 운영안함입니다.\n- 2026-06-08 제1학생회관 석식 직원",
+        "body_excerpt": "2026-06-08~2026-06-13 제1학생회관 주간 식단 요약: - 2026-06-08 제1학생회관 조식 직원 식단은 운영안함입니다. - 2026-06-08 제1학생회관 조식 학생 식단은 운영안함입니다. - 2026-06-08 제1학생회관 중식 직원 식단은 운영안함입니다. - 2026-06-08 제1학생회관 중식 학생 식단은 운영안함입니다. - 2026-06-08 제1학생회관 석식 직원 식단은 운영안함입니다. - 2026-06-08 제1학생회관 석식 학생 식단은 운영안함입니다. - 2026-06-09 제1학생회관 조식 직원 식",
         "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.09&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.01"
       },
       "noisy_sample": {
-        "doc_id": "cnu_mobile_food__dining_menu__2026-06-08__제1학생회관__조식__직원__1__de7b35a625",
-        "title": "2026-06-08 제1학생회관 조식 식단",
-        "row_type": "dining_menu",
-        "generation_method": "structured_row",
-        "body_excerpt": "2026-06-08 제1학생회관 조식 직원 메뉴: 메뉴운영내역.",
+        "doc_id": "cnu_mobile_food_chunk_1",
+        "title": "dining source 1",
+        "row_type": "<missing>",
+        "generation_method": "source_parse",
+        "body_excerpt": "월요일 2026.06.08 요일별 식단메뉴에 대한 안내제공 구분 제1학생회관 제2학생회관 제3학생회관 제4학생회관 생활과학대학 조식 직원 메뉴운영내역 운영안함 운영안함 운영안함 운영안함 학생 정식(1000) 참치김치찌개 고추마요떡갈비(pork included) 깍두기 운영안함 운영안함 운영안함 중식 직원 정식(6000) 차돌박이된장찌개(beef included) 명태코다리강정 비엔나브로콜리볶음(pork included) 열무겉절이 깍두기 정식(6000) 차조밥 소고기무우국(beef included) 가자미구이 잡채(pork incl",
         "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp"
+      }
+    },
+    "graduation": {
+      "domain": "graduation",
+      "total_docs": 85,
+      "generation_method_counts": {
+        "source_parse": 85
+      },
+      "row_type_counts": {
+        "<missing>": 85
+      },
+      "answer_unit_doc_count": 0,
+      "fragment_doc_count": 85,
+      "source_url_missing_count": 0,
+      "official_chain_ok_counts": {
+        "true": 85
+      },
+      "qwen_ready_verdict": "needs_explicit_parser_or_better_sources",
+      "blockers_or_caveats": [
+        "prose-to-structured graduation rows are disabled; graduation evidence is currently plain source text only"
+      ],
+      "next_transformation": "Collect explicit curriculum tables or keep graduation answers broad until a source-native parser exists.",
+      "clean_sample": {
+        "doc_id": "graduation_biochemistry_requirements_chunk_1",
+        "title": "graduation source 1",
+        "row_type": "<missing>",
+        "generation_method": "source_parse",
+        "body_excerpt": "생화학과 | 학사정보 | 졸업요건 본문 바로가기 주메뉴 바로가기 서브메뉴 바로가기 충남대학교 정보화본부 CNU With U 도서관 발전기금 로그인 사이트맵 모바일 메뉴 열기 자연과학대학 생화학과 학과소개 학과소개 학과연혁 교수진소개 학과 장기발전 계획 찾아오시는 길 학사정보 학사일정표 학부교육과정 졸업요건 재이수 대학원교육과정 학과내규 장학제도 학생활동 학생회 동아리모임 학생회게시판 학과앨범 커뮤니티 학부공지사항 대학원공지사항 취업게시판 자유게시판 관련사이트 관련사이트 충남대학교 정보통신원 도서관 발전기금 로그인 학과소개 학과소개",
+        "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do"
+      },
+      "noisy_sample": {
+        "doc_id": "graduation_biochemistry_requirements_chunk_1",
+        "title": "graduation source 1",
+        "row_type": "<missing>",
+        "generation_method": "source_parse",
+        "body_excerpt": "생화학과 | 학사정보 | 졸업요건 본문 바로가기 주메뉴 바로가기 서브메뉴 바로가기 충남대학교 정보화본부 CNU With U 도서관 발전기금 로그인 사이트맵 모바일 메뉴 열기 자연과학대학 생화학과 학과소개 학과소개 학과연혁 교수진소개 학과 장기발전 계획 찾아오시는 길 학사정보 학사일정표 학부교육과정 졸업요건 재이수 대학원교육과정 학과내규 장학제도 학생활동 학생회 동아리모임 학생회게시판 학과앨범 커뮤니티 학부공지사항 대학원공지사항 취업게시판 자유게시판 관련사이트 관련사이트 충남대학교 정보통신원 도서관 발전기금 로그인 학과소개 학과소개",
+        "source_url": "https://biochemistry.cnu.ac.kr/biochemistry/info/requirements.do"
+      }
+    },
+    "notices": {
+      "domain": "notices",
+      "total_docs": 648,
+      "generation_method_counts": {
+        "structured_row": 60,
+        "source_parse": 588
+      },
+      "row_type_counts": {
+        "notice_board_item": 60,
+        "<missing>": 588
+      },
+      "answer_unit_doc_count": 60,
+      "fragment_doc_count": 588,
+      "source_url_missing_count": 0,
+      "official_chain_ok_counts": {
+        "true": 648
+      },
+      "qwen_ready_verdict": "usable_with_caveat",
+      "blockers_or_caveats": [
+        "notice coverage is broader after source expansion, but board rows should be preferred over page chunks"
+      ],
+      "next_transformation": "Inspect retrieval quality before adding more transformations.",
+      "clean_sample": {
+        "doc_id": "academic_notice_board__notice_board_item__공지__2026-04-16__2026학년도_하기_계절학기_국내_다른_대학_수학_안내__8b9f10574f",
+        "title": "2026학년도 하기 계절학기 국내 다른 대학 수학 안내",
+        "row_type": "notice_board_item",
+        "generation_method": "structured_row",
+        "body_excerpt": "2026학년도 하기 계절학기 국내 다른 대학 수학 안내 공지사항의 게시일은 2026-04-16입니다. 작성자는 학사지원과이고, 번호는 공지입니다. 상단 고정 공지이며 첨부파일이 있습니다. 상세 링크: https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512782&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage=",
+        "source_url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512782&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702&skey=&sval=&site_dvs=&ntt_tag=&GotoPage="
+      },
+      "noisy_sample": {
+        "doc_id": "academic_notice_board_chunk_1",
+        "title": "notices source 1",
+        "row_type": "<missing>",
+        "generation_method": "source_parse",
+        "body_excerpt": "학사정보게시판 목록 번호 제목 작성자 작성일 조회수 공지 2026학년도 하기 계절학기 국내 다른 대학 수학 안내 학사지원과 2026-04-16 4616 공지 2026학년도 제1학기 학생 출석인정 신청 변경 사항 안내 학사지원과 2026-03-05 5720 공지 2026학년도 제1학기 휴학 및 복학 신청 안내 학사지원과 2026-01-14 4837 1815 2026학년도 하기 계절학기 2차 폐",
+        "source_url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr"
       }
     },
     "shuttle": {
       "domain": "shuttle",
-      "total_docs": 59,
+      "total_docs": 56,
       "generation_method_counts": {
         "structured_row": 41,
-        "source_parse": 18
+        "source_parse": 15
       },
       "row_type_counts": {
         "shuttle_route": 2,
         "shuttle_segment": 39,
-        "<missing>": 18
+        "<missing>": 15
       },
       "answer_unit_doc_count": 2,
-      "fragment_doc_count": 57,
+      "fragment_doc_count": 15,
       "source_url_missing_count": 0,
       "official_chain_ok_counts": {
-        "true": 59
-      },
-      "coverage": {
-        "doc_date": "2026-03-03",
-        "valid_start": "2026-03-03",
-        "valid_end": "2026-06-21"
-      },
-      "structured_field_completeness": {
-        "route_name": {
-          "present": 41,
-          "checked": 41
-        },
-        "valid_start": {
-          "present": 41,
-          "checked": 41
-        },
-        "valid_end": {
-          "present": 41,
-          "checked": 41
-        }
+        "true": 56
       },
       "qwen_ready_verdict": "usable_with_caveat",
       "blockers_or_caveats": [
-        "route-level summaries are sparse; many rows are segments"
+        "route-level summaries are sparse; segment rows should support route summaries"
       ],
-      "next_transformation": "Prefer shuttle_route summaries; use segment rows only to enrich route-level summaries.",
+      "next_transformation": "Inspect retrieval quality before adding more transformations.",
       "clean_sample": {
         "doc_id": "shuttle_bus__shuttle_route__campus_loop__2026-03-03__2026-06-21__2a184c34ae",
         "title": "2026학년도 셔틀버스 교내 순환",
         "row_type": "shuttle_route",
         "generation_method": "structured_row",
-        "body_excerpt": "2026학년도 셔틀버스 교내 순환은 2026-03-03부터 2026-06-21까지 학기 중 평일 주간에 정상 운행합니다. 평일 야간, 주말, 공휴일, 방학 등은 미운영입니다. 출발 시간표: 08:20 (월평역) 등교, 08:30, 09:30, 09:40, 10:30, 11:30, 13:30, 14:30, 15:30, 16:30, 17:30. 첫차 08:30, 막차 17:30. 정류장 및 운행",
+        "body_excerpt": "2026학년도 셔틀버스 교내 순환은 2026-03-03부터 2026-06-21까지 학기 중 평일 주간에 정상 운행합니다. 평일 야간, 주말, 공휴일, 방학 등은 미운영입니다. 출발 시간표: 08:20 (월평역) 등교, 08:30, 09:30, 09:40, 10:30, 11:30, 13:30, 14:30, 15:30, 16:30, 17:30. 첫차 08:30, 막차 17:30. 정류장 및 운행 노선: 정심화 국제문화회관, 사회과 학대학 입구, 서문, 음악 2호관 앞, 공동동물실험센터, 체 육관 입구, 예술대학 앞, 도서 관 앞, 학생",
         "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html"
       },
       "noisy_sample": {
-        "doc_id": "shuttle_bus__shuttle_segment__campus_loop__departure_time__0820_월평역_등교__1__2026-03-03__2026-06-21__44bb3f901c",
-        "title": "2026학년도 셔틀버스 교내 순환 출발시각 08:20 (월평역) 등교",
-        "row_type": "shuttle_segment",
-        "generation_method": "structured_row",
-        "body_excerpt": "2026학년도 셔틀버스 교내 순환의 출발시각: 08:20 (월평역) 등교. 적용 기간은 2026-03-03부터 2026-06-21까지이고, 운영일은 학기 중 평일 주간입니다.",
+        "doc_id": "shuttle_bus_chunk_1",
+        "title": "shuttle source 1",
+        "row_type": "<missing>",
+        "generation_method": "source_parse",
+        "body_excerpt": "2026학년도 학교셔틀버스 운영 안내 운영기준: 학기 중 평일 주간 운영(평일 야간, 주말, 공휴일, 방학, 수학능력시험일(10시 이전) 등 미운영) ※ 운행 시간표는 학교 사정에 따라 변경될 수 있음 ※ 학사일정 변경 시 운행 기간 변경될 수 있음(총학생회, 총무과 등과 협의) ※ 운행시간은 천재지변, 학교행사, 교통상황, 탑승 인원 등에 따라 변경 가능 ※ 교통상황 등으로 인해 전 구간에서 5분 내외 오차가 발생할 수 있으니 탑승자 사전 대기 운행 주체: 학교버스 운행 내용: 운행 시간표 및 운행 노선 참고 운행 노선: 교내순환",
         "source_url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html"
       }
     }
-  },
-  "probe_mapping": [
-    {
-      "id": "public_probe_01",
-      "question": "졸업까지 몇 학점 들어야 하나요?",
-      "expected_domain": "graduation",
-      "expected_temporal_type": "none",
-      "expected_behavior": "Answer generally, mention department/admission-year differences, do not cite an unrelated department as if universal.",
-      "baseline_status": "answered",
-      "baseline_bottleneck": "none",
-      "retrieved_doc_ids": [
-        "graduation_biochemistry_requirements_chunk_5",
-        "graduation_biochemistry_requirements_chunk_7",
-        "graduation_biochemistry_requirements_chunk_6"
-      ],
-      "matching_answer_unit_doc_ids": [],
-      "could_qwen_answer_without_extra_inference": false,
-      "recommendation": "data_transform_or_retrieval_issue",
-      "mapping_status": "old_baseline_directional_only"
-    },
-    {
-      "id": "public_probe_02",
-      "question": "이번 학기 수강신청은 언제 시작하나요?",
-      "expected_domain": "academic_calendar",
-      "expected_temporal_type": "date_lookup",
-      "expected_behavior": "Return the matching course registration start date if calendar evidence supports it.",
-      "baseline_status": "answered",
-      "baseline_bottleneck": "none",
-      "retrieved_doc_ids": [
-        "academic_calendar_chunk_5",
-        "academic_calendar_chunk_8",
-        "academic_calendar_chunk_4"
-      ],
-      "matching_answer_unit_doc_ids": [],
-      "could_qwen_answer_without_extra_inference": false,
-      "recommendation": "data_transform_or_retrieval_issue",
-      "mapping_status": "old_baseline_directional_only"
-    },
-    {
-      "id": "public_probe_03",
-      "question": "오늘 학식 뭐 나와요?",
-      "expected_domain": "dining",
-      "expected_temporal_type": "current_snapshot",
-      "expected_behavior": "Resolve today from runtime context and use only same-date dining evidence or controlled fetch.",
-      "baseline_status": "fail_closed",
-      "baseline_bottleneck": "data",
-      "retrieved_doc_ids": [
-        "cnu_mobile_food_chunk_1",
-        "cnu_mobile_food_chunk_2",
-        "cnu_mobile_food_chunk_3"
-      ],
-      "matching_answer_unit_doc_ids": [],
-      "could_qwen_answer_without_extra_inference": false,
-      "recommendation": "avoid_hard_fail_closed; provide useful bounded answer if evidence is partial",
-      "mapping_status": "old_baseline_directional_only"
-    },
-    {
-      "id": "public_probe_04",
-      "question": "다음주에 셔틀버스는 정상 운행하나요?",
-      "expected_domain": "shuttle",
-      "expected_temporal_type": "ongoing_status",
-      "expected_behavior": "Resolve next ISO week and avoid normal-operation claims without timetable or effective-date evidence.",
-      "baseline_status": "fail_closed",
-      "baseline_bottleneck": "temporal",
-      "retrieved_doc_ids": [
-        "shuttle_bus_chunk_1",
-        "shuttle_bus_chunk_2",
-        "shuttle_bus_chunk_3",
-        "shuttle_bus_chunk_4",
-        "shuttle_bus_chunk_5",
-        "shuttle_bus_chunk_6",
-        "shuttle_bus_chunk_7",
-        "shuttle_bus_chunk_8"
-      ],
-      "matching_answer_unit_doc_ids": [],
-      "could_qwen_answer_without_extra_inference": false,
-      "recommendation": "avoid_hard_fail_closed; provide useful bounded answer if evidence is partial",
-      "mapping_status": "old_baseline_directional_only"
-    },
-    {
-      "id": "public_probe_05",
-      "question": "이번에 올라온 공지사항 어디서 볼 수 있어요?",
-      "expected_domain": "notices",
-      "expected_temporal_type": "latest_item",
-      "expected_behavior": "Provide official notice board location or latest item source when available.",
-      "baseline_status": "answered",
-      "baseline_bottleneck": "temporal",
-      "retrieved_doc_ids": [
-        "academic_notice_board_chunk_1",
-        "academic_notice_board_chunk_2"
-      ],
-      "matching_answer_unit_doc_ids": [],
-      "could_qwen_answer_without_extra_inference": false,
-      "recommendation": "data_transform_or_retrieval_issue",
-      "mapping_status": "old_baseline_directional_only"
-    },
-    {
-      "id": "public_probe_06",
-      "question": "새로 업데이트된 셔틀버스 정류장이 있을까요?",
-      "expected_domain": "shuttle",
-      "expected_temporal_type": "changed_since",
-      "expected_behavior": "Use a declared recent-change window and report verified stop changes only.",
-      "baseline_status": "answered",
-      "baseline_bottleneck": "temporal",
-      "retrieved_doc_ids": [
-        "shuttle_bus_chunk_5",
-        "shuttle_bus_chunk_2",
-        "shuttle_bus_chunk_3"
-      ],
-      "matching_answer_unit_doc_ids": [],
-      "could_qwen_answer_without_extra_inference": false,
-      "recommendation": "data_transform_or_retrieval_issue",
-      "mapping_status": "old_baseline_directional_only"
-    },
-    {
-      "id": "public_probe_07",
-      "question": "5월 이후로 변동된 학사일정이 있을까요?",
-      "expected_domain": "academic_calendar",
-      "expected_temporal_type": "changed_since",
-      "expected_behavior": "Search calendar or notice evidence since May and summarize verified changes.",
-      "baseline_status": "fail_closed",
-      "baseline_bottleneck": "retrieval",
-      "retrieved_doc_ids": [
-        "academic_calendar_chunk_1",
-        "academic_calendar_chunk_2",
-        "academic_calendar_chunk_3",
-        "academic_calendar_chunk_4",
-        "academic_calendar_chunk_5",
-        "academic_calendar_chunk_6",
-        "academic_calendar_chunk_7",
-        "academic_calendar_chunk_8"
-      ],
-      "matching_answer_unit_doc_ids": [],
-      "could_qwen_answer_without_extra_inference": false,
-      "recommendation": "avoid_hard_fail_closed; provide useful bounded answer if evidence is partial",
-      "mapping_status": "old_baseline_directional_only"
-    },
-    {
-      "id": "public_probe_08",
-      "question": "다음주 학식 뭐 나와요?",
-      "expected_domain": "dining",
-      "expected_temporal_type": "period_summary",
-      "expected_behavior": "Resolve next ISO week and summarize date-matched dining evidence, fetching if needed.",
-      "baseline_status": "fail_closed",
-      "baseline_bottleneck": "retrieval",
-      "retrieved_doc_ids": [
-        "cnu_mobile_food_chunk_1",
-        "cnu_mobile_food_chunk_2",
-        "cnu_mobile_food_chunk_3"
-      ],
-      "matching_answer_unit_doc_ids": [],
-      "could_qwen_answer_without_extra_inference": false,
-      "recommendation": "avoid_hard_fail_closed; provide useful bounded answer if evidence is partial",
-      "mapping_status": "old_baseline_directional_only"
-    },
-    {
-      "id": "public_probe_09",
-      "question": "가장 최근에 올라온 공지사항은 언제 게시되었나요?",
-      "expected_domain": "notices",
-      "expected_temporal_type": "latest_item",
-      "expected_behavior": "Use posted_date evidence and include the latest verified posted date.",
-      "baseline_status": "fail_closed",
-      "baseline_bottleneck": "temporal",
-      "retrieved_doc_ids": [
-        "academic_notice_board_chunk_1",
-        "academic_notice_board_chunk_2"
-      ],
-      "matching_answer_unit_doc_ids": [],
-      "could_qwen_answer_without_extra_inference": false,
-      "recommendation": "avoid_hard_fail_closed; provide useful bounded answer if evidence is partial",
-      "mapping_status": "old_baseline_directional_only"
-    },
-    {
-      "id": "public_probe_10",
-      "question": "충남대학교 인공지능학과 24학번의 경우 프로젝트 수업을 몇 개 들어야 하나요?",
-      "expected_domain": "graduation",
-      "expected_temporal_type": "none",
-      "expected_behavior": "Require department and admission-year matched curriculum evidence; do not answer from unrelated departments.",
-      "baseline_status": "fail_closed",
-      "baseline_bottleneck": "classifier",
-      "retrieved_doc_ids": [
-        "academic_notice_detail_2512782_chunk_2"
-      ],
-      "matching_answer_unit_doc_ids": [],
-      "could_qwen_answer_without_extra_inference": false,
-      "recommendation": "avoid_hard_fail_closed; provide useful bounded answer if evidence is partial",
-      "mapping_status": "old_baseline_directional_only"
-    },
-    {
-      "id": "public_probe_11",
-      "question": "이번 학기 종강일이 언제인가요?",
-      "expected_domain": "academic_calendar",
-      "expected_temporal_type": "date_lookup",
-      "expected_behavior": "Return the semester end date from academic calendar evidence.",
-      "baseline_status": "answered",
-      "baseline_bottleneck": "none",
-      "retrieved_doc_ids": [
-        "academic_calendar_chunk_7",
-        "academic_calendar_chunk_1",
-        "academic_calendar_chunk_2",
-        "academic_calendar_chunk_3",
-        "academic_calendar_chunk_4"
-      ],
-      "matching_answer_unit_doc_ids": [],
-      "could_qwen_answer_without_extra_inference": false,
-      "recommendation": "data_transform_or_retrieval_issue",
-      "mapping_status": "old_baseline_directional_only"
-    },
-    {
-      "id": "public_probe_12",
-      "question": "이번 여름 계절학기 종강일이 언제인 가요?",
-      "expected_domain": "academic_calendar",
-      "expected_temporal_type": "date_lookup",
-      "expected_behavior": "Return the summer session end date, not grade announcement date.",
-      "baseline_status": "answered",
-      "baseline_bottleneck": "none",
-      "retrieved_doc_ids": [
-        "academic_calendar_chunk_2",
-        "academic_calendar_chunk_8",
-        "academic_calendar_chunk_9",
-        "academic_calendar_chunk_7",
-        "academic_calendar_chunk_1"
-      ],
-      "matching_answer_unit_doc_ids": [],
-      "could_qwen_answer_without_extra_inference": false,
-      "recommendation": "data_transform_or_retrieval_issue",
-      "mapping_status": "old_baseline_directional_only"
-    },
-    {
-      "id": "public_probe_13",
-      "question": "다음주 화요일 2학생회관 메뉴가 어떻게 되나요?",
-      "expected_domain": "dining",
-      "expected_temporal_type": "future_schedule",
-      "expected_behavior": "Resolve next ISO week Tuesday and use same-date same-location dining evidence or fetch.",
-      "baseline_status": "fail_closed",
-      "baseline_bottleneck": "evidence",
-      "retrieved_doc_ids": [
-        "cnu_mobile_food_chunk_1",
-        "cnu_mobile_food_chunk_2",
-        "cnu_mobile_food_chunk_3"
-      ],
-      "matching_answer_unit_doc_ids": [],
-      "could_qwen_answer_without_extra_inference": false,
-      "recommendation": "avoid_hard_fail_closed; provide useful bounded answer if evidence is partial",
-      "mapping_status": "old_baseline_directional_only"
-    },
-    {
-      "id": "public_probe_14",
-      "question": "토익 장학금을 받으려면 성적이 몇 점 이상이어야 하나요?",
-      "expected_domain": "notices",
-      "expected_temporal_type": "none",
-      "expected_behavior": "Answer only from scholarship evidence; do not reuse graduation TOEIC requirements.",
-      "baseline_status": "fail_closed",
-      "baseline_bottleneck": "retrieval",
-      "retrieved_doc_ids": [
-        "academic_notice_detail_2512782_chunk_1"
-      ],
-      "matching_answer_unit_doc_ids": [],
-      "could_qwen_answer_without_extra_inference": false,
-      "recommendation": "avoid_hard_fail_closed; provide useful bounded answer if evidence is partial",
-      "mapping_status": "old_baseline_directional_only"
-    }
-  ],
-  "global_counts": {
-    "by_domain": {
-      "graduation": 325,
-      "notices": 203,
-      "academic_calendar": 465,
-      "dining": 1110,
-      "shuttle": 59
-    },
-    "by_generation_method": {
-      "structured_row": 1618,
-      "source_parse": 449,
-      "structured_aggregate": 95
-    },
-    "by_row_type": {
-      "graduation_requirement": 244,
-      "<missing>": 449,
-      "notice_board_item": 60,
-      "academic_calendar_event": 348,
-      "academic_calendar_monthly": 60,
-      "academic_calendar_semester": 10,
-      "dining_menu": 925,
-      "shuttle_route": 2,
-      "shuttle_segment": 39,
-      "dining_weekly_menu": 25
-    }
-  },
-  "prioritized_next_units": [
-    {
-      "rank": 1,
-      "unit": "Qwen-ready evidence selector/report-aware retrieval cleanup",
-      "reason": "449 raw source_parse docs and row-level fragments can pollute Qwen context; use answer-unit docs first.",
-      "acceptance": "For 39-set diagnostics, evidence packs prefer answer-unit docs and record when only fragments are available."
-    },
-    {
-      "rank": 2,
-      "unit": "Dining bundle view from existing structured rows",
-      "reason": "Dining has 925 dining_menu fragments and 25 weekly aggregates; direct row passing caused Qwen context issues.",
-      "acceptance": "Dining questions receive weekly/daily bundle evidence, not individual dining_menu rows."
-    },
-    {
-      "rank": 3,
-      "unit": "Notice structured extraction expansion",
-      "reason": "Only 60/203 notice docs are structured notice_board_item; raw list chunks dominate notices.",
-      "acceptance": "Latest/notice-location questions retrieve notice_board_item or explicit board summary before raw chunks."
-    }
-  ],
-  "non_goals": [
-    "no new crawling",
-    "no prompt optimization",
-    "no validator changes",
-    "no tool-call revival",
-    "no code changes in this analysis step"
-  ],
-  "probe_mapping_definition": "matching_answer_unit_doc_ids counts answer-unit documents inside the previously retrieved baseline/harness docs, not global availability in knowledge_seed.",
-  "hybrid_rag_position": {
-    "status": "defer_until_answer_unit_selector_baseline",
-    "reason": "Current diagnostics show domain hits can be high while Qwen still receives fragments or fail-closed outputs; first isolate evidence-unit quality before adding embedding/reranking complexity.",
-    "high_priority_domains": [
-      "notices",
-      "graduation"
-    ],
-    "medium_priority_domains": [
-      "academic_calendar"
-    ],
-    "low_priority_before_bundling": [
-      "dining",
-      "shuttle"
-    ]
-  },
-  "knowledge_checksum": "eaad337cd1e24436a30044ad76bd096f693cf4fa751ba6d86e997517f00df0e7",
-  "source_probe_checksum": "f0f0928b5b34f365a5abcee45c655cfe70df2a6d0f45f52c0c92edef6f9aaf87",
-  "probe_mapping_status": "old_baseline_directional_only_not_current_priority_evidence",
-  "artifact_caveats": [
-    "Public probe mapping came from an older baseline path and must not drive current priority decisions.",
-    "Public and 39-set probes are directional diagnostics, not optimization targets."
-  ]
+  }
 }

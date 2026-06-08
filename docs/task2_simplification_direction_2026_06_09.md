@@ -16,6 +16,16 @@ question -> retrieve relevant evidence -> build evidence context -> prompt Qwen 
 
 The project should win by giving Qwen clean, official, relevant evidence. The implementation should avoid policy-heavy front-end logic that blocks or rewrites Qwen's behavior before generation.
 
+## Concrete Implementation Rules
+
+- Retrieval may use Task 1 output as a domain hint, but generation must not be blocked by mechanical answer-kind routing.
+- The only normal pre-generation block is empty evidence: if no evidence items can be built, return the minimal insufficient-evidence answer.
+- Answer validation is diagnostic. It may record internal leaks, unsupported claims, or raw JSON in trace, but it should not replace a generated Qwen answer unless the answer is empty/unusable.
+- Retrieval ranking should not call the Task 1 classifier internally. If a route/domain is needed, pass it explicitly from the caller or handle it outside ranking.
+- Date handling is prompt context only: current date, timezone, original expression, and exact resolved date/period when available.
+- Plain/recursive chunking means paragraph -> sentence -> fixed-size split in source order, without domain keyword scoring, confidence labels, or hidden quality classes.
+- Source-specific parsing is allowed only when the source has explicit structure such as tables, list rows, menus, route tables, or board rows.
+
 ## Keep
 
 - Source collection and official-source tracking.

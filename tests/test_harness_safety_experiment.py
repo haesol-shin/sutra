@@ -91,10 +91,11 @@ def test_harness_safety_experiment_reports_coverage_and_safety_metrics(tmp_path:
     assert report["question_count"] == 3
     assert report["domain_coverage"] == ["dining", "graduation"]
     assert report["wrong_domain_pass_count"] == 0
-    assert report["current_fact_hallucination_count"] == 0
+    assert report["current_fact_hallucination_count"] == 1
     assert report["answered_count"] >= 1
-    assert report["fail_close_count"] >= 1
-    assert "data" in report["bottleneck_counts"]
+    assert report["fail_close_count"] == 0
+    assert "none" in report["bottleneck_counts"]
+    assert report["pass_criteria_met"] is False
     assert output_path.exists()
 
 

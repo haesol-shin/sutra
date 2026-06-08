@@ -7,7 +7,6 @@ from typing import Literal
 
 from nlp_term.chat.answer_validation import validate_task2_answer
 from nlp_term.chat.evidence_pack import build_evidence_pack
-from nlp_term.chat.evidence_sufficiency import evaluate_evidence_sufficiency
 from nlp_term.chat.prompts import build_task2_prompt
 from nlp_term.chat.router import route_question
 from nlp_term.chat.source_status import build_source_status
@@ -16,6 +15,9 @@ from nlp_term.chat.state_contract import (
     AnswerValidationStatus,
     EvidenceLookupStatus,
     EvidenceSufficiencyStatus,
+    EvidenceSufficiencyDecision,
+    FetchDecision,
+    FreshnessStatus,
     GenerationStatus,
     HarnessResult,
     HarnessTrace,
@@ -26,7 +28,7 @@ from nlp_term.chat.state_contract import (
     TemporalType,
 )
 from nlp_term.chat.temporal_intent import resolve_temporal_intent
-from nlp_term.collect.source_inventory import SourceSpec, Stage, iter_specs
+from nlp_term.collect.source_inventory import Stage
 from nlp_term.paths import model_dir
 from nlp_term.retrieve.knowledge import load_knowledge_with_metadata
 from nlp_term.retrieve.rank import rank_docs
@@ -49,6 +51,7 @@ def answer_with_harness(
     question_time: datetime | None = None,
     allowed_stages: set[Stage] = {"stage0"},
 ) -> HarnessResult:
+    del live_fetch_enabled, allowed_stages
     route = route_question(question)
     route_domain = route.domain  # type: ignore[assignment]
     resolved_question_time = question_time or datetime.now(timezone.utc)
@@ -57,7 +60,7 @@ def answer_with_harness(
         route_domain=route_domain,
         reference_time=resolved_question_time,
     )
-    answer_kind = _infer_answer_kind(question, route_domain=route_domain, mode=mode)
+    answer_kind = AnswerKind.STATIC_FACT
     evidence_pack_size = _evidence_pack_size(temporal_intent)
 
     knowledge = load_knowledge_with_metadata(knowledge_path)
@@ -83,21 +86,10 @@ def answer_with_harness(
     retrieved_scores = [score for _doc, score in retrieved_pairs]
     postfilter_candidates = _selected_candidate_trace_rows(retrieved_pairs)
     source_statuses = [build_source_status(doc) for doc in retrieved_docs]
-    candidate_specs = _candidate_specs(allowed_stages)
 
-    sufficiency = evaluate_evidence_sufficiency(
-        answer_kind=answer_kind,
-        docs=retrieved_docs,
-        retrieved_scores=retrieved_scores,
-        source_statuses=source_statuses,
-        candidate_specs=candidate_specs,
-        route_domain=route_domain,
-        min_top_score=min_top_score,
-        question_time=question_time,
-        temporal_intent=temporal_intent,
-    )
+    sufficiency = _minimal_evidence_decision(retrieved_docs)
 
-    if sufficiency.status != EvidenceSufficiencyStatus.SUFFICIENT:
+    if not retrieved_docs:
         answer = _fail_closed_answer(sufficiency.reasons)
         trace = _build_trace(
             question=question,
@@ -114,9 +106,7 @@ def answer_with_harness(
             postfilter_candidates=postfilter_candidates,
             source_statuses=source_statuses,
             sufficiency=sufficiency,
-            pack_status=PackStatus.BLOCKED_UNSUPPORTED
-            if answer_kind == AnswerKind.UNSUPPORTED
-            else PackStatus.BLOCKED_FETCH_REQUIRED,
+            pack_status=PackStatus.BLOCKED_EMPTY,
             generation_status=GenerationStatus.SKIPPED_BLOCKED,
             answer_validation_status=AnswerValidationStatus.BLOCKED,
             output_status=OutputStatus.FAIL_CLOSED,
@@ -225,42 +215,20 @@ def answer_with_harness(
     return HarnessResult(output=ChatOutput(user=question, model=generated), output_status=OutputStatus.ANSWERED, trace=trace)
 
 
-def _infer_answer_kind(
-    question: str,
-    *,
-    route_domain: Domain,
-    mode: Literal["chat", "realtime"],
-) -> AnswerKind:
-    compact = question.replace(" ", "")
-    is_source_navigation = any(keyword in compact for keyword in ("어디서", "어디", "링크", "홈페이지", "사이트", "게시판", "페이지"))
-    if is_source_navigation and _domain_cue_count(compact) >= 2:
-        return AnswerKind.UNSUPPORTED
-    if is_source_navigation:
-        return AnswerKind.SOURCE_NAVIGATION
-    if mode == "realtime" or any(keyword in compact for keyword in ("오늘", "이번주", "최신", "현재", "방금", "마감", "운행중")):
-        if route_domain in {"dining", "shuttle", "notices", "academic_calendar"}:
-            return AnswerKind.CURRENT_FACT
-    if any(keyword in compact for keyword in ("방법", "절차", "신청", "제출")):
-        return AnswerKind.PROCEDURAL
-    return AnswerKind.STATIC_FACT
-
-
-def _domain_cue_count(compact_question: str) -> int:
-    domain_keywords = {
-        "graduation": ("졸업", "학점", "전공", "교양", "수료", "요건"),
-        "notices": ("공지", "장학", "모집", "안내문", "게시"),
-        "academic_calendar": ("학사일정", "수강신청", "수강정정", "개강", "종강", "휴학", "복학"),
-        "dining": ("식단", "학식", "메뉴", "학생식당", "점심", "저녁", "아침"),
-        "shuttle": ("셔틀", "통학", "버스", "정류장", "시간표", "운행"),
-    }
-    return sum(int(any(keyword in compact_question for keyword in keywords)) for keywords in domain_keywords.values())
-
-
-def _candidate_specs(allowed_stages: set[Stage]) -> list[SourceSpec]:
-    specs = []
-    for stage in allowed_stages:
-        specs.extend(iter_specs(stage=stage, active_only=True))
-    return specs
+def _minimal_evidence_decision(docs: list[KnowledgeDoc]) -> EvidenceSufficiencyDecision:
+    if not docs:
+        return EvidenceSufficiencyDecision(
+            status=EvidenceSufficiencyStatus.INSUFFICIENT,
+            fetch_decision=FetchDecision.FETCH_BLOCKED_NO_REGISTRY,
+            freshness_status=FreshnessStatus.UNKNOWN,
+            reasons=["no_retrieved_docs"],
+        )
+    return EvidenceSufficiencyDecision(
+        status=EvidenceSufficiencyStatus.SUFFICIENT,
+        fetch_decision=FetchDecision.SKIPPED_RAG_SUFFICIENT,
+        freshness_status=FreshnessStatus.UNKNOWN,
+        reasons=["retrieved_evidence_available"],
+    )
 
 
 def _candidate_trace_rows(rows, docs_by_id: dict[str, KnowledgeDoc]) -> list[RetrievalCandidateTrace]:

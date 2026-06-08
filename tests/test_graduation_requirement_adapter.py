@@ -2,9 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from nlp_term.collect.base import PARSER_VERSION
 from nlp_term.collect.source_inventory import iter_specs
-from nlp_term.retrieve.rank import rank_docs
 from nlp_term.schemas import RawSource, SourceVerification
 from nlp_term.structured.graduation import GraduationRequirementAdapter
 
@@ -37,49 +38,21 @@ def _context():
     return spec, raw, verification
 
 
-def test_graduation_adapter_extracts_requirement_rows() -> None:
+def test_graduation_adapter_does_not_promote_prose_to_structured_rows() -> None:
     spec, raw, verification = _context()
 
-    rows = GraduationRequirementAdapter().parse(spec=spec, raw=raw, verification=verification)
-
-    assert len(rows) >= 3
-    assert all(row.row_type == "graduation_requirement" for row in rows)
-    assert any(row.requirement_name == "졸업소요학점" and row.required_value == "130" for row in rows)
-    assert all(row.department == "영어영문학과" for row in rows)
+    with pytest.raises(ValueError, match="graduation requirement rows not found"):
+        GraduationRequirementAdapter().parse(spec=spec, raw=raw, verification=verification)
 
 
-def test_graduation_knowledge_doc_metadata_contract() -> None:
-    spec, raw, verification = _context()
+def test_graduation_adapter_keeps_empty_structured_doc_list_empty() -> None:
     adapter = GraduationRequirementAdapter()
-    rows = adapter.parse(spec=spec, raw=raw, verification=verification)
 
-    doc = next(doc for doc in adapter.to_knowledge_docs(rows) if doc.metadata["requirement_name"] == "졸업소요학점")
-
-    assert doc.metadata["row_type"] == "graduation_requirement"
-    assert doc.metadata["structured"]["department"] == "영어영문학과"
-    assert doc.metadata["structured"]["required_value"] == "130"
-    assert doc.metadata["structured_fields"] == [
-        "department",
-        "curriculum_year",
-        "admission_year",
-        "requirement_category",
-        "requirement_name",
-        "required_value",
-        "unit",
-        "applies_to",
-        "effective_year",
-        "source_section",
-        "confidence",
-    ]
-    assert "원문 문장" in doc.body
+    assert adapter.to_knowledge_docs([]) == []
 
 
-def test_graduation_rows_improve_credit_question_retrieval() -> None:
+def test_graduation_prose_must_remain_outside_structured_retrieval() -> None:
     spec, raw, verification = _context()
-    adapter = GraduationRequirementAdapter()
-    docs = adapter.to_knowledge_docs(adapter.parse(spec=spec, raw=raw, verification=verification))
-    docs_by_id = {doc.doc_id: doc for doc in docs}
 
-    top = docs_by_id[rank_docs("영어영문학과 졸업까지 몇 학점 들어야 하나요?", docs=docs, top_k=1)[0].doc_id]
-
-    assert top.metadata["requirement_name"] == "졸업소요학점"
+    with pytest.raises(ValueError, match="graduation requirement rows not found"):
+        GraduationRequirementAdapter().parse(spec=spec, raw=raw, verification=verification)
