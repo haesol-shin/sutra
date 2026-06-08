@@ -5,32 +5,21 @@
     "stage": "stage0",
     "active": true,
     "exception_type": "CalledProcessError",
-    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '120', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmp9jfuklyw', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf']' returned non-zero exit status 28.",
+    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '180', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmpvw6da3ud', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/html/kr/25file/2025_book.pdf']' returned non-zero exit status 28.",
     "reused_cached_raw": true,
     "cached_raw_path": "data\\raw\\graduation\\graduation_curriculum_pdf.pdf",
     "cached_checksum": "ec67193f7a9a8a89fb84df62b6d032fc94de3eff8455dc9b5167061e1925a653"
   },
   {
-    "source_id": "academic_calendar",
-    "url": "https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr",
+    "source_id": "academic_notice_detail_2512782",
+    "url": "https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512782&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702",
     "stage": "stage0",
     "active": true,
     "exception_type": "CalledProcessError",
-    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '30', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmpva_6b4yc', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/_prog/academic_calendar/?menu_dvs_cd=05020101&site_dvs_cd=kr']' returned non-zero exit status 28.",
+    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '60', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmp753enfod', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/_prog/_board/?mode=V&no=2512782&code=sub07_0702&site_dvs_cd=kr&menu_dvs_cd=0702']' returned non-zero exit status 28.",
     "reused_cached_raw": true,
-    "cached_raw_path": "data\\raw\\academic_calendar\\academic_calendar.html",
-    "cached_checksum": "915b349966fbc716eb5415396d18d28f534ab96c6e364beb15b96d1c24b832e0"
-  },
-  {
-    "source_id": "shuttle_bus",
-    "url": "https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html",
-    "stage": "stage0",
-    "active": true,
-    "exception_type": "CalledProcessError",
-    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '30', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmp_sown05c', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/html/kr/sub05/sub05_050403.html']' returned non-zero exit status 28.",
-    "reused_cached_raw": true,
-    "cached_raw_path": "data\\raw\\shuttle\\shuttle_bus.html",
-    "cached_checksum": "d948bebf245bed00263c693a4bd822b6117d6f199e5751be15f881885f6edf67"
+    "cached_raw_path": "data\\raw\\notices\\academic_notice_detail_2512782.html",
+    "cached_checksum": "171789e3b96129ac21d7c8374c126d141c2d5f93c1f390ab1a9773357054b511"
   },
   {
     "source_id": "graduation_curriculum_2024_pdf",
@@ -38,42 +27,9 @@
     "stage": "stage1",
     "active": true,
     "exception_type": "CalledProcessError",
-    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '120', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmpl9n0llsx', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/html/kr/24file/2024_book.pdf']' returned non-zero exit status 28.",
+    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '180', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmpdcbl83gg', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/html/kr/24file/2024_book.pdf']' returned non-zero exit status 28.",
     "reused_cached_raw": true,
     "cached_raw_path": "data\\raw\\graduation\\graduation_curriculum_2024_pdf.pdf",
     "cached_checksum": "6311f16b35ae9a985cd58c449d409d9cc7607a1caef72e2a1bf45151627947e3"
-  },
-  {
-    "source_id": "academic_notice_board_page_2",
-    "url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr&GotoPage=2",
-    "stage": "stage1",
-    "active": true,
-    "exception_type": "CalledProcessError",
-    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '30', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmperuaxxr1', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr&GotoPage=2']' returned non-zero exit status 28.",
-    "reused_cached_raw": true,
-    "cached_raw_path": "data\\raw\\notices\\academic_notice_board_page_2.html",
-    "cached_checksum": "1864a6d3a30422f86f00ca92419ecf102fb89e646c38e94d307a8dfa7213b21f"
-  },
-  {
-    "source_id": "academic_notice_board_page_4",
-    "url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr&GotoPage=4",
-    "stage": "stage1",
-    "active": true,
-    "exception_type": "CalledProcessError",
-    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '30', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmp1i_kpa9z', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr&GotoPage=4']' returned non-zero exit status 28.",
-    "reused_cached_raw": true,
-    "cached_raw_path": "data\\raw\\notices\\academic_notice_board_page_4.html",
-    "cached_checksum": "187560b62f243dec35292274f883fe0909ffa1b6a32e1a49cec313221bcb51cb"
-  },
-  {
-    "source_id": "academic_notice_board_page_5",
-    "url": "https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr&GotoPage=5",
-    "stage": "stage1",
-    "active": true,
-    "exception_type": "CalledProcessError",
-    "reason": "Command '['C:\\\\Windows\\\\system32\\\\curl.exe', '-L', '--max-time', '30', '-s', '-o', 'C:\\\\Users\\\\haesol\\\\AppData\\\\Local\\\\Temp\\\\tmpc6v42q0o', '-w', '%{http_code}\\n%{content_type}', 'https://plus.cnu.ac.kr/_prog/_board/?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr&GotoPage=5']' returned non-zero exit status 28.",
-    "reused_cached_raw": true,
-    "cached_raw_path": "data\\raw\\notices\\academic_notice_board_page_5.html",
-    "cached_checksum": "f2fcedabbdc948d7da6593a28fd52d38aae78e4b6afee961900f6e33c62653cf"
   }
 ]

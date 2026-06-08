@@ -78,3 +78,42 @@ def test_run_probe_records_cached_fetch_failure_evidence(tmp_path: Path, monkeyp
             "cached_checksum": "cached-checksum",
         }
     ]
+
+
+def test_run_probe_reuses_existing_raw_without_fetching(tmp_path: Path, monkeypatch) -> None:
+    raw_dir = tmp_path / "data" / "raw" / "notices"
+    raw_dir.mkdir(parents=True)
+    raw_path = raw_dir / "academic_notice_candidate_page_7.html"
+    raw_path.write_text("cached candidate notice", encoding="utf-8")
+    output_path = tmp_path / "source_probe.json"
+    failures_path = tmp_path / "collection_failures.json"
+    spec = SourceSpec(
+        source_id="academic_notice_candidate_page_7",
+        label=1,
+        domain="notices",
+        url="https://plus.cnu.ac.kr/candidate",
+        parser_type="board_detail",
+        stage="stage1",
+        official_chain_ok=True,
+    )
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(run_collect, "iter_specs", lambda *, stage, active_only: [spec])
+
+    def _unexpected_collect_spec(spec: SourceSpec, *, fetch: bool):
+        raise AssertionError("collect_spec should not run when raw snapshot exists")
+
+    monkeypatch.setattr(run_collect, "collect_spec", _unexpected_collect_spec)
+
+    run_collect.run_probe(
+        output_path,
+        fetch=True,
+        failure_output_path=failures_path,
+        reuse_existing_raw=True,
+    )
+
+    probe = json.loads(output_path.read_text(encoding="utf-8"))
+    assert probe[0]["raw"]["source_id"] == "academic_notice_candidate_page_7"
+    assert probe[0]["raw"]["raw_path"] == str(raw_path.relative_to(tmp_path))
+    assert probe[0]["raw"]["status_code"] == 200
+    assert json.loads(failures_path.read_text(encoding="utf-8")) == []

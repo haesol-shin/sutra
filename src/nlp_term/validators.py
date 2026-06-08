@@ -437,8 +437,9 @@ def validate_tier1_coverage(
             raise ValueError(f"tier1-coverage: {raw.source_id} lacks inventory metadata")
         raw_sources.append(raw)
         is_active = bool(inventory.get("active", True))
+        source_is_allowed = bool(inventory.get("index_eligible", True))
         freshness_policy = str(inventory.get("freshness_policy", ""))
-        if is_active and (verification.official_chain_ok or freshness_policy == "short_ttl"):
+        if is_active and source_is_allowed and (verification.official_chain_ok or freshness_policy == "short_ttl"):
             index_eligible_sources.add(raw.source_id)
 
     docs = validate_rows(data_dir / "knowledge_seed.json", KnowledgeDoc, required=True)

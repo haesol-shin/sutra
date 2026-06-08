@@ -210,7 +210,8 @@ def _tier1_lifecycle_metadata(
 ) -> dict[str, object]:
     active = bool(inventory.get("active", True))
     freshness_policy = str(inventory.get("freshness_policy", "snapshot"))
-    source_is_usable = active and (verification.official_chain_ok or freshness_policy == "short_ttl")
+    source_is_allowed = bool(inventory.get("index_eligible", True))
+    source_is_usable = active and source_is_allowed and (verification.official_chain_ok or freshness_policy == "short_ttl")
     raw_ok = raw.status_code is None or 200 <= raw.status_code < 300
     index_eligible = source_is_usable and raw_ok
     return {

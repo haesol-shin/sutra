@@ -20,6 +20,7 @@ def _probe_row(
     label: int,
     official_chain_ok: bool = True,
     freshness_policy: str = "static",
+    index_eligible: bool = True,
 ) -> dict:
     return {
         "raw": {
@@ -46,6 +47,7 @@ def _probe_row(
             "stage": "stage0",
             "active": True,
             "freshness_policy": freshness_policy,
+            "index_eligible": index_eligible,
         },
     }
 
@@ -168,4 +170,30 @@ def test_validate_tier1_coverage_rejects_single_source_concentration(tmp_path: P
             source_probe_path=probe_path,
             min_accepted_docs=6,
             max_source_concentration=0.50,
+        )
+
+
+def test_validate_tier1_coverage_counts_raw_but_not_index_ineligible_sources(tmp_path: Path) -> None:
+    probe_path = tmp_path / "source_probe.json"
+    _write_json(
+        probe_path,
+        [
+            _probe_row("graduation_ai", domain="graduation", label=0),
+            _probe_row("candidate_notice", domain="notices", label=1, index_eligible=False),
+        ],
+    )
+    _write_json(
+        tmp_path / "knowledge_seed.json",
+        [
+            _doc("grad-1", source_id="graduation_ai", domain="graduation", label=0, row_type="graduation_requirement"),
+            _doc("notice-candidate", source_id="candidate_notice", domain="notices", label=1, row_type="notice_board_item"),
+        ],
+    )
+
+    with pytest.raises(ValueError, match="index-eligible sources 1 below 2"):
+        validate_tier1_coverage(
+            data_dir=tmp_path,
+            source_probe_path=probe_path,
+            min_index_eligible_sources=2,
+            min_raw_sources=2,
         )

@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "source_id": "course_registration_plan_2025_2_pdf",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\course_registration_plan_2025_2_pdf.pdf",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "shuttle_geo_notice_2026",
+    "raw_path": "data\\raw\\shuttle\\shuttle_geo_notice_2026.html",
+    "reason": "structured parse failed: shuttle timetable tables not found"
+  },
+  {
+    "source_id": "dining_operation_notice_2507684",
+    "raw_path": "data\\raw\\dining\\dining_operation_notice_2507684.html",
+    "reason": "structured parse failed: dining menu table not found"
+  },
+  {
+    "source_id": "homepage_academic_calendar_module",
+    "raw_path": "data\\raw\\academic_calendar\\homepage_academic_calendar_module.html",
+    "reason": "structured parse failed: calendar boxes not found"
+  },
+  {
+    "source_id": "scholarship_overview",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\scholarship_overview.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "student_loan_overview",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\student_loan_overview.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "academic_calendar_english_education_undergrad",
+    "raw_path": "data\\raw\\academic_calendar\\academic_calendar_english_education_undergrad.html",
+    "reason": "structured parse failed: calendar boxes not found"
+  },
+  {
+    "source_id": "notice_candidate_chemistry_0",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_chemistry_0.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_chemistry_10",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_chemistry_10.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_chemistry_20",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_chemistry_20.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_chemistry_30",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_chemistry_30.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_chemistry_40",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_chemistry_40.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_chemistry_50",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_chemistry_50.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_chemistry_60",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_chemistry_60.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_chemistry_70",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_chemistry_70.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_chemistry_80",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_chemistry_80.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_chemistry_90",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_chemistry_90.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_ai_0",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_ai_0.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_ai_10",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_ai_10.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_ai_30",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_ai_30.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_ai_40",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_ai_40.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_ai_50",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_ai_50.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_ai_60",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_ai_60.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_ai_70",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_ai_70.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_ai_80",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_ai_80.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_ai_90",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_ai_90.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_computer_0",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_computer_0.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_computer_10",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_computer_10.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_computer_20",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_computer_20.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_computer_30",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_computer_30.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_computer_40",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_computer_40.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_computer_50",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_computer_50.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_computer_60",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_computer_60.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_computer_70",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_computer_70.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_computer_80",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_computer_80.html",
+    "reason": "no clean source chunk passed content quality gates"
+  },
+  {
+    "source_id": "notice_candidate_computer_90",
+    "raw_path": "C:\\Users\\haesol\\dev\\nlp-term\\data\\raw\\notices\\notice_candidate_computer_90.html",
+    "reason": "no clean source chunk passed content quality gates"
+  }
+]

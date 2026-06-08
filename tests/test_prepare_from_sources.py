@@ -151,3 +151,52 @@ def test_build_knowledge_from_probe_adds_structured_notice_docs(tmp_path) -> Non
     for doc in docs:
         assert doc.metadata["lifecycle_status"] == "index_eligible"
         assert doc.metadata["index_eligible"] is True
+
+
+def test_build_knowledge_from_probe_respects_source_index_eligibility_flag(tmp_path) -> None:
+    raw_path = tmp_path / "candidate.html"
+    raw_path.write_text("<html><body>학사 공지 후보 문서입니다.</body></html>", encoding="utf-8")
+    probe_path = tmp_path / "source_probe.json"
+    probe_path.write_text(
+        json.dumps(
+            [
+                {
+                    "raw": {
+                        "source_id": "academic_notice_candidate_page_7",
+                        "label": 1,
+                        "domain": "notices",
+                        "url": "https://plus.cnu.ac.kr/candidate",
+                        "fetched_at": "2026-06-08T00:00:00+09:00",
+                        "content_type": "text/html",
+                        "raw_path": str(raw_path),
+                        "status_code": 200,
+                        "checksum": "candidate-checksum",
+                    },
+                    "verification": {
+                        "source_id": "academic_notice_candidate_page_7",
+                        "official_chain_ok": True,
+                        "parser_name": "html_stage_inventory",
+                        "parser_version": "0.1.0",
+                        "evidence": ["https://plus.cnu.ac.kr/candidate"],
+                        "warnings": [],
+                        "verified_at": "2026-06-08T00:00:01+09:00",
+                    },
+                    "inventory": {
+                        "stage": "stage1",
+                        "active": True,
+                        "parser_type": "board_detail",
+                        "index_eligible": False,
+                    },
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    docs, failures = build_knowledge_from_probe(probe_path, chunks_per_source=1)
+
+    assert not failures
+    assert docs
+    assert all(doc.metadata["lifecycle_status"] == "parsed" for doc in docs)
+    assert all(doc.metadata["index_eligible"] is False for doc in docs)
