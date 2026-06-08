@@ -88,7 +88,157 @@ class CalendarAdapter:
         return rows
 
     def to_knowledge_docs(self, rows: list[CalendarRow]) -> list[KnowledgeDoc]:
-        return [row.to_knowledge_doc() for row in rows]
+        return [row.to_knowledge_doc() for row in rows] + _monthly_aggregate_docs(rows) + _semester_aggregate_docs(rows)
+
+
+def _monthly_aggregate_docs(rows: list[CalendarRow]) -> list[KnowledgeDoc]:
+    groups: dict[tuple[str, int, int], list[CalendarRow]] = {}
+    for row in rows:
+        groups.setdefault((row.source_id, row.academic_year, row.month), []).append(row)
+
+    docs: list[KnowledgeDoc] = []
+    for (_source_id, academic_year, month), group_rows in sorted(groups.items()):
+        ordered_rows = sorted(group_rows, key=lambda row: (row.start_date, row.end_date, row.event_name))
+        first = ordered_rows[0]
+        period_start = f"{academic_year:04d}-{month:02d}-01"
+        period_end = _month_end(academic_year, month)
+        body = _aggregate_body(f"{academic_year}학년도 {month}월 학사일정", ordered_rows)
+        docs.append(
+            KnowledgeDoc(
+                doc_id=f"{first.source_id}__academic_calendar_monthly__{academic_year}__{month:02d}",
+                label=first.label,
+                domain=first.domain,
+                title=f"{academic_year}학년도 {month}월 학사일정",
+                body=body,
+                date=period_start,
+                source_url=first.source_url,
+                source_id=first.source_id,
+                section="academic_calendar_monthly",
+                metadata=_aggregate_metadata(
+                    first,
+                    row_type="academic_calendar_monthly",
+                    period_start=period_start,
+                    period_end=period_end,
+                    extra={
+                        "academic_year": academic_year,
+                        "month": month,
+                        "search_aliases": [f"{month}월 학사일정", "월별 학사일정", "학사일정"],
+                    },
+                ),
+            )
+        )
+    return docs
+
+
+def _semester_aggregate_docs(rows: list[CalendarRow]) -> list[KnowledgeDoc]:
+    groups: dict[tuple[str, int, str], list[CalendarRow]] = {}
+    for row in rows:
+        semester = _aggregate_semester(row)
+        if semester is None:
+            continue
+        groups.setdefault((row.source_id, row.academic_year, semester), []).append(row)
+
+    docs: list[KnowledgeDoc] = []
+    for (_source_id, academic_year, semester), group_rows in sorted(groups.items()):
+        ordered_rows = sorted(group_rows, key=lambda row: (row.start_date, row.end_date, row.event_name))
+        first = ordered_rows[0]
+        period_start = min(row.start_date for row in ordered_rows)
+        period_end = max(row.end_date for row in ordered_rows)
+        title = f"{academic_year}학년도 {semester} 학사일정"
+        docs.append(
+            KnowledgeDoc(
+                doc_id=f"{first.source_id}__academic_calendar_semester__{academic_year}__{_slug(semester)}",
+                label=first.label,
+                domain=first.domain,
+                title=title,
+                body=_aggregate_body(title, ordered_rows),
+                date=period_start,
+                source_url=first.source_url,
+                source_id=first.source_id,
+                section="academic_calendar_semester",
+                metadata=_aggregate_metadata(
+                    first,
+                    row_type="academic_calendar_semester",
+                    period_start=period_start,
+                    period_end=period_end,
+                    extra={
+                        "academic_year": academic_year,
+                        "semester": semester,
+                        "search_aliases": [f"{semester} 학사일정", f"{semester} 종강", "학기 학사일정", "학사일정"],
+                    },
+                ),
+            )
+        )
+    return docs
+
+
+def _aggregate_body(title: str, rows: list[CalendarRow]) -> str:
+    lines = [f"{title} 요약:"]
+    for row in rows:
+        if row.start_date == row.end_date:
+            lines.append(f"- {row.start_date}: {row.event_name}")
+        else:
+            lines.append(f"- {row.start_date}~{row.end_date}: {row.event_name}")
+    return "\n".join(lines)
+
+
+def _aggregate_metadata(
+    first: CalendarRow,
+    *,
+    row_type: str,
+    period_start: str,
+    period_end: str,
+    extra: dict[str, object],
+) -> dict[str, object]:
+    metadata: dict[str, object] = {
+        "structured": {
+            "period_start": period_start,
+            "period_end": period_end,
+            **extra,
+        },
+        "period_start": period_start,
+        "period_end": period_end,
+        "date_span": f"{period_start}/{period_end}",
+        "structured_fields": ["period_start", "period_end", *extra.keys()],
+        "raw_path": first.raw_path,
+        "raw_checksum": first.raw_checksum,
+        "raw_fetched_at": first.raw_fetched_at,
+        "verification_official_chain_ok": first.verification_official_chain_ok,
+        "verification_parser_name": first.parser_name,
+        "verification_parser_version": first.parser_version,
+        "source_freshness_policy": first.freshness_policy,
+        "parser": first.parser_name,
+        "generation_method": "structured_aggregate",
+        "row_type": row_type,
+    }
+    metadata.update(extra)
+    return metadata
+
+
+def _aggregate_semester(row: CalendarRow) -> str | None:
+    if row.semester == "1학기" or row.event_name == "하기방학" or "하기 계절학기" in row.event_name:
+        return "1학기"
+    if row.semester == "2학기" or row.event_name == "동기방학" or "동기 계절학기" in row.event_name:
+        return "2학기"
+    return None
+
+
+def _month_end(year: int, month: int) -> str:
+    if month == 12:
+        return f"{year:04d}-12-31"
+    return f"{year:04d}-{month:02d}-{_days_in_month(year, month):02d}"
+
+
+def _days_in_month(year: int, month: int) -> int:
+    if month == 2:
+        if year % 400 == 0 or (year % 4 == 0 and year % 100 != 0):
+            return 29
+        return 28
+    return 30 if month in {4, 6, 9, 11} else 31
+
+
+def _slug(value: str) -> str:
+    return re.sub(r"[^0-9A-Za-z가-힣]+", "_", value).strip("_")
 
 
 def _calendar_boxes(raw_path: Path) -> list[_CalendarBox]:

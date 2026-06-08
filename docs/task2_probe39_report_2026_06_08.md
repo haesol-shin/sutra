@@ -6,7 +6,7 @@
 - Task 1 label match: 38 / 39 (97.44%)
 - Temporal type match: 31 / 39 (79.49%)
 - Retrieval top1 domain match: 32 / 39 (82.05%)
-- Retrieval top3 domain hit: 35 / 39 (89.74%)
+- Retrieval top3 domain hit: 36 / 39 (92.31%)
 - Answered: 31 / 39 (79.49%)
 - Fail-closed: 8 / 39 (20.51%)
 - Bottlenecks: `{"classifier": 1, "data": 1, "evidence": 5, "none": 25, "temporal": 7}`
@@ -42,7 +42,7 @@
 | gp031 | generalization_sample | academic_calendar | 2 / 2 | date_lookup / date_lookup | top1=False, top3=True | answered | none |  |
 | gp032 | generalization_sample | academic_calendar | 2 / 2 | date_lookup / date_lookup | top1=True, top3=True | answered | none |  |
 | gp033 | generalization_sample | academic_calendar | 2 / 2 | date_lookup / date_lookup | top1=True, top3=True | answered | none |  |
-| gp034 | generalization_sample | academic_calendar | 1 / 2 | none / date_lookup | top1=False, top3=False | answered | classifier |  |
+| gp034 | generalization_sample | academic_calendar | 1 / 2 | none / date_lookup | top1=False, top3=True | answered | classifier |  |
 | gp035 | generalization_sample | academic_calendar | 2 / 2 | none / date_lookup | top1=True, top3=True | answered | temporal |  |
 | gp043 | generalization_sample | dining | 3 / 3 | current_snapshot / current_snapshot | top1=False, top3=False | answered | none |  |
 | gp044 | generalization_sample | dining | 3 / 3 | current_snapshot / current_snapshot | top1=True, top3=True | answered | none |  |

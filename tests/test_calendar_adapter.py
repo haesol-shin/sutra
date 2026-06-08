@@ -151,3 +151,42 @@ def test_calendar_break_rows_include_semester_end_search_aliases() -> None:
     top = rank_docs("이번 학기 종강일이 언제인가요?", docs=docs, top_k=1)[0]
 
     assert top.doc_id == summer_doc.doc_id
+
+
+def test_calendar_adapter_adds_monthly_aggregate_knowledge_docs() -> None:
+    spec, raw, verification = _context()
+    adapter = CalendarAdapter()
+    rows = adapter.parse(spec=spec, raw=raw, verification=verification)
+
+    docs = adapter.to_knowledge_docs(rows)
+
+    june = next(
+        doc
+        for doc in docs
+        if doc.metadata.get("row_type") == "academic_calendar_monthly" and doc.metadata.get("month") == 6
+    )
+    assert june.metadata["period_start"] == "2026-06-01"
+    assert june.metadata["period_end"] == "2026-06-30"
+    assert june.metadata["academic_year"] == 2026
+    assert "하기방학" in june.body
+    assert "하기 계절학기" in june.body
+    assert "6월 학사일정" in june.title
+
+
+def test_calendar_adapter_adds_semester_aggregate_knowledge_docs() -> None:
+    spec, raw, verification = _context()
+    adapter = CalendarAdapter()
+    rows = adapter.parse(spec=spec, raw=raw, verification=verification)
+
+    docs = adapter.to_knowledge_docs(rows)
+
+    first_semester = next(
+        doc
+        for doc in docs
+        if doc.metadata.get("row_type") == "academic_calendar_semester" and doc.metadata.get("semester") == "1학기"
+    )
+    assert first_semester.metadata["period_start"] <= "2026-03-03"
+    assert first_semester.metadata["period_end"] >= "2026-06-22"
+    assert "제1학기 개강일" in first_semester.body
+    assert "하기방학" in first_semester.body
+    assert "1학기 학사일정" in first_semester.title
