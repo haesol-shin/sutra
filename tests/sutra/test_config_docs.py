@@ -1,0 +1,130 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+import pytest
+
+from sutra import Document, load_config
+from sutra.documents import load_documents
+from sutra.errors import ConfigError
+
+
+def test_load_config_resolves_workspace_relative_paths(tmp_path: Path) -> None:
+    (tmp_path / "data").mkdir()
+    (tmp_path / "prompts").mkdir()
+    (tmp_path / "data" / "index.jsonl").write_text("", encoding="utf-8")
+    (tmp_path / "prompts" / "system.md").write_text("system", encoding="utf-8")
+    config_path = tmp_path / "sutra.toml"
+    config_path.write_text(
+        """
+[workspace]
+name = "fixture"
+
+[runtime]
+base_url = "http://127.0.0.1:18080"
+model = "qwen"
+
+[rag]
+index_path = "data/index.jsonl"
+top_k = 4
+
+[prompts]
+system = "prompts/system.md"
+""".strip(),
+        encoding="utf-8",
+    )
+
+    config = load_config(config_path)
+
+    assert config.workspace.name == "fixture"
+    assert config.rag.index_path == (tmp_path / "data" / "index.jsonl").resolve()
+    assert config.prompts.system == (tmp_path / "prompts" / "system.md").resolve()
+    assert config.rag.top_k == 4
+
+
+def test_load_config_reports_missing_file(tmp_path: Path) -> None:
+    with pytest.raises(ConfigError, match="workspace config not found"):
+        load_config(tmp_path / "missing.toml")
+
+
+def test_load_config_rejects_unsupported_backend(tmp_path: Path) -> None:
+    (tmp_path / "data").mkdir()
+    (tmp_path / "prompts").mkdir()
+    (tmp_path / "data" / "index.jsonl").write_text("", encoding="utf-8")
+    (tmp_path / "prompts" / "system.md").write_text("system", encoding="utf-8")
+    config_path = tmp_path / "sutra.toml"
+    config_path.write_text(
+        """
+[workspace]
+name = "fixture"
+
+[runtime]
+backend = "openai"
+
+[rag]
+index_path = "data/index.jsonl"
+
+[prompts]
+system = "prompts/system.md"
+""".strip(),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ConfigError, match="invalid workspace config"):
+        load_config(config_path)
+
+
+def test_load_config_rejects_invalid_numeric_limits(tmp_path: Path) -> None:
+    (tmp_path / "data").mkdir()
+    (tmp_path / "prompts").mkdir()
+    (tmp_path / "data" / "index.jsonl").write_text("", encoding="utf-8")
+    (tmp_path / "prompts" / "system.md").write_text("system", encoding="utf-8")
+    config_path = tmp_path / "sutra.toml"
+    config_path.write_text(
+        """
+[workspace]
+name = "fixture"
+
+[runtime]
+max_tokens = 0
+
+[rag]
+index_path = "data/index.jsonl"
+top_k = 0
+
+[prompts]
+system = "prompts/system.md"
+""".strip(),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ConfigError, match="invalid workspace config"):
+        load_config(config_path)
+
+
+def test_load_documents_reads_jsonl_documents(tmp_path: Path) -> None:
+    path = tmp_path / "index.jsonl"
+    path.write_text(
+        '{"id":"doc-1","title":"Title","text":"Body","source_name":"fixture","metadata":{"label":"notice"}}\n',
+        encoding="utf-8",
+    )
+
+    docs = load_documents(path)
+
+    assert docs == [
+        Document(
+            id="doc-1",
+            title="Title",
+            text="Body",
+            source_name="fixture",
+            metadata={"label": "notice"},
+        )
+    ]
+
+
+def test_load_documents_reports_bad_jsonl_line(tmp_path: Path) -> None:
+    path = tmp_path / "index.jsonl"
+    path.write_text('{"id": "doc-1"}\n', encoding="utf-8")
+
+    with pytest.raises(ConfigError, match="invalid document"):
+        load_documents(path)

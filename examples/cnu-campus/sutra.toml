@@ -1,0 +1,24 @@
+[workspace]
+name = "cnu-campus"
+description = "Minimal CNU Campus ChatBot workspace example"
+timezone = "Asia/Seoul"
+
+[runtime]
+backend = "llama-server"
+base_url = "http://127.0.0.1:18080"
+model = "qwen-local"
+timeout_seconds = 120
+temperature = 0.2
+max_tokens = 512
+
+[rag]
+index_path = "data/index.jsonl"
+top_k = 8
+max_fact_chars = 500
+
+[prompts]
+system = "prompts/system.md"
+answer = "prompts/answer.md"
+
+[evals]
+smoke = "evals/smoke.json"
