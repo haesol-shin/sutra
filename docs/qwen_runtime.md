@@ -78,20 +78,23 @@ $model = "model\generator\Qwen3.5-9B-Q4_K_M.gguf"
 Invoke-WebRequest http://127.0.0.1:18080/health -UseBasicParsing
 ```
 
-## Run Task 2 Sample Through Server
+## Run Sample Through Server
 
-현재 코드의 server backend는 OpenAI-compatible chat completions endpoint를 사용한다.
+Sutra uses the OpenAI-compatible chat completions endpoint provided by `llama-server`. You can query it using `sutra.llama.LlamaClient`:
 
 ```powershell
 uv run python -X utf8 - <<'PY'
-from nlp_term.chat.llama_server_backend import generate_with_llama_server
+from sutra.llama import LlamaClient
+from sutra.models import Message
 
-answer = generate_with_llama_server(
-    prompt="너는 충남대학교 학생을 돕는 챗봇이다.\n\n질문: 셔틀 시간표 어디서 봐?\n\n짧게 답변:",
-    base_url="http://127.0.0.1:18080",
+client = LlamaClient(base_url="http://127.0.0.1:18080")
+result = client.chat(
+    messages=[
+        Message(role="user", content="너는 충남대학교 학생을 돕는 챗봇이다.\n\n질문: 셔틀 시간표 어디서 봐?\n\n짧게 답변:")
+    ],
     max_tokens=160,
 )
-print(answer)
+print(result.content)
 PY
 ```
 
@@ -158,8 +161,11 @@ A: 충남대학교 셔틀버스 시간표는 학교 셔틀버스 운영 안내 �
 다음 작업에서 모델 실행 상태를 확인할 때는 이 순서만 따르면 된다.
 
 1. `Test-Path model\generator\Qwen3.5-9B-Q4_K_M.gguf`
-2. `uv run python -X utf8 -m nlp_term.llm.env_probe --output model/llm_backend_probe_now.json --pretty`
-3. 필요하면 위 `llama-server` 명령으로 서버 실행
-4. Task 2 경로에서는 `llama_server_backend.generate_with_llama_server()` 또는 `llama_compare.py` 사용
+2. 필요하면 위 `llama-server` 명령으로 서버 실행
+3. `sutra doctor` 또는 `sutra llama health` 명령으로 로컬 서버 상태 검증:
+   ```powershell
+   uv run python -m sutra.cli doctor --workspace examples/cnu-campus/sutra.toml
+   ```
+4. Python 코드에서는 `sutra.llama.LlamaClient` 사용
 
 모델 파일명을 다시 찾기 위해 `Get-ChildItem -Recurse model`부터 시작하지 않는다.

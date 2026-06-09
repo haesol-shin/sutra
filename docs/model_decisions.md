@@ -28,6 +28,7 @@
 - `EXAONE-4.0-1.2B`는 Korean-relevant reference로 남긴다. 너무 작으면 generation 품질이 낮을 수 있다.
 - `EXAONE-4.5-33B`는 한국어/문서 이해 측면에서 관심 후보지만 9B/15GB VRAM 제약을 넘어 cut 처리한다.
 
-Model metadata는 `data/model_shortlist.json`에 기록하고 `validators --model-shortlist`로 검사한다.
-Backend 결정과 검증 기준은 `docs/task2_llm_backend_plan.md`에 기록한다.
-Qwen 로컬 실행 계약과 고정 가중치 경로는 `docs/qwen_runtime.md`에 기록한다.
+Model decisions are tracked historically.
+Backend configurations and verification checks are unified under the Sutra doctor command and documented in [docs/sutra_architecture.md](sutra_architecture.md).
+Qwen local execution setup and GGUF paths are recorded in [docs/qwen_runtime.md](qwen_runtime.md).
+

@@ -1,6 +1,11 @@
 # 자연어처리 Term Project 요구조건 정리
 
+> [!NOTE]
+> **Legacy Reference Document:**
+> This document details the original NLP term project requirements for historical reference. The current active project direction is the Sutra RAG engine (see [docs/sutra_architecture.md](sutra_architecture.md)).
+
 작성일: 2026-06-05
+
 
 참조 문서:
 - `docs/2026_자연어처리_term_project.pdf`
@@ -259,7 +264,7 @@ pip freeze > requirements.txt
 - Task 1은 정량 평가이므로 Task 2/3 응답 생성과 실행 경로를 분리하는 것을 우선 검토한다.
 - Task 1 모델 선택 기준은 모델 크기가 아니라 F1 Score, 클래스별 성능, 추론 시간, 모델 파일 크기, Colab/평가 환경 재현성이다.
 - Task 2와 Task 3는 같은 응답 파이프라인을 공유할 수 있으나, Task 3는 실시간 정보 조회 실패 시 기본 응답으로 fallback할 수 있어야 한다.
-- 구현 계획은 `docs/project_architecture_plan.md`를 따른다.
+- 구현 계획은 `docs/sutra_architecture.md`를 따른다.
 - UI는 Gradio로 구현한다.
 - Task 3는 최소 구현으로 진행한다.
 - 최종 제출 환경은 Colab 기준 Python 3.10.12와 과제 문서의 `torch 2.5.1`을 우선한다.
@@ -289,7 +294,7 @@ pip freeze > requirements.txt
 
 이 문서를 기준으로 다음을 순서대로 결정한다.
 
-1. `docs/project_architecture_plan.md`를 기준으로 구현 계획을 세분화한다.
+1. `docs/sutra_architecture.md`를 기준으로 구현 계획을 세분화한다.
 2. `src/classifier.ipynb`, root `chatbot.sh`, schema validator를 먼저 만든다.
 3. 공식 CNU source를 수집하고 raw snapshot과 verification metadata를 남긴다.
 4. Task 1 classification dataset을 구축하고 self-consistency labeling audit을 남긴다.
