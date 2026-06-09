@@ -1,12 +1,19 @@
 from __future__ import annotations
 
+import subprocess
 from pathlib import Path
+from unittest import mock
 
 import pytest
 
-from sutra.models import Message
 from sutra.errors import LlamaError
-from sutra.llama import LlamaClient, download_model, locate_llama_server
+from sutra.llama import (
+    LlamaClient,
+    download_model,
+    locate_llama_server,
+    start_llama_server,
+)
+from sutra.models import Message
 
 
 class FakeResponse:
@@ -174,3 +181,128 @@ def test_download_model_calls_hf_hub_download(monkeypatch: pytest.MonkeyPatch) -
     assert called["local_dir"] == dest.parent
     assert called["local_dir_use_symlinks"] is False
     assert result == dest
+
+
+# --- start_llama_server tests ---
+
+
+def test_start_llama_server_dry_run_basic(capsys: pytest.CaptureFixture) -> None:
+    exe = Path("/usr/bin/llama-server")
+    model = Path("/models/qwen.gguf")
+    result = start_llama_server(
+        executable_path=exe,
+        model_path=model,
+        port=18080,
+        gpu_layers=0,
+        dry_run=True,
+    )
+    captured = capsys.readouterr()
+    assert result is None
+    assert "[dry-run] Command:" in captured.out
+    assert str(exe) in captured.out
+    assert "--model" in captured.out
+    assert str(model) in captured.out
+    assert "--port" in captured.out
+    assert "18080" in captured.out
+    assert "-ngl" not in captured.out
+
+
+def test_start_llama_server_dry_run_with_gpu(capsys: pytest.CaptureFixture) -> None:
+    result = start_llama_server(
+        executable_path=Path("llama-server.exe"),
+        model_path=Path("model.gguf"),
+        port=18080,
+        gpu_layers=24,
+        dry_run=True,
+    )
+    captured = capsys.readouterr()
+    assert result is None
+    assert "-ngl" in captured.out
+    assert "24" in captured.out
+
+
+def test_start_llama_server_missing_model(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr("pathlib.Path.exists", lambda self: False)
+    with pytest.raises(LlamaError, match="Model file not found"):
+        start_llama_server(
+            executable_path=Path("llama-server.exe"),
+            model_path=Path("missing.gguf"),
+            dry_run=False,
+        )
+
+
+def test_start_llama_server_missing_binary(monkeypatch: pytest.MonkeyPatch) -> None:
+    def fake_exists(self: Path) -> bool:
+        return "model" in str(self) or "gguf" in str(self)
+
+    monkeypatch.setattr("pathlib.Path.exists", fake_exists)
+    with pytest.raises(LlamaError, match="llama-server binary not found"):
+        start_llama_server(
+            executable_path=Path("missing.exe"),
+            model_path=Path("model.gguf"),
+            dry_run=False,
+        )
+
+
+def test_start_llama_server_spawns_process(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr("pathlib.Path.exists", lambda self: True)
+    monkeypatch.setattr("sys.platform", "linux")
+
+    mock_process = mock.MagicMock(spec=subprocess.Popen)
+    captured_cmd: list[list[str]] = []
+
+    def fake_popen(cmd: list[str], **kwargs: object) -> mock.MagicMock:
+        captured_cmd.append(cmd)
+        return mock_process
+
+    monkeypatch.setattr("subprocess.Popen", fake_popen)
+
+    result = start_llama_server(
+        executable_path=Path("/usr/bin/llama-server"),
+        model_path=Path("/models/qwen.gguf"),
+        port=18080,
+        gpu_layers=24,
+        dry_run=False,
+    )
+
+    assert result is mock_process
+    assert captured_cmd[0][0] == str(Path("/usr/bin/llama-server"))
+    assert captured_cmd[0][1] == "--model"
+    assert captured_cmd[0][2] == str(Path("/models/qwen.gguf"))
+    assert captured_cmd[0][3] == "--port"
+    assert captured_cmd[0][4] == "18080"
+    assert captured_cmd[0][5] == "-ngl"
+    assert captured_cmd[0][6] == "24"
+
+
+def test_start_llama_server_win32_job_object(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr("sys.platform", "win32")
+    monkeypatch.setattr("pathlib.Path.exists", lambda self: True)
+
+    mock_process = mock.MagicMock(spec=subprocess.Popen)
+    mock_process._handle = 12345
+
+    def fake_popen(cmd: list[str], **kwargs: object) -> mock.MagicMock:
+        return mock_process
+
+    monkeypatch.setattr("subprocess.Popen", fake_popen)
+
+    mock_kernel32 = mock.MagicMock()
+    mock_h_job = mock.MagicMock()
+    mock_kernel32.CreateJobObjectW.return_value = mock_h_job
+    mock_kernel32.SetInformationJobObject.return_value = True
+    mock_kernel32.AssignProcessToJobObject.return_value = True
+
+    monkeypatch.setattr("ctypes.WinDLL", lambda name, use_last_error=True: mock_kernel32)
+
+    result = start_llama_server(
+        executable_path=Path("llama-server.exe"),
+        model_path=Path("model.gguf"),
+        dry_run=False,
+    )
+
+    assert result is mock_process
+    mock_kernel32.CreateJobObjectW.assert_called_once_with(None, None)
+    mock_kernel32.SetInformationJobObject.assert_called_once()
+    mock_kernel32.AssignProcessToJobObject.assert_called_once_with(mock_h_job, 12345)
+    assert mock_process._job_handle is mock_h_job

@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import ctypes
 import os
 import shutil
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -69,6 +72,86 @@ def download_model(
         local_dir_use_symlinks=False,
     )
     return dest_path.resolve()
+
+
+def start_llama_server(
+    executable_path: Path,
+    model_path: Path,
+    port: int = 18080,
+    gpu_layers: int = 0,
+    dry_run: bool = False,
+) -> subprocess.Popen | None:
+    cmd = [str(executable_path), "--model", str(model_path), "--port", str(port)]
+    if gpu_layers > 0:
+        cmd.extend(["-ngl", str(gpu_layers)])
+
+    if dry_run:
+        print(f"[dry-run] Command: {' '.join(cmd)}")
+        return None
+
+    if not model_path.exists():
+        raise LlamaError(
+            f"Model file not found at: {model_path}. Please download it first using 'sutra llama download'"
+        )
+    if not executable_path.exists():
+        raise LlamaError(f"llama-server binary not found at: {executable_path}")
+
+    process = subprocess.Popen(cmd)
+
+    if sys.platform == "win32":
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+
+        JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE = 0x2000
+
+        class JOBOBJECT_BASIC_LIMIT_INFORMATION(ctypes.Structure):
+            _fields_ = [
+                ("PerProcessUserTimeLimit", ctypes.c_int64),
+                ("PerJobUserTimeLimit", ctypes.c_int64),
+                ("LimitFlags", ctypes.c_uint32),
+                ("MinimumWorkingSetSize", ctypes.c_void_p),
+                ("MaximumWorkingSetSize", ctypes.c_void_p),
+                ("ActiveProcessLimit", ctypes.c_uint32),
+                ("Affinity", ctypes.c_void_p),
+                ("PriorityClass", ctypes.c_uint32),
+                ("SchedulingClass", ctypes.c_uint32),
+            ]
+
+        class IO_COUNTERS(ctypes.Structure):
+            _fields_ = [
+                ("ReadOperationCount", ctypes.c_uint64),
+                ("WriteOperationCount", ctypes.c_uint64),
+                ("OtherOperationCount", ctypes.c_uint64),
+                ("ReadTransferCount", ctypes.c_uint64),
+                ("WriteTransferCount", ctypes.c_uint64),
+                ("OtherTransferCount", ctypes.c_uint64),
+            ]
+
+        class JOBOBJECT_EXTENDED_LIMIT_INFORMATION(ctypes.Structure):
+            _fields_ = [
+                ("BasicLimitInformation", JOBOBJECT_BASIC_LIMIT_INFORMATION),
+                ("IoInfo", IO_COUNTERS),
+                ("ProcessMemoryLimit", ctypes.c_void_p),
+                ("JobMemoryLimit", ctypes.c_void_p),
+                ("PeakProcessMemoryUsed", ctypes.c_void_p),
+                ("PeakJobMemoryUsed", ctypes.c_void_p),
+            ]
+
+        h_job = kernel32.CreateJobObjectW(None, None)
+
+        info = JOBOBJECT_EXTENDED_LIMIT_INFORMATION()
+        info.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
+
+        kernel32.SetInformationJobObject(
+            h_job,
+            9,
+            ctypes.byref(info),
+            ctypes.sizeof(info),
+        )
+
+        kernel32.AssignProcessToJobObject(h_job, process._handle)
+        process._job_handle = h_job
+
+    return process
 
 
 class LlamaClient:
