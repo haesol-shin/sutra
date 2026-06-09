@@ -164,7 +164,7 @@ def start_llama_server(
 
 
 class LlamaClient:
-    def __init__(self, base_url: str = "http://127.0.0.1:8080", timeout_seconds: int = 120) -> None:
+    def __init__(self, base_url: str = "http://127.0.0.1:18080", timeout_seconds: int = 120) -> None:
         self.base_url = normalize_base_url(base_url)
         self.timeout_seconds = timeout_seconds
 

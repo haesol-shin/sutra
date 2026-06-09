@@ -22,7 +22,7 @@ class WorkspaceConfig(BaseModel):
 
 class RuntimeConfig(BaseModel):
     backend: Literal["llama-server"] = "llama-server"
-    base_url: str = "http://127.0.0.1:8080"
+    base_url: str = "http://127.0.0.1:18080"
     model: str = "local-model"
     model_path: Path | None = None
     reasoning: Literal["on", "off", "auto"] | None = None
