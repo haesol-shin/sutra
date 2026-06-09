@@ -1,8 +1,6 @@
 import sys
-import re
 import json
 from pathlib import Path
-import pytest
 
 # Resolve paths to allow importing examples/cnu-campus/scripts modules
 tests_dir = Path(__file__).resolve().parent
@@ -10,8 +8,8 @@ project_root = tests_dir.parent.parent.parent
 scripts_dir = project_root / "examples" / "cnu-campus" / "scripts"
 sys.path.insert(0, str(scripts_dir))
 
-from cnu_dining import parse_dining_file, normalize_menu_text, should_skip_record, MenuRecord
-from build_dining_index import is_standalone_eligible, build_markdown_body, check_date_mismatches
+from cnu_dining import parse_dining_file, normalize_menu_text, should_skip_record, MenuRecord  # noqa: E402
+from build_dining_index import is_standalone_eligible, build_markdown_body, check_date_mismatches  # noqa: E402
 
 def test_normalize_menu_text():
     text = "  참치김치찌개 \n\n   고추마요떡갈비   "
@@ -153,3 +151,24 @@ def test_report_schema_and_contents():
         assert "hinted_dates" in mismatch
         assert "parsed_dates" in mismatch
         assert mismatch["reason"] == "filename_or_url_date_not_in_parsed_dates"
+
+
+def test_generated_dining_index_uses_sutra_document_text_schema():
+    index_path = project_root / "examples" / "cnu-campus" / "data" / "processed" / "dining-index.jsonl"
+
+    if not index_path.exists():
+        from build_dining_index import main as build_main
+        build_main()
+
+    rows = [json.loads(line) for line in index_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    assert rows
+    for row in rows:
+        assert "id" in row
+        assert "title" in row
+        assert "text" in row
+        assert "body" not in row
+        assert row["domain"] == "dining"
+        assert row["source_name"] == "충남대학교 생활협동조합 식단"
+        assert row["source_url"]
+        assert row["metadata"]["date"]
+        assert row["metadata"]["cafeteria"]

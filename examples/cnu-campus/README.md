@@ -1,8 +1,11 @@
 # CNU Campus Workspace
 
-This is a minimal Sutra workspace example for the CNU Campus ChatBot use case.
+A Sutra workspace for the CNU Campus ChatBot use case.
 
-It is intentionally outside `src/sutra` so Sutra stays a reusable local RAG runtime instead of a repository of built-in projects.
+The active checked-in index is a small dining proof of concept built from raw
+CNU dining HTML. It is intentionally separate from the legacy 2414-document
+`knowledge_seed.json` corpus, which is noisy and should not be treated as the
+canonical Sutra workspace index.
 
 Try it with the echo backend:
 

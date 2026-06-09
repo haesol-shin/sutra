@@ -430,9 +430,10 @@ def main(argv: Sequence[str] | None = None) -> int:
 
         human_string = ""
         if status == "ok":
+            index_path = load_config(toml_path).rag.index_path if toml_path else ""
             human_string = (
                 f"Document index check passed.\n"
-                f"Path: {toml_path.parent / 'data/index.jsonl' if toml_path else ''}\n"
+                f"Path: {index_path}\n"
                 f"Total documents: {report['total_documents']}\n"
                 f"Invalid lines: {report['invalid_lines']}\n"
                 f"Duplicate IDs: {report['duplicate_ids']}\n"

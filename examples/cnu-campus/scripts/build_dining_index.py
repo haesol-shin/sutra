@@ -1,10 +1,9 @@
-import os
 import json
 import re
 from pathlib import Path
 from collections import defaultdict
 from typing import List, Optional
-from cnu_dining import parse_dining_file, MenuRecord
+from cnu_dining import parse_dining_file
 
 def check_date_mismatches(file_path_str: str, source_url: Optional[str], parsed_dates: List[str]) -> Optional[dict]:
     # Extract hinted dates from filename and URL
@@ -186,8 +185,9 @@ def main():
             "id": chunk_id,
             "domain": "dining",
             "title": f"{date} {cafeteria} 식단",
-            "body": body,
-            "source_url": source_urls[0] if source_urls else None,
+            "text": body,
+            "source_url": source_urls[0] if source_urls else "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+            "source_name": "충남대학교 생활협동조합 식단",
             "source_path": rel_source_paths[0] if rel_source_paths else None,
             "fetched_at": fetched_ats[0] if fetched_ats else None,
             "derived_from": derived_from,
