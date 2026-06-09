@@ -398,7 +398,6 @@ def main(argv: Sequence[str] | None = None) -> int:
                     workspace_path=None,
                     errors=[str(exc)],
                     json_mode=getattr(args, "json", False),
-                    human_string=f"Error: {exc}",
                 )
 
     if args.command == "ask":
