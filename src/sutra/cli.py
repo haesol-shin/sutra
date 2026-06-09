@@ -56,10 +56,12 @@ def resolve_workspace_path(cli_workspace: str | None = None) -> Path:
         if toml_path.exists() and toml_path.is_file():
             return toml_path
 
-    # 4. If not found, fail with an actionable message and exit code 2
+    # 4. If not found, fail with a concrete example and exit code 2
     raise WorkspaceResolutionError(
-        "Workspace config not found. Please provide --workspace <path>, "
-        "set SUTRA_WORKSPACE, or run in a workspace directory containing sutra.toml."
+        "Workspace config not found. Use one of:\n"
+        "  --workspace examples/cnu-campus/sutra.toml\n"
+        "  SUTRA_WORKSPACE=examples/cnu-campus/sutra.toml\n"
+        "  cd examples/cnu-campus"
     )
 
 
@@ -69,8 +71,10 @@ def validate_workspace(toml_path: Path | None) -> dict[str, Any]:
             "status": "fail",
             "exit_code": 2,
             "errors": [
-                "Workspace config not found. Please provide --workspace <path>, "
-                "set SUTRA_WORKSPACE, or run in a workspace directory containing sutra.toml."
+                "Workspace config not found. Use one of:\n"
+                "  --workspace examples/cnu-campus/sutra.toml\n"
+                "  SUTRA_WORKSPACE=examples/cnu-campus/sutra.toml\n"
+                "  cd examples/cnu-campus"
             ],
             "config": None,
         }
@@ -536,6 +540,10 @@ def main(argv: Sequence[str] | None = None) -> int:
 
         exe_path = locate_llama_server(args.llama_path)
         model_path = config.runtime.model_path
+
+        if args.dry_run:
+            print(f"Resolved model path: {model_path}")
+
         reasoning_val = args.reasoning if args.reasoning is not None else config.runtime.reasoning
         process = start_llama_server(exe_path, model_path, port=port, gpu_layers=args.gpu_layers, reasoning=reasoning_val, dry_run=args.dry_run)
 

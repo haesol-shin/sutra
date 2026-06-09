@@ -40,7 +40,7 @@ The workspace contains the following scripts:
 
 ## Model Setup
 
-The workspace is configured to use `Qwen3.5-9B-Q4_K_M.gguf` (see `runtime.model_path` in [sutra.toml](sutra.toml)). Download it and launch the server:
+This workspace no longer pins a repo-relative model path. When `runtime.model_path` is omitted, Sutra uses the user cache default (`~/.cache/sutra/models/` on Linux/macOS or `%LOCALAPPDATA%/sutra/models/` on Windows). Download the default `Qwen3.5-9B-Q4_K_M.gguf` model and launch the server:
 
 ```powershell
 # Requires the `rag` optional extra
@@ -56,4 +56,13 @@ uv run sutra llama serve --workspace examples/cnu-campus/sutra.toml
 Ask a question using the echo backend to verify the workspace is parsed correctly:
 ```powershell
 uv run sutra ask --workspace examples/cnu-campus/sutra.toml --echo "수강신청은 언제 시작하나요?"
+```
+
+### Workspace Shortcut
+
+Set `SUTRA_WORKSPACE` once and omit `--workspace` on every command:
+
+```powershell
+$env:SUTRA_WORKSPACE = "examples/cnu-campus/sutra.toml"
+uv run sutra ask --echo "수강신청은 언제 시작하나요?"
 ```

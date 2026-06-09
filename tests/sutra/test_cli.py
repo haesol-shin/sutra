@@ -4,6 +4,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from sutra.cli import build_parser, main
+from sutra.config import load_config
 
 
 def test_cli_ask_uses_echo_client(tmp_path: Path, capsys) -> None:
@@ -209,9 +210,11 @@ def test_llama_download_with_dest(tmp_path: Path, capsys) -> None:
     assert result == 0
 
 
-def test_llama_download_default_dest_is_model_dir(tmp_path: Path) -> None:
+def test_llama_download_default_dest_is_cache_dir(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
+    monkeypatch.delenv("LOCALAPPDATA", raising=False)
     workspace = _write_workspace(tmp_path)
-    expected_dir = tmp_path / "model" / "generator"
+    expected_dir = tmp_path / ".cache" / "sutra" / "models"
 
     with patch("sutra.cli.download_model") as mock_download:
         main(["llama", "download", "--workspace", str(workspace)])
@@ -259,3 +262,56 @@ def test_llama_serve_reasoning_fallback_and_override(tmp_path: Path) -> None:
         main(["llama", "serve", "--workspace", str(workspace), "--reasoning", "on", "--dry-run"])
 
     assert mock_start.call_args[1]["reasoning"] == "on"
+
+
+def test_llama_serve_dry_run_shows_resolved_model_path(tmp_path: Path, monkeypatch, capsys) -> None:
+    monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
+    monkeypatch.delenv("LOCALAPPDATA", raising=False)
+    workspace = _write_workspace(tmp_path)
+
+    with (
+        patch("sutra.cli.locate_llama_server", return_value=Path("/fake/llama-server")),
+        patch("sutra.cli.start_llama_server", return_value=None),
+    ):
+        main(["llama", "serve", "--workspace", str(workspace), "--dry-run"])
+
+    out = capsys.readouterr().out
+    expected_path = (tmp_path / ".cache" / "sutra" / "models" / "Qwen3.5-9B-Q4_K_M.gguf").resolve()
+    assert "Resolved model path:" in out
+    assert str(expected_path) in out
+
+
+def test_cnu_workspace_resolves_to_default_cache(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
+    monkeypatch.delenv("LOCALAPPDATA", raising=False)
+    cnu_dir = tmp_path / "cnu"
+    (cnu_dir / "data" / "processed").mkdir(parents=True)
+    (cnu_dir / "prompts").mkdir(parents=True)
+    (cnu_dir / "data" / "processed" / "knowledge-index.jsonl").write_text("", encoding="utf-8")
+    (cnu_dir / "prompts" / "system.md").write_text("system", encoding="utf-8")
+    (cnu_dir / "prompts" / "answer.md").write_text("answer", encoding="utf-8")
+    config_path = cnu_dir / "sutra.toml"
+    config_path.write_text(
+        """
+[workspace]
+name = "cnu-campus"
+
+[runtime]
+base_url = "http://127.0.0.1:18080"
+model = "qwen-local"
+
+[rag]
+index_path = "data/processed/knowledge-index.jsonl"
+top_k = 8
+
+[prompts]
+system = "prompts/system.md"
+answer = "prompts/answer.md"
+""".strip(),
+        encoding="utf-8",
+    )
+
+    config = load_config(config_path)
+
+    expected = (tmp_path / ".cache" / "sutra" / "models" / "Qwen3.5-9B-Q4_K_M.gguf").resolve()
+    assert config.runtime.model_path == expected

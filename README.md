@@ -95,6 +95,55 @@ uv run sutra ask --workspace examples/cnu-campus/sutra.toml --echo "수강신청
 
 ---
 
+## Model Path Resolution
+
+When no explicit model path is configured, Sutra stores and looks for models in the user cache directory:
+- **Linux/macOS**: `~/.cache/sutra/models/Qwen3.5-9B-Q4_K_M.gguf`
+- **Windows**: `%LOCALAPPDATA%/sutra/models/Qwen3.5-9B-Q4_K_M.gguf`
+
+The resolution precedence is:
+
+1. **`SUTRA_MODEL_PATH`** — Exact GGUF model file path (highest priority, overrides everything)
+2. **`runtime.model_path`** — Path from workspace config (resolved relative to workspace root if relative)
+3. **`SUTRA_MODEL_DIR`** — Directory containing the default GGUF filename (only when no exact path is set)
+4. **User cache default** — Platform-appropriate cache directory
+
+> [!NOTE]
+> Do not confuse `SUTRA_MODEL_PATH` (file path) with `SUTRA_MODEL` (llama-server model label). The latter only controls the `model` field in the OpenAI-compatible API request body.
+
+---
+
+## Workspace Selection Shortcuts
+
+Sutra resolves the workspace config (`sutra.toml`) in this order:
+1. `--workspace <path>` CLI argument
+2. `SUTRA_WORKSPACE` environment variable
+3. Walk upward from the current directory
+
+To avoid repeating `--workspace examples/cnu-campus/sutra.toml`:
+
+**Set the environment variable (PowerShell):**
+```powershell
+$env:SUTRA_WORKSPACE = "examples/cnu-campus/sutra.toml"
+uv run sutra ask --echo "수강신청은 언제 시작하나요?"
+```
+
+**Set the environment variable (cmd):**
+```cmd
+set SUTRA_WORKSPACE=examples\cnu-campus\sutra.toml
+uv run sutra ask --echo "수강신청은 언제 시작하나요?"
+```
+
+**Run from the workspace directory:**
+```powershell
+cd examples/cnu-campus
+uv run sutra ask --echo "수강신청은 언제 시작하나요?"
+```
+
+These shortcuts work with any command that accepts `--workspace`, including `sutra ask`, `sutra docs check`, `sutra workspace validate`, `sutra doctor`, and all `sutra llama` subcommands.
+
+---
+
 ## Project Documentation
 - [Sutra Architecture](docs/sutra_architecture.md): Deep dive into the RAG package boundaries, config, and runtime.
 - [Project State](docs/project_state.md): Active next areas, corpus counts, and legacy status.

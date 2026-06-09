@@ -78,7 +78,9 @@ system = "prompts/system.md"
     assert config.runtime.model_path == model_file.resolve()
 
 
-def test_load_config_defaults_model_path_when_omitted(tmp_path: Path) -> None:
+def test_load_config_defaults_model_path_when_omitted(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
+    monkeypatch.delenv("LOCALAPPDATA", raising=False)
     (tmp_path / "data").mkdir()
     (tmp_path / "prompts").mkdir()
     (tmp_path / "data" / "index.jsonl").write_text("", encoding="utf-8")
@@ -104,8 +106,164 @@ system = "prompts/system.md"
     config = load_config(config_path)
 
     assert config.runtime.model_path == (
-        tmp_path / "model" / "generator" / "Qwen3.5-9B-Q4_K_M.gguf"
+        tmp_path / ".cache" / "sutra" / "models" / "Qwen3.5-9B-Q4_K_M.gguf"
     ).resolve()
+
+
+def test_sutra_model_path_env_override(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
+    monkeypatch.delenv("LOCALAPPDATA", raising=False)
+    (tmp_path / "data").mkdir()
+    (tmp_path / "prompts").mkdir()
+    (tmp_path / "data" / "index.jsonl").write_text("", encoding="utf-8")
+    (tmp_path / "prompts" / "system.md").write_text("system", encoding="utf-8")
+    config_path = tmp_path / "sutra.toml"
+    config_path.write_text(
+        """
+[workspace]
+name = "fixture"
+
+[rag]
+index_path = "data/index.jsonl"
+
+[prompts]
+system = "prompts/system.md"
+""".strip(),
+        encoding="utf-8",
+    )
+
+    model_path_override = tmp_path / "overrides" / "my-model.gguf"
+    monkeypatch.setenv("SUTRA_MODEL_PATH", str(model_path_override))
+
+    config = load_config(config_path)
+
+    assert config.runtime.model_path == model_path_override.resolve()
+
+
+def test_sutra_model_path_env_overrides_configured(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
+    monkeypatch.delenv("LOCALAPPDATA", raising=False)
+    (tmp_path / "data").mkdir()
+    (tmp_path / "prompts").mkdir()
+    (tmp_path / "model" / "generator").mkdir(parents=True)
+    (tmp_path / "data" / "index.jsonl").write_text("", encoding="utf-8")
+    (tmp_path / "prompts" / "system.md").write_text("system", encoding="utf-8")
+    config_path = tmp_path / "sutra.toml"
+    config_path.write_text(
+        """
+[workspace]
+name = "fixture"
+
+[runtime]
+model_path = "model/generator/Qwen3.5-9B-Q4_K_M.gguf"
+
+[rag]
+index_path = "data/index.jsonl"
+
+[prompts]
+system = "prompts/system.md"
+""".strip(),
+        encoding="utf-8",
+    )
+
+    model_path_override = tmp_path / "overrides" / "override.gguf"
+    monkeypatch.setenv("SUTRA_MODEL_PATH", str(model_path_override))
+
+    config = load_config(config_path)
+
+    assert config.runtime.model_path == model_path_override.resolve()
+
+
+def test_sutra_model_dir_env_fallback(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
+    monkeypatch.delenv("LOCALAPPDATA", raising=False)
+    (tmp_path / "data").mkdir()
+    (tmp_path / "prompts").mkdir()
+    (tmp_path / "data" / "index.jsonl").write_text("", encoding="utf-8")
+    (tmp_path / "prompts" / "system.md").write_text("system", encoding="utf-8")
+    config_path = tmp_path / "sutra.toml"
+    config_path.write_text(
+        """
+[workspace]
+name = "fixture"
+
+[rag]
+index_path = "data/index.jsonl"
+
+[prompts]
+system = "prompts/system.md"
+""".strip(),
+        encoding="utf-8",
+    )
+
+    model_dir = tmp_path / "my-models"
+    monkeypatch.setenv("SUTRA_MODEL_DIR", str(model_dir))
+
+    config = load_config(config_path)
+
+    assert config.runtime.model_path == (model_dir / "Qwen3.5-9B-Q4_K_M.gguf").resolve()
+
+
+def test_sutra_model_dir_not_used_when_config_model_path_exists(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
+    monkeypatch.delenv("LOCALAPPDATA", raising=False)
+    (tmp_path / "data").mkdir()
+    (tmp_path / "prompts").mkdir()
+    (tmp_path / "data" / "index.jsonl").write_text("", encoding="utf-8")
+    (tmp_path / "prompts" / "system.md").write_text("system", encoding="utf-8")
+    config_path = tmp_path / "sutra.toml"
+    config_path.write_text(
+        """
+[workspace]
+name = "fixture"
+
+[runtime]
+model_path = "../other-model.gguf"
+
+[rag]
+index_path = "data/index.jsonl"
+
+[prompts]
+system = "prompts/system.md"
+""".strip(),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setenv("SUTRA_MODEL_DIR", str(tmp_path / "ignored-models"))
+
+    config = load_config(config_path)
+
+    assert config.runtime.model_path == (tmp_path.parent / "other-model.gguf").resolve()
+
+
+def test_absolute_model_path_preserved(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
+    monkeypatch.delenv("LOCALAPPDATA", raising=False)
+    (tmp_path / "data").mkdir()
+    (tmp_path / "prompts").mkdir()
+    (tmp_path / "data" / "index.jsonl").write_text("", encoding="utf-8")
+    (tmp_path / "prompts" / "system.md").write_text("system", encoding="utf-8")
+    config_path = tmp_path / "sutra.toml"
+    config_path.write_text(
+        """
+[workspace]
+name = "fixture"
+
+[runtime]
+model_path = "/absolute/path/to/model.gguf"
+
+[rag]
+index_path = "data/index.jsonl"
+
+[prompts]
+system = "prompts/system.md"
+""".strip(),
+        encoding="utf-8",
+    )
+
+    config = load_config(config_path)
+
+    assert config.runtime.model_path == Path("/absolute/path/to/model.gguf").resolve()
 
 
 def test_load_config_rejects_unsupported_backend(tmp_path: Path) -> None:

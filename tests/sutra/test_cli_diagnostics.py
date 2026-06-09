@@ -50,9 +50,9 @@ def test_resolve_workspace_priority(tmp_path, monkeypatch) -> None:
     resolved = resolve_workspace_path(None)
     assert resolved == cwd_toml
     
-    # 5. Not found raises WorkspaceResolutionError
+    # 5. Not found raises WorkspaceResolutionError with actionable examples
     monkeypatch.chdir(tmp_path)  # tmp_path has no sutra.toml in parents
-    with pytest.raises(WorkspaceResolutionError):
+    with pytest.raises(WorkspaceResolutionError, match="--workspace"):
         resolve_workspace_path(None)
 
 

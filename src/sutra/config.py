@@ -47,6 +47,34 @@ class EvalConfig(BaseModel):
     regression: Path | None = None
 
 
+DEFAULT_MODEL_FILENAME = "Qwen3.5-9B-Q4_K_M.gguf"
+
+
+def _default_model_dir() -> Path:
+    if os.name == "nt" and os.getenv("LOCALAPPDATA"):
+        base = Path(os.environ["LOCALAPPDATA"])
+    else:
+        base = Path.home() / ".cache"
+    return base / "sutra" / "models"
+
+
+def _default_model_path() -> Path:
+    return _default_model_dir() / DEFAULT_MODEL_FILENAME
+
+
+def _resolve_model_path(root: Path, configured_path: Path | None) -> Path:
+    if env_path := os.getenv("SUTRA_MODEL_PATH"):
+        return Path(env_path).expanduser().resolve()
+
+    if configured_path is not None:
+        return _resolve(root, configured_path)
+
+    if env_dir := os.getenv("SUTRA_MODEL_DIR"):
+        return (Path(env_dir).expanduser().resolve() / DEFAULT_MODEL_FILENAME)
+
+    return _default_model_path()
+
+
 class Config(BaseModel):
     path: Path
     root: Path
@@ -106,12 +134,7 @@ def _resolve_paths(config: Config) -> Config:
         data["evals"]["smoke"] = _resolve(root, config.evals.smoke)
     if config.evals.regression is not None:
         data["evals"]["regression"] = _resolve(root, config.evals.regression)
-    if config.runtime.model_path is not None:
-        data["runtime"]["model_path"] = _resolve(root, config.runtime.model_path)
-    else:
-        data["runtime"]["model_path"] = _resolve(
-            root, Path("model/generator/Qwen3.5-9B-Q4_K_M.gguf")
-        )
+    data["runtime"]["model_path"] = _resolve_model_path(root, config.runtime.model_path)
     return Config.model_validate(data)
 
 

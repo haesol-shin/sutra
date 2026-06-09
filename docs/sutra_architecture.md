@@ -135,7 +135,7 @@ answer = "prompts/answer.md"
 
 All relative paths resolve from the `sutra.toml` directory.
 
-`runtime.model_path` is optional — if omitted it defaults to `model/generator/Qwen3.5-9B-Q4_K_M.gguf`. `runtime.reasoning` is also optional; when set to `"on"`, `"off"`, or `"auto"` it controls the `--reasoning` flag passed to `llama-server`.
+`runtime.model_path` is optional — if omitted, model storage defaults to the user cache directory (`~/.cache/sutra/models/` on Linux/macOS, `%LOCALAPPDATA%/sutra/models/` on Windows). `runtime.reasoning` is also optional; when set to `"on"`, `"off"`, or `"auto"` it controls the `--reasoning` flag passed to `llama-server`.
 
 ## Runtime
 
@@ -156,7 +156,7 @@ The CLI includes convenience commands for local development and evaluation:
 - **`sutra llama download`** — Downloads a GGUF model from Hugging Face via `huggingface_hub`. Requires the `rag` optional extra. Destination defaults to `runtime.model_path`; override with `--dest`.
 - **`sutra llama health`** — Checks `GET /health` of the configured base URL.
 
-`runtime.model_path` and `runtime.reasoning` are optional config fields. If `model_path` is unset, it defaults to `model/generator/Qwen3.5-9B-Q4_K_M.gguf` relative to the workspace root.
+`runtime.model_path` and `runtime.reasoning` are optional config fields. If `model_path` is unset, Sutra resolves the model path from `SUTRA_MODEL_PATH`, `SUTRA_MODEL_DIR`, or the system user cache (`~/.cache/sutra/models/`). Workspace config describes RAG docs and prompts; large model artifacts should not be committed to the repository.
 
 CUDA and XPU support belong to llama.cpp build/runtime documentation and launch profiles. Sutra core speaks HTTP regardless of acceleration backend.
 
