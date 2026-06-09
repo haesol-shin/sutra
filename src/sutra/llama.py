@@ -14,6 +14,19 @@ from sutra.errors import LlamaError
 from sutra.models import LlamaResult, Message
 
 
+class EchoClient:
+    def chat(
+        self,
+        messages: list[Message],
+        *,
+        model: str | None = None,
+        temperature: float = 0.2,
+        max_tokens: int = 512,
+    ) -> LlamaResult:
+        del temperature, max_tokens
+        return LlamaResult(content=f"[echo:{model or 'local'}] {messages[-1].content}", model=model)
+
+
 
 def locate_llama_server(cli_path: str | Path | None = None) -> Path:
     if cli_path:

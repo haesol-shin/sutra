@@ -58,6 +58,9 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+sutra = ["resources/ui/*"]
+
 [tool.uv.sources]
 torch = { index = "pytorch-xpu" }
 pytorch-triton-xpu = { index = "pytorch-xpu" }
@@ -66,3 +69,8 @@ pytorch-triton-xpu = { index = "pytorch-xpu" }
 name = "pytorch-xpu"
 url = "https://download.pytorch.org/whl/xpu"
 explicit = true
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: mark test as an integration test.",
+]

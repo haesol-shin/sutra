@@ -13,22 +13,9 @@ import requests
 
 from sutra.config import Config, load_config
 from sutra.errors import ConfigError, LlamaError, WorkspaceResolutionError
-from sutra.llama import download_model, locate_llama_server, start_llama_server
-from sutra.models import Document, LlamaResult, Message
+from sutra.llama import download_model, EchoClient, locate_llama_server, start_llama_server
+from sutra.models import Document
 from sutra.service import ask
-
-
-class EchoClient:
-    def chat(
-        self,
-        messages: list[Message],
-        *,
-        model: str | None = None,
-        temperature: float = 0.2,
-        max_tokens: int = 512,
-    ) -> LlamaResult:
-        del temperature, max_tokens
-        return LlamaResult(content=f"[echo:{model or 'local'}] {messages[-1].content}", model=model)
 
 
 def resolve_workspace_path(cli_workspace: str | None = None) -> Path:
@@ -380,6 +367,13 @@ def build_parser() -> argparse.ArgumentParser:
     doctor_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
     doctor_parser.add_argument("--json", action="store_true", help="Print the structured response as JSON.")
 
+    # 6. sutra ui
+    ui_parser = subparsers.add_parser("ui", help="Launch the Sutra Chainlit web UI.")
+    ui_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
+    ui_parser.add_argument("--host", default="127.0.0.1", help="Host to bind the UI server to.")
+    ui_parser.add_argument("--port", type=int, default=8000, help="Port to run the UI server on.")
+    ui_parser.add_argument("--echo", action="store_true", help="Use echo LLM client (no real LLM needed).")
+
     return parser
 
 
@@ -388,7 +382,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     toml_path = None
-    if args.command in {"ask", "workspace", "docs", "llama", "doctor"}:
+    if args.command in {"ask", "workspace", "docs", "llama", "doctor", "ui"}:
         cli_workspace = getattr(args, "workspace", None)
         try:
             toml_path = resolve_workspace_path(cli_workspace)
@@ -656,6 +650,85 @@ def main(argv: Sequence[str] | None = None) -> int:
             extra_fields=extra,
             human_string=human_string.strip(),
         )
+
+    elif args.command == "ui":
+        import importlib.resources
+        import importlib.util
+        import pathlib
+        import shutil
+        import subprocess
+        import tempfile
+
+        if importlib.util.find_spec("chainlit") is None:
+            return output_result(
+                status="fail",
+                exit_code=1,
+                workspace_path=toml_path,
+                errors=["chainlit is not installed. Install it with: uv sync --extra ui"],
+                json_mode=False,
+                human_string="chainlit is not installed. Install it with: uv sync --extra ui",
+            )
+
+        ui_path = importlib.resources.files("sutra").joinpath("ui.py")
+        env = os.environ.copy()
+        env["SUTRA_WORKSPACE"] = str(toml_path)
+        if args.echo:
+            env["SUTRA_ECHO"] = "1"
+
+        temp_dir = tempfile.TemporaryDirectory(prefix="sutra-ui-")
+        env["CHAINLIT_APP_ROOT"] = temp_dir.name
+        chainlit_dir = pathlib.Path(temp_dir.name) / ".chainlit"
+        chainlit_dir.mkdir(exist_ok=True)
+
+        # Priority: 1) cwd/.chainlit/config.toml  2) workspace/.chainlit/config.toml  3) packaged default
+        user_config = None
+        cwd_local = pathlib.Path.cwd() / ".chainlit" / "config.toml"
+        if cwd_local.exists():
+            user_config = cwd_local
+        if user_config is None:
+            ws_config = toml_path.parent / ".chainlit" / "config.toml"
+            if ws_config.exists():
+                user_config = ws_config
+
+        if user_config:
+            shutil.copy2(user_config, chainlit_dir / "config.toml")
+        else:
+            pkg_dir = pathlib.Path(__file__).resolve().parent
+            pkg_config = pkg_dir / "resources" / "ui" / "chainlit_config.toml"
+            shutil.copy2(pkg_config, chainlit_dir / "config.toml")
+
+        cmd = [
+            sys.executable,
+            "-m",
+            "chainlit",
+            "run",
+            str(ui_path),
+            "--host",
+            args.host,
+            "--port",
+            str(args.port),
+        ]
+
+        process = subprocess.Popen(cmd, cwd=temp_dir.name, env=env)
+
+        try:
+            process.wait()
+        except KeyboardInterrupt:
+            process.terminate()
+            process.wait()
+        finally:
+            try:
+                temp_dir.cleanup()
+            except (PermissionError, OSError):
+                pass
+
+        if process.returncode > 0:
+            print(
+                f"Warning: chainlit exited with code {process.returncode}",
+                file=sys.stderr,
+            )
+
+        return process.returncode
 
     parser.error(f"unknown command: {args.command}")
     return 2
