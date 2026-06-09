@@ -24,6 +24,7 @@ class RuntimeConfig(BaseModel):
     backend: Literal["llama-server"] = "llama-server"
     base_url: str = "http://127.0.0.1:8080"
     model: str = "local-model"
+    model_path: Path | None = None
     timeout_seconds: int = Field(default=120, gt=0)
     temperature: float = Field(default=0.2, ge=0.0, le=2.0)
     max_tokens: int = Field(default=512, gt=0)
@@ -104,6 +105,12 @@ def _resolve_paths(config: Config) -> Config:
         data["evals"]["smoke"] = _resolve(root, config.evals.smoke)
     if config.evals.regression is not None:
         data["evals"]["regression"] = _resolve(root, config.evals.regression)
+    if config.runtime.model_path is not None:
+        data["runtime"]["model_path"] = _resolve(root, config.runtime.model_path)
+    else:
+        data["runtime"]["model_path"] = _resolve(
+            root, Path("model/generator/Qwen3.5-9B-Q4_K_M.gguf")
+        )
     return Config.model_validate(data)
 
 

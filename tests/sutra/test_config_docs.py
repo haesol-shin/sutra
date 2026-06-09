@@ -47,6 +47,67 @@ def test_load_config_reports_missing_file(tmp_path: Path) -> None:
         load_config(tmp_path / "missing.toml")
 
 
+def test_load_config_resolves_explicit_model_path(tmp_path: Path) -> None:
+    (tmp_path / "data").mkdir()
+    (tmp_path / "prompts").mkdir()
+    (tmp_path / "model" / "generator").mkdir(parents=True)
+    (tmp_path / "data" / "index.jsonl").write_text("", encoding="utf-8")
+    (tmp_path / "prompts" / "system.md").write_text("system", encoding="utf-8")
+    model_file = tmp_path / "model" / "generator" / "Qwen3.5-9B-Q4_K_M.gguf"
+    model_file.write_text("dummy model content", encoding="utf-8")
+    config_path = tmp_path / "sutra.toml"
+    config_path.write_text(
+        """
+[workspace]
+name = "fixture"
+
+[runtime]
+model_path = "model/generator/Qwen3.5-9B-Q4_K_M.gguf"
+
+[rag]
+index_path = "data/index.jsonl"
+
+[prompts]
+system = "prompts/system.md"
+""".strip(),
+        encoding="utf-8",
+    )
+
+    config = load_config(config_path)
+
+    assert config.runtime.model_path == model_file.resolve()
+
+
+def test_load_config_defaults_model_path_when_omitted(tmp_path: Path) -> None:
+    (tmp_path / "data").mkdir()
+    (tmp_path / "prompts").mkdir()
+    (tmp_path / "data" / "index.jsonl").write_text("", encoding="utf-8")
+    (tmp_path / "prompts" / "system.md").write_text("system", encoding="utf-8")
+    config_path = tmp_path / "sutra.toml"
+    config_path.write_text(
+        """
+[workspace]
+name = "fixture"
+
+[runtime]
+base_url = "http://127.0.0.1:18080"
+
+[rag]
+index_path = "data/index.jsonl"
+
+[prompts]
+system = "prompts/system.md"
+""".strip(),
+        encoding="utf-8",
+    )
+
+    config = load_config(config_path)
+
+    assert config.runtime.model_path == (
+        tmp_path / "model" / "generator" / "Qwen3.5-9B-Q4_K_M.gguf"
+    ).resolve()
+
+
 def test_load_config_rejects_unsupported_backend(tmp_path: Path) -> None:
     (tmp_path / "data").mkdir()
     (tmp_path / "prompts").mkdir()
