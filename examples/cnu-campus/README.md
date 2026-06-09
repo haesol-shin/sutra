@@ -34,9 +34,22 @@ The workspace contains the following scripts:
 
 ### Evaluation Runners
 - [run_probe39.py](evals/run_probe39.py): Runs the evaluation runner over 39 diagnostic questions.
-- [embedding_retrieval.py](evals/embedding_retrieval.py): Conducts embedding retrieval experiments using sentence-transformers (requires `embeddings` extra dependency; local cache is git-ignored under `examples/cnu-campus/.cache/`).
+- [embedding_retrieval.py](evals/embedding_retrieval.py): Conducts embedding retrieval experiments using sentence-transformers (requires the `rag` optional extra; local cache is git-ignored under `examples/cnu-campus/.cache/`).
 
 ---
+
+## Model Setup
+
+The workspace is configured to use `Qwen3.5-9B-Q4_K_M.gguf` (see `runtime.model_path` in [sutra.toml](sutra.toml)). Download it and launch the server:
+
+```powershell
+# Requires the `rag` optional extra
+uv run sutra llama download --workspace examples/cnu-campus/sutra.toml
+# Dry-run to verify the command
+uv run sutra llama serve --workspace examples/cnu-campus/sutra.toml --dry-run
+# Start llama-server in the foreground
+uv run sutra llama serve --workspace examples/cnu-campus/sutra.toml
+```
 
 ## Quick Start
 

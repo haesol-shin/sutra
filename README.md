@@ -60,14 +60,38 @@ uv run python -m sutra.cli docs check --workspace examples/cnu-campus/sutra.toml
 ```
 
 ### 3. Run Embedding Retrieval Experiment
-Run the optional embedding retrieval experiment using Qwen:
+Run the optional embedding retrieval experiment using sentence-transformers:
 ```powershell
-# Sync optional embeddings dependencies first
-uv sync --extra xpu --extra embeddings
+# Sync optional RAG dependencies first
+uv sync --extra xpu --extra rag
 # Run retrieval evaluation
 uv run python examples/cnu-campus/evals/embedding_retrieval.py
 ```
 *Note: Embeddings caches are stored under `examples/cnu-campus/.cache/` and are git-ignored.*
+
+### 4. Download a GGUF Model
+```powershell
+uv run sutra llama download --workspace examples/cnu-campus/sutra.toml
+```
+*Requires the `rag` optional extra for `huggingface_hub`.*
+
+### 5. Launch llama-server (Foreground)
+```powershell
+# Preview the command without executing
+uv run sutra llama serve --workspace examples/cnu-campus/sutra.toml --dry-run
+# Start serving
+uv run sutra llama serve --workspace examples/cnu-campus/sutra.toml
+```
+
+### 6. Check Server Health
+```powershell
+uv run sutra llama health --workspace examples/cnu-campus/sutra.toml
+```
+
+### 7. Ask a Question (Echo Smoke Test)
+```powershell
+uv run sutra ask --workspace examples/cnu-campus/sutra.toml --echo "수강신청은 언제 시작하나요?"
+```
 
 ---
 

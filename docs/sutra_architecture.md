@@ -25,9 +25,10 @@ Sutra v1 does not provide:
 - Streaming.
 - A plugin registry.
 - Python hooks inside workspace config.
-- llama.cpp process management from Python.
-- `sutra llama run` or any server launcher.
+- llama.cpp build, installation, or daemon supervision (the CLI provides thin foreground launch wrappers, not a process manager).
 - CUDA/XPU routing logic inside the answer service.
+
+> **Core vs. CLI distinction**: The answer service (`sutra.service.ask()`, `sutra.service.chat()`) is HTTP-client-only — it talks to an already-running llama-server. The CLI includes thin convenience commands (`sutra llama serve`, `sutra llama download`) for local development, evaluator convenience, and demo setup. These are not a daemon manager, process supervisor, or llama.cpp installer.
 
 ## Package Layout
 
@@ -118,6 +119,7 @@ timezone = "Asia/Seoul"
 backend = "llama-server"
 base_url = "http://127.0.0.1:18080"
 model = "qwen-local"
+model_path = "model/generator/Qwen3.5-9B-Q4_K_M.gguf"
 temperature = 0.2
 max_tokens = 512
 
@@ -133,20 +135,30 @@ answer = "prompts/answer.md"
 
 All relative paths resolve from the `sutra.toml` directory.
 
+`runtime.model_path` is optional — if omitted it defaults to `model/generator/Qwen3.5-9B-Q4_K_M.gguf`. `runtime.reasoning` is also optional; when set to `"on"`, `"off"`, or `"auto"` it controls the `--reasoning` flag passed to `llama-server`.
+
 ## Runtime
 
 The first backend is llama.cpp `llama-server`.
 
-Sutra talks to it through:
+The answer service talks to an already-running server through:
 
 ```text
 GET  /health
 POST /v1/chat/completions
 ```
 
-`src/sutra/llama.py` is an HTTP client only. It does not build, install, start, stop, or supervise llama.cpp.
+`src/sutra/llama.py` provides `LlamaClient`, an HTTP client for these endpoints. It does not build, install, or supervise llama.cpp.
 
-CUDA and XPU support belong to llama.cpp build/runtime documentation and launch profiles. Sutra core should keep speaking HTTP regardless of acceleration backend.
+The CLI includes convenience commands for local development and evaluation:
+
+- **`sutra llama serve`** — Locates an existing `llama-server` binary (via `PATH` or `LLAMA_SERVER_PATH`) and launches it in the foreground with the model from `runtime.model_path`. This is a thin wrapper: it does not build llama.cpp, install dependencies, or supervise the process. Logs appear in the terminal; Ctrl+C terminates both the wrapper and the child process. Supports `--dry-run`, `--port`, `--gpu-layers`, and `--reasoning on/off/auto`.
+- **`sutra llama download`** — Downloads a GGUF model from Hugging Face via `huggingface_hub`. Requires the `rag` optional extra. Destination defaults to `runtime.model_path`; override with `--dest`.
+- **`sutra llama health`** — Checks `GET /health` of the configured base URL.
+
+`runtime.model_path` and `runtime.reasoning` are optional config fields. If `model_path` is unset, it defaults to `model/generator/Qwen3.5-9B-Q4_K_M.gguf` relative to the workspace root.
+
+CUDA and XPU support belong to llama.cpp build/runtime documentation and launch profiles. Sutra core speaks HTTP regardless of acceleration backend.
 
 ## API And UI
 
@@ -168,6 +180,8 @@ Sutra provides several CLI commands for query answering and workspace diagnostic
 - `sutra workspace validate`: Validate workspace configuration schema and verify all referenced files exist.
 - `sutra docs check`: Load and check document index database for schema compliance, duplicates, or empty texts.
 - `sutra llama health`: Check GET `/health` of the configured `llama-server`.
+- `sutra llama serve`: Launch `llama-server` in the foreground using the configured model.
+- `sutra llama download`: Download a GGUF model from Hugging Face.
 - `sutra doctor`: Run workspace validate, docs check, and llama health checks, aggregating their statuses.
 
 ### Workspace Resolution
