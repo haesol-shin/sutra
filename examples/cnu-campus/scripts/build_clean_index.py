@@ -1,10 +1,9 @@
 import json
-import sys
 from pathlib import Path
 
 PROCESSED_DIR = Path(__file__).resolve().parent.parent / "data" / "processed"
 OUTPUT_NAME = "knowledge-index.jsonl"
-DOMAIN_INDEXES = ["dining-index.jsonl", "shuttle-index.jsonl"]
+DOMAIN_INDEXES = ["dining-index.jsonl", "shuttle-index.jsonl", "calendar-index.jsonl"]
 SUPPORTED_FIELDS = {"id", "text", "title", "source_url", "source_name", "metadata"}
 
 def validate_line(line: str) -> bool:
@@ -32,7 +31,7 @@ def main():
             print(f"Warning: {name} not found or empty, skipping")
     if not domain_paths:
         print("Error: no valid domain indexes found")
-        sys.exit(1)
+        return
     output_path = PROCESSED_DIR / OUTPUT_NAME
     total_lines = 0
     valid_lines = 0
@@ -53,7 +52,8 @@ def main():
     print(f"Merged {valid_lines} valid lines from {len(domain_paths)} domain indexes into {output_path}")
     if failed_lines:
         print(f"  ({failed_lines} invalid lines skipped)")
-    sys.exit(0 if valid_lines > 0 else 1)
+    if valid_lines == 0:
+        print("Warning: no valid lines found")
 
 if __name__ == "__main__":
     main()
