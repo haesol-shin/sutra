@@ -29,9 +29,18 @@ Conflict rule:
 | `docs/model_decisions.md` | Reference | Model/backend decisions | Before model selection changes |  |
 | `docs/data_readiness_report_2026_06_09.md` | Evidence | Data readiness counts and caveats | When auditing current data quality |  |
 | `docs/source_fetch_audit_2026_06_08.md` | Evidence | Source fetch audit output | When checking source availability |  |
+| `docs/data_inventory_report.md` | Evidence | Data/artifact inventory before Sutra cleanup | When auditing legacy data locations |  |
+| `docs/data_structure_discovery_report.md` | Evidence | Raw CNU source structure and parser feasibility audit | Before building or extending CNU parsers |  |
+| `docs/data_migration_plan.md` | Do Not Execute | Earlier direct data migration plan; superseded by raw rebuild direction | Only for historical reference | `docs/data_structure_discovery_report.md` |
 | `docs/task2_public_probe_qwen_baseline_2026_06_08.md` | Evidence | Qwen public probe baseline | When comparing Task 2 answer quality |  |
 | `docs/task2_public_probe_harness_diagnosis_2026_06_08.md` | Evidence | Harness failure diagnosis | When investigating old harness behavior |  |
 | `docs/task2_probe39_report_2026_06_08.md` | Evidence | Probe39 run report | When comparing probe behavior |  |
+| `docs/task2_public_probe_harness_latest.md` | Evidence | Latest legacy Task 2 harness diagnosis snapshot | Only when investigating legacy `nlp_term` behavior |  |
+| `docs/task2_public_probe_qwen_latest.md` | Evidence | Latest legacy Task 2 Qwen baseline snapshot | Only when investigating legacy `nlp_term` behavior |  |
+| `docs/task2_probe39_report_latest.md` | Evidence | Latest legacy Task 2 probe39 diagnosis snapshot | Only when investigating legacy `nlp_term` behavior |  |
+| `docs/evidence/task2-public-probe-harness-latest.json` | Evidence | Machine-readable latest legacy public harness run | Only when investigating legacy `nlp_term` behavior |  |
+| `docs/evidence/task2-public-probe-qwen-latest.json` | Evidence | Machine-readable latest legacy public Qwen run | Only when investigating legacy `nlp_term` behavior |  |
+| `docs/evidence/task2-probe39-harness-latest.json` | Evidence | Machine-readable latest legacy probe39 harness run | Only when investigating legacy `nlp_term` behavior |  |
 | `docs/project_architecture_plan.md` | Historical | Earlier architecture baseline | Only for background | `docs/project_state.md` |
 | `docs/task2_task3_harness_architecture.md` | Historical | Earlier harness architecture | Only for background | `docs/task2_simplification_direction_2026_06_09.md` |
 | `docs/task2_improvement_sequence_after_probe.md` | Historical | Earlier improvement ordering | Only for background | `docs/task2_simplification_direction_2026_06_09.md` |
