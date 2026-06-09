@@ -195,24 +195,36 @@ def test_llama_download_routes_correctly(tmp_path: Path, capsys) -> None:
 
 def test_llama_download_with_dest(tmp_path: Path, capsys) -> None:
     workspace = _write_workspace(tmp_path)
-    dest = tmp_path / "custom" / "model.gguf"
+    dest_dir = tmp_path / "custom_models"
 
     with patch("sutra.cli.download_model") as mock_download:
         result = main([
             "llama", "download",
             "--workspace", str(workspace),
-            "--dest", str(dest),
+            "--dest", str(dest_dir),
         ])
 
     mock_download.assert_called_once()
-    assert str(mock_download.call_args[0][0]).endswith("model.gguf")
+    assert mock_download.call_args[0][0] == dest_dir.resolve()
     assert result == 0
+
+
+def test_llama_download_default_dest_is_model_dir(tmp_path: Path) -> None:
+    workspace = _write_workspace(tmp_path)
+    expected_dir = tmp_path / "model" / "generator"
+
+    with patch("sutra.cli.download_model") as mock_download:
+        main(["llama", "download", "--workspace", str(workspace)])
+
+    mock_download.assert_called_once()
+    assert mock_download.call_args[0][0] == expected_dir.resolve()
 
 
 def test_llama_download_json_mode(tmp_path: Path, capsys) -> None:
     workspace = _write_workspace(tmp_path)
+    fake_path = tmp_path / "model" / "generator" / "Qwen3.5-9B-Q4_K_M.gguf"
 
-    with patch("sutra.cli.download_model"):
+    with patch("sutra.cli.download_model", return_value=fake_path):
         result = main([
             "llama", "download",
             "--workspace", str(workspace),
@@ -223,6 +235,9 @@ def test_llama_download_json_mode(tmp_path: Path, capsys) -> None:
     out = capsys.readouterr().out
     payload = json.loads(out)
     assert payload["status"] == "ok"
+    assert payload["downloaded_path"] == str(fake_path.resolve())
+    assert payload["repo_id"] == "unsloth/Qwen3.5-9B-GGUF"
+    assert payload["filename"] == "Qwen3.5-9B-Q4_K_M.gguf"
     assert result == 0
 
 

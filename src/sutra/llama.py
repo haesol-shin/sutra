@@ -51,7 +51,7 @@ def normalize_base_url(base_url: str) -> str:
 
 
 def download_model(
-    dest_path: Path,
+    dest_dir: Path,
     repo_id: str = "unsloth/Qwen3.5-9B-GGUF",
     filename: str = "Qwen3.5-9B-Q4_K_M.gguf",
 ) -> Path:
@@ -64,14 +64,14 @@ def download_model(
             "or by syncing optional extras (e.g. 'uv sync --extra rag')."
         )
 
-    dest_path.parent.mkdir(parents=True, exist_ok=True)
+    dest_dir.mkdir(parents=True, exist_ok=True)
     hf_hub_download(
         repo_id=repo_id,
         filename=filename,
-        local_dir=dest_path.parent,
+        local_dir=dest_dir,
         local_dir_use_symlinks=False,
     )
-    return dest_path.resolve()
+    return (dest_dir / filename).resolve()
 
 
 def start_llama_server(

@@ -366,7 +366,7 @@ def build_parser() -> argparse.ArgumentParser:
     # llama download
     llama_download_parser = llama_subparsers.add_parser("download", help="Download a GGUF model from Hugging Face.")
     llama_download_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
-    llama_download_parser.add_argument("--dest", help="Custom destination file path (overrides workspace config).")
+    llama_download_parser.add_argument("--dest", help="Destination directory (overrides workspace config model directory).")
     llama_download_parser.add_argument("--repo-id", default="unsloth/Qwen3.5-9B-GGUF", help="Hugging Face repository ID.")
     llama_download_parser.add_argument("--filename", default="Qwen3.5-9B-Q4_K_M.gguf", help="GGUF filename in the repository.")
     llama_download_parser.add_argument("--json", action="store_true", help="Print structured JSON output.")
@@ -553,14 +553,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         config = load_config(toml_path)
 
         if args.dest is not None:
-            dest_path = Path(args.dest).expanduser().resolve()
+            dest_dir = Path(args.dest).expanduser().resolve()
         else:
-            dest_path = config.runtime.model_path
+            dest_dir = config.runtime.model_path.parent
 
         if not args.json:
             print("Downloading model...")
 
-        download_model(dest_path, repo_id=args.repo_id, filename=args.filename)
+        downloaded_path = download_model(dest_dir, repo_id=args.repo_id, filename=args.filename)
 
         return output_result(
             status="ok",
@@ -568,7 +568,12 @@ def main(argv: Sequence[str] | None = None) -> int:
             workspace_path=toml_path,
             errors=[],
             json_mode=args.json,
-            human_string=f"Model downloaded to: {dest_path}",
+            human_string=f"Model downloaded to: {downloaded_path}",
+            extra_fields={
+                "downloaded_path": str(downloaded_path),
+                "repo_id": args.repo_id,
+                "filename": args.filename,
+            },
         )
 
     elif args.command == "doctor":

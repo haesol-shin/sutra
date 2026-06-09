@@ -150,13 +150,11 @@ def test_download_model_raises_if_huggingface_hub_missing(monkeypatch: pytest.Mo
     monkeypatch.setattr(builtins, "__import__", fake_import)
 
     with pytest.raises(LlamaError, match="huggingface_hub"):
-        download_model(dest_path=Path("/tmp/test.gguf"))
+        download_model(dest_dir=Path("/tmp/models"))
 
 
-def test_download_model_calls_hf_hub_download(monkeypatch: pytest.MonkeyPatch) -> None:
-    dest = Path("/tmp/models/test.gguf")
-    monkeypatch.setattr("pathlib.Path.mkdir", lambda self, **kwargs: None)
-    monkeypatch.setattr("pathlib.Path.resolve", lambda self: dest)
+def test_download_model_calls_hf_hub_download(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    dest_dir = tmp_path / "models"
 
     called: dict[str, object] = {}
 
@@ -174,13 +172,13 @@ def test_download_model_calls_hf_hub_download(monkeypatch: pytest.MonkeyPatch) -
 
     monkeypatch.setattr("huggingface_hub.hf_hub_download", fake_hf_download)
 
-    result = download_model(dest_path=dest)
+    result = download_model(dest_dir=dest_dir)
 
     assert called["repo_id"] == "unsloth/Qwen3.5-9B-GGUF"
     assert called["filename"] == "Qwen3.5-9B-Q4_K_M.gguf"
-    assert called["local_dir"] == dest.parent
+    assert called["local_dir"] == dest_dir
     assert called["local_dir_use_symlinks"] is False
-    assert result == dest
+    assert result == (dest_dir / "Qwen3.5-9B-Q4_K_M.gguf").resolve()
 
 
 # --- start_llama_server tests ---
