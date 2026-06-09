@@ -7,11 +7,13 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 from typing import Any, Literal
+from urllib.parse import urlparse
 
 import requests
 
 from sutra.config import Config, load_config
 from sutra.errors import ConfigError, LlamaError, WorkspaceResolutionError
+from sutra.llama import download_model, locate_llama_server, start_llama_server
 from sutra.models import Document, LlamaResult, Message
 from sutra.service import ask
 
@@ -352,6 +354,22 @@ def build_parser() -> argparse.ArgumentParser:
     llama_health_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
     llama_health_parser.add_argument("--json", action="store_true", help="Print the structured response as JSON.")
 
+    # llama serve
+    llama_serve_parser = llama_subparsers.add_parser("serve", help="Start llama-server for serving the model.")
+    llama_serve_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
+    llama_serve_parser.add_argument("--port", type=int, help="Port to run llama-server on.")
+    llama_serve_parser.add_argument("--gpu-layers", type=int, default=0, help="Number of layers to offload to GPU.")
+    llama_serve_parser.add_argument("--llama-path", help="Path to llama-server binary.")
+    llama_serve_parser.add_argument("--dry-run", action="store_true", help="Print the command without executing.")
+
+    # llama download
+    llama_download_parser = llama_subparsers.add_parser("download", help="Download a GGUF model from Hugging Face.")
+    llama_download_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
+    llama_download_parser.add_argument("--dest", help="Custom destination file path (overrides workspace config).")
+    llama_download_parser.add_argument("--repo-id", default="unsloth/Qwen3.5-9B-GGUF", help="Hugging Face repository ID.")
+    llama_download_parser.add_argument("--filename", default="Qwen3.5-9B-Q4_K_M.gguf", help="GGUF filename in the repository.")
+    llama_download_parser.add_argument("--json", action="store_true", help="Print structured JSON output.")
+
     # 5. sutra doctor
     doctor_parser = subparsers.add_parser("doctor", help="Run workspace validation, document check, and llama health checks.")
     doctor_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
@@ -502,6 +520,54 @@ def main(argv: Sequence[str] | None = None) -> int:
             json_mode=args.json,
             extra_fields=extra,
             human_string=human_string,
+        )
+
+    elif args.command == "llama" and args.subcommand == "serve":
+        config = load_config(toml_path)
+
+        if args.port is not None:
+            port = args.port
+        else:
+            try:
+                parsed = urlparse(config.runtime.base_url)
+                port = parsed.port or 18080
+            except Exception:
+                port = 18080
+
+        exe_path = locate_llama_server(args.llama_path)
+        model_path = config.runtime.model_path
+        process = start_llama_server(exe_path, model_path, port=port, gpu_layers=args.gpu_layers, dry_run=args.dry_run)
+
+        if process is not None:
+            try:
+                process.wait()
+            except KeyboardInterrupt:
+                print("Terminating llama-server...")
+                process.terminate()
+                process.wait()
+                sys.exit(0)
+        return 0
+
+    elif args.command == "llama" and args.subcommand == "download":
+        config = load_config(toml_path)
+
+        if args.dest is not None:
+            dest_path = Path(args.dest).expanduser().resolve()
+        else:
+            dest_path = config.runtime.model_path
+
+        if not args.json:
+            print("Downloading model...")
+
+        download_model(dest_path, repo_id=args.repo_id, filename=args.filename)
+
+        return output_result(
+            status="ok",
+            exit_code=0,
+            workspace_path=toml_path,
+            errors=[],
+            json_mode=args.json,
+            human_string=f"Model downloaded to: {dest_path}",
         )
 
     elif args.command == "doctor":
