@@ -1,0 +1,27 @@
+{
+  "id": "cnu_computer_ai_graduation_2026",
+  "canonical_department": "컴퓨터인공지능학부",
+  "aliases": [
+    "컴퓨터융합학부",
+    "컴융",
+    "인공지능학과",
+    "AI학과",
+    "컴퓨터인공지능학과",
+    "컴퓨터인공지능학부"
+  ],
+  "source_type": "pdf",
+  "source_url": "https://computer.cnu.ac.kr/computer/edu/requirements.do?mode=view&articleNo=576000&articleLimit=14",
+  "source_title": "[졸업요건 2026.3.19.수정] 컴퓨터인공지능학부 2026학년도 입학생 졸업요건 (교육과정적용연도: 2026)",
+  "article_no": "576000",
+  "attachment_no": "485215",
+  "posted_date": "2026-01-27",
+  "revision_date": "2026-03-19",
+  "curriculum_year": "2026",
+  "local_path": "data/raw/graduation/computer_ai_2026_graduation_requirements.pdf",
+  "original_path": "data/raw/tmp/computer_ai_2026_graduation_requirements_260319.pdf",
+  "page_count": 5,
+  "sha256": "67db053c9d101ae21d846b46c3aba18ab46a62677cefcaeb8b73a3fbb2f95f32",
+  "observed_at": "2026-06-09",
+  "provenance_status": "verified_official",
+  "notes": "Verified: SHA256 matches official attachment (attachNo=485215) from article 576000 on computer.cnu.ac.kr graduation requirements board. PDF created 2026-03-19 via Hwp 2020 -> Hancom PDF."
+}
