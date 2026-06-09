@@ -70,16 +70,23 @@ class TestTableExtraction:
         path = tmp_path / "table.pdf"
         doc = fitz.open()
         page = doc.new_page(width=612, height=792)
-        x_positions = [50, 150, 250]
+        x_positions = [50, 150, 250, 350]
+        y_positions = [50, 80, 110, 140]
+        for x in x_positions:
+            page.draw_line(fitz.Point(x, y_positions[0]), fitz.Point(x, y_positions[-1]))
+        for y in y_positions:
+            page.draw_line(fitz.Point(x_positions[0], y), fitz.Point(x_positions[-1], y))
+
+        text_x_positions = [60, 160, 260]
         rows_data = [
             ["Name", "Age", "City"],
             ["Alice", "30", "Daejeon"],
             ["Bob", "25", "Seoul"],
         ]
         for ri, row in enumerate(rows_data):
-            y = 60 + ri * 20
+            y = 70 + ri * 30
             for ci, cell in enumerate(row):
-                page.insert_text(fitz.Point(x_positions[ci], y), cell,
+                page.insert_text(fitz.Point(text_x_positions[ci], y), cell,
                                  fontsize=10)
         doc.save(str(path))
         doc.close()

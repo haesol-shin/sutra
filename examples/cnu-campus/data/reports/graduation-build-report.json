@@ -1,0 +1,38 @@
+{
+  "source_id": "cnu_computer_ai_graduation_2026",
+  "department": "컴퓨터인공지능학부",
+  "curriculum_year": "2026",
+  "pdf_path": "data\\raw\\graduation\\computer_ai_2026_graduation_requirements.pdf",
+  "page_count": 5,
+  "docs_written": 5,
+  "sha256_match": true,
+  "pages_needing_ocr": [
+    3
+  ],
+  "warnings": [
+    {
+      "code": "ocr_needed",
+      "message": "Page 3: only 5 chars with 1 images, may need OCR",
+      "page_no": 3
+    }
+  ],
+  "tables_by_page": {
+    "1": 1,
+    "2": 2,
+    "3": 0,
+    "4": 1,
+    "5": 2
+  },
+  "text_chars_by_page": {
+    "1": 1211,
+    "2": 1196,
+    "3": 6,
+    "4": 514,
+    "5": 638
+  },
+  "known_limitations": [
+    "pdfplumber not available; table extraction disabled.",
+    "Page 3 is likely image/table-heavy and may require OCR or manual transcription.",
+    "This first slice is page-level, not semantic credit parsing."
+  ]
+}

@@ -22,6 +22,7 @@ dependencies = [
   "scikit-learn",
   "tqdm",
   "tomli; python_version < '3.11'",
+  "pdfplumber>=0.11.9",
 ]
 
 [project.optional-dependencies]

@@ -3,7 +3,7 @@ from pathlib import Path
 
 PROCESSED_DIR = Path(__file__).resolve().parent.parent / "data" / "processed"
 OUTPUT_NAME = "knowledge-index.jsonl"
-DOMAIN_INDEXES = ["dining-index.jsonl", "shuttle-index.jsonl", "calendar-index.jsonl"]
+DOMAIN_INDEXES = ["dining-index.jsonl", "shuttle-index.jsonl", "calendar-index.jsonl", "graduation-index.jsonl"]
 SUPPORTED_FIELDS = {"id", "text", "title", "source_url", "source_name", "metadata"}
 
 def validate_line(line: str) -> bool:
