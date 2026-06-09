@@ -1,0 +1,392 @@
+{
+  "parsed_files": [
+    "data/raw/dining/cnu_mobile_food.html",
+    "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+    "data/raw/dining/cnu_mobile_food_2026_06_10.html",
+    "data/raw/dining/cnu_mobile_food_2026_06_11.html",
+    "data/raw/dining/cnu_mobile_food_2026_06_12.html",
+    "data/raw/dining/cnu_mobile_food_2026_06_13.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_01_1st.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_01_2nd.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_08_1st.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_08_2nd.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_08_3rd.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_08_4th.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_08_life_science.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_15_1st.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_15_2nd.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_15_3rd.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_15_4th.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_15_life_science.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_22_1st.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_22_2nd.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_22_3rd.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_22_4th.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_22_life_science.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_29_1st.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_29_2nd.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_29_3rd.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_29_4th.html",
+    "data/raw/dining/cnu_mobile_food_week_2026_06_29_life_science.html"
+  ],
+  "skipped_files": [
+    {
+      "file": "data/raw/dining/cnucoop_discovery.html",
+      "reason": "Failed to read file: 'utf-8' codec can't decode byte 0xc3 in position 22: invalid continuation byte"
+    },
+    {
+      "file": "data/raw/dining/dining_operation_notice_2507684.html",
+      "reason": "Skipped notice file"
+    }
+  ],
+  "raw_records": 1104,
+  "unique_records": 180,
+  "duplicate_records": 924,
+  "conflict_count": 0,
+  "conflicts": [],
+  "chunk_count": 20,
+  "date_mismatches": [
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_01_1st.html",
+      "hinted_dates": [
+        "2026-06-01"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_01_2nd.html",
+      "hinted_dates": [
+        "2026-06-01"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "hinted_dates": [
+        "2026-06-01"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "hinted_dates": [
+        "2026-06-01"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "hinted_dates": [
+        "2026-06-01"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_15_1st.html",
+      "hinted_dates": [
+        "2026-06-15"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_15_2nd.html",
+      "hinted_dates": [
+        "2026-06-15"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_15_3rd.html",
+      "hinted_dates": [
+        "2026-06-15"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_15_4th.html",
+      "hinted_dates": [
+        "2026-06-15"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_15_life_science.html",
+      "hinted_dates": [
+        "2026-06-15"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_22_1st.html",
+      "hinted_dates": [
+        "2026-06-22"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_22_2nd.html",
+      "hinted_dates": [
+        "2026-06-22"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_22_3rd.html",
+      "hinted_dates": [
+        "2026-06-22"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_22_4th.html",
+      "hinted_dates": [
+        "2026-06-22"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_22_life_science.html",
+      "hinted_dates": [
+        "2026-06-22"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_29_1st.html",
+      "hinted_dates": [
+        "2026-06-29"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_29_2nd.html",
+      "hinted_dates": [
+        "2026-06-29"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_29_3rd.html",
+      "hinted_dates": [
+        "2026-06-29"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_29_4th.html",
+      "hinted_dates": [
+        "2026-06-29"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_29_life_science.html",
+      "hinted_dates": [
+        "2026-06-29"
+      ],
+      "parsed_dates": [
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13"
+      ],
+      "reason": "filename_or_url_date_not_in_parsed_dates"
+    }
+  ],
+  "missing_source_meta": [
+    {
+      "file": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "reason": "source_probe_metadata_not_found"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_2026_06_10.html",
+      "reason": "source_probe_metadata_not_found"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_2026_06_11.html",
+      "reason": "source_probe_metadata_not_found"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_2026_06_12.html",
+      "reason": "source_probe_metadata_not_found"
+    },
+    {
+      "file": "data/raw/dining/cnu_mobile_food_2026_06_13.html",
+      "reason": "source_probe_metadata_not_found"
+    },
+    {
+      "file": "data/raw/dining/cnucoop_discovery.html",
+      "reason": "source_probe_metadata_not_found"
+    }
+  ],
+  "dates": [
+    "2026-06-08",
+    "2026-06-09",
+    "2026-06-10",
+    "2026-06-11",
+    "2026-06-12"
+  ],
+  "cafeterias": [
+    "생활과학대학",
+    "제2학생회관",
+    "제3학생회관",
+    "제4학생회관"
+  ]
+}
