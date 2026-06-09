@@ -25,6 +25,7 @@ class RuntimeConfig(BaseModel):
     base_url: str = "http://127.0.0.1:8080"
     model: str = "local-model"
     model_path: Path | None = None
+    reasoning: Literal["on", "off", "auto"] | None = None
     timeout_seconds: int = Field(default=120, gt=0)
     temperature: float = Field(default=0.2, ge=0.0, le=2.0)
     max_tokens: int = Field(default=512, gt=0)

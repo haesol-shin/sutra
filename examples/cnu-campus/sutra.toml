@@ -7,9 +7,11 @@ timezone = "Asia/Seoul"
 backend = "llama-server"
 base_url = "http://127.0.0.1:18080"
 model = "qwen-local"
+model_path = "../../model/generator/Qwen3.5-9B-Q4_K_M.gguf"
 timeout_seconds = 120
 temperature = 0.2
-max_tokens = 512
+max_tokens = 1024
+reasoning = "off"
 
 [rag]
 index_path = "data/processed/knowledge-index.jsonl"

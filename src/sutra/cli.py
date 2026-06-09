@@ -360,6 +360,7 @@ def build_parser() -> argparse.ArgumentParser:
     llama_serve_parser.add_argument("--port", type=int, help="Port to run llama-server on.")
     llama_serve_parser.add_argument("--gpu-layers", type=int, default=0, help="Number of layers to offload to GPU.")
     llama_serve_parser.add_argument("--llama-path", help="Path to llama-server binary.")
+    llama_serve_parser.add_argument("--reasoning", choices=["on", "off", "auto"], help="Use reasoning/thinking in the chat ('on', 'off', or 'auto').")
     llama_serve_parser.add_argument("--dry-run", action="store_true", help="Print the command without executing.")
 
     # llama download
@@ -536,7 +537,8 @@ def main(argv: Sequence[str] | None = None) -> int:
 
         exe_path = locate_llama_server(args.llama_path)
         model_path = config.runtime.model_path
-        process = start_llama_server(exe_path, model_path, port=port, gpu_layers=args.gpu_layers, dry_run=args.dry_run)
+        reasoning_val = args.reasoning if args.reasoning is not None else config.runtime.reasoning
+        process = start_llama_server(exe_path, model_path, port=port, gpu_layers=args.gpu_layers, reasoning=reasoning_val, dry_run=args.dry_run)
 
         if process is not None:
             try:

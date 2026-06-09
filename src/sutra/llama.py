@@ -79,9 +79,18 @@ def start_llama_server(
     model_path: Path,
     port: int = 18080,
     gpu_layers: int = 0,
+    reasoning: str | None = None,
     dry_run: bool = False,
 ) -> subprocess.Popen | None:
-    cmd = [str(executable_path), "--model", str(model_path), "--port", str(port)]
+    cmd = [
+        str(executable_path),
+        "--model",
+        str(model_path),
+        "--port",
+        str(port),
+    ]
+    if reasoning is not None:
+        cmd.extend(["--reasoning", reasoning])
     if gpu_layers > 0:
         cmd.extend(["-ngl", str(gpu_layers)])
 

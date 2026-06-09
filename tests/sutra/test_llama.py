@@ -262,6 +262,7 @@ def test_start_llama_server_spawns_process(monkeypatch: pytest.MonkeyPatch) -> N
         model_path=Path("/models/qwen.gguf"),
         port=18080,
         gpu_layers=24,
+        reasoning="off",
         dry_run=False,
     )
 
@@ -271,8 +272,10 @@ def test_start_llama_server_spawns_process(monkeypatch: pytest.MonkeyPatch) -> N
     assert captured_cmd[0][2] == str(Path("/models/qwen.gguf"))
     assert captured_cmd[0][3] == "--port"
     assert captured_cmd[0][4] == "18080"
-    assert captured_cmd[0][5] == "-ngl"
-    assert captured_cmd[0][6] == "24"
+    assert captured_cmd[0][5] == "--reasoning"
+    assert captured_cmd[0][6] == "off"
+    assert captured_cmd[0][7] == "-ngl"
+    assert captured_cmd[0][8] == "24"
 
 
 def test_start_llama_server_win32_job_object(monkeypatch: pytest.MonkeyPatch) -> None:

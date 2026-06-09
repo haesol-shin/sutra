@@ -16,7 +16,7 @@ def test_cli_ask_uses_echo_client(tmp_path: Path, capsys) -> None:
     assert "수강신청은 2월 1일입니다." in output
 
 
-def _write_workspace(root: Path, base_url: str | None = None) -> Path:
+def _write_workspace(root: Path, base_url: str | None = None, reasoning: str | None = None) -> Path:
     (root / "data").mkdir()
     (root / "prompts").mkdir()
     (root / "data" / "index.jsonl").write_text(
@@ -34,6 +34,8 @@ def _write_workspace(root: Path, base_url: str | None = None) -> Path:
     ]
     if base_url is not None:
         lines.append(f'base_url = "{base_url}"')
+    if reasoning is not None:
+        lines.append(f'reasoning = "{reasoning}"')
     lines += [
         '',
         '[rag]',
@@ -58,6 +60,7 @@ def test_llama_serve_parse_args() -> None:
         "--dry-run",
         "--llama-path", "/fake/path",
         "--workspace", "/fake/ws",
+        "--reasoning", "off",
     ])
     assert args.command == "llama"
     assert args.subcommand == "serve"
@@ -66,6 +69,7 @@ def test_llama_serve_parse_args() -> None:
     assert args.dry_run is True
     assert args.llama_path == "/fake/path"
     assert args.workspace == "/fake/ws"
+    assert args.reasoning == "off"
 
     args = parser.parse_args(["llama", "serve"])
     assert args.port is None
@@ -114,6 +118,7 @@ def test_llama_serve_routes_correctly(tmp_path: Path, capsys) -> None:
             "--workspace", str(workspace),
             "--port", "9999",
             "--gpu-layers", "10",
+            "--reasoning", "off",
             "--dry-run",
         ])
 
@@ -122,6 +127,7 @@ def test_llama_serve_routes_correctly(tmp_path: Path, capsys) -> None:
     assert mock_start.call_args[0][0] == Path("/fake/llama-server")
     assert mock_start.call_args[1]["port"] == 9999
     assert mock_start.call_args[1]["gpu_layers"] == 10
+    assert mock_start.call_args[1]["reasoning"] == "off"
     assert mock_start.call_args[1]["dry_run"] is True
     assert result == 0
 
@@ -218,3 +224,23 @@ def test_llama_download_json_mode(tmp_path: Path, capsys) -> None:
     payload = json.loads(out)
     assert payload["status"] == "ok"
     assert result == 0
+
+
+def test_llama_serve_reasoning_fallback_and_override(tmp_path: Path) -> None:
+    workspace = _write_workspace(tmp_path, reasoning="off")
+
+    with (
+        patch("sutra.cli.locate_llama_server", return_value=Path("/fake/llama-server")),
+        patch("sutra.cli.start_llama_server", return_value=None) as mock_start,
+    ):
+        main(["llama", "serve", "--workspace", str(workspace), "--dry-run"])
+
+    assert mock_start.call_args[1]["reasoning"] == "off"
+
+    with (
+        patch("sutra.cli.locate_llama_server", return_value=Path("/fake/llama-server")),
+        patch("sutra.cli.start_llama_server", return_value=None) as mock_start,
+    ):
+        main(["llama", "serve", "--workspace", str(workspace), "--reasoning", "on", "--dry-run"])
+
+    assert mock_start.call_args[1]["reasoning"] == "on"
