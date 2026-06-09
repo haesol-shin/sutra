@@ -1,13 +1,13 @@
 # Project State
 
-Last updated: 2026-06-09
+Last updated: 2026-06-10
 
 This file is the primary memory document to read at the start of a new session. It outlines the active project direction and state.
 
 ## Active Project: Sutra
 
 Sutra is a lightweight, local-first RAG runtime plus llama.cpp server client. 
-- **Core Package**: [src/sutra](../src/sutra) is the main implementation surface. It is kept flat: `service.py`, `models.py`, `config.py`, `documents.py`, `retrieval.py`, `prompts.py`, `llama.py`, `cli.py`, `errors.py`.
+- **Core Package**: [src/sutra](../src/sutra) is the main implementation surface. It is kept flat: `service.py`, `models.py`, `config.py`, `documents.py`, `retrieval.py`, `prompts.py`, `llama.py`, `cli.py`, `errors.py`, `ui.py` (+ `resources/ui/` for packaged Chainlit config).
 - **Reference Workspace**: [examples/cnu-campus](../examples/cnu-campus) is an external workspace example implementing a CNU Campus Chatbot (referenced config is [sutra.toml](../examples/cnu-campus/sutra.toml)).
 - **Legacy Packages**: The package [src/nlp_term](../src/nlp_term) is no longer active.
 - For architectural guidelines, read [docs/sutra_architecture.md](sutra_architecture.md) before making core runtime changes.

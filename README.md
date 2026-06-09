@@ -3,7 +3,7 @@
 Sutra is a lightweight, local-first RAG (Retrieval-Augmented Generation) runtime designed for running question-answering pipelines on top of local llama.cpp server backends.
 
 This repository is organized as follows:
-- **Core Engine ([src/sutra](src/sutra))**: The active, clean Python package implementation containing RAG services, retrieval scoring, CLI, prompts, and llama.cpp client interfaces.
+- **Core Engine ([src/sutra](src/sutra))**: The active, clean Python package implementation containing RAG services, retrieval scoring, CLI, prompts, llama.cpp client interfaces, and a Chainlit web UI adapter.
 - **Example Workspace ([examples/cnu-campus](examples/cnu-campus))**: A complete reference workspace implementing a Campus Chatbot helper for Chungnam National University (CNU) students.
 - **Legacy Code ([src/nlp_term](src/nlp_term))**: The original, legacy package layout which is no longer active.
 
@@ -16,6 +16,11 @@ Use `uv` and Python 3.10.12.
 ```powershell
 uv python install 3.10.12
 uv sync --extra xpu
+```
+
+For the Chainlit web UI, also install the `ui` extra:
+```powershell
+uv sync --extra xpu --extra ui
 ```
 
 This installs the local XPU development PyTorch build through the PyTorch XPU index:
@@ -93,6 +98,14 @@ uv run sutra llama health --workspace examples/cnu-campus/sutra.toml
 uv run sutra ask --workspace examples/cnu-campus/sutra.toml --echo "수강신청은 언제 시작하나요?"
 ```
 
+### 8. Launch the Chainlit Web UI
+```powershell
+# Requires the ui extra: uv sync --extra ui
+uv run sutra ui --workspace examples/cnu-campus/sutra.toml --echo --port 8000
+```
+
+The UI wraps `sutra.service.ask()` in a Chainlit chat interface. Use `--echo` to test without a real llama-server backend.
+
 ---
 
 ## Model Path Resolution
@@ -140,7 +153,7 @@ cd examples/cnu-campus
 uv run sutra ask --echo "수강신청은 언제 시작하나요?"
 ```
 
-These shortcuts work with any command that accepts `--workspace`, including `sutra ask`, `sutra docs check`, `sutra workspace validate`, `sutra doctor`, and all `sutra llama` subcommands.
+These shortcuts work with any command that accepts `--workspace`, including `sutra ask`, `sutra ui`, `sutra docs check`, `sutra workspace validate`, `sutra doctor`, and all `sutra llama` subcommands.
 
 ---
 

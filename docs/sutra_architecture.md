@@ -46,6 +46,10 @@ src/sutra/
   service.py
   cli.py
   errors.py
+  ui.py
+  resources/
+    ui/
+      chainlit_config.toml
 ```
 
 Flat does not mean one large file. Each module owns one narrow responsibility:
@@ -57,7 +61,8 @@ Flat does not mean one large file. Each module owns one narrow responsibility:
 - `retrieval.py`: ranks documents and builds/renders evidence context.
 - `prompts.py`: renders LLM messages.
 - `llama.py`: calls an already-running llama-server over HTTP.
-- `cli.py`: provides `sutra ask`.
+- `cli.py`: provides `sutra ask` and other subcommands.
+- `ui.py`: Chainlit web UI adapter that calls `sutra.service.ask()` via `cl.make_async`.
 
 Nested packages such as `core/`, `rag/`, `llm/`, or `workspace/` should wait until real module size or duplication proves the need.
 
@@ -162,19 +167,17 @@ CUDA and XPU support belong to llama.cpp build/runtime documentation and launch 
 
 ## API And UI
 
-API and UI are later thin wrappers.
+API and UI are thin wrappers over the service layer.
 
-When added:
-
-- FastAPI should translate the non-streaming `POST /v1/chat/completions` subset into `sutra.service.chat()`.
-- Gradio should call `sutra.service.ask()` or `chat()`.
-- Neither API nor UI should contain retrieval, prompt, evidence, or llama-server logic.
+- **Chainlit UI** (`sutra ui`): A Chainlit web UI that calls `sutra.service.ask()` via `cl.make_async`. It formats the answer and evidence sources in Markdown without heavy Chainlit Elements. Supports echo mode (`--echo`) for smoke testing without a real LLM backend.
+- **No REST API yet**: FastAPI integration is planned for translating the non-streaming `POST /v1/chat/completions` subset into `sutra.service.chat()`.
+- Neither UI nor future API should contain retrieval, prompt, evidence, or llama-server logic.
 
 `chat()` is currently a single-turn adapter: it accepts OpenAI-style messages, selects the latest user message, and delegates to `ask()`. Multi-turn history injection is intentionally out of scope until it has a tested prompt contract.
 
 ## CLI
 
-Sutra provides several CLI commands for query answering and workspace diagnostics:
+Sutra provides several CLI commands for query answering, workspace diagnostics, and the web UI:
 
 - `sutra ask "question"`: Ask a question against a resolved Sutra workspace.
 - `sutra workspace validate`: Validate workspace configuration schema and verify all referenced files exist.
@@ -183,6 +186,7 @@ Sutra provides several CLI commands for query answering and workspace diagnostic
 - `sutra llama serve`: Launch `llama-server` in the foreground using the configured model.
 - `sutra llama download`: Download a GGUF model from Hugging Face.
 - `sutra doctor`: Run workspace validate, docs check, and llama health checks, aggregating their statuses.
+- `sutra ui`: Launch the Chainlit web UI. Accepts `--host`, `--port`, `--workspace`, and `--echo`. Requires the `ui` optional extra.
 
 ### Workspace Resolution
 
