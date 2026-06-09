@@ -157,7 +157,7 @@ def test_harness_current_dining_question_passes_evidence_to_writer_without_struc
         '"body":"식단은 모바일 식단 페이지에서 확인한다.",'
         '"source_url":"https://mobileadmin.cnu.ac.kr/food/index.jsp",'
         '"source_id":"cnu_mobile_food",'
-        '"metadata":{"raw_fetched_at":"2026-06-07T00:00:00+00:00"}'
+        '"metadata":{"raw_fetched_at":"2026-06-07T00:00:00+00:00","search_aliases":["점심","메뉴","학식"]}'
         "}"
         "]",
         encoding="utf-8",
@@ -218,7 +218,7 @@ def test_harness_current_dining_question_accepts_official_structured_menu_row(tm
     assert result.trace.fetch_decision == FetchDecision.SKIPPED_RAG_SUFFICIENT
 
 
-def test_harness_does_not_accept_safe_source_from_wrong_domain(tmp_path: Path) -> None:
+def test_harness_passes_retrieved_wrong_domain_evidence_to_writer_without_route_gate(tmp_path: Path) -> None:
     knowledge_path = tmp_path / "knowledge.json"
     knowledge_path.write_text(
         "["
@@ -242,9 +242,10 @@ def test_harness_does_not_accept_safe_source_from_wrong_domain(tmp_path: Path) -
         generator=lambda prompt: "식단 페이지는 셔틀 안내 페이지에서 확인하면 됩니다.",
     )
 
-    assert result.output_status == OutputStatus.FAIL_CLOSED
+    assert result.output_status == OutputStatus.ANSWERED
     assert result.trace.route_domain == "dining"
-    assert result.trace.evidence_lookup_status == "no_docs"
+    assert result.trace.retrieved_doc_ids == ["shuttle_doc"]
+    assert result.trace.evidence_lookup_status == "docs_found"
 
 
 def test_harness_does_not_block_cross_domain_question_when_evidence_is_retrieved(tmp_path: Path) -> None:
@@ -313,6 +314,53 @@ def test_harness_uses_positive_cross_label_evidence_when_route_has_no_matches(tm
     assert result.trace.retrieved_doc_ids == ["notice_doc"]
 
 
+def test_harness_keeps_zero_score_ranked_docs_as_evidence(tmp_path: Path, monkeypatch) -> None:
+    knowledge_path = tmp_path / "knowledge.json"
+    knowledge_path.write_text(
+        json.dumps(
+            [
+                {
+                    "doc_id": "zero_score_doc",
+                    "label": 0,
+                    "domain": "graduation",
+                    "title": "졸업요건",
+                    "body": "졸업요건은 학과와 입학연도별 공식 기준을 확인해야 한다.",
+                    "source_url": "https://example.cnu.ac.kr/graduation",
+                    "source_id": "graduation_requirements",
+                    "metadata": {},
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    def fake_rank_docs(question, docs, *, top_k: int):
+        del question, top_k
+        doc = docs[0]
+        return [
+            RetrievedDoc(
+                doc_id=doc.doc_id,
+                score=0.0,
+                title=doc.title,
+                source_url=doc.source_url,
+                label=doc.label,
+            )
+        ]
+
+    monkeypatch.setattr(orchestrator_module, "rank_docs", fake_rank_docs)
+
+    result = answer_with_harness(
+        "졸업요건 어디서 확인하나요?",
+        knowledge_path=knowledge_path,
+        generator=lambda prompt: "졸업요건은 학과와 입학연도별 공식 기준을 확인해야 합니다.",
+    )
+
+    assert result.output_status == OutputStatus.ANSWERED
+    assert result.trace.retrieved_doc_ids == ["zero_score_doc"]
+    assert result.trace.retrieved_scores == [0.0]
+
+
 def test_harness_keeps_strong_cross_label_evidence_when_route_candidate_is_weak(
     tmp_path: Path,
     monkeypatch,
@@ -347,18 +395,18 @@ def test_harness_keeps_strong_cross_label_evidence_when_route_candidate_is_weak(
         docs_by_id = {doc.doc_id: doc for doc in docs}
         return [
             RetrievedDoc(
-                doc_id="weak_calendar_doc",
-                score=0.0,
-                title=docs_by_id["weak_calendar_doc"].title,
-                source_url=docs_by_id["weak_calendar_doc"].source_url,
-                label=2,
-            ),
-            RetrievedDoc(
                 doc_id="strong_notice_doc",
                 score=0.9,
                 title=docs_by_id["strong_notice_doc"].title,
                 source_url=docs_by_id["strong_notice_doc"].source_url,
                 label=1,
+            ),
+            RetrievedDoc(
+                doc_id="weak_calendar_doc",
+                score=0.0,
+                title=docs_by_id["weak_calendar_doc"].title,
+                source_url=docs_by_id["weak_calendar_doc"].source_url,
+                label=2,
             ),
         ]
 
@@ -376,10 +424,10 @@ def test_harness_keeps_strong_cross_label_evidence_when_route_candidate_is_weak(
     )
 
     assert result.output_status == OutputStatus.ANSWERED
-    assert result.trace.retrieved_doc_ids == ["strong_notice_doc"]
+    assert result.trace.retrieved_doc_ids == ["strong_notice_doc", "weak_calendar_doc"]
 
 
-def test_harness_preserves_route_preference_through_final_selection(tmp_path: Path, monkeypatch) -> None:
+def test_harness_does_not_promote_route_label_above_relevance_score(tmp_path: Path, monkeypatch) -> None:
     knowledge_path = tmp_path / "knowledge.json"
     knowledge_docs = [
         {
@@ -443,7 +491,7 @@ def test_harness_preserves_route_preference_through_final_selection(tmp_path: Pa
     )
 
     assert result.output_status == OutputStatus.ANSWERED
-    assert result.trace.retrieved_doc_ids[0] == "eligible_calendar_doc"
+    assert result.trace.retrieved_doc_ids[0] == "strong_notice_doc_0"
     assert "eligible_calendar_doc" in result.trace.retrieved_doc_ids
 
 
@@ -591,6 +639,23 @@ def test_harness_prefers_newest_notice_row_for_latest_item_question(tmp_path: Pa
                         "verification_official_chain_ok": True,
                     },
                 },
+                {
+                    "doc_id": "future_calendar_doc",
+                    "label": 2,
+                    "domain": "academic_calendar",
+                    "title": "2026학년도 전기 조기졸업 신청",
+                    "body": "2026학년도 전기 조기졸업 신청 기간은 2026-09-30부터 2026-10-07까지입니다.",
+                    "date": "2026-09-30",
+                    "source_url": "https://plus.cnu.ac.kr/calendar",
+                    "source_id": "academic_calendar",
+                    "metadata": {
+                        "generation_method": "structured_row",
+                        "row_type": "academic_calendar_event",
+                        "start_date": "2026-09-30",
+                        "end_date": "2026-10-07",
+                        "verification_official_chain_ok": True,
+                    },
+                },
             ],
             ensure_ascii=False,
         ),
@@ -612,6 +677,9 @@ def test_harness_prefers_newest_notice_row_for_latest_item_question(tmp_path: Pa
     assert result.output_status == OutputStatus.ANSWERED
     assert result.trace.temporal_type == "latest_item"
     assert result.trace.retrieved_doc_ids[0] == "new_notice_doc"
+    assert result.trace.retrieved_doc_ids.index("future_calendar_doc") > result.trace.retrieved_doc_ids.index(
+        "new_notice_doc"
+    )
     assert captured["prompt"].find("2026-06-05") < captured["prompt"].find("2026-05-01")
 
 
@@ -666,7 +734,7 @@ def test_temporal_questions_can_send_more_than_three_evidence_items(tmp_path: Pa
             "source_id": "academic_calendar",
             "metadata": {"date_span": "2026-06-19", "source_name": f"학사일정 {index}"},
         }
-        for index in range(5)
+        for index in range(9)
     ]
     knowledge_path.write_text(json.dumps(docs, ensure_ascii=False), encoding="utf-8")
     captured: dict[str, str] = {}
@@ -682,7 +750,7 @@ def test_temporal_questions_can_send_more_than_three_evidence_items(tmp_path: Pa
         question_time=datetime(2026, 6, 8, tzinfo=timezone.utc),
     )
 
-    assert captured["prompt"].count("핵심 사실:") >= 5
+    assert captured["prompt"].count("핵심 사실:") == 8
 
 
 def test_harness_trace_records_prefilter_and_postfilter_retrieval_candidates(tmp_path: Path) -> None:
@@ -738,7 +806,7 @@ def test_harness_trace_records_prefilter_and_postfilter_retrieval_candidates(tmp
     assert "notice_doc" in prefilter_ids
     assert "grad_doc" in prefilter_ids
     assert postfilter_ids == result.trace.retrieved_doc_ids
-    assert "grad_doc" not in postfilter_ids
+    assert "grad_doc" in postfilter_ids
     assert result.trace.prefilter_retrieved_candidates[0].score >= 0
     assert {candidate.chunk_confidence for candidate in result.trace.prefilter_retrieved_candidates} >= {"medium", "low"}
 
@@ -803,7 +871,10 @@ def test_diagnostic_retrieval_pool_does_not_expand_evidence_selection(tmp_path: 
 
     assert "late_notice_doc" in prefilter_ids
     assert "late_notice_doc" not in postfilter_ids
-    assert result.trace.retrieved_doc_ids == [doc["doc_id"] for doc in selected_notice_docs]
+    assert result.trace.retrieved_doc_ids == [
+        *[doc["doc_id"] for doc in selected_notice_docs],
+        *[doc["doc_id"] for doc in high_scoring_wrong_route_docs[:5]],
+    ]
     assert result.output_status == OutputStatus.ANSWERED
 
 
@@ -849,7 +920,7 @@ def test_harness_uses_original_top_k_for_decision_and_larger_pool_for_diagnostic
         generator=lambda prompt: "장학금 공지는 공식 공지사항에서 확인하면 됩니다.",
     )
 
-    assert top_k_calls == [12, 24]
+    assert top_k_calls == [24, 32]
 
 
 def test_diagnostic_only_candidate_does_not_enter_prompt(tmp_path: Path) -> None:

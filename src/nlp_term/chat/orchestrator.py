@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from datetime import date, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal
 
@@ -36,6 +36,7 @@ from nlp_term.schemas import ChatOutput, Domain, KnowledgeDoc
 
 
 DEFAULT_MODEL_PATH = model_dir() / "qwen3.5-9b-instruct-q4_k_m.gguf"
+DEFAULT_EVIDENCE_PACK_SIZE = 8
 
 
 def answer_with_harness(
@@ -61,11 +62,11 @@ def answer_with_harness(
         reference_time=resolved_question_time,
     )
     answer_kind = AnswerKind.STATIC_FACT
-    evidence_pack_size = _evidence_pack_size(temporal_intent)
+    evidence_pack_size = DEFAULT_EVIDENCE_PACK_SIZE
 
     knowledge = load_knowledge_with_metadata(knowledge_path)
-    decision_top_k = max(12, evidence_pack_size * 3)
-    diagnostic_top_k = max(24, evidence_pack_size * 4)
+    decision_top_k = evidence_pack_size * 3
+    diagnostic_top_k = evidence_pack_size * 4
     decision_retrieved = rank_docs(question, knowledge.docs, top_k=decision_top_k)
     diagnostic_retrieved = rank_docs(question, knowledge.docs, top_k=diagnostic_top_k)
     docs_by_id = {doc.doc_id: doc for doc in knowledge.docs}
@@ -75,14 +76,8 @@ def answer_with_harness(
         for row in decision_retrieved
         if row.doc_id in docs_by_id
     ]
-    retrieved_pairs = _prefer_route_pairs(candidate_pairs, route_label=route.label, min_score=min_top_score)
+    retrieved_pairs = _keep_ranked_pairs(candidate_pairs)
     retrieved_pairs = _order_retrieved_pairs(retrieved_pairs, temporal_type=temporal_intent.temporal_type)
-    retrieved_pairs = _prioritize_retrieved_pairs(
-        retrieved_pairs,
-        question=question,
-        route_label=route.label,
-        temporal_intent=temporal_intent,
-    )
     retrieved_pairs = _deduplicate_retrieved_pairs(retrieved_pairs)[:evidence_pack_size]
     retrieved_docs = [doc for doc, _score in retrieved_pairs]
     retrieved_scores = [score for _doc, score in retrieved_pairs]
@@ -254,16 +249,10 @@ def _candidate_trace_rows(rows, docs_by_id: dict[str, KnowledgeDoc]) -> list[Ret
     return trace_rows
 
 
-def _prefer_route_pairs(
+def _keep_ranked_pairs(
     retrieved_pairs: list[tuple[KnowledgeDoc, float]],
-    *,
-    route_label: int,
-    min_score: float,
 ) -> list[tuple[KnowledgeDoc, float]]:
-    eligible = [(doc, score) for doc, score in retrieved_pairs if score >= min_score]
-    if eligible:
-        return sorted(eligible, key=lambda pair: (pair[0].label == route_label, pair[1]), reverse=True)
-    return [(doc, score) for doc, score in retrieved_pairs if doc.label == route_label]
+    return retrieved_pairs
 
 
 def _selected_candidate_trace_rows(retrieved_pairs: list[tuple[KnowledgeDoc, float]]) -> list[RetrievalCandidateTrace]:
@@ -287,37 +276,7 @@ def _order_retrieved_pairs(
     *,
     temporal_type: TemporalType,
 ) -> list[tuple[KnowledgeDoc, float]]:
-    if temporal_type != TemporalType.LATEST_ITEM:
-        return retrieved_pairs
-    return sorted(retrieved_pairs, key=lambda pair: (_posted_date_key(pair[0]), pair[1]), reverse=True)
-
-
-def _posted_date_key(doc: KnowledgeDoc) -> str:
-    posted_date = doc.metadata.get("posted_date")
-    if isinstance(posted_date, str):
-        return posted_date
-    return doc.date or ""
-
-
-def _prioritize_retrieved_pairs(
-    retrieved_pairs: list[tuple[KnowledgeDoc, float]],
-    *,
-    question: str,
-    route_label: int,
-    temporal_intent,
-) -> list[tuple[KnowledgeDoc, float]]:
-    compact_question = question.replace(" ", "")
-    return sorted(
-        retrieved_pairs,
-        key=lambda pair: (
-            pair[0].label == route_label,
-            _temporal_match_score(pair[0], temporal_intent=temporal_intent),
-            _structured_score(pair[0]),
-            _alias_match_score(pair[0], compact_question),
-            pair[1],
-        ),
-        reverse=True,
-    )
+    return retrieved_pairs
 
 
 def _deduplicate_retrieved_pairs(retrieved_pairs: list[tuple[KnowledgeDoc, float]]) -> list[tuple[KnowledgeDoc, float]]:
@@ -379,72 +338,9 @@ def _join_key(*values: object) -> str | None:
     return ":".join(parts)
 
 
-def _temporal_match_score(doc: KnowledgeDoc, *, temporal_intent) -> int:
-    if temporal_intent.target_start is None:
-        return 0
-    target_end = temporal_intent.target_end or temporal_intent.target_start
-    if _doc_interval_overlaps(doc, target_start=temporal_intent.target_start, target_end=target_end):
-        return 2
-    target = temporal_intent.target_start.isoformat()
-    date_keys = ("menu_date", "operation_date", "valid_at", "effective_date", "posted_date", "start_date", "end_date")
-    values = [doc.date or "", *(str(doc.metadata.get(key, "")) for key in date_keys), doc.body]
-    return int(any(target in value for value in values if value))
-
-
-def _structured_score(doc: KnowledgeDoc) -> int:
-    return int(doc.metadata.get("generation_method") == "structured_row" or "structured" in doc.metadata)
-
-
-def _alias_match_score(doc: KnowledgeDoc, compact_question: str) -> int:
-    aliases = doc.metadata.get("search_aliases")
-    if not isinstance(aliases, list):
-        return 0
-    return sum(int(str(alias).replace(" ", "") in compact_question) for alias in aliases)
-
-
-def _doc_interval_overlaps(doc: KnowledgeDoc, *, target_start: date, target_end: date) -> bool:
-    spans = []
-    date_span = doc.metadata.get("date_span")
-    if isinstance(date_span, str):
-        spans.extend(_parse_date_span(date_span))
-    start = _parse_iso_date(doc.metadata.get("start_date") or doc.metadata.get("valid_start"))
-    end = _parse_iso_date(doc.metadata.get("end_date") or doc.metadata.get("valid_end"))
-    if start and end:
-        spans.append((start, end))
-    return any(left <= target_end and target_start <= right for left, right in spans)
-
-
-def _parse_date_span(value: str) -> list[tuple[date, date]]:
-    parts = [part for part in value.replace("/", " ").split() if part]
-    dates = [_parse_iso_date(part) for part in parts]
-    parsed = [item for item in dates if item is not None]
-    if len(parsed) >= 2:
-        return [(parsed[0], parsed[1])]
-    if len(parsed) == 1:
-        return [(parsed[0], parsed[0])]
-    return []
-
-
-def _parse_iso_date(value: object) -> date | None:
-    if not isinstance(value, str):
-        return None
-    try:
-        return date.fromisoformat(value)
-    except ValueError:
-        return None
-
-
 def _optional_metadata_text(doc: KnowledgeDoc, key: str) -> str | None:
     value = doc.metadata.get(key)
     return str(value) if value is not None else None
-
-
-def _evidence_pack_size(temporal_intent) -> int:
-    if temporal_intent.temporal_type in {"period_summary", "changed_since"}:
-        return 8
-    if temporal_intent.freshness_required or temporal_intent.temporal_type != "none":
-        return 5
-    return 3
 
 
 def _generate_answer(

@@ -8,9 +8,13 @@ from nlp_term.retrieve.knowledge import load_knowledge
 from nlp_term.retrieve.rank import rank_docs
 
 
+COMPOSER_RETRIEVAL_POOL_SIZE = 24
+
+
 def compose_answer(route: RoutedQuestion, *, knowledge_path: Path | None = None) -> str:
     knowledge_docs = load_knowledge(knowledge_path)
-    docs = [doc for doc in rank_docs(route.user, docs=knowledge_docs, top_k=3) if doc.label == route.label]
+    ranked_docs = rank_docs(route.user, docs=knowledge_docs, top_k=COMPOSER_RETRIEVAL_POOL_SIZE)
+    docs = [doc for doc in ranked_docs if doc.label == route.label]
     if not docs:
         return fallback_answer(route)
     retrieved = docs[0]

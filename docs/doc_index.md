@@ -22,6 +22,7 @@ Conflict rule:
 | `docs/doc_index.md` | Current | Document status registry | Every session start |  |
 | `docs/decision_log.md` | Reference | Append-only decision rationale | When reconstructing why a decision changed |  |
 | `docs/term_project_requirements.md` | Reference | Assignment requirements | Before changing scope or evaluation behavior |  |
+| `docs/sutra_architecture.md` | Current | Sutra package architecture, workspace format, and runtime boundaries | Before Sutra package, workspace, API, UI, or llama-server work |  |
 | `docs/task2_simplification_direction_2026_06_09.md` | Current | Current Task 2 simplification direction | Before Task 2, RAG, Qwen, or evidence-path work |  |
 | `docs/qwen_runtime.md` | Reference | Local Qwen runtime notes | Before model execution changes |  |
 | `docs/source_inventory.md` | Reference | Source collection overview | Before source collection changes |  |

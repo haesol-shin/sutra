@@ -5,7 +5,7 @@ from pathlib import Path
 from nlp_term.collect.base import PARSER_VERSION
 from nlp_term.collect.source_inventory import iter_specs
 from nlp_term.retrieve.rank import rank_docs
-from nlp_term.schemas import RawSource, SourceVerification
+from nlp_term.schemas import KnowledgeDoc, RawSource, SourceVerification
 from nlp_term.structured.notices import NoticeAdapter
 
 
@@ -99,3 +99,34 @@ def test_latest_notice_row_is_retrievable_by_recent_notice_question() -> None:
     top = rank_docs("가장 최근에 올라온 공지사항은 언제 게시되었나요?", docs=docs, top_k=3)
 
     assert any(row.doc_id.startswith("academic_notice_board__notice_board_item__1814") for row in top)
+
+
+def test_latest_notice_ranking_keeps_topic_relevance_ahead_of_recency() -> None:
+    docs = [
+        KnowledgeDoc(
+            doc_id="new_unrelated_notice",
+            label=1,
+            domain="notices",
+            title="계절학기 폐강 안내",
+            body="가장 최근 공지입니다.",
+            date="2026-06-08",
+            source_url="https://plus.cnu.ac.kr/new",
+            source_id="academic_notice_board",
+            metadata={"posted_date": "2026-06-08"},
+        ),
+        KnowledgeDoc(
+            doc_id="older_scholarship_notice",
+            label=1,
+            domain="notices",
+            title="장학금 장학 신청 안내",
+            body="장학 공지입니다. 장학금 신청 대상과 기간을 안내합니다.",
+            date="2026-05-20",
+            source_url="https://plus.cnu.ac.kr/scholarship",
+            source_id="academic_notice_board",
+            metadata={"posted_date": "2026-05-20"},
+        ),
+    ]
+
+    top = rank_docs("가장 최근 장학 공지 알려줘", docs=docs, top_k=2)
+
+    assert top[0].doc_id == "older_scholarship_notice"

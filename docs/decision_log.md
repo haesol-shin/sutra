@@ -41,3 +41,27 @@ Decision: Treat the Task 1 route label as a Task 2 retrieval ordering preference
 Reason: A strict route filter can erase useful evidence when Task 1 misclassifies an otherwise answerable question.
 Consequence: Sufficiently scoring evidence is kept across labels, route-matching evidence is sorted first, and selected evidence remains visible in trace.
 Links: `docs/task2_simplification_direction_2026_06_09.md`, `src/nlp_term/chat/orchestrator.py`
+
+## 2026-06-09
+
+Type: refactor
+Decision: Adopt the next Task 2 retrieval simplification plan: demote route preference, remove label hints from active scoring, make `min_top_score` diagnostic only, keep aliases as search text, and keep temporal handling in prompt context.
+Reason: The current project goal is simple evidence delivery to Qwen. Prior probe runs and reviewer analysis showed that score gates and routing-like boosts can suppress useful evidence or make behavior harder to reason about without proven isolated gains.
+Consequence: Future retrieval changes should be small ablations with probe checks, starting with removing score-based fail-closed behavior from evidence pack selection.
+Links: `docs/task2_simplification_direction_2026_06_09.md`, `docs/project_state.md`
+
+## 2026-06-09
+
+Type: refactor
+Decision: Use a fixed Task 2 evidence pack size of 8 and remove score-positive and temporal pack-size selection rules.
+Reason: The project direction is to give Qwen enough clean evidence and let the prompt handle relevance. Prior checks showed routing-like gates and arbitrary score thresholds made behavior harder to reason about without a measured benefit.
+Consequence: Retrieved evidence is sorted by diagnostic score and passed through up to the fixed pack size. Date mismatch handling moves to prompt instructions and Qwen generation behavior.
+Links: `src/nlp_term/chat/orchestrator.py`, `src/nlp_term/chat/prompts.py`, `docs/task2_simplification_direction_2026_06_09.md`
+
+## 2026-06-09
+
+Type: fix
+Decision: Centralize retrieval ordering in `rank_docs` and preserve that order in the Task 2 harness.
+Reason: Re-sorting retrieved evidence by score inside the harness undid source-native latest-notice ordering and made the behavior harder to reason about.
+Consequence: Bare latest-notice queries put posted date first, topic-specific latest-notice queries put textual relevance first, and the harness no longer performs a second score sort.
+Links: `src/nlp_term/retrieve/rank.py`, `src/nlp_term/chat/orchestrator.py`

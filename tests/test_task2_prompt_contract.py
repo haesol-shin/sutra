@@ -24,9 +24,14 @@ def test_task2_prompt_defines_llm_as_natural_answer_writer_not_tool_agent() -> N
     assert "충남대학교 학생을 돕는 캠퍼스 챗봇" in prompt
     assert "자연스럽게" in prompt
     assert "도구를 호출하지 않는다" in prompt
-    assert "근거에 없는 날짜, 학점, 장소는 단정하지 않는다" in prompt
-    assert "근거에 없는 URL, 기관명, 수치, 메뉴명은 새로 만들지 않는다" in prompt
+    assert "### 검색 근거" in prompt
+    assert "### 작성 지시" in prompt
+    assert "질문과 직접 관련된 근거를 우선 사용한다" in prompt
+    assert "날짜, 기간, 장소, 학생회관, 학과, 입학연도" in prompt
+    assert "질문이 요구한 날짜나 기간과 근거의 날짜나 기간이 다르면" in prompt
+    assert "근거에 없는 날짜, 학점, 장소, URL, 기관명, 수치, 메뉴명" in prompt
     assert "내부 문서 ID" in prompt
+    assert "답변에는 내부 추론 과정이나 근거 검토 과정을 설명하지 마세요" in prompt
     assert "academic_calendar_chunk_1" not in prompt
     assert "생화학과 졸업요건" in prompt
     assert "https://biochemistry.cnu.ac.kr/grad" in prompt

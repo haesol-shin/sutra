@@ -76,7 +76,10 @@ def test_harness_safety_experiment_reports_coverage_and_safety_metrics(tmp_path:
                 "body": "식단은 모바일 식단 페이지에서 확인한다.",
                 "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
                 "source_id": "cnu_mobile_food",
-                "metadata": {"raw_fetched_at": "2026-06-07T00:00:00+00:00"},
+                "metadata": {
+                    "raw_fetched_at": "2026-06-07T00:00:00+00:00",
+                    "search_aliases": ["점심", "메뉴", "학식"],
+                },
             },
         ],
     )
