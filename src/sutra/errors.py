@@ -16,3 +16,7 @@ class LlamaError(SutraError):
 class WorkspaceResolutionError(SutraError):
     """Raised when a workspace configuration cannot be resolved."""
 
+
+class ExtractionError(SutraError):
+    """Raised when PDF extraction fails irrecoverably."""
+
