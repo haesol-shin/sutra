@@ -1,8 +1,15 @@
-# NLP Term Project
+# Sutra
 
-Campus ChatBot term project workspace.
+Sutra is a lightweight, local-first RAG (Retrieval-Augmented Generation) runtime designed for running question-answering pipelines on top of local llama.cpp server backends.
 
-## Environment
+This repository is organized as follows:
+- **Core Engine ([src/sutra](src/sutra))**: The active, clean Python package implementation containing RAG services, retrieval scoring, CLI, prompts, and llama.cpp client interfaces.
+- **Example Workspace ([examples/cnu-campus](examples/cnu-campus))**: A complete reference workspace implementing a Campus Chatbot helper for Chungnam National University (CNU) students.
+- **Legacy Code ([src/nlp_term](src/nlp_term))**: The original, legacy package layout which is no longer active.
+
+---
+
+## Environment Setup
 
 Use `uv` and Python 3.10.12.
 
@@ -12,53 +19,60 @@ uv sync --extra xpu
 ```
 
 This installs the local XPU development PyTorch build through the PyTorch XPU index:
-
 ```text
 torch 2.9.1+xpu
 pytorch-triton-xpu 3.5.0
 ```
 
-Verification:
-
+### Verification
 ```powershell
 uv run python --version
 uv run python -c "import torch; print(torch.__version__); print(torch.xpu.is_available())"
 ```
 
-Current local note:
+> [!NOTE]
+> **PyTorch XPU Version Note:**
+> - The original assignment document lists `torch 2.5.1`.
+> - However, `torch 2.5.1+xpu` failed to import locally due to a missing `c10_xpu.dll` dependency.
+> - `torch 2.9.1+xpu` is the current local development default because it correctly imports and detects XPU. Revisit this if strict version matching is required before final submission.
 
-- The assignment document lists `torch 2.5.1`.
-- `torch 2.5.1+xpu` installed but failed to import locally because of a missing `c10_xpu.dll` dependency.
-- `torch 2.9.1+xpu` works on this machine in the reference project `../aidm-term-proj`, so this repo uses it as the local development default.
-- Revisit the torch version before final submission if strict version matching becomes a grading concern.
+---
+
+## Workspace & Data Policy
+
+The CNU Campus ([examples/cnu-campus](examples/cnu-campus)) workspace operates under these rules:
+- **Clean Corpus**: The active index contains **355 clean documents** merged under [knowledge-index.jsonl](examples/cnu-campus/data/processed/knowledge-index.jsonl) (dining: 20 docs, shuttle: 4 docs, academic calendar: 326 docs, graduation: 5 docs). This is separate from the legacy, noisy 2414-document `knowledge_seed.json` corpus.
+- **Raw Data Policy**: Raw source files are ignored by Git. Raw provenance metadata is tracked via `data/raw/**/*.meta.json` (such as [computer_ai_2026_graduation_requirements.meta.json](data/raw/graduation/computer_ai_2026_graduation_requirements.meta.json)).
+
+---
 
 ## Useful Commands
 
+### 1. Synchronize Dependencies
 ```powershell
 uv sync --extra xpu
 ```
 
-Run Task 2 batch output:
-
+### 2. Workspace Document Validation (Docs Check)
+Validate the integrity and counts of the workspace corpus:
 ```powershell
-bash ./chatbot.sh batch
+uv run python -m sutra.cli docs check --workspace examples/cnu-campus/sutra.toml --json
 ```
 
-Force a backend explicitly when crossing from PowerShell into bash:
-
+### 3. Run Embedding Retrieval Experiment
+Run the optional embedding retrieval experiment using Qwen:
 ```powershell
-bash ./chatbot.sh batch deterministic
-bash ./chatbot.sh batch llama
+# Sync optional embeddings dependencies first
+uv sync --extra xpu --extra embeddings
+# Run retrieval evaluation
+uv run python examples/cnu-campus/evals/embedding_retrieval.py
 ```
+*Note: Embeddings caches are stored under `examples/cnu-campus/.cache/` and are git-ignored.*
 
-Local Qwen runtime notes:
+---
 
-```text
-docs/qwen_runtime.md
-```
-
-Generate a submission-oriented package list near the end of the project:
-
-```powershell
-uv run python -m pip freeze > requirements.txt
-```
+## Project Documentation
+- [Sutra Architecture](docs/sutra_architecture.md): Deep dive into the RAG package boundaries, config, and runtime.
+- [Project State](docs/project_state.md): Active next areas, corpus counts, and legacy status.
+- [Document Index](docs/doc_index.md): Source-of-truth document registry.
+- [CNU Campus README](examples/cnu-campus/README.md): Details about the CNU example workspace.

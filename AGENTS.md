@@ -1,29 +1,29 @@
 # Agent Instructions
 
-This repository is for the Natural Language Processing term project: a Campus ChatBot for Chungnam National University students.
+This repository is for Sutra, a lightweight local-first RAG runtime, with an example workspace for the Chungnam National University (CNU) Campus ChatBot.
 
 ## Current Scope
 
-- Keep the project centered on the assignment requirements summarized in `docs/term_project_requirements.md`.
-- Prioritize Task 1 question classification and Task 2 chatbot/UI before Optional Task 3 realtime information.
-- Treat Optional Task 3 as extra credit unless the user explicitly changes that priority.
-- Use `../aidm-term-proj` only as a reference for environment and workflow patterns, not as a source of project requirements.
+- **Active package**: [src/sutra](src/sutra) is the active engine core.
+- **Example workspace**: [examples/cnu-campus](examples/cnu-campus) contains the reference configuration and data indexes.
+- **Legacy package**: [src/nlp_term](src/nlp_term) is legacy code and is no longer active.
+- Treat the original assignment constraints in [docs/term_project_requirements.md](docs/term_project_requirements.md) as reference context. The active default task priorities (Task 1, 2, 3) are de-prioritized/legacy; development is centered on Sutra RAG capabilities.
+- Use `../aidm-term-proj` only as a reference for environment and workflow patterns.
 
 ## Session Bootstrap
 
-- Read `docs/project_state.md` first.
-- Read `docs/doc_index.md` for document status.
-- Read `docs/term_project_requirements.md` for assignment constraints.
-- Use `docs/doc_index.md` `Read When` guidance for task-specific `Current`, `Reference`, or `Evidence` docs.
-- Do not execute old plans unless `docs/doc_index.md` marks them `Current`.
-- If docs conflict, `docs/project_state.md` and `docs/doc_index.md` override old in-document "current" claims.
+- Read [docs/project_state.md](docs/project_state.md) first.
+- Read [docs/doc_index.md](docs/doc_index.md) for document status.
+- Use [docs/doc_index.md](docs/doc_index.md) `Read When` guidance for task-specific `Current`, `Reference`, or `Evidence` docs.
+- Do not execute old plans unless [docs/doc_index.md](docs/doc_index.md) marks them `Current`.
+- If docs conflict, [docs/project_state.md](docs/project_state.md) and [docs/doc_index.md](docs/doc_index.md) override old in-document "current" claims.
 
 ## Project Conventions
 
 - Use `uv` for environment management and command execution.
 - Use Python 3.10.12.
-- Use the package-root layout `src/nlp_term/`.
-- Keep reusable project code under `nlp_term`, not directly under `src`.
+- Use the package-root layout [src/sutra](src/sutra).
+- Keep reusable project code under `sutra`, not directly under `src`.
 - Prefer Windows-compatible code paths.
 - For local XPU development, use the `xpu` extra unless the user asks for a different environment.
 
@@ -65,11 +65,15 @@ Prefer conventional commit-style subjects when committing, for example `env: con
 - Give delegated tasks narrow inputs, expected outputs, and stop conditions. Require concrete evidence such as fetched URLs, file paths, count tables, failing/passing commands, or short implementation diffs.
 - If `codex-spark` is unavailable, continue inline and note that the work was not delegated.
 
-## Documentation Roles
+## Documentation Policy & Roles
 
-- `README.md`: short project overview and commands for humans.
-- `AGENTS.md`: agent-facing rules, scope, and workflow constraints.
-- `docs/term_project_requirements.md`: source-backed assignment requirements and open decisions.
+- Temporary plans, design proposals, reviews, and logs must be stored under `tmp/` (e.g., `tmp/planning_docs/`).
+- Only stable, source-of-truth reference documentation goes under `docs/`.
+- **Key Files**:
+  - [README.md](README.md): project overview and commands.
+  - [AGENTS.md](AGENTS.md): agent-facing rules, scope, and workflow constraints.
+  - [docs/project_state.md](docs/project_state.md): active tasks, corpus counts, and focus area directions.
+  - [docs/doc_index.md](docs/doc_index.md): index registry specifying what is current vs. stale/reference.
 
 ## Verification
 
