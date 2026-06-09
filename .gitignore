@@ -17,3 +17,5 @@ model/
 models/
 artifacts/
 *.egg-info/
+.cache/
+**/.cache/
