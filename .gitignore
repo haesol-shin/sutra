@@ -19,3 +19,6 @@ artifacts/
 *.egg-info/
 .cache/
 **/.cache/
+.chainlit/
+.opencode/
+opencode.json
