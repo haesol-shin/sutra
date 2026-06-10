@@ -1,8 +1,5 @@
 from __future__ import annotations
 
-import ctypes
-import os
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -23,41 +20,21 @@ class EchoClient:
         model: str | None = None,
         temperature: float = 0.2,
         max_tokens: int = 512,
+        tools: list[dict[str, object]] | None = None,
     ) -> LlamaResult:
-        del temperature, max_tokens
+        del temperature, max_tokens, tools
         return LlamaResult(content=f"[echo:{model or 'local'}] {messages[-1].content}", model=model)
 
 
 
 def locate_llama_server(cli_path: str | Path | None = None) -> Path:
-    """Find the llama-server binary on the system."""
-    if cli_path:
-        resolved = Path(cli_path).expanduser().resolve()
-        if resolved.exists() and resolved.is_file():
-            return resolved
-        raise LlamaError(
-            f"llama-server binary not found at explicitly configured path: {resolved}"
-        )
-
-    env_path = os.getenv("LLAMA_SERVER_PATH")
-    if env_path:
-        resolved = Path(env_path).expanduser().resolve()
-        if resolved.exists() and resolved.is_file():
-            return resolved
-        raise LlamaError(
-            f"llama-server binary not found at env var LLAMA_SERVER_PATH: {resolved}"
-        )
-
-    which_path = shutil.which("llama-server")
-    if which_path is not None:
-        resolved = Path(which_path).resolve()
-        if resolved.exists() and resolved.is_file():
-            return resolved
-
+    """DEPRECATED: llama-cpp-python provides its own server via `python -m llama_cpp.server`.
+    Binary search is no longer needed. Install llama-cpp-python and use `sutra llama serve` instead."""
     raise LlamaError(
-        "llama-server binary not found. "
-        "Download it from https://github.com/ggerganov/llama.cpp/releases "
-        "and place it on your PATH, or set the LLAMA_SERVER_PATH environment variable."
+        "llama-server binary is no longer used. "
+        "Install llama-cpp-python and use 'python -m llama_cpp.server':\n"
+        "  uv pip install -e \".[xpu,rag,ui,legacy]\" --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/vulkan\n"
+        "  uv run sutra llama serve"
     )
 
 
@@ -91,25 +68,22 @@ def download_model(
 
 
 def start_llama_server(
-    executable_path: Path,
     model_path: Path,
     port: int = 18080,
-    gpu_layers: int = 0,
-    reasoning: str | None = None,
+    gpu_layers: int = -1,
+    chat_template_kwargs: str | None = None,
     dry_run: bool = False,
 ) -> subprocess.Popen | None:
-    """Start a llama-server subprocess."""
+    """Start llama-cpp-python server via `python -m llama_cpp.server`."""
     cmd = [
-        str(executable_path),
-        "--model",
-        str(model_path),
-        "--port",
-        str(port),
+        sys.executable, "-m", "llama_cpp.server",
+        "--model", str(model_path),
+        "--port", str(port),
+        "--n_gpu_layers", str(gpu_layers),
+        "--host", "127.0.0.1",
     ]
-    if reasoning is not None:
-        cmd.extend(["--reasoning", reasoning])
-    if gpu_layers > 0:
-        cmd.extend(["-ngl", str(gpu_layers)])
+    if chat_template_kwargs:
+        cmd.extend(["--chat_template_kwargs", chat_template_kwargs])
 
     if dry_run:
         print(f"[dry-run] Command: {' '.join(cmd)}")
@@ -119,65 +93,8 @@ def start_llama_server(
         raise LlamaError(
             f"Model file not found at: {model_path}. Please download it first using 'sutra llama download'"
         )
-    if not executable_path.exists():
-        raise LlamaError(f"llama-server binary not found at: {executable_path}")
 
-    process = subprocess.Popen(cmd)
-
-    if sys.platform == "win32":
-        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-
-        JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE = 0x2000
-
-        class JOBOBJECT_BASIC_LIMIT_INFORMATION(ctypes.Structure):
-            _fields_ = [
-                ("PerProcessUserTimeLimit", ctypes.c_int64),
-                ("PerJobUserTimeLimit", ctypes.c_int64),
-                ("LimitFlags", ctypes.c_uint32),
-                ("MinimumWorkingSetSize", ctypes.c_void_p),
-                ("MaximumWorkingSetSize", ctypes.c_void_p),
-                ("ActiveProcessLimit", ctypes.c_uint32),
-                ("Affinity", ctypes.c_void_p),
-                ("PriorityClass", ctypes.c_uint32),
-                ("SchedulingClass", ctypes.c_uint32),
-            ]
-
-        class IO_COUNTERS(ctypes.Structure):
-            _fields_ = [
-                ("ReadOperationCount", ctypes.c_uint64),
-                ("WriteOperationCount", ctypes.c_uint64),
-                ("OtherOperationCount", ctypes.c_uint64),
-                ("ReadTransferCount", ctypes.c_uint64),
-                ("WriteTransferCount", ctypes.c_uint64),
-                ("OtherTransferCount", ctypes.c_uint64),
-            ]
-
-        class JOBOBJECT_EXTENDED_LIMIT_INFORMATION(ctypes.Structure):
-            _fields_ = [
-                ("BasicLimitInformation", JOBOBJECT_BASIC_LIMIT_INFORMATION),
-                ("IoInfo", IO_COUNTERS),
-                ("ProcessMemoryLimit", ctypes.c_void_p),
-                ("JobMemoryLimit", ctypes.c_void_p),
-                ("PeakProcessMemoryUsed", ctypes.c_void_p),
-                ("PeakJobMemoryUsed", ctypes.c_void_p),
-            ]
-
-        h_job = kernel32.CreateJobObjectW(None, None)
-
-        info = JOBOBJECT_EXTENDED_LIMIT_INFORMATION()
-        info.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
-
-        kernel32.SetInformationJobObject(
-            h_job,
-            9,
-            ctypes.byref(info),
-            ctypes.sizeof(info),
-        )
-
-        kernel32.AssignProcessToJobObject(h_job, process._handle)
-        process._job_handle = h_job
-
-    return process
+    return subprocess.Popen(cmd)
 
 
 class LlamaClient:
@@ -200,6 +117,7 @@ class LlamaClient:
         model: str | None = None,
         temperature: float = 0.2,
         max_tokens: int = 512,
+        tools: list[dict[str, Any]] | None = None,
     ) -> LlamaResult:
         payload: dict[str, Any] = {
             "messages": [_dump_message(message) for message in messages],
@@ -208,6 +126,9 @@ class LlamaClient:
         }
         if model:
             payload["model"] = model
+        if tools:
+            payload["tools"] = tools
+            payload["tool_choice"] = "auto"
 
         try:
             response = requests.post(
@@ -217,16 +138,36 @@ class LlamaClient:
             )
             response.raise_for_status()
             body = response.json()
-            content = body["choices"][0]["message"]["content"]
+            choice = body["choices"][0]
+            message = choice["message"]
         except LlamaError:
             raise
         except (KeyError, IndexError, TypeError) as exc:
             raise LlamaError("malformed llama-server response") from exc
 
+        content = message.get("content") or ""
         answer = str(content).strip()
-        if not answer:
+
+        tool_calls: list[ToolCall] = []
+        raw_tool_calls = message.get("tool_calls") or []
+        for tc in raw_tool_calls:
+            fn = tc.get("function", {})
+            tool_calls.append(ToolCall(
+                id=tc.get("id", ""),
+                type=tc.get("type", "function"),
+                function_name=fn.get("name", ""),
+                function_arguments=fn.get("arguments", "{}"),
+            ))
+
+        if not answer and not tool_calls:
             raise LlamaError("empty llama-server response")
-        return LlamaResult(content=answer, model=body.get("model"), usage=body.get("usage"), raw=body)
+        return LlamaResult(
+            content=answer,
+            model=body.get("model"),
+            usage=body.get("usage"),
+            raw=body,
+            tool_calls=tool_calls,
+        )
 
 
 def _dump_message(message: Message | dict[str, str]) -> dict[str, str]:

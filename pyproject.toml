@@ -10,30 +10,32 @@ dependencies = [
   "pymupdf",
 ]
 
+# Install:
+#   Local XPU:  uv sync --extra xpu --extra rag --extra ui --extra legacy --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/vulkan
+#   Colab CUDA: uv sync --extra cuda --extra rag --extra ui --extra legacy --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu121
+#   Note: --extra-index-url is per-environment and cannot be baked into pyproject.toml (Vulkan vs CUDA conflict).
 [project.optional-dependencies]
 xpu = [
   "torch==2.9.1",
   "pytorch-triton-xpu==3.5.0",
+  "llama-cpp-python[server]>=0.3.28",
+]
+cuda = [
+  "torch>=2.5.1",
+  "llama-cpp-python[server]>=0.3.28",
 ]
 rag = [
   "sentence-transformers>=2.7.0",
-  "huggingface_hub",
   "kiwipiepy>=0.23.1",
   "bm25s>=0.3.9",
   "numpy",
-  "pdfplumber>=0.11.9",
 ]
 ui = [
   "chainlit>=1.1.302",
 ]
 legacy = [
-  "gradio",
   "scikit-learn",
   "joblib",
-  "olefile",
-  "pandas",
-  "python-dateutil",
-  "pyyaml",
 ]
 
 [project.scripts]
@@ -63,7 +65,6 @@ include = ["sutra*"]
 sutra = ["resources/ui/*"]
 
 [tool.uv.sources]
-torch = { index = "pytorch-xpu" }
 pytorch-triton-xpu = { index = "pytorch-xpu" }
 
 [[tool.uv.index]]
