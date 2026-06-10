@@ -8,9 +8,15 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+import torch
+
 from sutra.config import load_config
 from sutra.documents import load_documents
 from sutra.retrieval import retrieve
+from sutra.models import Evidence, EvidencePack
+from sutra.prompts import render_prompt
+from sutra.llama import LlamaClient
+from sutra.errors import LlamaError
 
 from embedding_retrieval import (
     check_deps as check_dense_deps,
@@ -156,6 +162,12 @@ def check_domain_in_results(retrieved_ids, expected_domain):
     return in_top1, in_topk
 
 
+def _get_device():
+    if hasattr(torch, "xpu") and torch.xpu.is_available():
+        return "xpu"
+    return "cpu"
+
+
 def load_previous_trace():
     previous_path = REPO_ROOT / "tmp" / "eval_39_clean_corpus_trace.json"
     if not previous_path.exists():
@@ -165,6 +177,107 @@ def load_previous_trace():
         return {t["question_id"]: t["failure_type"] for t in data.get("traces", [])}
     except Exception:
         return {}
+
+
+# ── LLM Generation ────────────────────────────────────────────────────
+
+
+def _get_trace_doc_ids_and_scores(entry):
+    doc_ids = entry.get("retrieved_doc_ids")
+    scores = entry.get("retrieved_scores")
+    if doc_ids is not None:
+        return doc_ids, scores
+    lexical = entry.get("lexical")
+    if isinstance(lexical, dict):
+        doc_ids = lexical.get("retrieved_doc_ids", [])
+        scores = lexical.get("retrieved_scores")
+        if doc_ids:
+            return doc_ids, scores
+    qid = entry.get("question_id", "?")
+    print(f"  WARNING: no doc_ids found for question [{qid}], evidence pack will be empty")
+    return [], None
+
+
+def _build_evidence_pack_from_ids(doc_ids, documents, config, scores=None):
+    doc_map = {d.id: d for d in documents}
+    items = []
+    score_iter = iter(scores) if scores else None
+    for doc_id in doc_ids[: config.rag.top_k]:
+        doc = doc_map.get(doc_id)
+        if doc is None:
+            next(score_iter, None) if score_iter else None
+            continue
+        stripped = " ".join(doc.text.split())
+        if len(stripped) > config.rag.max_fact_chars:
+            stripped = stripped[: config.rag.max_fact_chars - 1].rstrip() + "..."
+        items.append(
+            Evidence(
+                id=doc.id,
+                title=doc.title,
+                text=stripped,
+                source_url=doc.source_url,
+                source_name=doc.source_name,
+                score=next(score_iter, None) if score_iter else None,
+            )
+        )
+    return EvidencePack(question="", items=items)
+
+
+def add_generation_to_traces(traces, documents, config, model_override):
+    client = LlamaClient(
+        base_url=config.runtime.base_url,
+        timeout_seconds=config.runtime.timeout_seconds,
+    )
+
+    for entry in traces:
+        q_text = entry.get("question", "")
+        if not q_text:
+            continue
+
+        try:
+            doc_ids, scores = _get_trace_doc_ids_and_scores(entry)
+            evidence_pack = _build_evidence_pack_from_ids(doc_ids, documents, config, scores)
+            prompt_bundle = render_prompt(q_text, evidence_pack, config)
+            model = model_override or config.runtime.model
+
+            print(f"  generating answer for [{entry['question_id']}]...")
+            result = client.chat(
+                messages=prompt_bundle.messages,
+                model=model,
+                temperature=config.runtime.temperature,
+                max_tokens=config.runtime.max_tokens,
+            )
+
+            entry["generated_answer"] = result.content
+            entry["rendered_user_message"] = (
+                prompt_bundle.messages[-1].content if prompt_bundle.messages else ""
+            )
+            entry["context_text"] = prompt_bundle.context
+            entry["generated_answer_model"] = result.model or model
+        except LlamaError as e:
+            entry["generated_answer"] = None
+            entry["generation_error"] = str(e)[:300]
+            if entry.get("failure_type", "ok") in ("ok", ""):
+                entry["failure_type"] = "generation_issue"
+                entry["diagnostic_note"] = str(e)[:200]
+
+
+def handle_generation(args, traces, documents, config, metadata):
+    if not getattr(args, "generation", False):
+        metadata["generation_enabled"] = False
+        return
+
+    if not check_backend(config.runtime.base_url):
+        print("WARNING: LLM backend offline. Skipping generation tests.")
+        metadata["generation_enabled"] = False
+        return
+
+    try:
+        add_generation_to_traces(traces, documents, config, args.model)
+        metadata["generation_enabled"] = True
+    except Exception as e:
+        print(f"WARNING: LLM generation failed: {e}. Skipping generation tests.")
+        metadata["generation_enabled"] = False
 
 
 # ── CLI ───────────────────────────────────────────────────────────────
@@ -205,6 +318,18 @@ def parse_args():
         choices=RETRIEVAL_CHOICES,
         default="lexical",
         help="Retrieval mode.",
+    )
+    parser.add_argument(
+        "--generation",
+        action="store_true",
+        default=False,
+        help="Enable LLM answer generation via llama-server.",
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="Override the default model label from sutra.toml.",
     )
     return parser.parse_args()
 
@@ -261,6 +386,8 @@ def run_lexical(args, config, documents, questions, docs_check):
 
     traces = run_questions_lexical(questions, documents, config, metadata)
 
+    handle_generation(args, traces, documents, config, metadata)
+
     metadata["run_finished_at"] = datetime.now().isoformat()
     with open(output_trace_path, "w", encoding="utf-8") as f:
         json.dump({"metadata": metadata, "traces": traces}, f, ensure_ascii=False, indent=2)
@@ -293,7 +420,7 @@ def run_dense(args, config, documents, questions, docs_check):
     metadata["dense_available"] = True
     metadata["embedding_dependency_status"] = dense_status
 
-    model = load_embedding_model()
+    model = load_embedding_model(device=_get_device())
     cache_dir = get_dense_cache_dir(resolve_path(args.workspace))
     embeddings, cache_meta = get_cached_embeddings(documents, model, cache_dir)
 
@@ -304,6 +431,8 @@ def run_dense(args, config, documents, questions, docs_check):
     metadata["embedding_cache_hit"] = cache_meta.get("cache_hit", False)
 
     traces = run_questions_dense(questions, documents, model, embeddings, config)
+
+    handle_generation(args, traces, documents, config, metadata)
 
     metadata["run_finished_at"] = datetime.now().isoformat()
     with open(output_trace_path, "w", encoding="utf-8") as f:
@@ -338,7 +467,7 @@ def run_hybrid(args, config, documents, questions, docs_check):
     metadata["embedding_dependency_status"] = dense_status
     metadata["hybrid_weights"] = {"lexical": 0.5, "dense": 0.5}
 
-    model = load_embedding_model()
+    model = load_embedding_model(device=_get_device())
     cache_dir = get_dense_cache_dir(resolve_path(args.workspace))
     embeddings, cache_meta = get_cached_embeddings(documents, model, cache_dir)
 
@@ -351,6 +480,8 @@ def run_hybrid(args, config, documents, questions, docs_check):
     traces = run_questions_hybrid(
         questions, documents, model, embeddings, config, metadata
     )
+
+    handle_generation(args, traces, documents, config, metadata)
 
     metadata["run_finished_at"] = datetime.now().isoformat()
     with open(output_trace_path, "w", encoding="utf-8") as f:
@@ -391,6 +522,8 @@ def run_kiwi_bm25(args, config, documents, questions, docs_check):
     metadata["bm25_cache"] = bm25_meta
 
     traces = run_questions_kiwi_bm25(questions, documents, bm25, config)
+
+    handle_generation(args, traces, documents, config, metadata)
 
     metadata["run_finished_at"] = datetime.now().isoformat()
     with open(output_trace_path, "w", encoding="utf-8") as f:
@@ -441,7 +574,7 @@ def run_kiwi_bm25_dense_hybrid(args, config, documents, questions, docs_check):
         sys.exit(1)
     metadata["bm25_cache"] = bm25_meta
 
-    model = load_embedding_model()
+    model = load_embedding_model(device=_get_device())
     cache_dir = get_dense_cache_dir(resolve_path(args.workspace))
     embeddings, cache_meta = get_cached_embeddings(documents, model, cache_dir)
 
@@ -454,6 +587,8 @@ def run_kiwi_bm25_dense_hybrid(args, config, documents, questions, docs_check):
     traces = run_questions_kiwi_bm25_dense_hybrid(
         questions, documents, bm25, model, embeddings, config
     )
+
+    handle_generation(args, traces, documents, config, metadata)
 
     metadata["run_finished_at"] = datetime.now().isoformat()
     with open(output_trace_path, "w", encoding="utf-8") as f:
@@ -500,7 +635,7 @@ def run_compare(args, config, documents, questions, docs_check):
         metadata["retrieval_modes_run"].append("dense_qwen3")
         metadata["retrieval_modes_run"].append("hybrid_simple")
         try:
-            model = load_embedding_model()
+            model = load_embedding_model(device=_get_device())
             cache_dir = get_dense_cache_dir(resolve_path(args.workspace))
             embeddings, cache_meta = get_cached_embeddings(documents, model, cache_dir)
             metadata["embedding_model"] = get_model_name(model)
@@ -541,6 +676,8 @@ def run_compare(args, config, documents, questions, docs_check):
         bm25, metadata, previous_labels,
     )
 
+    handle_generation(args, traces, documents, config, metadata)
+
     metadata["run_finished_at"] = datetime.now().isoformat()
 
     with open(output_trace_path, "w", encoding="utf-8") as f:
@@ -562,6 +699,7 @@ def process_question_common(q_data, expected_domain):
         "question_id": q_data["id"],
         "question": q_data["question"],
         "expected_or_likely_domain": expected_domain or "unknown",
+        "expected_temporal_type": q_data.get("expected_temporal_type", "none"),
     }
 
 
@@ -860,6 +998,16 @@ def classify_failure(retrieved_ids, expected_domain):
 # ── Report Generation (non-compare) ────────────────────────────────────
 
 
+def _compute_generation_metrics(traces, total_count):
+    answered = sum(1 for t in traces if t.get("generated_answer"))
+    gen_acc = (
+        f"{answered}/{total_count} ({100 * answered / total_count:.1f}%)"
+        if total_count
+        else "N/A"
+    )
+    return answered, gen_acc
+
+
 def generate_report(metadata, traces, report_path):
     failure_counts = {}
     for t in traces:
@@ -911,9 +1059,35 @@ def generate_report(metadata, traces, report_path):
             f"`{t.get('failure_type', '?')}` | {note} |"
         )
 
+    answered, gen_acc = _compute_generation_metrics(
+        traces, len(traces)
+    )
+    generation_enabled = metadata.get("generation_enabled", False)
+
     lines.extend([
         "",
-        "## 5. Recommended Next Fixes",
+        "## 5. Generation",
+        "",
+    ])
+    if generation_enabled:
+        lines.extend([
+            f"- **Generation Accuracy:** {gen_acc}",
+            "",
+            "| ID | Question | Generated Answer (preview) | Failure Type |",
+            "| :--- | :--- | :--- | :--- |",
+        ])
+        for t in traces:
+            qid = t["question_id"]
+            qtext = t["question"][:35]
+            ans = (t.get("generated_answer") or "—")[:80].replace("\n", " ")
+            ft = t.get("failure_type", "?")
+            lines.append(f"| {qid} | {qtext} | {ans} | `{ft}` |")
+    else:
+        lines.append("*Generation was not enabled for this run. Use `--generation` to enable LLM answer generation.*")
+
+    lines.extend([
+        "",
+        "## 6. Recommended Next Fixes",
         "1. **Data Expansion**: Address `data_missing` cases by crawling missing sections.",
         "2. **Retrieval Tuning**: Fix `retrieval_miss` by adjusting weights or hybrid search.",
         "3. **OCR/Page 3**: Review graduation requirements if OCR gaps are suspected.",
@@ -1139,7 +1313,35 @@ def generate_compare_report(metadata, traces, report_path):
         "> Note: 'Previous retrieval_miss improved' and 'Previous ok regressed' counts are shown in Section 4.",
         "> Manual spot-check results are in Section 6 above.",
         "",
-        "## 8. Final Recommendation",
+        "## 8. Generation",
+    ])
+
+    answered, gen_acc = _compute_generation_metrics(
+        traces, total
+    )
+    generation_enabled = metadata.get("generation_enabled", False)
+
+    if generation_enabled:
+        lines.extend([
+            "",
+            f"- **Generation Accuracy:** {gen_acc}",
+            "",
+            "| ID | Question | Generated Answer (preview) | Failure Type |",
+            "| :--- | :--- | :--- | :--- |",
+        ])
+        for t in traces:
+            qid = t["question_id"]
+            qtext = t["question"][:35]
+            ans = (t.get("generated_answer") or "—")[:80].replace("\n", " ")
+            ft = t.get("failure_type", "?")
+            lines.append(f"| {qid} | {qtext} | {ans} | `{ft}` |")
+    else:
+        lines.append("")
+        lines.append("*Generation was not enabled for this run. Use `--generation` to enable LLM answer generation.*")
+
+    lines.extend([
+        "",
+        "## 9. Final Recommendation",
     ])
 
     # ── Recommendation ──
