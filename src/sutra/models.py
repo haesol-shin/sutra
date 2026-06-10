@@ -44,11 +44,19 @@ class Answer(BaseModel):
     trace: dict[str, Any] = Field(default_factory=dict)
 
 
+class ToolCall(BaseModel):
+    id: str
+    type: str = "function"
+    function_name: str
+    function_arguments: str = "{}"
+
+
 class LlamaResult(BaseModel):
     content: str
     model: str | None = None
     usage: dict[str, Any] | None = None
     raw: dict[str, Any] = Field(default_factory=dict)
+    tool_calls: list[ToolCall] = Field(default_factory=list)
 
 
 class EvidencePack(BaseModel):

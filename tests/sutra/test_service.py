@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -21,6 +22,7 @@ class FakeClient:
         model: str | None = None,
         temperature: float = 0.2,
         max_tokens: int = 512,
+        tools: list[dict[str, Any]] | None = None,
     ) -> LlamaResult:
         self.messages = messages
         assert model == "fake-qwen"
