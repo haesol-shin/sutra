@@ -144,3 +144,24 @@ def _resolve_paths(config: Config) -> Config:
 
 def _resolve(root: Path, path: Path) -> Path:
     return path if path.is_absolute() else (root / path).resolve()
+
+
+def resolve_input_path(filename: str, workspace_root: Path | None = None) -> Path:
+    absolute = Path("/") / "data" / filename
+    if absolute.exists():
+        return absolute
+    if workspace_root:
+        return workspace_root / "data" / filename
+    return Path("data") / filename
+
+
+def resolve_output_path(filename: str, workspace_root: Path | None = None) -> Path:
+    outputs_abs = Path("/") / "outputs"
+    if outputs_abs.exists():
+        return outputs_abs / filename
+    if workspace_root:
+        out = workspace_root / "outputs" / filename
+    else:
+        out = Path("outputs") / filename
+    out.parent.mkdir(parents=True, exist_ok=True)
+    return out

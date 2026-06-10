@@ -10,6 +10,7 @@ from typing import Any, Literal
 from urllib.parse import urlparse
 
 import requests
+from pydantic import BaseModel, RootModel
 
 from sutra.config import Config, _default_model_dir, load_config
 from sutra.errors import ConfigError, LlamaError, WorkspaceResolutionError
@@ -17,7 +18,7 @@ from sutra.llama import download_model, EchoClient, start_llama_server
 from sutra.models import Document
 from sutra.service import ask
 
-_WORKSPACE_COMMANDS = {"ask", "workspace", "docs", "llama", "doctor", "ui"}
+_WORKSPACE_COMMANDS = {"ask", "batch", "workspace", "docs", "llama", "doctor", "ui"}
 
 
 def resolve_workspace_path(cli_workspace: str | None = None) -> Path:
@@ -340,7 +341,14 @@ def build_parser() -> argparse.ArgumentParser:
     docs_check_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
     docs_check_parser.add_argument("--json", action="store_true", help="Print the structured response as JSON.")
 
-    # 4. sutra llama health
+    # 4. sutra batch
+    batch_parser = subparsers.add_parser("batch", help="Batch process questions and output JSON.")
+    batch_parser.add_argument("--input", required=True, help="Input JSON file path.")
+    batch_parser.add_argument("--output", required=True, help="Output JSON file path.")
+    batch_parser.add_argument("--live", action="store_true", help="Enable live fetch for stale evidence.")
+    batch_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
+
+    # 5. sutra llama health
     llama_parser = subparsers.add_parser("llama", help="Inspect or interact with llama-server.")
     llama_subparsers = llama_parser.add_subparsers(dest="subcommand", required=True)
     
@@ -406,7 +414,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             if args.backend:
                 config.rag.backend = args.backend
             client = EchoClient() if args.echo else None
-            answer = ask(args.question, workspace=config, client=client)
+            answer = ask(args.question, workspace=config, client=client, live=True)
             if args.json:
                 print(answer.model_dump_json(indent=2))
             else:
@@ -428,6 +436,50 @@ def main(argv: Sequence[str] | None = None) -> int:
                 workspace_path=toml_path,
                 errors=[str(exc)],
                 json_mode=args.json,
+                human_string=f"Error: {exc}",
+            )
+
+    elif args.command == "batch":
+        try:
+            config = load_config(toml_path)
+            input_path = Path(args.input)
+            with input_path.open("r", encoding="utf-8") as f:
+                items: list[dict[str, str]] = json.load(f)
+
+            results: list[dict[str, str]] = []
+            for item in items:
+                question = item.get("user") or item.get("question") or ""
+                answer = ask(question, workspace=config, live=args.live)
+                results.append({"user": question, "model": answer.answer})
+
+            class _ChatOutputItem(BaseModel):
+                user: str
+                model: str
+
+            _ChatOutput = RootModel[list[_ChatOutputItem]]
+            _ChatOutput.model_validate(results)
+
+            output_path = Path(args.output)
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8")
+            return 0
+
+        except ConfigError as exc:
+            return output_result(
+                status="fail",
+                exit_code=1,
+                workspace_path=toml_path,
+                errors=[str(exc)],
+                json_mode=False,
+                human_string=f"Error: {exc}",
+            )
+        except LlamaError as exc:
+            return output_result(
+                status="fail",
+                exit_code=3,
+                workspace_path=toml_path,
+                errors=[str(exc)],
+                json_mode=False,
                 human_string=f"Error: {exc}",
             )
 
