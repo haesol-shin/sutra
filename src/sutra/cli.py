@@ -10,14 +10,24 @@ from typing import Any, Literal
 from urllib.parse import urlparse
 
 import requests
+from pydantic import BaseModel, RootModel
 
-from sutra.config import Config, _default_model_dir, load_config
+from sutra.config import Config, _default_model_dir, load_config, resolve_input_path, resolve_output_path
 from sutra.errors import ConfigError, LlamaError, WorkspaceResolutionError
 from sutra.llama import download_model, EchoClient, start_llama_server
 from sutra.models import Document
 from sutra.service import ask
 
-_WORKSPACE_COMMANDS = {"ask", "workspace", "docs", "llama", "doctor", "ui"}
+_WORKSPACE_COMMANDS = {"ask", "batch", "workspace", "docs", "llama", "doctor", "ui"}
+
+
+class ChatOutputItem(BaseModel):
+    """A single Q&A pair in a batch output file."""
+    user: str
+    model: str
+
+
+ChatOutput = RootModel[list[ChatOutputItem]]
 
 
 def resolve_workspace_path(cli_workspace: str | None = None) -> Path:
@@ -86,8 +96,6 @@ def validate_workspace(toml_path: Path | None) -> dict[str, Any]:
         ("rag.index_path", config.rag.index_path),
         ("prompts.system", config.prompts.system),
     ]
-    if config.prompts.answer is not None:
-        paths_to_check.append(("prompts.answer", config.prompts.answer))
     if config.evals.smoke is not None:
         paths_to_check.append(("evals.smoke", config.evals.smoke))
     if config.evals.regression is not None:
@@ -340,7 +348,14 @@ def build_parser() -> argparse.ArgumentParser:
     docs_check_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
     docs_check_parser.add_argument("--json", action="store_true", help="Print the structured response as JSON.")
 
-    # 4. sutra llama health
+    # 4. sutra batch
+    batch_parser = subparsers.add_parser("batch", help="Batch process questions and output JSON.")
+    batch_parser.add_argument("--input", required=True, help="Input JSON file path.")
+    batch_parser.add_argument("--output", required=True, help="Output JSON file path.")
+    batch_parser.add_argument("--live", action="store_true", help="Enable live fetch for stale evidence.")
+    batch_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
+
+    # 5. sutra llama health
     llama_parser = subparsers.add_parser("llama", help="Inspect or interact with llama-server.")
     llama_subparsers = llama_parser.add_subparsers(dest="subcommand", required=True)
     
@@ -429,6 +444,74 @@ def main(argv: Sequence[str] | None = None) -> int:
                 errors=[str(exc)],
                 json_mode=args.json,
                 human_string=f"Error: {exc}",
+            )
+
+    elif args.command == "batch":
+        try:
+            config = load_config(toml_path)
+
+            input_path = resolve_input_path(args.input, config.root)
+            with input_path.open("r", encoding="utf-8") as f:
+                items: list[dict[str, str]] = json.load(f)
+
+            results: list[dict[str, str]] = []
+            errors: list[str] = []
+            for i, item in enumerate(items):
+                try:
+                    question = item.get("user") or item.get("question") or ""
+                    if not question:
+                        errors.append(f"Item {i}: missing 'user' or 'question' field")
+                        continue
+                    answer = ask(question, workspace=config, live=args.live)
+                    results.append(ChatOutputItem(user=question, model=answer.answer).model_dump())
+                except Exception as exc:
+                    errors.append(f"Item {i}: {exc}")
+
+            ChatOutput.model_validate(results)
+
+            if errors:
+                for err in errors:
+                    print(err, file=sys.stderr)
+
+            output_path = resolve_output_path(args.output, config.root)
+            output_path.write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8")
+            return 0
+
+        except ConfigError as exc:
+            return output_result(
+                status="fail",
+                exit_code=1,
+                workspace_path=toml_path,
+                errors=[str(exc)],
+                json_mode=False,
+                human_string=f"Error: {exc}",
+            )
+        except LlamaError as exc:
+            return output_result(
+                status="fail",
+                exit_code=3,
+                workspace_path=toml_path,
+                errors=[str(exc)],
+                json_mode=False,
+                human_string=f"Error: {exc}",
+            )
+        except (FileNotFoundError, PermissionError, json.JSONDecodeError) as exc:
+            return output_result(
+                status="fail",
+                exit_code=1,
+                workspace_path=toml_path,
+                errors=[str(exc)],
+                json_mode=False,
+                human_string=f"Error reading input: {exc}",
+            )
+        except Exception as exc:
+            return output_result(
+                status="fail",
+                exit_code=1,
+                workspace_path=toml_path,
+                errors=[str(exc)],
+                json_mode=False,
+                human_string=f"Unexpected error: {exc}",
             )
 
     elif args.command == "workspace" and args.subcommand == "validate":

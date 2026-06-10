@@ -4,7 +4,6 @@ from datetime import datetime
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from sutra.config import Config
-from sutra.errors import ConfigError
 from sutra.models import EvidencePack, Message, PromptBundle
 from sutra.retrieval import render_evidence
 from sutra.tools import get_tool_definitions
@@ -40,13 +39,11 @@ def render_prompt(question: str, evidence: EvidencePack, config: Config) -> Prom
             desc = t['function']['description']
             tool_lines.append(f"- {name}: {desc}")
         system += "\n\nYou have access to the following tools. Use them when appropriate:\n" + "\n".join(tool_lines)
-    answer_template = _read_answer_template(config)
     context = render_evidence(evidence)
     
     current_time = get_current_time_str(config.workspace.timezone)
     
     user = (
-        f"{answer_template}\n\n"
         f"Workspace: {config.workspace.name}\n"
         f"Timezone: {config.workspace.timezone}\n"
         f"Current Time: {current_time}\n\n"
@@ -60,12 +57,4 @@ def render_prompt(question: str, evidence: EvidencePack, config: Config) -> Prom
         ],
         context=context,
     )
-
-
-def _read_answer_template(config: Config) -> str:
-    if config.prompts.answer is None:
-        return "Answer the user using only the evidence context. If evidence is insufficient, say what is missing."
-    if not config.prompts.answer.exists():
-        raise ConfigError(f"configured answer prompt not found: {config.prompts.answer}")
-    return config.prompts.answer.read_text(encoding="utf-8").strip()
 

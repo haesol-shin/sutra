@@ -31,6 +31,7 @@ def ask(
     *,
     workspace: str | Config,
     client: ChatClient | None = None,
+    live: bool = False,
 ) -> Answer:
     """Ask a single question and return an Answer."""
     config = workspace if isinstance(workspace, Config) else load_config(workspace)
@@ -50,7 +51,7 @@ def ask(
     prompt = render_prompt(question, evidence, config)
     llm = client or LlamaClient(config.runtime.base_url, timeout_seconds=config.runtime.timeout_seconds)
 
-    tools = get_tool_definitions()
+    tools = get_tool_definitions() if live else None
     result = llm.chat(
         prompt.messages,
         model=config.runtime.model,

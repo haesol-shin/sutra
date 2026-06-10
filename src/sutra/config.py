@@ -29,6 +29,7 @@ class RuntimeConfig(BaseModel):
     timeout_seconds: int = Field(default=120, gt=0)
     temperature: float = Field(default=0.2, ge=0.0, le=2.0)
     max_tokens: int = Field(default=512, gt=0)
+    chat_template_kwargs: str | None = None
 
 
 class RagConfig(BaseModel):
@@ -41,7 +42,6 @@ class RagConfig(BaseModel):
 
 class PromptConfig(BaseModel):
     system: Path
-    answer: Path | None = None
 
 
 class EvalConfig(BaseModel):
@@ -132,15 +132,58 @@ def _resolve_paths(config: Config) -> Config:
     if config.rag.token_config is not None:
         data["rag"]["token_config"] = str(_resolve(root, Path(config.rag.token_config)))
     data["prompts"]["system"] = _resolve(root, config.prompts.system)
-    if config.prompts.answer is not None:
-        data["prompts"]["answer"] = _resolve(root, config.prompts.answer)
     if config.evals.smoke is not None:
         data["evals"]["smoke"] = _resolve(root, config.evals.smoke)
     if config.evals.regression is not None:
         data["evals"]["regression"] = _resolve(root, config.evals.regression)
     data["runtime"]["model_path"] = _resolve_model_path(root, config.runtime.model_path)
+    if config.runtime.chat_template_kwargs is not None:
+        ctk_path = _resolve(root, Path(config.runtime.chat_template_kwargs))
+        if ctk_path.exists():
+            data["runtime"]["chat_template_kwargs"] = ctk_path.read_text(encoding="utf-8").strip()
     return Config.model_validate(data)
 
 
 def _resolve(root: Path, path: Path) -> Path:
     return path if path.is_absolute() else (root / path).resolve()
+
+
+def resolve_input_path(path_str: str, workspace_root: Path | None = None) -> Path:
+    """Resolve an input file path under workspace data/.
+
+    Handles UNIX-style absolute paths like /data/file.json by stripping
+    the /data/ prefix and resolving relative to workspace_root/data/.
+    """
+    posix_str = path_str.replace("\\", "/")
+    if posix_str.startswith("/data/"):
+        relative = posix_str[len("/data/"):]
+    elif posix_str.startswith("data/"):
+        relative = posix_str[len("data/"):]
+    else:
+        relative = path_str
+
+    if workspace_root:
+        return (workspace_root / "data" / relative).resolve()
+    return (Path("data") / relative).resolve()
+
+
+def resolve_output_path(path_str: str, workspace_root: Path | None = None) -> Path:
+    """Resolve an output file path under workspace outputs/.
+
+    Handles UNIX-style absolute paths like /outputs/file.json by stripping
+    the /outputs/ prefix and resolving relative to workspace_root/outputs/.
+    """
+    posix_str = path_str.replace("\\", "/")
+    if posix_str.startswith("/outputs/"):
+        relative = posix_str[len("/outputs/"):]
+    elif posix_str.startswith("outputs/"):
+        relative = posix_str[len("outputs/"):]
+    else:
+        relative = path_str
+
+    if workspace_root:
+        out = (workspace_root / "outputs" / relative).resolve()
+    else:
+        out = (Path("outputs") / relative).resolve()
+    out.parent.mkdir(parents=True, exist_ok=True)
+    return out

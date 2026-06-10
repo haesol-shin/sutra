@@ -21,7 +21,6 @@ token_config = "data/token_config.json"
 
 [prompts]
 system = "prompts/system.md"
-answer = "prompts/answer.md"
 
 [evals]
 smoke = "evals/smoke.json"
