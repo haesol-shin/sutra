@@ -22,8 +22,8 @@ try:
 except ImportError:
     _TORCH_AVAILABLE = False
 
-from embedding_retrieval import (
-    check_deps as check_dense_deps,
+from sutra.retrieval import (
+    check_deps,
     load_embedding_model,
     get_cache_dir as get_dense_cache_dir,
     get_cached_embeddings,
@@ -31,15 +31,14 @@ from embedding_retrieval import (
     hybrid_combine,
     get_model_name,
     get_model_device,
-)
-
-from korean_bm25_retrieval import (
-    check_deps as check_bm25_deps,
     build_bm25_index,
     bm25_retrieve,
     hybrid_bm25_dense,
     get_tokenizer_config,
 )
+
+check_dense_deps = check_deps
+check_bm25_deps = check_deps
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)

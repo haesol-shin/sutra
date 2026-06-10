@@ -35,6 +35,8 @@ class RagConfig(BaseModel):
     index_path: Path
     top_k: int = Field(default=8, gt=0)
     max_fact_chars: int = Field(default=500, gt=0)
+    backend: Literal["bm25", "qwen3", "hybrid", "lexical"] = "bm25"
+    token_config: str | None = None
 
 
 class PromptConfig(BaseModel):
@@ -127,6 +129,8 @@ def _resolve_paths(config: Config) -> Config:
     data = config.model_dump()
     root = config.root
     data["rag"]["index_path"] = _resolve(root, config.rag.index_path)
+    if config.rag.token_config is not None:
+        data["rag"]["token_config"] = str(_resolve(root, Path(config.rag.token_config)))
     data["prompts"]["system"] = _resolve(root, config.prompts.system)
     if config.prompts.answer is not None:
         data["prompts"]["answer"] = _resolve(root, config.prompts.answer)

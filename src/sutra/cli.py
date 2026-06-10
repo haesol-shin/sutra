@@ -13,7 +13,7 @@ import requests
 
 from sutra.config import Config, _default_model_dir, load_config
 from sutra.errors import ConfigError, LlamaError, WorkspaceResolutionError
-from sutra.llama import download_model, EchoClient, locate_llama_server, start_llama_server
+from sutra.llama import download_model, EchoClient, start_llama_server
 from sutra.models import Document
 from sutra.service import ask
 
@@ -322,6 +322,7 @@ def build_parser() -> argparse.ArgumentParser:
     ask_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
     ask_parser.add_argument("--echo", action="store_true", help="Use an echo LLM client for smoke tests.")
     ask_parser.add_argument("--json", action="store_true", help="Print the structured response as JSON.")
+    ask_parser.add_argument("--backend", choices=["bm25", "qwen3", "hybrid", "lexical"], help="Override the RAG retrieval backend.")
 
     # 2. sutra workspace validate
     workspace_parser = subparsers.add_parser("workspace", help="Manage or inspect workspace configuration.")
@@ -348,12 +349,11 @@ def build_parser() -> argparse.ArgumentParser:
     llama_health_parser.add_argument("--json", action="store_true", help="Print the structured response as JSON.")
 
     # llama serve
-    llama_serve_parser = llama_subparsers.add_parser("serve", help="Start llama-server for serving the model.")
+    llama_serve_parser = llama_subparsers.add_parser("serve", help="Start llama-cpp-python server for serving the model.")
     llama_serve_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
     llama_serve_parser.add_argument("--port", type=int, help="Port to run llama-server on.")
-    llama_serve_parser.add_argument("--gpu-layers", type=int, default=0, help="Number of layers to offload to GPU.")
-    llama_serve_parser.add_argument("--llama-path", help="Path to llama-server binary.")
-    llama_serve_parser.add_argument("--reasoning", choices=["on", "off", "auto"], help="Use reasoning/thinking in the chat ('on', 'off', or 'auto').")
+    llama_serve_parser.add_argument("--gpu-layers", type=int, default=-1, help="Number of layers to offload to GPU (-1 for all).")
+    llama_serve_parser.add_argument("--chat-template-kwargs", help="JSON string passed to llama-cpp-python server (e.g. '{\"enable_thinking\": false}' for Qwen3 reasoning off).")
     llama_serve_parser.add_argument("--dry-run", action="store_true", help="Print the command without executing.")
 
     # llama download
@@ -402,8 +402,11 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if args.command == "ask":
         try:
+            config = load_config(toml_path)
+            if args.backend:
+                config.rag.backend = args.backend
             client = EchoClient() if args.echo else None
-            answer = ask(args.question, workspace=toml_path, client=client)
+            answer = ask(args.question, workspace=config, client=client)
             if args.json:
                 print(answer.model_dump_json(indent=2))
             else:
@@ -534,14 +537,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             except Exception:
                 port = 18080
 
-        exe_path = locate_llama_server(args.llama_path)
         model_path = config.runtime.model_path
 
         if args.dry_run:
             print(f"Resolved model path: {model_path}")
 
-        reasoning_val = args.reasoning if args.reasoning is not None else config.runtime.reasoning
-        process = start_llama_server(exe_path, model_path, port=port, gpu_layers=args.gpu_layers, reasoning=reasoning_val, dry_run=args.dry_run)
+        ctk = args.chat_template_kwargs or config.runtime.chat_template_kwargs or None
+
+        process = start_llama_server(model_path, port=port, gpu_layers=args.gpu_layers, chat_template_kwargs=ctk, dry_run=args.dry_run)
 
         if process is not None:
             try:
