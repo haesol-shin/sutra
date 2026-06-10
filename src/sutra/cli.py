@@ -11,11 +11,13 @@ from urllib.parse import urlparse
 
 import requests
 
-from sutra.config import Config, load_config
+from sutra.config import Config, _default_model_dir, load_config
 from sutra.errors import ConfigError, LlamaError, WorkspaceResolutionError
 from sutra.llama import download_model, EchoClient, locate_llama_server, start_llama_server
 from sutra.models import Document
 from sutra.service import ask
+
+_WORKSPACE_COMMANDS = {"ask", "workspace", "docs", "llama", "doctor", "ui"}
 
 
 def resolve_workspace_path(cli_workspace: str | None = None) -> Path:
@@ -382,7 +384,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     toml_path = None
-    if args.command in {"ask", "workspace", "docs", "llama", "doctor", "ui"}:
+    if args.command in _WORKSPACE_COMMANDS:
         cli_workspace = getattr(args, "workspace", None)
         try:
             toml_path = resolve_workspace_path(cli_workspace)
@@ -556,8 +558,10 @@ def main(argv: Sequence[str] | None = None) -> int:
 
         if args.dest is not None:
             dest_dir = Path(args.dest).expanduser().resolve()
-        else:
+        elif config.runtime.model_path is not None:
             dest_dir = config.runtime.model_path.parent
+        else:
+            dest_dir = _default_model_dir()
 
         if not args.json:
             print("Downloading model...")

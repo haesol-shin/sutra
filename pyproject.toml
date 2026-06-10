@@ -2,7 +2,7 @@
 name = "nlp-term"
 version = "0.1.0"
 description = "Sutra: A lightweight local-first RAG runtime and utilities."
-requires-python = ">=3.10.12,<3.11"
+requires-python = ">=3.10.12"
 dependencies = [
   "pydantic",
   "requests",
@@ -57,6 +57,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["sutra*"]
 
 [tool.setuptools.package-data]
 sutra = ["resources/ui/*"]

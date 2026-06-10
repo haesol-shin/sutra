@@ -15,6 +15,7 @@ from sutra.models import LlamaResult, Message
 
 
 class EchoClient:
+    """Test/echo client that echoes the last message. Ignores generation parameters."""
     def chat(
         self,
         messages: list[Message],
@@ -29,6 +30,7 @@ class EchoClient:
 
 
 def locate_llama_server(cli_path: str | Path | None = None) -> Path:
+    """Find the llama-server binary on the system."""
     if cli_path:
         resolved = Path(cli_path).expanduser().resolve()
         if resolved.exists() and resolved.is_file():
@@ -68,6 +70,7 @@ def download_model(
     repo_id: str = "unsloth/Qwen3.5-9B-GGUF",
     filename: str = "Qwen3.5-9B-Q4_K_M.gguf",
 ) -> Path:
+    """Download a GGUF model from Hugging Face."""
     try:
         from huggingface_hub import hf_hub_download
     except ImportError:
@@ -95,6 +98,7 @@ def start_llama_server(
     reasoning: str | None = None,
     dry_run: bool = False,
 ) -> subprocess.Popen | None:
+    """Start a llama-server subprocess."""
     cmd = [
         str(executable_path),
         "--model",
@@ -177,6 +181,7 @@ def start_llama_server(
 
 
 class LlamaClient:
+    """Client for llama-server HTTP API."""
     def __init__(self, base_url: str = "http://127.0.0.1:18080", timeout_seconds: int = 120) -> None:
         self.base_url = normalize_base_url(base_url)
         self.timeout_seconds = timeout_seconds
@@ -215,11 +220,8 @@ class LlamaClient:
             content = body["choices"][0]["message"]["content"]
         except LlamaError:
             raise
-        except Exception as exc:
-            message = str(exc) or exc.__class__.__name__
-            if message in {"'choices'", "list index out of range", "'message'", "'content'"}:
-                message = "malformed llama-server response"
-            raise LlamaError(message) from exc
+        except (KeyError, IndexError, TypeError) as exc:
+            raise LlamaError("malformed llama-server response") from exc
 
         answer = str(content).strip()
         if not answer:

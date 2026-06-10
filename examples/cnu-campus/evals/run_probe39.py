@@ -8,8 +8,6 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-import torch
-
 from sutra.config import load_config
 from sutra.documents import load_documents
 from sutra.retrieval import retrieve
@@ -17,6 +15,12 @@ from sutra.models import Evidence, EvidencePack
 from sutra.prompts import render_prompt
 from sutra.llama import LlamaClient
 from sutra.errors import LlamaError
+
+try:
+    import torch
+    _TORCH_AVAILABLE = True
+except ImportError:
+    _TORCH_AVAILABLE = False
 
 from embedding_retrieval import (
     check_deps as check_dense_deps,
@@ -163,6 +167,8 @@ def check_domain_in_results(retrieved_ids, expected_domain):
 
 
 def _get_device():
+    if not _TORCH_AVAILABLE:
+        return "cpu"
     if hasattr(torch, "xpu") and torch.xpu.is_available():
         return "xpu"
     return "cpu"
@@ -343,8 +349,12 @@ def main():
     questions_path = resolve_path(args.questions)
 
     print(f"Loading workspace: {workspace_path}")
-    config = load_config(workspace_path)
-    documents = load_documents(config)
+    try:
+        config = load_config(workspace_path)
+        documents = load_documents(config)
+    except Exception as e:
+        print(f"Error: Failed to load workspace — {e}")
+        sys.exit(1)
 
     print(f"Loading questions: {questions_path}")
     with open(questions_path, "r", encoding="utf-8") as f:

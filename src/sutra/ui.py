@@ -11,6 +11,7 @@ from sutra.service import ask
 
 @cl.on_chat_start
 async def on_chat_start() -> None:
+    """Initialize session state on chat start."""
     workspace = os.environ.get("SUTRA_WORKSPACE")
     echo = os.environ.get("SUTRA_ECHO") == "1"
     cl.user_session.set("workspace", workspace)
@@ -20,6 +21,7 @@ async def on_chat_start() -> None:
 
 @cl.on_message
 async def on_message(message: cl.Message) -> None:
+    """Handle an incoming chat message."""
     client = cl.user_session.get("client")
     workspace = cl.user_session.get("workspace")
 

@@ -28,6 +28,7 @@ def ask(
     workspace: str | Config,
     client: ChatClient | None = None,
 ) -> Answer:
+    """Ask a single question and return an Answer."""
     config = workspace if isinstance(workspace, Config) else load_config(workspace)
     documents = load_documents(config)
     evidence = retrieve(question, documents, config)
@@ -72,6 +73,7 @@ def chat(
     workspace: str | Config,
     client: ChatClient | None = None,
 ) -> Answer:
+    """Chat with context using the last user message as the question."""
     normalized = [
         message if isinstance(message, Message) else Message.model_validate(message)
         for message in messages

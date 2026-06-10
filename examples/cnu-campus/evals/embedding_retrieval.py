@@ -1,6 +1,5 @@
 """Qwen3 embedding retrieval helper for CNU workspace experiments."""
 
-import hashlib
 import json
 import logging
 import time
@@ -11,6 +10,8 @@ import numpy as np
 
 from sutra.config import Config
 from sutra.models import Document, Evidence, EvidencePack
+
+from _shared import _clip, _normalize_dict, compute_corpus_hash
 
 logger = logging.getLogger(__name__)
 
@@ -68,11 +69,6 @@ def get_cache_dir(workspace_path: Path) -> Path:
     return workspace_path.resolve().parent / ".cache" / "embeddings"
 
 
-def compute_corpus_hash(documents: list[Document]) -> str:
-    raw = "".join(doc.id for doc in documents).encode("utf-8")
-    return hashlib.sha256(raw).hexdigest()[:16]
-
-
 def get_cached_embeddings(
     documents: list[Document],
     model,
@@ -84,6 +80,7 @@ def get_cached_embeddings(
 
     current_hash = compute_corpus_hash(documents)
     current_size = len(documents)
+    current_model_name = get_model_name(model)
 
     if meta_path.exists() and emb_path.exists():
         try:
@@ -93,6 +90,7 @@ def get_cached_embeddings(
             if (
                 meta.get("corpus_hash") == current_hash
                 and meta.get("corpus_size") == current_size
+                and meta.get("model_name") == current_model_name
             ):
                 embeddings = np.load(str(emb_path)).astype(np.float32)
                 meta["cache_hit"] = True
@@ -200,20 +198,6 @@ def normalize_scores(values: list[float]) -> list[float]:
     return [(v - mn) / (mx - mn) for v in values]
 
 
-def _normalize_dict(score_dict: dict[str, float | None]) -> dict[str, float]:
-    valid = {k: v for k, v in score_dict.items() if v is not None}
-    if not valid:
-        return {k: 0.0 for k in score_dict}
-    vals = list(valid.values())
-    mn, mx = min(vals), max(vals)
-    if mx - mn < 1e-12:
-        return {k: 0.0 for k in score_dict}
-    result = {k: (v - mn) / (mx - mn) for k, v in valid.items()}
-    for k in score_dict:
-        result.setdefault(k, 0.0)
-    return result
-
-
 def get_model_name(model) -> str:
     try:
         return str(model.model_card_data.model_id)
@@ -224,13 +208,6 @@ def get_model_name(model) -> str:
 
 def get_model_device(model) -> str:
     return str(getattr(model, "_target_device", "unknown"))
-
-
-def _clip(text: str, limit: int) -> str:
-    stripped = " ".join(text.split())
-    if len(stripped) <= limit:
-        return stripped
-    return stripped[: max(0, limit - 1)].rstrip() + "..."
 
 
 def _doc_text(doc: Document) -> str:

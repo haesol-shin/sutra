@@ -11,6 +11,7 @@ from sutra.models import Document
 
 
 def load_documents(config_or_path: Config | str | Path) -> list[Document]:
+    """Load documents from the configured index path."""
     path = config_or_path.rag.index_path if isinstance(config_or_path, Config) else Path(config_or_path)
     if not path.exists():
         raise ConfigError(f"document index not found: {path}")

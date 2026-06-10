@@ -52,6 +52,7 @@ def _get_kiwi():
 
 
 def tokenize_korean(text: str) -> list[str]:
+    """Tokenize Korean text using Kiwi morphological analyzer."""
     kiwi = _get_kiwi()
     if kiwi is None:
         raise ImportError("kiwipiepy is not available")
@@ -98,11 +99,13 @@ def _get_or_build_bm25(documents: list[Document]) -> Any:
 
 
 def retrieve(question: str, documents: list[Document], config: Config) -> EvidencePack:
+    """Rank, build evidence, and return an EvidencePack for a question."""
     scored = rank(question, documents, config.rag.top_k)
     return build_evidence(question, scored, config)
 
 
 def rank(question: str, documents: list[Document], k: int = 8) -> list[ScoredDocument]:
+    """Score and rank documents by relevance to the question."""
     global _legacy_warned
     bm25_failed = False
 
@@ -111,6 +114,7 @@ def rank(question: str, documents: list[Document], k: int = 8) -> list[ScoredDoc
             bm25 = _get_or_build_bm25(documents)
             query_tokens = tokenize_korean(question)
             if not query_tokens:
+                logger.debug("Empty query_tokens from tokenize_korean, returning empty results")
                 return []
 
             results = bm25.retrieve([query_tokens], k=k, show_progress=False)
@@ -126,7 +130,7 @@ def rank(question: str, documents: list[Document], k: int = 8) -> list[ScoredDoc
             logger.warning("BM25 retrieval failed, falling back to legacy lexical. Error: %s", e)
             bm25_failed = True
 
-    if not bm25_failed and not _legacy_warned:
+    if (bm25_failed or not (_KIWI_AVAILABLE and _BM25S_AVAILABLE)) and not _legacy_warned:
         warnings.warn(
             "Lexical retrieval is deprecated and will be removed in a future release. "
             "Install kiwipiepy and bm25s for the default Korean BM25 retrieval.",
@@ -137,6 +141,7 @@ def rank(question: str, documents: list[Document], k: int = 8) -> list[ScoredDoc
 
     query_tokens = set(_tokens(question))
     if not query_tokens:
+        logger.debug("Empty query_tokens from fallback _tokens, returning empty results")
         return []
 
     scored = [
@@ -149,6 +154,7 @@ def rank(question: str, documents: list[Document], k: int = 8) -> list[ScoredDoc
 
 
 def build_evidence(question: str, scored: list[ScoredDocument], config: Config) -> EvidencePack:
+    """Build an EvidencePack from scored documents."""
     items = [
         Evidence(
             id=row.document.id,
@@ -165,6 +171,7 @@ def build_evidence(question: str, scored: list[ScoredDocument], config: Config) 
 
 
 def render_evidence(pack: EvidencePack) -> str:
+    """Render an EvidencePack as a formatted string."""
     if not pack.items:
         return "No evidence was retrieved from the workspace."
 

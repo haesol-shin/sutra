@@ -10,9 +10,10 @@ from sutra.retrieval import render_evidence
 
 
 def get_current_time_str(timezone_name: str) -> str:
+    """Get current time as a formatted string for the given timezone."""
     try:
         tz = ZoneInfo(timezone_name)
-    except (ZoneInfoNotFoundError, KeyError):
+    except ZoneInfoNotFoundError:
         tz = ZoneInfo("UTC")
     
     now = datetime.now(tz)
@@ -28,6 +29,7 @@ def get_current_time_str(timezone_name: str) -> str:
 
 
 def render_prompt(question: str, evidence: EvidencePack, config: Config) -> PromptBundle:
+    """Build a PromptBundle with system prompt, question, and evidence context."""
     system = config.prompts.system.read_text(encoding="utf-8").strip()
     answer_template = _read_answer_template(config)
     context = render_evidence(evidence)
