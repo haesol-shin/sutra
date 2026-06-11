@@ -2244,6 +2244,9 @@ cuda = [
     { name = "llama-cpp-python", extra = ["server"] },
     { name = "torch" },
 ]
+embeddings = [
+    { name = "sentence-transformers" },
+]
 legacy = [
     { name = "joblib" },
     { name = "scikit-learn" },
@@ -2252,7 +2255,6 @@ rag = [
     { name = "bm25s" },
     { name = "kiwipiepy" },
     { name = "numpy" },
-    { name = "sentence-transformers" },
 ]
 ui = [
     { name = "chainlit" },
@@ -2289,12 +2291,12 @@ requires-dist = [
     { name = "pytorch-triton-xpu", marker = "extra == 'xpu'", specifier = "==3.5.0", index = "https://download.pytorch.org/whl/xpu" },
     { name = "requests" },
     { name = "scikit-learn", marker = "extra == 'legacy'" },
-    { name = "sentence-transformers", marker = "extra == 'rag'", specifier = ">=2.7.0" },
+    { name = "sentence-transformers", marker = "extra == 'embeddings'", specifier = ">=2.7.0" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
     { name = "torch", marker = "extra == 'cuda'", specifier = ">=2.5.1" },
     { name = "torch", marker = "extra == 'xpu'", specifier = "==2.9.1" },
 ]
-provides-extras = ["xpu", "cuda", "rag", "ui", "legacy"]
+provides-extras = ["xpu", "cuda", "rag", "embeddings", "ui", "legacy"]
 
 [package.metadata.requires-dev]
 dev = [
