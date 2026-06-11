@@ -149,11 +149,20 @@ def _resolve(root: Path, path: Path) -> Path:
 
 
 def resolve_input_path(path_str: str, workspace_root: Path | None = None) -> Path:
-    """Resolve an input file path under workspace data/.
+    """Resolve an input file path.
 
-    Handles UNIX-style absolute paths like /data/file.json by stripping
-    the /data/ prefix and resolving relative to workspace_root/data/.
+    Resolution order:
+    1. the literal path, when it exists;
+    2. workspace_root/data/<relative>, when it exists;
+    3. cwd/data/<relative>.
+
+    UNIX-style /data/file.json and data/file.json inputs are stripped before
+    the workspace/cwd data lookups.
     """
+    literal = Path(path_str).expanduser()
+    if literal.exists():
+        return literal.resolve()
+
     posix_str = path_str.replace("\\", "/")
     if posix_str.startswith("/data/"):
         relative = posix_str[len("/data/"):]
@@ -163,25 +172,38 @@ def resolve_input_path(path_str: str, workspace_root: Path | None = None) -> Pat
         relative = path_str
 
     if workspace_root:
-        return (workspace_root / "data" / relative).resolve()
+        workspace_candidate = (workspace_root / "data" / relative).resolve()
+        if workspace_candidate.exists():
+            return workspace_candidate
     return (Path("data") / relative).resolve()
 
 
-def resolve_output_path(path_str: str, workspace_root: Path | None = None) -> Path:
+def resolve_output_path(
+    path_str: str,
+    workspace_root: Path | None = None,
+    *,
+    prefer_cwd: bool = False,
+) -> Path:
     """Resolve an output file path under workspace outputs/.
 
-    Handles UNIX-style absolute paths like /outputs/file.json by stripping
-    the /outputs/ prefix and resolving relative to workspace_root/outputs/.
+    Handles UNIX-style absolute paths like /outputs/file.json by stripping the
+    /outputs/ prefix. When the corresponding input came from cwd/data, callers
+    pass prefer_cwd=True so outputs are written to cwd/outputs.
     """
+    literal = Path(path_str).expanduser()
     posix_str = path_str.replace("\\", "/")
     if posix_str.startswith("/outputs/"):
         relative = posix_str[len("/outputs/"):]
     elif posix_str.startswith("outputs/"):
         relative = posix_str[len("outputs/"):]
     else:
+        if literal.is_absolute():
+            out = literal.resolve()
+            out.parent.mkdir(parents=True, exist_ok=True)
+            return out
         relative = path_str
 
-    if workspace_root:
+    if workspace_root and not prefer_cwd:
         out = (workspace_root / "outputs" / relative).resolve()
     else:
         out = (Path("outputs") / relative).resolve()

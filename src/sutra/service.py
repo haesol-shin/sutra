@@ -107,6 +107,49 @@ def ask(
     )
 
 
+def fallback_answer(question: str, *, workspace: str | Config) -> Answer:
+    """Build a deterministic answer from retrieved evidence only."""
+    config = workspace if isinstance(workspace, Config) else load_config(workspace)
+    documents = load_documents(config)
+    evidence = retrieve(question, documents, config)
+
+    if not evidence.items:
+        answer = "제공된 자료에서 확인할 수 있는 근거를 찾지 못했습니다."
+    else:
+        item = evidence.items[0]
+        fact = _first_fact(item.text)
+        source = item.source_url or item.source_name or item.id
+        if item.source_url:
+            answer = f"확인된 자료에 따르면 {fact} 자세한 내용은 {source}에서 확인하세요."
+        else:
+            answer = f"확인된 자료에 따르면 {fact} 출처는 {source}입니다."
+
+    return Answer(
+        answer=answer,
+        evidence=evidence.items,
+        workspace=config.workspace.name,
+        model=config.runtime.model,
+        backend=config.runtime.backend,
+        trace={
+            "status": "fallback",
+            "retrieved": len(evidence.items),
+            "doc_ids": [item.id for item in evidence.items],
+        },
+    )
+
+
+def _first_fact(text: str) -> str:
+    stripped = " ".join(text.split())
+    if not stripped:
+        return "관련 근거가 비어 있습니다."
+    sentence_end = stripped.find(".")
+    if 0 <= sentence_end < 180:
+        return stripped[: sentence_end + 1]
+    if len(stripped) <= 180:
+        return stripped
+    return stripped[:179].rstrip() + "..."
+
+
 def chat(
     messages: list[Message] | list[dict[str, str]],
     *,
