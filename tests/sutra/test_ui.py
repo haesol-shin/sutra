@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import importlib.util
 import os
 import socket
@@ -56,6 +57,8 @@ def _write_workspace(root: Path) -> Path:
 
 def _ui_module(monkeypatch: pytest.MonkeyPatch):
     chainlit = types.SimpleNamespace()
+    session_store = {}
+    sent_messages = []
 
     class Text:
         def __init__(self, **kwargs):
@@ -68,6 +71,13 @@ def _ui_module(monkeypatch: pytest.MonkeyPatch):
     class Message:
         def __init__(self, **kwargs):
             self.__dict__.update(kwargs)
+
+        async def send(self):
+            sent_messages.append(self)
+            return self
+
+        async def update(self):
+            return self
 
     class AskUserMessage(Message):
         pass
@@ -87,9 +97,11 @@ def _ui_module(monkeypatch: pytest.MonkeyPatch):
     chainlit.make_async = lambda func: func
     chainlit.Step = object
     chainlit.user_session = types.SimpleNamespace(
-        get=lambda *args, **kwargs: None,
-        set=lambda *args, **kwargs: None,
+        store=session_store,
+        get=lambda key, *args, **kwargs: session_store.get(key),
+        set=lambda key, value, *args, **kwargs: session_store.__setitem__(key, value),
     )
+    chainlit.sent_messages = sent_messages
 
     monkeypatch.setitem(sys.modules, "chainlit", chainlit)
     sys.modules.pop("sutra.ui", None)
@@ -201,6 +213,65 @@ class TestInterfaceLabels:
         summary = ui._source_filter_summary(items, shown_count=1, hidden_count=1)
 
         assert summary == "2 documents (best score 10)\nshowing 1 of 2 (score filter)"
+
+    def test_source_action_is_english_and_stores_filtered_sources(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        items = [_evidence("top", 10.0), _evidence("hidden", 1.0)]
+
+        actions = ui._source_actions(items)
+
+        assert [action.label for action in actions] == ["📚 Sources"]
+        assert actions[0].name == "sutra_sources"
+        source_key = ui._payload_from_action(actions[0])["source_key"]
+        stored = ui.cl.user_session.store[source_key]
+        assert [item["name"] for item in stored] == ["[1] top"]
+        assert "hidden text" not in stored[0]["content"]
+
+    def test_source_action_is_hidden_without_sources(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+
+        assert ui._source_actions([]) == []
+
+    def test_on_sources_sends_stored_source_elements(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        [action] = ui._source_actions([_evidence("top", 10.0)])
+
+        asyncio.run(ui.on_sources(action))
+
+        [message] = ui.cl.sent_messages
+        assert message.content == "Sources"
+        assert [element.name for element in message.elements] == ["[1] top"]
+        assert "top text" in message.elements[0].content
+
+    def test_replace_source_actions_updates_existing_source_payload(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        [source_action] = ui._source_actions([_evidence("stale", 10.0)])
+        source_key = ui._payload_from_action(source_action)["source_key"]
+        feedback_action = ui.cl.Action(name="sutra_feedback", label="feedback")
+        msg = types.SimpleNamespace(actions=[source_action, feedback_action])
+
+        ui._replace_source_actions(msg, [_evidence("fresh", 10.0)])
+
+        source_actions = [
+            action for action in msg.actions
+            if getattr(action, "name", None) == "sutra_sources"
+        ]
+        assert source_actions == [source_action]
+        assert ui._payload_from_action(source_action)["source_key"] == source_key
+        assert sorted(ui.cl.user_session.store) == [source_key]
+        assert [item["name"] for item in ui.cl.user_session.store[source_key]] == ["[1] fresh"]
 
     def test_chainlit_configs_force_english_locale(self) -> None:
         root = Path(__file__).parents[2]

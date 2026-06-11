@@ -19,6 +19,8 @@ from sutra.tracelog import append_chat_trace, append_feedback, default_trace_pat
 
 
 _FEEDBACK_ACTION = "sutra_feedback"
+_SOURCES_ACTION = "sutra_sources"
+_SOURCES_SESSION_PREFIX = "sutra_sources:"
 _FEEDBACK_COMMENT_TIMEOUT_SECONDS = 120
 _FEEDBACK_ANSWER_LIMIT = 200
 RETRIEVAL_STEP_NAME = "🔍 Search"
@@ -102,6 +104,75 @@ def _source_elements(evidence_items: list[Evidence]) -> list[cl.Text]:
     return elements
 
 
+def _source_element_payloads(evidence_items: list[Evidence]) -> list[dict[str, str]]:
+    return [
+        {
+            "name": element.name,
+            "content": element.content,
+            "display": element.display,
+        }
+        for element in _source_elements(evidence_items)
+    ]
+
+
+def _source_action(source_key: str) -> cl.Action:
+    payload = {"source_key": source_key}
+    serialized = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+    candidates = (
+        {"name": _SOURCES_ACTION, "label": "📚 Sources", "payload": payload},
+        {"name": _SOURCES_ACTION, "label": "📚 Sources", "value": serialized},
+        {"name": _SOURCES_ACTION, "value": serialized, "description": "📚 Sources"},
+    )
+    last_error: Exception | None = None
+    for kwargs in candidates:
+        try:
+            return cl.Action(**kwargs)
+        except Exception as e:  # Chainlit Action fields differ across supported 1.x releases.
+            last_error = e
+    raise TypeError("could not build Chainlit sources action") from last_error
+
+
+def _source_actions(evidence_items: list[Evidence]) -> list[cl.Action]:
+    source_key = f"{_SOURCES_SESSION_PREFIX}{time.time_ns()}"
+    if not _store_source_payload(source_key, evidence_items):
+        return []
+    return [_source_action(source_key)]
+
+
+def _store_source_payload(source_key: str, evidence_items: list[Evidence]) -> bool:
+    payloads = _source_element_payloads(evidence_items)
+    if not payloads:
+        return False
+    cl.user_session.set(source_key, payloads)
+    return True
+
+
+def _replace_source_actions(msg: cl.Message, evidence_items: list[Evidence]) -> None:
+    actions = list(getattr(msg, "actions", None) or [])
+    source_action = next(
+        (action for action in actions if getattr(action, "name", None) == _SOURCES_ACTION),
+        None,
+    )
+    existing = [
+        action for action in actions
+        if getattr(action, "name", None) != _SOURCES_ACTION
+    ]
+    if source_action is None:
+        msg.actions = [*_source_actions(evidence_items), *existing]
+        return
+
+    payload = _payload_from_action(source_action)
+    source_key = str(payload.get("source_key") or "")
+    if not source_key:
+        msg.actions = [*_source_actions(evidence_items), *existing]
+        return
+
+    if _store_source_payload(source_key, evidence_items):
+        msg.actions = [source_action, *existing]
+    else:
+        msg.actions = existing
+
+
 def _evidence_date(evidence: Evidence) -> str:
     for key in ("date", "target_date", "created_at", "updated_at", "published_at"):
         value = evidence.metadata.get(key)
@@ -176,7 +247,11 @@ async def _attach_feedback_actions(
 ) -> None:
     if not answer:
         return
-    msg.actions = _feedback_actions(config, question=question, answer=answer)
+    existing = [
+        action for action in (getattr(msg, "actions", None) or [])
+        if getattr(action, "name", None) != _FEEDBACK_ACTION
+    ]
+    msg.actions = [*existing, *_feedback_actions(config, question=question, answer=answer)]
     await msg.update()
 
 
@@ -192,6 +267,27 @@ def _payload_from_action(action: cl.Action) -> dict[str, Any]:
             return {}
         return parsed if isinstance(parsed, dict) else {}
     return {}
+
+
+@cl.action_callback(_SOURCES_ACTION)
+async def on_sources(action: cl.Action) -> None:
+    """Show answer sources only after the user asks for them."""
+    payload = _payload_from_action(action)
+    source_key = str(payload.get("source_key") or "")
+    stored = cl.user_session.get(source_key) if source_key else None
+    if not isinstance(stored, list) or not stored:
+        await cl.Message(content="No sources available.").send()
+        return
+
+    elements = [
+        cl.Text(**item)
+        for item in stored
+        if isinstance(item, dict)
+    ]
+    if not elements:
+        await cl.Message(content="No sources available.").send()
+        return
+    await cl.Message(content="Sources", elements=elements).send()
 
 
 def _ask_user_output(response: Any) -> str | None:
@@ -426,7 +522,7 @@ async def on_message(message: cl.Message) -> None:
         timeout_seconds=config.runtime.timeout_seconds,
     )
     tools = get_tool_definitions()
-    final_msg = cl.Message(content="", elements=_source_elements(evidence.items))
+    final_msg = cl.Message(content="", actions=_source_actions(evidence.items))
     await final_msg.send()
 
     result: LlamaResult | None = None
@@ -482,7 +578,8 @@ async def on_message(message: cl.Message) -> None:
             if fresh_items:
                 evidence = EvidencePack(question=evidence.question, items=[*fresh_items, *evidence.items])
                 prompt = await cl.make_async(render_prompt)(question, evidence, config)
-                final_msg.elements = _source_elements(evidence.items)
+                final_msg.elements = []
+                _replace_source_actions(final_msg, evidence.items)
                 final_msg.content = ""
                 await final_msg.update()
                 outcome = await _stream_to_message(
