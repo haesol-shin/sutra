@@ -180,15 +180,15 @@ class TestInterfaceLabels:
         ui = _ui_module(monkeypatch)
         config = load_config(_write_workspace(tmp_path))
 
-        assert ui.RETRIEVAL_STEP_NAME == "🔍 검색"
-        assert ui.LIVE_LOOKUP_STEP_NAME == "🛠️ 실시간 조회"
+        assert ui.RETRIEVAL_STEP_NAME == "🔍 Search"
+        assert ui.LIVE_LOOKUP_STEP_NAME == "🛠️ Live Lookup"
         assert [action.label for action in ui._feedback_actions(
             config,
             question="question",
             answer="answer",
-        )] == ["👍 도움됨", "👎 도움 안 됨", "💬 의견"]
+        )] == ["👍 Helpful", "👎 Not helpful", "💬 Comment"]
 
-    def test_source_elements_use_korean_labels(self, monkeypatch: pytest.MonkeyPatch) -> None:
+    def test_source_elements_use_english_labels(self, monkeypatch: pytest.MonkeyPatch) -> None:
         ui = _ui_module(monkeypatch)
         item = Evidence(
             id="source-1",
@@ -202,19 +202,19 @@ class TestInterfaceLabels:
         [element] = ui._source_elements([item])
 
         assert element.name == "[1] Academic Calendar"
-        assert "출처: calendar" in element.content
-        assert "날짜: 2026-03-02" in element.content
-        assert "발췌: Semester begins on March 2." in element.content
+        assert "Source: calendar" in element.content
+        assert "Date: 2026-03-02" in element.content
+        assert "Excerpt: Semester begins on March 2." in element.content
 
-    def test_source_filter_summary_is_korean(self, monkeypatch: pytest.MonkeyPatch) -> None:
+    def test_source_filter_summary_is_english(self, monkeypatch: pytest.MonkeyPatch) -> None:
         ui = _ui_module(monkeypatch)
         items = [_evidence("top", 10.0), _evidence("hidden", 1.0)]
 
         summary = ui._source_filter_summary(items, shown_count=1, hidden_count=1)
 
-        assert summary == "문서 2개 (최고 점수 10)\n2개 중 1개 표시(점수 필터)"
+        assert summary == "2 documents (best score 10)\nshowing 1 of 2 (score filter)"
 
-    def test_source_action_is_korean_and_stores_filtered_sources(
+    def test_source_action_is_english_and_stores_filtered_sources(
         self,
         monkeypatch: pytest.MonkeyPatch,
     ) -> None:
@@ -223,7 +223,7 @@ class TestInterfaceLabels:
 
         actions = ui._source_actions(items)
 
-        assert [action.label for action in actions] == ["📚 출처"]
+        assert [action.label for action in actions] == ["📚 Sources"]
         assert actions[0].name == "sutra_sources"
         source_key = ui._payload_from_action(actions[0])["source_key"]
         stored = ui.cl.user_session.store[source_key]
@@ -248,7 +248,7 @@ class TestInterfaceLabels:
         asyncio.run(ui.on_sources(action))
 
         [message] = ui.cl.sent_messages
-        assert message.content == "출처"
+        assert message.content == "Sources"
         assert [element.name for element in message.elements] == ["[1] top"]
         assert "top text" in message.elements[0].content
 

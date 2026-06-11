@@ -23,8 +23,8 @@ _SOURCES_ACTION = "sutra_sources"
 _SOURCES_SESSION_PREFIX = "sutra_sources:"
 _FEEDBACK_COMMENT_TIMEOUT_SECONDS = 120
 _FEEDBACK_ANSWER_LIMIT = 200
-RETRIEVAL_STEP_NAME = "🔍 검색"
-LIVE_LOOKUP_STEP_NAME = "🛠️ 실시간 조회"
+RETRIEVAL_STEP_NAME = "🔍 Search"
+LIVE_LOOKUP_STEP_NAME = "🛠️ Live Lookup"
 UI_SCORE_REL_RATIO = float(os.environ.get("SUTRA_UI_SCORE_REL_RATIO", "0.4"))
 UI_SCORE_ABS_FLOOR = float(os.environ.get("SUTRA_UI_SCORE_ABS_FLOOR", "0.0"))
 
@@ -39,9 +39,10 @@ class StreamOutcome:
 
 def _retrieval_summary(evidence_items: list[Evidence]) -> str:
     best_score = next((item.score for item in evidence_items if item.score is not None), None)
+    document_label = "document" if len(evidence_items) == 1 else "documents"
     if best_score is None:
-        return f"문서 {len(evidence_items)}개"
-    return f"문서 {len(evidence_items)}개 (최고 점수 {best_score:g})"
+        return f"{len(evidence_items)} {document_label}"
+    return f"{len(evidence_items)} {document_label} (best score {best_score:g})"
 
 
 def _filter_source_evidence(
@@ -77,22 +78,22 @@ def _source_filter_summary(
     summary = _retrieval_summary(evidence_items)
     if hidden_count <= 0:
         return summary
-    return f"{summary}\n{len(evidence_items)}개 중 {shown_count}개 표시(점수 필터)"
+    return f"{summary}\nshowing {shown_count} of {len(evidence_items)} (score filter)"
 
 
 def _source_elements(evidence_items: list[Evidence]) -> list[cl.Text]:
     evidence_items, _ = _filter_source_evidence(evidence_items)
     elements: list[cl.Text] = []
     for i, ev in enumerate(evidence_items, 1):
-        title = ev.title or "제목 없음"
+        title = ev.title or "Untitled"
         source = ev.source_name or ev.source_url or ev.id
         date = _evidence_date(ev)
-        lines = [f"출처: {source}"]
+        lines = [f"Source: {source}"]
         if date:
-            lines.append(f"날짜: {date}")
+            lines.append(f"Date: {date}")
         if ev.source_url:
-            lines.append(f"주소: {ev.source_url}")
-        lines.append(f"발췌: {_excerpt(ev.text, 500)}")
+            lines.append(f"URL: {ev.source_url}")
+        lines.append(f"Excerpt: {_excerpt(ev.text, 500)}")
         elements.append(
             cl.Text(
                 name=f"[{i}] {title}",
@@ -118,9 +119,9 @@ def _source_action(source_key: str) -> cl.Action:
     payload = {"source_key": source_key}
     serialized = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
     candidates = (
-        {"name": _SOURCES_ACTION, "label": "📚 출처", "payload": payload},
-        {"name": _SOURCES_ACTION, "label": "📚 출처", "value": serialized},
-        {"name": _SOURCES_ACTION, "value": serialized, "description": "📚 출처"},
+        {"name": _SOURCES_ACTION, "label": "📚 Sources", "payload": payload},
+        {"name": _SOURCES_ACTION, "label": "📚 Sources", "value": serialized},
+        {"name": _SOURCES_ACTION, "value": serialized, "description": "📚 Sources"},
     )
     last_error: Exception | None = None
     for kwargs in candidates:
@@ -223,15 +224,15 @@ def _feedback_action(label: str, payload: dict[str, str]) -> cl.Action:
 def _feedback_actions(config: Config, *, question: str, answer: str) -> list[cl.Action]:
     return [
         _feedback_action(
-            "👍 도움됨",
+            "👍 Helpful",
             _feedback_payload(config, question=question, answer=answer, rating="helpful"),
         ),
         _feedback_action(
-            "👎 도움 안 됨",
+            "👎 Not helpful",
             _feedback_payload(config, question=question, answer=answer, rating="unhelpful"),
         ),
         _feedback_action(
-            "💬 의견",
+            "💬 Comment",
             _feedback_payload(config, question=question, answer=answer, rating="comment"),
         ),
     ]
@@ -275,7 +276,7 @@ async def on_sources(action: cl.Action) -> None:
     source_key = str(payload.get("source_key") or "")
     stored = cl.user_session.get(source_key) if source_key else None
     if not isinstance(stored, list) or not stored:
-        await cl.Message(content="표시할 출처가 없습니다.").send()
+        await cl.Message(content="No sources available.").send()
         return
 
     elements = [
@@ -284,9 +285,9 @@ async def on_sources(action: cl.Action) -> None:
         if isinstance(item, dict)
     ]
     if not elements:
-        await cl.Message(content="표시할 출처가 없습니다.").send()
+        await cl.Message(content="No sources available.").send()
         return
-    await cl.Message(content="출처", elements=elements).send()
+    await cl.Message(content="Sources", elements=elements).send()
 
 
 def _ask_user_output(response: Any) -> str | None:
@@ -325,8 +326,9 @@ def _tool_result_summary(tool_call: ToolCall, fresh: list[Evidence]) -> str:
             line for item in fresh for line in item.text.splitlines()
             if line.strip() and not line.startswith("오늘:")
         ]
-        return f"{label} → 식단 {len(menu_lines)}개"
-    return f"{label} → 결과 {len(fresh)}개"
+        return f"{label} → {len(menu_lines)} cafeteria menus"
+    result_label = "result" if len(fresh) == 1 else "results"
+    return f"{label} → {len(fresh)} {result_label}"
 
 
 @cl.action_callback(_FEEDBACK_ACTION)
@@ -338,13 +340,13 @@ async def on_feedback(action: cl.Action) -> None:
     answer = str(payload.get("answer") or "")
     rating = str(payload.get("rating") or "")
     if not trace_path or rating not in {"helpful", "unhelpful", "comment"}:
-        await cl.Message(content="피드백을 기록하지 못했습니다.").send()
+        await cl.Message(content="Could not record feedback.").send()
         return
 
     comment = None
     if rating == "comment":
         response = await cl.AskUserMessage(
-            content="의견을 입력해 주세요.",
+            content="Please enter your comment.",
             timeout=_FEEDBACK_COMMENT_TIMEOUT_SECONDS,
         ).send()
         comment = _ask_user_output(response)
@@ -361,7 +363,7 @@ async def on_feedback(action: cl.Action) -> None:
     remove = getattr(action, "remove", None)
     if callable(remove):
         await remove()
-    await cl.Message(content="피드백을 기록했습니다.").send()
+    await cl.Message(content="Feedback recorded.").send()
 
 
 async def _stream_to_message(
@@ -456,7 +458,7 @@ async def on_message(message: cl.Message) -> None:
     try:
         config = workspace if isinstance(workspace, Config) else load_config(workspace)
     except SutraError as e:
-        await cl.Message(content=f"**오류**: {e}").send()
+        await cl.Message(content=f"**Error**: {e}").send()
         return
 
     try:
@@ -477,11 +479,11 @@ async def on_message(message: cl.Message) -> None:
             mode="retrieval_error",
             error=str(e),
         )
-        await cl.Message(content="**오류**: 검색에 실패했습니다.").send()
+        await cl.Message(content="**Error**: Search failed.").send()
         return
 
     if not evidence.items:
-        answer = "이 작업공간에서 답변에 필요한 근거를 충분히 찾지 못했습니다."
+        answer = "I do not have enough evidence in this workspace to answer."
         _append_ui_trace(
             config,
             started=started,
@@ -512,7 +514,7 @@ async def on_message(message: cl.Message) -> None:
             mode="prompt_error",
             error=str(e),
         )
-        await cl.Message(content="**오류**: 문서 분석에 실패했습니다.").send()
+        await cl.Message(content="**Error**: Document analysis failed.").send()
         return
 
     llm = client or LlamaClient(
@@ -593,7 +595,7 @@ async def on_message(message: cl.Message) -> None:
             else:
                 final_answer = result.content
                 if final_answer:
-                    final_answer += "\n\n(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)"
+                    final_answer += "\n\n(Unable to fetch live data. Response is based on stored information.)"
                 final_msg.content = final_answer
                 await final_msg.update()
                 mode = "tool_no_result"
@@ -629,4 +631,4 @@ async def on_message(message: cl.Message) -> None:
             usage=result.usage if result is not None else None,
             error=str(e),
         )
-        await cl.Message(content="**오류**: 답변 생성에 실패했습니다.").send()
+        await cl.Message(content="**Error**: Response generation failed.").send()
