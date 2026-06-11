@@ -24,6 +24,7 @@ def append_chat_trace(
     latency_ms: int,
     usage: dict[str, Any] | None = None,
     error: str | None = None,
+    extra: dict[str, Any] | None = None,
 ) -> None:
     """Append one chat/debug trace row as UTF-8 JSONL."""
     trace_path = Path(path)
@@ -42,6 +43,8 @@ def append_chat_trace(
         "usage": usage,
         "error": error,
     }
+    if extra:
+        row.update(extra)
     with trace_path.open("a", encoding="utf-8") as f:
         f.write(json.dumps(row, ensure_ascii=False, separators=(",", ":")))
         f.write("\n")

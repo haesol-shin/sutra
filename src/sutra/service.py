@@ -32,8 +32,23 @@ class ChatClient(Protocol):
         temperature: float = 0.2,
         max_tokens: int = 512,
         tools: list[dict[str, object]] | None = None,
+        tool_choice: dict[str, Any] | str | None = None,
     ) -> LlamaResult:
         ...
+
+
+ROUTER_DOMAINS = {
+    0: "graduation",
+    1: "notices",
+    2: "academic_calendar",
+    3: "dining",
+    4: "shuttle",
+}
+ROUTER_FORCED_TOOLS = {
+    "dining": "fetch_cafeteria_menu",
+    "notices": "fetch_recent_notices",
+}
+CLASSIFIER_MODEL_PATH = Path("model/classifier.joblib")
 
 
 def ask(
@@ -42,7 +57,7 @@ def ask(
     workspace: str | Config,
     client: ChatClient | None = None,
     live: bool = False,
-    mode: Literal["default", "tool_only"] = "default",
+    mode: Literal["default", "tool_only", "router"] = "default",
     trace_source: TraceSource | None = None,
     trace_path: str | Path | None = None,
 ) -> Answer:
@@ -55,6 +70,15 @@ def ask(
     config = workspace if isinstance(workspace, Config) else load_config(workspace)
     if mode == "tool_only":
         return _ask_tool_only(question, config=config, client=client)
+    if mode == "router":
+        return _ask_router(
+            question,
+            config=config,
+            client=client,
+            trace_source=trace_source,
+            trace_path=trace_path,
+            started=started,
+        )
     trace_file = Path(trace_path) if trace_path is not None else default_trace_path(config.root)
 
     documents = load_documents(config)
@@ -158,6 +182,189 @@ def ask(
         error=None,
     )
     return answer
+
+
+def _ask_router(
+    question: str,
+    *,
+    config: Config,
+    client: ChatClient | None = None,
+    trace_source: TraceSource | None = None,
+    trace_path: str | Path | None = None,
+    started: float | None = None,
+) -> Answer:
+    started = time.perf_counter() if started is None else started
+    trace_file = Path(trace_path) if trace_path is not None else default_trace_path(config.root)
+    label = _predict_router_label(question)
+    classifier_fallback = label is None
+    routed_domain = ROUTER_DOMAINS.get(label, "unknown")
+
+    documents = load_documents(config)
+    evidence = retrieve(question, documents, config)
+
+    if not evidence.items:
+        answer = Answer(
+            answer="I do not have enough evidence in this workspace to answer.",
+            evidence=[],
+            workspace=config.workspace.name,
+            model=config.runtime.model,
+            backend=config.runtime.backend,
+            trace={
+                "status": "insufficient_evidence",
+                "retrieved": 0,
+                "routed_domain": routed_domain,
+                "forced_tool": ROUTER_FORCED_TOOLS.get(routed_domain),
+                "tools_called": [],
+                "classifier_fallback": classifier_fallback,
+            },
+        )
+        _append_trace_if_requested(
+            trace_source,
+            trace_file,
+            question=question,
+            answer=answer.answer,
+            evidence=[],
+            tools_called=[],
+            tool_args=[],
+            mode="router_insufficient_evidence",
+            started=started,
+            usage=None,
+            error=None,
+            extra={
+                "routed_domain": routed_domain,
+                "forced_tool": ROUTER_FORCED_TOOLS.get(routed_domain),
+                "classifier_fallback": classifier_fallback,
+            },
+        )
+        return answer
+
+    prompt = render_prompt(question, evidence, config)
+    llm = client or LlamaClient(config.runtime.base_url, timeout_seconds=config.runtime.timeout_seconds)
+    forced_tool = ROUTER_FORCED_TOOLS.get(routed_domain)
+    called_tools: list[str] = []
+    tool_args: list[dict[str, Any]] = []
+
+    if forced_tool is None:
+        result = llm.chat(
+            prompt.messages,
+            model=config.runtime.model,
+            temperature=config.runtime.temperature,
+            max_tokens=config.runtime.max_tokens,
+        )
+    else:
+        tools = get_tool_definitions()
+        result = llm.chat(
+            prompt.messages,
+            model=config.runtime.model,
+            temperature=config.runtime.temperature,
+            max_tokens=config.runtime.max_tokens,
+            tools=tools or None,
+            tool_choice=_forced_tool_choice(forced_tool),
+        )
+        extra: list[Evidence] = []
+        if result.tool_calls:
+            for tc in result.tool_calls:
+                called_tools.append(tc.function_name)
+                tool_args.append(_tool_arguments_dict(tc))
+                if tc.function_name != forced_tool:
+                    logger.warning(
+                        "Router forced %s but model returned %s; ignoring tool evidence",
+                        forced_tool,
+                        tc.function_name,
+                    )
+                    continue
+                fresh = dispatch(tc.function_name, tc.function_arguments)
+                if fresh:
+                    extra.extend(fresh)
+
+        if extra:
+            evidence.items = [*extra, *evidence.items]
+            prompt = render_prompt(question, evidence, config)
+            result = llm.chat(
+                prompt.messages,
+                model=config.runtime.model,
+                temperature=config.runtime.temperature,
+                max_tokens=config.runtime.max_tokens,
+            )
+        else:
+            prompt = render_prompt(question, evidence, config)
+            fallback_result = llm.chat(
+                prompt.messages,
+                model=config.runtime.model,
+                temperature=config.runtime.temperature,
+                max_tokens=config.runtime.max_tokens,
+            )
+            result = LlamaResult(
+                content=(
+                    fallback_result.content
+                    + "\n\n(Unable to fetch live data. Response is based on stored information.)"
+                ),
+                model=fallback_result.model,
+                usage=fallback_result.usage,
+                raw=fallback_result.raw,
+            )
+
+    answer = Answer(
+        answer=result.content,
+        evidence=evidence.items,
+        workspace=config.workspace.name,
+        model=result.model or config.runtime.model,
+        backend=config.runtime.backend,
+        usage=result.usage,
+        trace={
+            "status": "answered",
+            "retrieved": len(evidence.items),
+            "doc_ids": [item.id for item in evidence.items],
+            "doc_scores": [item.score for item in evidence.items],
+            "context_chars": len(prompt.context),
+            "routed_domain": routed_domain,
+            "forced_tool": forced_tool,
+            "tools_called": called_tools,
+            "tool_args": tool_args,
+            "classifier_fallback": classifier_fallback,
+        },
+    )
+    _append_trace_if_requested(
+        trace_source,
+        trace_file,
+        question=question,
+        answer=answer.answer,
+        evidence=answer.evidence,
+        tools_called=called_tools,
+        tool_args=tool_args,
+        mode="router_tool" if called_tools else "router_llm",
+        started=started,
+        usage=answer.usage,
+        error=None,
+        extra={
+            "routed_domain": routed_domain,
+            "forced_tool": forced_tool,
+            "classifier_fallback": classifier_fallback,
+        },
+    )
+    return answer
+
+
+def _forced_tool_choice(tool_name: str) -> dict[str, dict[str, str] | str]:
+    return {"type": "function", "function": {"name": tool_name}}
+
+
+def _predict_router_label(question: str) -> int | None:
+    try:
+        from nlp_term.classify.predict import predict_label
+    except Exception:
+        logger.warning("Router classifier import failed; falling back to RAG-only", exc_info=True)
+        return None
+
+    try:
+        try:
+            label = predict_label(question, model_path=CLASSIFIER_MODEL_PATH)
+        except TypeError:
+            label = predict_label(question)
+        return int(label)
+    except Exception:
+        logger.warning("Router classifier prediction failed; falling back to RAG-only", exc_info=True)
+        return None
 
 
 def _ask_tool_only(
@@ -301,6 +508,7 @@ def _append_trace_if_requested(
     started: float,
     usage: dict[str, Any] | None,
     error: str | None,
+    extra: dict[str, Any] | None = None,
 ) -> None:
     if source is None:
         return
@@ -316,6 +524,7 @@ def _append_trace_if_requested(
         latency_ms=int((time.perf_counter() - started) * 1000),
         usage=usage,
         error=error,
+        extra=extra,
     )
 
 

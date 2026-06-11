@@ -58,6 +58,44 @@ def test_llama_client_reads_openai_compatible_chat_response(monkeypatch: pytest.
     assert result.usage == {"total_tokens": 3}
 
 
+def test_llama_client_uses_explicit_tool_choice_when_tools_are_provided(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    forced_choice = {"type": "function", "function": {"name": "fetch_cafeteria_menu"}}
+
+    def fake_post(url: str, json: dict[str, object], timeout: int) -> FakeResponse:
+        assert json["tools"] == [{"type": "function", "function": {"name": "fetch_cafeteria_menu"}}]
+        assert json["tool_choice"] == forced_choice
+        return FakeResponse(200, {"choices": [{"message": {"content": "답변"}}]})
+
+    monkeypatch.setattr("requests.post", fake_post)
+
+    result = LlamaClient().chat(
+        [{"role": "user", "content": "오늘 식단"}],
+        tools=[{"type": "function", "function": {"name": "fetch_cafeteria_menu"}}],
+        tool_choice=forced_choice,
+    )
+
+    assert result.content == "답변"
+
+
+def test_llama_client_defaults_tool_choice_to_auto_when_tools_are_provided(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fake_post(url: str, json: dict[str, object], timeout: int) -> FakeResponse:
+        assert json["tool_choice"] == "auto"
+        return FakeResponse(200, {"choices": [{"message": {"content": "답변"}}]})
+
+    monkeypatch.setattr("requests.post", fake_post)
+
+    result = LlamaClient().chat(
+        [{"role": "user", "content": "오늘 식단"}],
+        tools=[{"type": "function", "function": {"name": "fetch_cafeteria_menu"}}],
+    )
+
+    assert result.content == "답변"
+
+
 def test_stream_chat_tokens_from_sse_lines_yields_delta_content() -> None:
     lines = [
         'data: {"choices":[{"delta":{"content":"안녕"}}]}'.encode("utf-8"),
@@ -66,6 +104,83 @@ def test_stream_chat_tokens_from_sse_lines_yields_delta_content() -> None:
     ]
 
     assert list(stream_chat_tokens_from_sse_lines(lines)) == ["안녕", "하세요"]
+
+
+def test_llama_client_stream_chat_uses_explicit_tool_choice_when_tools_are_provided(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class FakeStreamResponse:
+        status_code = 200
+
+        def raise_for_status(self) -> None:
+            return None
+
+        def iter_lines(self) -> list[str]:
+            return ['data: {"choices":[{"delta":{"content":"안녕"}}]}', "data: [DONE]"]
+
+        def close(self) -> None:
+            return None
+
+    forced_choice = {"type": "function", "function": {"name": "fetch_recent_notices"}}
+
+    def fake_post(
+        url: str,
+        json: dict[str, object],
+        timeout: int,
+        stream: bool,
+    ) -> FakeStreamResponse:
+        assert json["stream"] is True
+        assert json["tool_choice"] == forced_choice
+        return FakeStreamResponse()
+
+    monkeypatch.setattr("requests.post", fake_post)
+
+    tokens = list(
+        LlamaClient().stream_chat(
+            [{"role": "user", "content": "최신 공지"}],
+            tools=[{"type": "function", "function": {"name": "fetch_recent_notices"}}],
+            tool_choice=forced_choice,
+        )
+    )
+
+    assert tokens == ["안녕"]
+
+
+def test_llama_client_stream_chat_defaults_tool_choice_to_auto_when_tools_are_provided(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class FakeStreamResponse:
+        status_code = 200
+
+        def raise_for_status(self) -> None:
+            return None
+
+        def iter_lines(self) -> list[str]:
+            return ['data: {"choices":[{"delta":{"content":"안녕"}}]}', "data: [DONE]"]
+
+        def close(self) -> None:
+            return None
+
+    def fake_post(
+        url: str,
+        json: dict[str, object],
+        timeout: int,
+        stream: bool,
+    ) -> FakeStreamResponse:
+        assert json["stream"] is True
+        assert json["tool_choice"] == "auto"
+        return FakeStreamResponse()
+
+    monkeypatch.setattr("requests.post", fake_post)
+
+    tokens = list(
+        LlamaClient().stream_chat(
+            [{"role": "user", "content": "최신 공지"}],
+            tools=[{"type": "function", "function": {"name": "fetch_recent_notices"}}],
+        )
+    )
+
+    assert tokens == ["안녕"]
 
 
 def test_stream_tool_call_marker_detection_handles_split_tokens() -> None:

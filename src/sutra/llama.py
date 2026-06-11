@@ -24,8 +24,9 @@ class EchoClient:
         temperature: float = 0.2,
         max_tokens: int = 512,
         tools: list[dict[str, object]] | None = None,
+        tool_choice: dict[str, Any] | str | None = None,
     ) -> LlamaResult:
-        del temperature, max_tokens, tools
+        del temperature, max_tokens, tools, tool_choice
         return LlamaResult(content=f"[echo:{model or 'local'}] {messages[-1].content}", model=model)
 
     def stream_chat(
@@ -36,8 +37,9 @@ class EchoClient:
         temperature: float = 0.2,
         max_tokens: int = 512,
         tools: list[dict[str, object]] | None = None,
+        tool_choice: dict[str, Any] | str | None = None,
     ) -> Iterator[str]:
-        del temperature, max_tokens, tools
+        del temperature, max_tokens, tools, tool_choice
         yield f"[echo:{model or 'local'}] {messages[-1].content}"
 
 
@@ -141,6 +143,7 @@ class LlamaClient:
         temperature: float = 0.2,
         max_tokens: int = 512,
         tools: list[dict[str, Any]] | None = None,
+        tool_choice: dict[str, Any] | str | None = None,
     ) -> LlamaResult:
         payload: dict[str, Any] = {
             "messages": [_dump_message(message) for message in messages],
@@ -151,7 +154,7 @@ class LlamaClient:
             payload["model"] = model
         if tools:
             payload["tools"] = tools
-            payload["tool_choice"] = "auto"
+            payload["tool_choice"] = tool_choice if tool_choice is not None else "auto"
 
         try:
             response = requests.post(
@@ -211,6 +214,7 @@ class LlamaClient:
         temperature: float = 0.2,
         max_tokens: int = 512,
         tools: list[dict[str, Any]] | None = None,
+        tool_choice: dict[str, Any] | str | None = None,
     ) -> Iterator[str]:
         payload: dict[str, Any] = {
             "messages": [_dump_message(message) for message in messages],
@@ -222,7 +226,7 @@ class LlamaClient:
             payload["model"] = model
         if tools:
             payload["tools"] = tools
-            payload["tool_choice"] = "auto"
+            payload["tool_choice"] = tool_choice if tool_choice is not None else "auto"
 
         response = None
         try:
