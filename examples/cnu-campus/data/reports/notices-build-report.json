@@ -1,0 +1,14 @@
+{
+  "pages_fetched": 3,
+  "board_total_rows": 30,
+  "pinned_count": 3,
+  "regular_count": 27,
+  "selected_pinned": 3,
+  "selected_regular": 20,
+  "detail_fetch_success": 23,
+  "detail_fetch_failed": 0,
+  "failed_nos": [],
+  "post_docs": 23,
+  "overview_doc": 1,
+  "total_output_docs": 24
+}
