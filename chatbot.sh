@@ -68,12 +68,16 @@ ensure_uv() {
 }
 
 uv_pip_install() {
+  local target=(--system)
+  if [ ${#PYTHON_CMD[@]} -eq 1 ]; then
+    target=(--python "${PYTHON_CMD[0]}")
+  fi
   if command -v uv.exe >/dev/null 2>&1; then
-    uv.exe pip install --system "$@"
+    uv.exe pip install "${target[@]}" "$@"
   elif command -v uv >/dev/null 2>&1; then
-    uv pip install --system "$@"
+    uv pip install "${target[@]}" "$@"
   else
-    "${PYTHON_CMD[@]}" -m uv pip install --system "$@"
+    "${PYTHON_CMD[@]}" -m uv pip install "${target[@]}" "$@"
   fi
 }
 
