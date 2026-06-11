@@ -27,7 +27,9 @@ PYTHON_CMD=()
 SUTRA_CMD=()
 
 select_python() {
-  if [ -x "$SCRIPT_DIR/.venv/Scripts/python.exe" ]; then
+  if [ -n "${SUTRA_PYTHON:-}" ] && [ -x "$SUTRA_PYTHON" ]; then
+    PYTHON_CMD=("$SUTRA_PYTHON")
+  elif [ -x "$SCRIPT_DIR/.venv/Scripts/python.exe" ]; then
     PYTHON_CMD=("$SCRIPT_DIR/.venv/Scripts/python.exe")
   elif [ -x "$SCRIPT_DIR/.venv/bin/python" ]; then
     PYTHON_CMD=("$SCRIPT_DIR/.venv/bin/python")
@@ -44,6 +46,10 @@ select_python() {
 }
 
 select_sutra() {
+  if [ "${SUTRA_SKIP_DEPS:-0}" = "1" ]; then
+    SUTRA_CMD=("${PYTHON_CMD[@]}" -m sutra.cli)
+    return 0
+  fi
   if command -v uv.exe >/dev/null 2>&1; then
     SUTRA_CMD=(uv.exe --project "$PY_SCRIPT_DIR" run sutra)
   elif command -v uv >/dev/null 2>&1; then
