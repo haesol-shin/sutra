@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime, timedelta
 import hashlib
 import json
 import logging
@@ -409,6 +410,7 @@ def retrieve(question: str, documents: list[Document], config: Config) -> Eviden
     - "hybrid": BM25 + Qwen3 combined (0.5/0.5 weight)
     - "lexical": Legacy regex-based fallback
     """
+    retrieval_question = _expand_relative_date_query(question, config.workspace.timezone)
     backend = config.rag.backend
     token_config = _load_token_config(config)
     bm25_pack = EvidencePack(question=question, items=[])
@@ -417,7 +419,10 @@ def retrieve(question: str, documents: list[Document], config: Config) -> Eviden
     if backend in ("bm25", "hybrid") and _KIWI_AVAILABLE and _BM25S_AVAILABLE:
         bm25 = _get_or_build_bm25(documents, token_config=token_config)
         try:
-            bm25_pack = bm25_retrieve(question, documents, bm25, config, token_config=token_config)
+            bm25_pack = _with_question(
+                bm25_retrieve(retrieval_question, documents, bm25, config, token_config=token_config),
+                question,
+            )
         except Exception as e:
             logger.warning("BM25 retrieval failed: %s", e)
             bm25_pack = EvidencePack(question=question, items=[])
@@ -429,7 +434,7 @@ def retrieve(question: str, documents: list[Document], config: Config) -> Eviden
             return bm25_pack
         # Fall through to lexical for bm25 if no results or deps unavailable
         if not (_KIWI_AVAILABLE and _BM25S_AVAILABLE):
-            return _lexical_retrieve(question, documents, config)
+            return _with_question(_lexical_retrieve(retrieval_question, documents, config), question)
 
     if backend in ("qwen3", "hybrid"):
         if not _SENTENCE_TRANSFORMERS_AVAILABLE:
@@ -442,7 +447,10 @@ def retrieve(question: str, documents: list[Document], config: Config) -> Eviden
             model = load_embedding_model()
             cache_dir = get_cache_dir(config.root / ".cache")
             embeddings, _cache_meta = get_cached_embeddings(documents, model, cache_dir)
-            dense_pack = dense_retrieve(question, documents, model, embeddings, config)
+            dense_pack = _with_question(
+                dense_retrieve(retrieval_question, documents, model, embeddings, config),
+                question,
+            )
         except Exception as e:
             logger.warning("Dense retrieval failed: %s", e)
             dense_pack = EvidencePack(question=question, items=[])
@@ -462,11 +470,17 @@ def retrieve(question: str, documents: list[Document], config: Config) -> Eviden
         return EvidencePack(question=question, items=[])
 
     if backend == "lexical":
-        return _lexical_retrieve(question, documents, config)
+        return _with_question(_lexical_retrieve(retrieval_question, documents, config), question)
 
     if bm25_pack.items:
         return bm25_pack
-    return _lexical_retrieve(question, documents, config)
+    return _with_question(_lexical_retrieve(retrieval_question, documents, config), question)
+
+
+def _with_question(pack: EvidencePack, question: str) -> EvidencePack:
+    if pack.question == question:
+        return pack
+    return EvidencePack(question=question, items=pack.items)
 
 
 def _lexical_retrieve(question: str, documents: list[Document], config: Config) -> EvidencePack:
@@ -647,6 +661,38 @@ def _score_document(query_tokens: set[str], document: Document) -> float:
 
 
 _TOKEN_RE = re.compile(r"[0-9A-Za-z가-힣]+")
+_ISO_DATE_RE = re.compile(r"\b\d{4}-\d{2}-\d{2}\b")
+_RELATIVE_DATE_OFFSETS: dict[str, int] = {
+    "오늘": 0,
+    "금일": 0,
+    "내일": 1,
+    "명일": 1,
+    "모레": 2,
+    "어제": -1,
+}
+_RELATIVE_DATE_RE = re.compile("|".join(_RELATIVE_DATE_OFFSETS))
+
+
+def _expand_relative_date_query(question: str, timezone_name: str) -> str:
+    terms = _RELATIVE_DATE_RE.findall(question)
+    if not terms or _ISO_DATE_RE.search(question):
+        return question
+
+    from sutra.prompts import get_current_time_str
+
+    current_date_text = get_current_time_str(timezone_name).split()[0]
+    current_date = datetime.strptime(current_date_text, "%Y-%m-%d").date()
+    additions: list[str] = []
+    seen: set[str] = set()
+    for term in terms:
+        date_text = (current_date + timedelta(days=_RELATIVE_DATE_OFFSETS[term])).strftime("%Y-%m-%d")
+        if date_text not in question and date_text not in seen:
+            additions.append(date_text)
+            seen.add(date_text)
+
+    if not additions:
+        return question
+    return f"{question} {' '.join(additions)}"
 
 
 def _tokens(text: str) -> list[str]:

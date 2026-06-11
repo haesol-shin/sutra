@@ -150,7 +150,7 @@ def main():
             chunks.append(chunk)
         elif isinstance(rec_data, NoticeRecord):
             source_url = rec_data.source_url or "https://geo.cnu.ac.kr/notice/?vid=956"
-            source_name = "충남대학교 지질환경과학과 공지사항"
+            source_name = "충남대학교 셔틀버스 운영 공지"
             if rec_data.posted_date:
                 dates_found.add(rec_data.posted_date)
             chunk_id = "shuttle_notice_2026_operation"

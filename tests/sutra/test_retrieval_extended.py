@@ -3,9 +3,10 @@ from __future__ import annotations
 import re
 import codecs
 import pytest
+from pathlib import Path
 from unittest import mock
 
-from sutra.models import Document
+from sutra.models import Document, Evidence, EvidencePack
 from sutra.prompts import get_current_time_str
 from sutra.retrieval import (
     _KIWI_AVAILABLE,
@@ -13,8 +14,10 @@ from sutra.retrieval import (
     tokenize_korean,
     _get_or_build_bm25,
     rank,
+    retrieve,
 )
 import sutra.retrieval as _retrieval
+from sutra.config import Config, PromptConfig, RagConfig, RuntimeConfig, WorkspaceConfig
 
 
 def _u(s: str) -> str:
@@ -91,3 +94,116 @@ def test_legacy_fallback_warning() -> None:
         
         with pytest.deprecated_call():
             rank(_u("\\uc81c\\ubaa91"), docs, k=1)
+
+
+def _test_config(backend: str = "bm25") -> Config:
+    return Config(
+        path=Path("sutra.toml"),
+        root=Path("."),
+        workspace=WorkspaceConfig(name="test", timezone="Asia/Seoul"),
+        runtime=RuntimeConfig(),
+        rag=RagConfig(index_path=Path("index.jsonl"), top_k=2, backend=backend),
+        prompts=PromptConfig(system=Path("system.md")),
+    )
+
+
+def test_expand_relative_date_query_appends_kst_date(monkeypatch: pytest.MonkeyPatch) -> None:
+    def fake_time_str(timezone_name: str) -> str:
+        assert timezone_name == "Asia/Seoul"
+        return "2026-06-11 Thursday (목요일)"
+
+    monkeypatch.setattr("sutra.prompts.get_current_time_str", fake_time_str)
+
+    assert (
+        _retrieval._expand_relative_date_query("오늘 저녁 학식", "Asia/Seoul")
+        == "오늘 저녁 학식 2026-06-11"
+    )
+    assert (
+        _retrieval._expand_relative_date_query("금일 학식", "Asia/Seoul")
+        == "금일 학식 2026-06-11"
+    )
+    assert (
+        _retrieval._expand_relative_date_query("내일 학식", "Asia/Seoul")
+        == "내일 학식 2026-06-12"
+    )
+    assert (
+        _retrieval._expand_relative_date_query("명일 학식", "Asia/Seoul")
+        == "명일 학식 2026-06-12"
+    )
+    assert (
+        _retrieval._expand_relative_date_query("모레 학식", "Asia/Seoul")
+        == "모레 학식 2026-06-13"
+    )
+    assert (
+        _retrieval._expand_relative_date_query("어제 학식", "Asia/Seoul")
+        == "어제 학식 2026-06-10"
+    )
+
+
+def test_expand_relative_date_query_leaves_absolute_query_unchanged(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        "sutra.prompts.get_current_time_str",
+        lambda timezone_name: "2026-06-11 Thursday (목요일)",
+    )
+
+    assert _retrieval._expand_relative_date_query("6월 학식", "Asia/Seoul") == "6월 학식"
+    assert (
+        _retrieval._expand_relative_date_query("오늘 2026-06-12 학식", "Asia/Seoul")
+        == "오늘 2026-06-12 학식"
+    )
+    assert (
+        _retrieval._expand_relative_date_query("오늘 2026-06-11 학식", "Asia/Seoul")
+        == "오늘 2026-06-11 학식"
+    )
+
+
+def test_retrieve_preserves_original_question_while_bm25_uses_expanded_query(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        "sutra.prompts.get_current_time_str",
+        lambda timezone_name: "2026-06-11 Thursday (목요일)",
+    )
+    monkeypatch.setattr(_retrieval, "_KIWI_AVAILABLE", True)
+    monkeypatch.setattr(_retrieval, "_BM25S_AVAILABLE", True)
+    monkeypatch.setattr(_retrieval, "_get_or_build_bm25", lambda documents, token_config=None: object())
+    seen_queries: list[str] = []
+
+    def fake_bm25_retrieve(query, documents, bm25, config, token_config=None):
+        seen_queries.append(query)
+        return EvidencePack(
+            question=query,
+            items=[Evidence(id="dining-11", title="2026-06-11 학생식당 식단", text="학식 저녁 메뉴")],
+        )
+
+    monkeypatch.setattr(_retrieval, "bm25_retrieve", fake_bm25_retrieve)
+
+    pack = retrieve(
+        "오늘 학식",
+        [Document(id="dining-11", title="2026-06-11 학생식당 식단", text="학식 저녁 메뉴")],
+        _test_config(),
+    )
+
+    assert seen_queries == ["오늘 학식 2026-06-11"]
+    assert pack.question == "오늘 학식"
+    assert [item.id for item in pack.items] == ["dining-11"]
+
+
+def test_retrieve_relative_today_query_prioritizes_today_dining_document(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        "sutra.prompts.get_current_time_str",
+        lambda timezone_name: "2026-06-11 Thursday (목요일)",
+    )
+    docs = [
+        Document(id="dining-10", title="2026-06-10 학생식당 식단", text="학식 저녁 메뉴"),
+        Document(id="dining-11", title="2026-06-11 학생식당 식단", text="학식 저녁 메뉴"),
+        Document(id="dining-12", title="2026-06-12 학생식당 식단", text="학식 저녁 메뉴"),
+    ]
+
+    pack = retrieve("오늘 학식", docs, _test_config())
+
+    assert [item.id for item in pack.items] == ["dining-11", "dining-10"]
