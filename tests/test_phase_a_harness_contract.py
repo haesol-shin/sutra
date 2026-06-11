@@ -218,7 +218,10 @@ def test_harness_current_dining_question_accepts_official_structured_menu_row(tm
     assert result.trace.fetch_decision == FetchDecision.SKIPPED_RAG_SUFFICIENT
 
 
-def test_harness_passes_retrieved_wrong_domain_evidence_to_writer_without_route_gate(tmp_path: Path) -> None:
+def test_harness_passes_retrieved_wrong_domain_evidence_to_writer_without_route_gate(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
     knowledge_path = tmp_path / "knowledge.json"
     knowledge_path.write_text(
         "["
@@ -234,6 +237,11 @@ def test_harness_passes_retrieved_wrong_domain_evidence_to_writer_without_route_
         "}"
         "]",
         encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        orchestrator_module,
+        "route_question",
+        lambda question: RoutedQuestion(user=question, label=3, domain="dining"),
     )
 
     result = answer_with_harness(

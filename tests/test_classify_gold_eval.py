@@ -3,8 +3,18 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import joblib
+
 from nlp_term.classify.evaluate_gold import evaluate_gold_file
 from nlp_term.validators import validate_metric_claim
+
+
+class FixedModel:
+    def __init__(self, labels: list[int]) -> None:
+        self.labels = labels
+
+    def predict(self, questions: list[str]) -> list[int]:
+        return self.labels[: len(questions)]
 
 
 def _write_json(path: Path, payload: object) -> None:
@@ -13,7 +23,10 @@ def _write_json(path: Path, payload: object) -> None:
 
 
 def test_evaluate_gold_file_writes_heldout_metric(tmp_path: Path, monkeypatch) -> None:
-    monkeypatch.setenv("NLP_TERM_MODEL_DIR", str(tmp_path / "empty_model"))
+    model_dir = tmp_path / "model"
+    model_dir.mkdir()
+    joblib.dump(FixedModel([0, 1, 2, 3, 4]), model_dir / "classifier.joblib")
+    monkeypatch.setenv("NLP_TERM_MODEL_DIR", str(model_dir))
     input_path = tmp_path / "task1_human_gold.json"
     output_path = tmp_path / "gold_classifier_metrics.json"
     _write_json(
