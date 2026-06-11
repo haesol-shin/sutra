@@ -16,7 +16,7 @@ from sutra.config import Config, _default_model_dir, load_config, resolve_input_
 from sutra.errors import ConfigError, LlamaError, WorkspaceResolutionError
 from sutra.llama import download_model, EchoClient, start_llama_server
 from sutra.models import Document
-from sutra.service import ask
+from sutra.service import ask, fallback_answer
 
 _WORKSPACE_COMMANDS = {"ask", "batch", "workspace", "docs", "llama", "doctor", "ui"}
 
@@ -354,6 +354,7 @@ def build_parser() -> argparse.ArgumentParser:
     batch_parser.add_argument("--output", required=True, help="Output JSON file path.")
     batch_parser.add_argument("--live", action="store_true", help="Enable live fetch for stale evidence.")
     batch_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
+    batch_parser.add_argument("--echo", action="store_true", help="Use an echo LLM client for smoke tests.")
 
     # 5. sutra llama health
     llama_parser = subparsers.add_parser("llama", help="Inspect or interact with llama-server.")
@@ -455,27 +456,49 @@ def main(argv: Sequence[str] | None = None) -> int:
             with input_path.open("r", encoding="utf-8") as f:
                 items: list[dict[str, str]] = json.load(f)
 
+            input_uses_cwd = _is_relative_to(input_path, (Path.cwd() / "data").resolve()) and not _is_relative_to(
+                input_path,
+                (config.root / "data").resolve(),
+            )
+            output_path = resolve_output_path(args.output, config.root, prefer_cwd=input_uses_cwd)
+
             results: list[dict[str, str]] = []
-            errors: list[str] = []
+            provenance: list[dict[str, str | int]] = []
             for i, item in enumerate(items):
+                question = item.get("user") or item.get("question") or ""
+                if not question:
+                    message = "질문이 비어 있어 답변할 수 없습니다."
+                    results.append(ChatOutputItem(user=question, model=message).model_dump())
+                    provenance.append({"index": i, "mode": "fallback", "error": "missing question"})
+                    print(f"WARNING: Item {i} used deterministic fallback: missing question", file=sys.stderr)
+                    continue
+
+                client = EchoClient() if args.echo else None
                 try:
-                    question = item.get("user") or item.get("question") or ""
-                    if not question:
-                        errors.append(f"Item {i}: missing 'user' or 'question' field")
-                        continue
-                    answer = ask(question, workspace=config, live=args.live)
+                    answer = ask(question, workspace=config, live=args.live, client=client)
                     results.append(ChatOutputItem(user=question, model=answer.answer).model_dump())
-                except Exception as exc:
-                    errors.append(f"Item {i}: {exc}")
+                    provenance.append({"index": i, "mode": "llm", "error": ""})
+                    continue
+                except Exception as first_exc:
+                    try:
+                        answer = ask(question, workspace=config, live=args.live, client=client)
+                        results.append(ChatOutputItem(user=question, model=answer.answer).model_dump())
+                        provenance.append({"index": i, "mode": "llm_retry", "error": str(first_exc)})
+                        continue
+                    except Exception as second_exc:
+                        answer = fallback_answer(question, workspace=config)
+                        results.append(ChatOutputItem(user=question, model=answer.answer).model_dump())
+                        provenance.append({"index": i, "mode": "fallback", "error": str(second_exc)})
+                        print(
+                            f"WARNING: Item {i} used deterministic fallback: {second_exc}",
+                            file=sys.stderr,
+                        )
 
             ChatOutput.model_validate(results)
 
-            if errors:
-                for err in errors:
-                    print(err, file=sys.stderr)
-
-            output_path = resolve_output_path(args.output, config.root)
             output_path.write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8")
+            provenance_path = output_path.with_suffix(".provenance.json")
+            provenance_path.write_text(json.dumps(provenance, indent=2, ensure_ascii=False), encoding="utf-8")
             return 0
 
         except ConfigError as exc:
@@ -823,6 +846,14 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     parser.error(f"unknown command: {args.command}")
     return 2
+
+
+def _is_relative_to(path: Path, root: Path) -> bool:
+    try:
+        path.resolve().relative_to(root.resolve())
+        return True
+    except ValueError:
+        return False
 
 
 if __name__ == "__main__":
