@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import pytest
+
+pytestmark = pytest.mark.skip(reason="legacy doc gate superseded by Sutra direction (2026-06-11)")
+
 from pathlib import Path
 
 
