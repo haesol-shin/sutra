@@ -1,381 +1,62 @@
 {
-  "parsed_files": [
-    "data/raw/dining/cnu_mobile_food.html",
-    "data/raw/dining/cnu_mobile_food_2026_06_09.html",
-    "data/raw/dining/cnu_mobile_food_2026_06_10.html",
-    "data/raw/dining/cnu_mobile_food_2026_06_11.html",
-    "data/raw/dining/cnu_mobile_food_2026_06_12.html",
-    "data/raw/dining/cnu_mobile_food_2026_06_13.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_01_1st.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_01_2nd.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_08_1st.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_08_2nd.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_08_3rd.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_08_4th.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_08_life_science.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_15_1st.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_15_2nd.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_15_3rd.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_15_4th.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_15_life_science.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_22_1st.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_22_2nd.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_22_3rd.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_22_4th.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_22_life_science.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_29_1st.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_29_2nd.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_29_3rd.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_29_4th.html",
-    "data/raw/dining/cnu_mobile_food_week_2026_06_29_life_science.html"
-  ],
+  "parsed_files": [],
   "skipped_files": [
     {
-      "file": "data/raw/dining/cnucoop_discovery.html",
-      "reason": "Failed to read file: 'utf-8' codec can't decode byte 0xc3 in position 22: invalid continuation byte"
-    },
-    {
-      "file": "data/raw/dining/dining_operation_notice_2507684.html",
-      "reason": "Skipped notice file"
+      "file": "data/raw/dining",
+      "reason": "raw dining HTML unavailable; rebuilt from previous_build_report_records"
     }
   ],
-  "raw_records": 1104,
-  "unique_records": 180,
-  "duplicate_records": 924,
+  "raw_records": 120,
+  "unique_records": 120,
+  "duplicate_records": 0,
   "conflict_count": 0,
   "conflicts": [],
-  "chunk_count": 20,
-  "date_mismatches": [
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_01_1st.html",
-      "hinted_dates": [
-        "2026-06-01"
+  "chunk_count": 12,
+  "daily_doc_count": 5,
+  "operating_info_count": 1,
+  "food_court_doc_count": 6,
+  "closed_record_count": 76,
+  "source_mode": "previous_build_report_records",
+  "operating_schedule": {
+    "제2학생회관": {
+      "아침": [
+        "학생"
       ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
+      "점심": [
+        "직원",
+        "학생"
       ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
+      "저녁": [
+        "학생"
+      ]
     },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_01_2nd.html",
-      "hinted_dates": [
-        "2026-06-01"
+    "제3학생회관": {
+      "아침": [],
+      "점심": [
+        "직원",
+        "학생"
       ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
+      "저녁": [
+        "직원"
+      ]
     },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
-      "hinted_dates": [
-        "2026-06-01"
+    "제4학생회관": {
+      "아침": [],
+      "점심": [
+        "학생"
       ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
+      "저녁": []
     },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
-      "hinted_dates": [
-        "2026-06-01"
+    "생활과학대학": {
+      "아침": [],
+      "점심": [
+        "학생"
       ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
-      "hinted_dates": [
-        "2026-06-01"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_15_1st.html",
-      "hinted_dates": [
-        "2026-06-15"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_15_2nd.html",
-      "hinted_dates": [
-        "2026-06-15"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_15_3rd.html",
-      "hinted_dates": [
-        "2026-06-15"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_15_4th.html",
-      "hinted_dates": [
-        "2026-06-15"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_15_life_science.html",
-      "hinted_dates": [
-        "2026-06-15"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_22_1st.html",
-      "hinted_dates": [
-        "2026-06-22"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_22_2nd.html",
-      "hinted_dates": [
-        "2026-06-22"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_22_3rd.html",
-      "hinted_dates": [
-        "2026-06-22"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_22_4th.html",
-      "hinted_dates": [
-        "2026-06-22"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_22_life_science.html",
-      "hinted_dates": [
-        "2026-06-22"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_29_1st.html",
-      "hinted_dates": [
-        "2026-06-29"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_29_2nd.html",
-      "hinted_dates": [
-        "2026-06-29"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_29_3rd.html",
-      "hinted_dates": [
-        "2026-06-29"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_29_4th.html",
-      "hinted_dates": [
-        "2026-06-29"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_week_2026_06_29_life_science.html",
-      "hinted_dates": [
-        "2026-06-29"
-      ],
-      "parsed_dates": [
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12",
-        "2026-06-13"
-      ],
-      "reason": "filename_or_url_date_not_in_parsed_dates"
+      "저녁": []
     }
-  ],
-  "missing_source_meta": [
-    {
-      "file": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
-      "reason": "source_probe_metadata_not_found"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_2026_06_10.html",
-      "reason": "source_probe_metadata_not_found"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_2026_06_11.html",
-      "reason": "source_probe_metadata_not_found"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_2026_06_12.html",
-      "reason": "source_probe_metadata_not_found"
-    },
-    {
-      "file": "data/raw/dining/cnu_mobile_food_2026_06_13.html",
-      "reason": "source_probe_metadata_not_found"
-    },
-    {
-      "file": "data/raw/dining/cnucoop_discovery.html",
-      "reason": "source_probe_metadata_not_found"
-    }
-  ],
+  },
+  "date_mismatches": [],
+  "missing_source_meta": [],
   "dates": [
     "2026-06-08",
     "2026-06-09",
@@ -388,5 +69,1447 @@
     "제2학생회관",
     "제3학생회관",
     "제4학생회관"
+  ],
+  "source_records": [
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제2학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제2학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "정식(1000)\n참치김치찌개\n고추마요떡갈비(pork included)\n깍두기",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제2학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n차돌박이된장찌개(beef included)\n명태코다리강정\n비엔나브로콜리볶음(pork included)\n열무겉절이\n깍두기",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제2학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(4500)\n김치볶음밥(pork included)\n누드소세지(pork included)\n맑은우동국물\n마카로니샐러드(pork included)\n베이비슈\n단무지",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제2학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제2학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "정식(1000)\n하이라이스(pork included)\n함박스테이크(pork included)\n맑은우동국물\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제3학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제3학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제3학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n차조밥\n소고기무우국(beef included)\n가자미구이\n잡채(pork included)\n연근조림\n열무겉절이\n깍두기",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제3학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(4000)\n일식새우커리\n고추마요치킨(chicken included)",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제3학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n쌀밥\n부대찌개(pork included)\n치킨까스(chicken included)\n볼어묵조림\n단호박샐러드\n깍두기",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제3학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제4학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제4학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제4학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제4학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(6000)\n돈까스(pork included)\n맑은우동국물\n크림소스팬네파스타(pork included)\n파인애플샐러드\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제4학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "제4학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "생활과학대학",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "생활과학대학",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "생활과학대학",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "생활과학대학",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(6000)\n마파두부덮밥\n계란파국\n닭강정(chicken included)\n천사채샐러드\n단무지",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "생활과학대학",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-08",
+      "cafeteria": "생활과학대학",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": "2026-06-08T15:48:17.108378+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제2학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제2학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "정식(1000)\n참치야채죽\n메추리알장조림\n우리쌀씨리얼\n우유\n깍두기",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제2학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n불고기뚝배기(beef included)\n무말랭이진미채무침\n숙주나물\n쥬스\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제2학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(4500)\n치즈닭갈비덮밥(chicken included)\n맑은우동국물\n허니버터감자튀김\n요쿠르트\n단무지",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제2학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제2학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "정식(1000)\n소고기해장국(beef included)\n요쿠르트\n깍두기",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제2학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제2학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "정식(1000)\n새우튀김카레라이스(pork included)\n맑은우동국물\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제2학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n꼬막비빔밥\n건새우아욱국\n생선까스\n생선가스&머스타드\n꽃맛살샐러드\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제2학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(4500)\n손만두국(pork included)\n비엔나소세지볶음(pork included)\n도시락김\n깍두기",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제2학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제2학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "정식(1000)\n치즈제육덮밥(pork included)\n유부된장국\n요쿠르트\n단무지",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제2학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제2학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "정식(1000)\n육개장(beef included)\n연두부&양념장\n깍두기",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제2학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n순두부육개장(beef included)\n바싹불고기육전(pork included)\n도토리묵/양념장\n미역줄기볶음\n깍두기",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제2학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(4500)\n순살돈까스/소스\n스프\n양배추샐러드\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제2학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제2학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "정식(1000)\n닭갈비볶음밥(chicken included)\n요쿠르트\n맑은미역국\n단무지",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제2학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제2학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "정식(1000)\n해물볶음밥\n미역된장국\n핫도그(pork included)\n깍두기",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제2학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n소고기샤브샐러드(beef included)\n춘권튀김\n고구마맛탕\n깻잎지\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제2학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(4500)\n함박토마토파스타(pork included)\n스프\n모닝빵&딸기잼\n오이피클",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제2학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제2학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_2026_06_09.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp",
+      "fetched_at": null
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제3학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제3학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제3학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n강낭콩밥\n맑은미역국\n제육볶음(pork included)\n표고죽순볶음\n백김치도토리묵무침\n멸치고추볶음\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제3학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(4000)\n물냉면\n바싹불고기육전(pork included)",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제3학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n스팸김치볶음밥(pork included)\n미역된장국\n핫바\n푸실리샐러드\n단무지",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제3학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제3학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제3학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제3학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n매주 수요일은 현미 먹는 날\n근대된장국\n매콤돈사태찜(pork included)\n불고기소스두부튀김(pork included)\n감자채볶음\n무말랭이무침\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제3학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(4000)\n불맛제육덮밥(pork included)\n닭다리오븐구이(데리마요소스)(chicken included)",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제3학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n쌀밥\n육개장(beef included)\n감자고로케\n떡잡채(beef included)\n콩나물겨자채\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제3학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제3학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제3학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제3학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n흑미밥\n김치순두부국\n계란말이(pork included)\n비엔나브로콜리볶음(pork included)\n닭가슴살겨자채(chicken included)\n미역줄기볶음\n백김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제3학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(4000)\n안동찜닭덮밥(chicken included)\n왕새우튀김",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제3학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n마파두부덮밥\n맑은장국\n탕수육(pork included)\n물만두&양념장(pork included)\n단무지",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제3학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제3학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제3학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제3학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n쌀밥\n닭곰탕(chicken included)\n해물완자전\n곤약고기볶음(pork included)\n부추무침\n깍두기",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제3학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(4000)\n등촌샤브칼국수(beef included)\n교자만두찜(pork included)",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제3학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "정식(6000)\n쌀밥\n고구마치즈돈까스(pork included)\n맑은장국\n로제소스팬네파스타(pork included)\n씨리얼샐러드\n단무지",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제3학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_3rd.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.03",
+      "fetched_at": "2026-06-08T15:48:17.158316+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제4학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제4학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제4학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제4학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(6000)\n비빔밥\n두부된장국\n떡갈비야채볶음(pork included)\n쥬스\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제4학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "제4학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제4학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제4학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제4학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제4학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(6000)\n돈육김치찌개(pork included)\n닭불고기(chicken included)\n멸치고추볶음\n도토리묵무침\n볼어묵조림\n깍두기",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제4학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "제4학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제4학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제4학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제4학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제4학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(6000)\n장조림버터계란밥(beef included)\n맑은우동국물\n떡볶이\n김말이튀김\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제4학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "제4학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제4학생회관",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제4학생회관",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제4학생회관",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제4학생회관",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(6000)\n베트남쌀국수(beef included)\n후리가케주먹밥\n춘권튀김\n망고샐러드\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제4학생회관",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "제4학생회관",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_4th.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.04",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "생활과학대학",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "생활과학대학",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "생활과학대학",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "생활과학대학",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(6000)\n꼬치어묵우동\n참치마요주먹밥\n비빔만두(pork included)\n쥬스\n단무지",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "생활과학대학",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-09",
+      "cafeteria": "생활과학대학",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "생활과학대학",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "생활과학대학",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "생활과학대학",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "생활과학대학",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(6000)\n반계탕(chicken included)\n들기름막국수\n메밀전병\n깍두기",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "생활과학대학",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-10",
+      "cafeteria": "생활과학대학",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "생활과학대학",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "생활과학대학",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "생활과학대학",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "생활과학대학",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(6000)\n순두부국\n돈불고기(pork included)\n잡채(pork included)\n잔멸치땅콩볶음\n요구르트\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "생활과학대학",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-11",
+      "cafeteria": "생활과학대학",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "생활과학대학",
+      "meal": "조식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "생활과학대학",
+      "meal": "조식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "생활과학대학",
+      "meal": "중식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "생활과학대학",
+      "meal": "중식",
+      "audience": "학생",
+      "menu_text": "정식(6000)\n일식새우커리\n맑은우동국물\n샐러드파스타\n김떡만강정(pork included)\n배추김치",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "생활과학대학",
+      "meal": "석식",
+      "audience": "직원",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    },
+    {
+      "date": "2026-06-12",
+      "cafeteria": "생활과학대학",
+      "meal": "석식",
+      "audience": "학생",
+      "menu_text": "운영안함",
+      "menu_name": null,
+      "price": null,
+      "source_path": "data/raw/dining/cnu_mobile_food_week_2026_06_01_life_science.html",
+      "source_url": "https://mobileadmin.cnu.ac.kr/food/index.jsp?searchYmd=2026.06.01&searchLang=OCL04.10&searchView=date&searchCafeteria=OCL03.05",
+      "fetched_at": "2026-06-08T15:48:17.159315+00:00"
+    }
   ]
 }

@@ -10,6 +10,7 @@ from sutra.models import LlamaResult, Message
 from sutra.tools import (
     SOURCE_REGISTRY,
     _get,
+    _parse_cafeteria_menu,
     dispatch,
     fetch_academic_calendar,
     fetch_cafeteria_menu,
@@ -88,7 +89,7 @@ def test_recent_cs_notices_use_department_skin_date_and_absolute_url(monkeypatch
     assert "[2026-06-09] [종합설계1] 결과보고서 제출 안내 (조교 김정화)" in text
 
 
-def test_cafeteria_menu_parses_known_dish_price_and_closed_entries(monkeypatch) -> None:
+def test_cafeteria_menu_returns_clean_rag_style_daily_text(monkeypatch) -> None:
     monkeypatch.setattr(
         "sutra.tools.requests.get",
         fake_get_factory({"food": "food.html"}),
@@ -97,9 +98,26 @@ def test_cafeteria_menu_parses_known_dish_price_and_closed_entries(monkeypatch) 
     evidence = fetch_cafeteria_menu(date="2026-06-11", cafeteria="제2학생회관")
 
     text = evidence[0].text
-    assert "오늘: 2026-06-11 (KST)" in text
-    assert "제2학생회관 중식(학생): 정식(4000) 안동찜닭덮밥, 왕새우튀김" in text
-    assert "제2학생회관 조식(직원): 운영안함" in text
+    assert text.startswith("# 2026-06-11 (목) 학생식당 식단")
+    assert "## 제2학생회관" in text
+    assert "- 아침(학생) 정식 1,000원: 육개장(beef included), 연두부&양념장, 깍두기" in text
+    assert "- 점심(학생) 정식 4,500원: 칠리치킨까스(chicken included), 스프" in text
+    assert "운영안함" not in text
+
+
+def test_cafeteria_menu_parser_preserves_rowspanned_cafeteria_columns() -> None:
+    html = (FIXTURES / "food.html").read_text(encoding="utf-8")
+
+    records = _parse_cafeteria_menu(html, "2026-06-11", "제2학생회관")
+
+    breakfast = [
+        record
+        for record in records
+        if record.cafeteria == "제2학생회관" and record.meal == "조식" and record.audience == "학생"
+    ]
+    assert len(breakfast) == 1
+    assert breakfast[0].menu_name == "정식(1000)"
+    assert "육개장(beef included)" in breakfast[0].menu_text
 
 
 def test_academic_calendar_filters_requested_month(monkeypatch) -> None:

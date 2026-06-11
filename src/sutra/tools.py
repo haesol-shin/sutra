@@ -14,6 +14,7 @@ from zoneinfo import ZoneInfo
 import requests
 
 from sutra.config import Config, load_config
+from sutra.dining_format import DiningMenuRecord, format_dining_day
 from sutra.documents import load_documents
 from sutra.models import Evidence
 from sutra.retrieval import retrieve
@@ -159,7 +160,6 @@ def _html_lines(raw: str) -> list[str]:
     text = re.sub(r"</(?:p|h3|li|td|tr)>", "\n", text, flags=re.I)
     text = re.sub(r"<[^>]+>", " ", text)
     text = unescape(text)
-    text = re.sub(r"\((?:[A-Za-z /]+included)\)", "", text)
     return [re.sub(r"\s+", " ", line).strip() for line in text.splitlines() if line.strip()]
 
 
@@ -171,6 +171,59 @@ def _rows(html: str) -> list[str]:
 
 def _cells(row_html: str, tag: str = "td") -> list[str]:
     return re.findall(rf"(?is)<{tag}\b[^>]*>(.*?)</{tag}>", row_html)
+
+
+def _cell_entries(row_html: str, tag: str = "td") -> list[tuple[str, str]]:
+    return re.findall(rf"(?is)<{tag}\b([^>]*)>(.*?)</{tag}>", row_html)
+
+
+def _span_attr(attrs: str, name: str) -> int:
+    match = re.search(rf"""\b{name}\s*=\s*(?:"(\d+)"|'(\d+)'|(\d+))""", attrs, re.I)
+    if not match:
+        return 1
+    value = next(group for group in match.groups() if group is not None)
+    return max(1, int(value))
+
+
+def _expanded_table_rows(html: str) -> list[list[str]]:
+    active_rowspans: dict[int, tuple[str, int]] = {}
+    expanded: list[list[str]] = []
+
+    for row in _rows(html):
+        grid: dict[int, str] = {}
+        next_rowspans: dict[int, tuple[str, int]] = {}
+        column = 0
+
+        def place_active_spans() -> None:
+            nonlocal column
+            while column in active_rowspans:
+                cell, remaining = active_rowspans[column]
+                grid[column] = cell
+                if remaining > 1:
+                    next_rowspans[column] = (cell, remaining - 1)
+                column += 1
+
+        for attrs, cell in _cell_entries(row):
+            place_active_spans()
+            rowspan = _span_attr(attrs, "rowspan")
+            colspan = _span_attr(attrs, "colspan")
+            for offset in range(colspan):
+                target_column = column + offset
+                grid[target_column] = cell
+                if rowspan > 1:
+                    next_rowspans[target_column] = (cell, rowspan - 1)
+            column += colspan
+
+        while any(active_column >= column for active_column in active_rowspans):
+            place_active_spans()
+            if any(active_column >= column for active_column in active_rowspans):
+                column = min(active_column for active_column in active_rowspans if active_column >= column)
+
+        active_rowspans = next_rowspans
+        if grid:
+            expanded.append([grid.get(index, "") for index in range(max(grid) + 1)])
+
+    return expanded
 
 
 def _first_match(pattern: str, text: str) -> str:
@@ -409,17 +462,18 @@ def fetch_cafeteria_menu(date: str | None = None, cafeteria: str | None = None) 
             "searchCafeteria": "OCL03.02",
         }
         html = _get(FOOD_URL, params=params)
-        lines = _parse_cafeteria_menu(html, target_date, cafeteria)
+        records = _parse_cafeteria_menu(html, target_date, cafeteria)
+        text = format_dining_day(records, target_date)
     except Exception:
         logger.warning("Failed to fetch cafeteria menu", exc_info=True)
         return []
-    if not lines:
+    if not text:
         return []
     return [
         Evidence(
             id="live_cafeteria_menu",
             title="충남대학교 식단",
-            text="\n".join([f"오늘: {target_date} (KST)", *lines]),
+            text=text,
             source_url=_source_url_with_params(FOOD_URL, params),
             source_name="충남대학교 식단",
             metadata={"tool": "fetch_cafeteria_menu", "date": target_date, "cafeteria": cafeteria},
@@ -427,50 +481,63 @@ def fetch_cafeteria_menu(date: str | None = None, cafeteria: str | None = None) 
     ]
 
 
-def _parse_cafeteria_menu(html: str, target_date: str, cafeteria: str | None) -> list[str]:
+def _parse_cafeteria_menu(html: str, target_date: str, cafeteria: str | None) -> list[DiningMenuRecord]:
     wanted = CAFETERIAS if cafeteria is None else [cafeteria]
-    lines: list[str] = []
+    records: list[DiningMenuRecord] = []
     current_meal = ""
-    for row in _rows(html):
-        cells = _cells(row)
-        if not cells:
+    for cells in _expanded_table_rows(html):
+        if len(cells) < 2:
             continue
-        index = 0
         first = _clean_html(cells[0])
         if first in {"조식", "중식", "석식"}:
             current_meal = first
-            index = 1
-        if not current_meal or index >= len(cells):
+        if not current_meal:
             continue
-        audience = _clean_html(cells[index])
+        audience = _clean_html(cells[1])
         if audience not in {"직원", "학생"}:
             continue
-        menu_cells = cells[index + 1 :]
-        for name, cell in zip(CAFETERIAS, menu_cells):
+        for offset, name in enumerate(CAFETERIAS):
             if name not in wanted:
                 continue
-            menu = _format_menu_cell(cell)
-            if menu:
-                lines.append(f"{name} {current_meal}({audience}): {menu}")
-    return lines
+            menu_column = offset + 2
+            if menu_column >= len(cells):
+                continue
+            cell = cells[menu_column]
+            parsed = _parse_menu_cell(cell)
+            if parsed is None:
+                continue
+            menu_text, menu_name, price = parsed
+            records.append(
+                DiningMenuRecord(
+                    date=target_date,
+                    cafeteria=name,
+                    meal=current_meal,
+                    audience=audience,
+                    menu_text=menu_text,
+                    menu_name=menu_name,
+                    price=price,
+                )
+            )
+    return records
 
 
-def _format_menu_cell(cell: str) -> str:
+def _parse_menu_cell(cell: str) -> tuple[str, str | None, str | None] | None:
     cleaned = _clean_html(cell)
     if not cleaned:
-        return ""
+        return None
+    normalized = cleaned.replace(" ", "")
+    if "메뉴운영내역" in normalized or "메뉴는운영중입니다" in normalized or "메뉴는준비중입니다" in normalized:
+        return None
     if "운영안함" in cleaned:
-        return "운영안함"
+        return "운영안함", None, None
     title = _clean_html(_first_match(r"<h3\b[^>]*>(.*?)</h3>", cell))
     body = _first_match(r"<p\b[^>]*>(.*?)</p>", cell)
-    items = []
-    for item in _html_lines(body):
-        item = re.sub(r"\((?:[A-Za-z /]+included)\)", "", item).strip()
-        if item:
-            items.append(item)
-    if title and items:
-        return f"{title} {', '.join(items)}"
-    return cleaned
+    items = [item for item in _html_lines(body) if item]
+    if title:
+        price_match = re.search(r"\(([\d,]+)\)", title)
+        menu_text = "\n".join([title, *items]) if items else title
+        return menu_text, title, price_match.group(1) if price_match else None
+    return cleaned, None, None
 
 
 @tool(
