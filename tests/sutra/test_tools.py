@@ -167,7 +167,6 @@ def test_tool_schemas_enum_constrain_string_arguments() -> None:
 
     assert schemas["fetch_recent_notices"]["properties"]["board"]["enum"] == ["univ_academic", "cs_dept"]
     assert schemas["fetch_cafeteria_menu"]["properties"]["cafeteria"]["enum"] == [
-        "제1학생회관",
         "제2학생회관",
         "제3학생회관",
         "제4학생회관",

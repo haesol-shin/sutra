@@ -38,6 +38,7 @@ ACADEMIC_CALENDAR_URL = (
 )
 
 CAFETERIAS = ["제1학생회관", "제2학생회관", "제3학생회관", "제4학생회관", "생활과학대학"]
+CAFETERIA_MENU_CHOICES = ["제2학생회관", "제3학생회관", "제4학생회관", "생활과학대학"]
 
 SOURCE_REGISTRY = {
     "shuttle": {
@@ -267,18 +268,23 @@ def _source_url_with_params(url: str, params: dict[str, str]) -> str:
 
 @tool(
     name="search_knowledge_base",
-    description="워크스페이스에 저장된 지식 베이스 문서를 검색해 관련 근거를 반환한다.",
+    description=(
+        "워크스페이스에 저장된 지식베이스 문서를 검색해 관련 근거를 반환한다. "
+        "졸업요건, 셔틀 시간표, 학사일정, 식단 스냅샷, 공지 스냅샷처럼 이미 수집된 정보가 필요한 질문에 사용한다. "
+        "반환값은 질문과 가까운 문서 조각과 출처 정보다. "
+        "domain 필터는 특정 문서 영역으로 검색 범위를 좁히지만, 최신 실시간 정보 보장은 하지 않는다."
+    ),
     parameters={
         "type": "object",
         "properties": {
             "query": {
                 "type": "string",
-                "description": "검색할 질문 또는 키워드",
+                "description": "검색할 사용자 질문 또는 핵심 키워드 한 문장이다.",
             },
             "domain": {
                 "type": ["string", "null"],
                 "enum": [*KNOWLEDGE_BASE_DOMAINS, None],
-                "description": "선택적 문서 도메인 필터",
+                "description": "academic_calendar, calendar, dining, graduation, shuttle 중 검색을 제한할 선택적 도메인이다.",
             },
         },
         "required": ["query"],
@@ -324,7 +330,12 @@ def _matches_domain(document_id: str, metadata: dict, domain: str) -> bool:
 
 @tool(
     name="fetch_recent_notices",
-    description="충남대학교 본부 또는 컴퓨터융합학부 게시판의 최신 공지를 가져와 최신 공지와 고정 공지를 분리한다.",
+    description=(
+        "충남대학교 학사공지 게시판에서 최신 일반 공지와 고정 공지를 가져온다. "
+        "최신 공지, 최근 안내, 학부 공지처럼 게시판의 현재 글 목록을 물을 때 사용한다. "
+        "univ_academic은 학교 본부 학사공지이고 cs_dept는 컴퓨터융합학부 공지다. "
+        "반환값은 제목, 작성자, 날짜, URL이 포함된 공지 목록이며 게시판 HTML 구조 변경 시 빈 결과가 날 수 있다."
+    ),
     parameters={
         "type": "object",
         "properties": {
@@ -332,14 +343,14 @@ def _matches_domain(document_id: str, metadata: dict, domain: str) -> bool:
                 "type": "string",
                 "enum": ["univ_academic", "cs_dept"],
                 "default": "univ_academic",
-                "description": "조회할 공지 게시판",
+                "description": "조회할 게시판으로, 학교 본부 학사공지는 univ_academic, 컴퓨터융합학부 공지는 cs_dept를 사용한다.",
             },
             "limit": {
                 "type": "integer",
                 "minimum": 1,
                 "maximum": 20,
                 "default": 10,
-                "description": "최신 일반 공지 개수",
+                "description": "반환할 최신 일반 공지의 최대 개수이며 1에서 20 사이로 제한된다.",
             },
         },
     },
@@ -436,18 +447,23 @@ def _parse_cs_notices(html: str) -> list[NoticeItem]:
 
 @tool(
     name="fetch_cafeteria_menu",
-    description="충남대학교 학생회관 식단을 날짜와 식당별로 구조화해 가져온다.",
+    description=(
+        "충남대학교 학생회관의 일별 식단을 아침, 점심, 저녁 단위로 조회한다. "
+        "오늘 또는 특정 날짜의 학식, 식당, 메뉴를 물을 때 사용한다. "
+        "반환값은 식당, 식사 구분, 대상, 메뉴명, 가격을 포함한 식단 근거다. "
+        "제1학생회관은 푸드코트라 일별 메뉴를 지원하지 않으며 코너 정보는 지식베이스에 있고, 다음 주 같은 미래 날짜 데이터는 신뢰하기 어렵다."
+    ),
     parameters={
         "type": "object",
         "properties": {
             "date": {
                 "type": ["string", "null"],
-                "description": "조회 날짜. YYYY-MM-DD 형식이며 생략하면 KST 오늘",
+                "description": "조회할 날짜로 YYYY-MM-DD 형식을 사용하며 생략하면 KST 기준 오늘을 조회한다.",
             },
             "cafeteria": {
                 "type": ["string", "null"],
-                "enum": [*CAFETERIAS, None],
-                "description": "조회할 식당. 생략하면 전체",
+                "enum": [*CAFETERIA_MENU_CHOICES, None],
+                "description": "조회할 일별 식단 지원 식당이며 생략하면 지원 식당 전체를 조회한다.",
             },
         },
     },
@@ -542,7 +558,12 @@ def _parse_menu_cell(cell: str) -> tuple[str, str | None, str | None] | None:
 
 @tool(
     name="fetch_academic_calendar",
-    description="충남대학교 학사일정을 월 단위로 조회한다. 월을 생략하면 KST 현재월과 다음월을 반환한다.",
+    description=(
+        "충남대학교 공식 학사일정을 월 단위로 조회한다. "
+        "개강, 종강, 수강신청 기간, 시험 기간, 계절학기 일정처럼 학사일정 날짜를 물을 때 사용한다. "
+        "반환값은 조회 월에 해당하는 일정 날짜와 일정명 목록이다. "
+        "월을 생략하면 KST 기준 현재월과 다음월을 함께 조회하며, 연도 지정은 지원하지 않는다."
+    ),
     parameters={
         "type": "object",
         "properties": {
@@ -550,7 +571,7 @@ def _parse_menu_cell(cell: str) -> tuple[str, str | None, str | None] | None:
                 "type": ["integer", "null"],
                 "minimum": 1,
                 "maximum": 12,
-                "description": "조회할 월. 생략하면 현재월과 다음월",
+                "description": "조회할 월 번호이며 생략하면 현재월과 다음월을 조회한다.",
             },
         },
     },
@@ -610,14 +631,19 @@ def _calendar_date_intersects(date_text: str, months: list[int]) -> bool:
 
 @tool(
     name="fetch_page_text",
-    description="허용된 CNU 정보원(source_id)의 본문 텍스트를 추출한다.",
+    description=(
+        "허용된 CNU 안내 페이지의 본문 텍스트를 추출한다. "
+        "셔틀버스 운행 정보(shuttle) 또는 수강신청 안내(course_registration_guide)를 물을 때만 사용한다. "
+        "반환값은 페이지 본문 일부와 공식 출처 URL이다. "
+        "등록된 source_id 외의 임의 페이지나 졸업요건 문서는 조회하지 않는다."
+    ),
     parameters={
         "type": "object",
         "properties": {
             "source_id": {
                 "type": "string",
                 "enum": list(SOURCE_REGISTRY.keys()),
-                "description": "조회할 허용 정보원 ID",
+                "description": "조회할 허용 정보원 ID로 shuttle 또는 course_registration_guide 중 하나다.",
             },
         },
         "required": ["source_id"],
