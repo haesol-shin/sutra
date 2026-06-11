@@ -130,6 +130,14 @@ def _fetch_detail(no: str) -> dict | None:
     if len(body_text) > MAX_BODY_CHARS:
         body_text = body_text[:MAX_BODY_CHARS]
 
+    if not body_text.strip():
+        body_text = (
+            f"{title}\n"
+            f"게시일: {date}\n"
+            f"작성: {dept}\n"
+            f"(본문은 첨부파일 참조: {url})"
+        )
+
     return {
         "no": no,
         "title": title,
@@ -335,6 +343,10 @@ def main():
     for p in recent_for_overview:
         overview_lines.append(f"[{p['date']}] {p['title']}")
 
+    overview_date = ""
+    if recent_for_overview:
+        overview_date = max(p["date"] for p in recent_for_overview if p.get("date"))
+
     overview_doc = {
         "id": "notices_board_overview",
         "domain": "notices",
@@ -350,7 +362,7 @@ def main():
         "derived_from": [],
         "generation_method": "board_snapshot",
         "metadata": {
-            "date": "",
+            "date": overview_date,
             "department": "",
             "pinned": False,
             "board": "univ_academic",
@@ -382,6 +394,15 @@ def main():
     with open(report_path, "w", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, indent=2)
     print(f"Wrote report to {report_path}")
+
+    # 6. Verify zero empty-text and zero empty-date docs
+    empty_text_ids = [d["id"] for d in docs if not d["text"].strip()]
+    empty_date_ids = [d["id"] for d in docs if not d["metadata"]["date"].strip()]
+    print(f"Verification: {len(empty_text_ids)} docs with empty text, "
+          f"{len(empty_date_ids)} docs with empty date")
+    assert len(empty_text_ids) == 0, f"Empty text in docs: {empty_text_ids}"
+    assert len(empty_date_ids) == 0, f"Empty date in docs: {empty_date_ids}"
+    print("Verification passed: all docs have non-empty text and date.")
 
 
 if __name__ == "__main__":
