@@ -6,7 +6,6 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 from sutra.config import Config
 from sutra.models import EvidencePack, Message, PromptBundle
 from sutra.retrieval import render_evidence
-from sutra.tools import get_tool_definitions
 
 
 def get_current_time_str(timezone_name: str) -> str:
@@ -31,14 +30,6 @@ def get_current_time_str(timezone_name: str) -> str:
 def render_prompt(question: str, evidence: EvidencePack, config: Config) -> PromptBundle:
     """Build a PromptBundle with system prompt, question, and evidence context."""
     system = config.prompts.system.read_text(encoding="utf-8").strip()
-    tools = get_tool_definitions()
-    if tools:
-        tool_lines = []
-        for t in tools:
-            name = t['function']['name']
-            desc = t['function']['description']
-            tool_lines.append(f"- {name}: {desc}")
-        system += "\n\nYou have access to the following tools. Use them when appropriate:\n" + "\n".join(tool_lines)
     context = render_evidence(evidence)
     
     current_time = get_current_time_str(config.workspace.timezone)
@@ -57,4 +48,3 @@ def render_prompt(question: str, evidence: EvidencePack, config: Config) -> Prom
         ],
         context=context,
     )
-

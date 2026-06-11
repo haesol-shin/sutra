@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import subprocess
 from pathlib import Path
 
 
@@ -64,3 +65,28 @@ def test_build_submission_creates_whitelist_and_generated_docs(tmp_path, capsys)
 
     captured = capsys.readouterr()
     assert "WARNING: optional model/classifier.joblib is missing" in captured.out
+
+
+def test_generate_requirements_exports_runtime_submission_extras(monkeypatch):
+    repo_root = Path(__file__).resolve().parents[1]
+    module = _load_build_module(repo_root)
+    captured: dict[str, object] = {}
+
+    def fake_run(command, **kwargs):
+        captured["command"] = command
+        captured["kwargs"] = kwargs
+        return subprocess.CompletedProcess(command, 0, stdout="bm25s==0.3.9\n", stderr="")
+
+    monkeypatch.setattr(module.subprocess, "run", fake_run)
+
+    requirements = module._generate_requirements(repo_root)
+
+    assert requirements == "bm25s==0.3.9\n"
+    command = captured["command"]
+    assert command.count("--extra") == 3
+    assert command[command.index("--extra") + 1] == "rag"
+    assert command[command.index("--extra", command.index("rag")) + 1] == "legacy"
+    assert command[command.index("--extra", command.index("legacy")) + 1] == "ui"
+    assert "xpu" not in command
+    assert "cuda" not in command
+    assert "embeddings" not in command

@@ -3,6 +3,9 @@ from __future__ import annotations
 import json
 import logging
 import re
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import TimeoutError as FuturesTimeoutError
 from contextvars import ContextVar
 from dataclasses import dataclass
 from datetime import datetime
@@ -22,6 +25,12 @@ from sutra.retrieval import retrieve
 logger = logging.getLogger(__name__)
 
 FETCH_TIMEOUT = 15
+NOTICE_REQUEST_TIMEOUT = 8
+NOTICE_SEARCH_STAGE_TIMEOUT = 20
+NOTICE_BODY_STAGE_TIMEOUT = 10
+NOTICE_PER_BOARD_FETCH_LIMIT = 5
+NOTICE_INTEGRATED_REGULAR_LIMIT = 10
+NOTICE_INTEGRATED_PINNED_LIMIT = 5
 USER_AGENT = "Sutra/1.0 (+https://github.com/local/sutra)"
 MAX_TEXT_CHARS = 3000
 
@@ -29,8 +38,14 @@ UNIV_ACADEMIC_NOTICE_URL = (
     "https://plus.cnu.ac.kr/_prog/_board/"
     "?code=sub07_0702&menu_dvs_cd=0702&site_dvs_cd=kr"
 )
+UNIV_NEWS_NOTICE_URL = (
+    "https://plus.cnu.ac.kr/_prog/_board/"
+    "?code=sub07_0701&menu_dvs_cd=0701&site_dvs_cd=kr"
+)
 UNIV_ACADEMIC_NOTICE_BASE = "https://plus.cnu.ac.kr/_prog/_board/"
-CS_DEPT_NOTICE_URL = "https://computer.cnu.ac.kr/computer/notice/bachelor.do"
+CS_BACHELOR_NOTICE_URL = "https://computer.cnu.ac.kr/computer/notice/bachelor.do"
+CS_NEWS_NOTICE_URL = "https://computer.cnu.ac.kr/computer/notice/notice.do"
+CS_PROJECT_NOTICE_URL = "https://computer.cnu.ac.kr/computer/notice/project.do"
 FOOD_URL = "https://mobileadmin.cnu.ac.kr/food/index.jsp"
 ACADEMIC_CALENDAR_URL = (
     "https://plus.cnu.ac.kr/_prog/academic_calendar/"
@@ -53,7 +68,19 @@ SOURCE_REGISTRY = {
 }
 
 KNOWLEDGE_BASE_DOMAINS = ["academic_calendar", "calendar", "dining", "graduation", "shuttle"]
-
+DISPLAY_TO_INTERNAL = {
+    "fetch_recent_notices.board": {
+        "학교 학사공지": "univ_academic",
+        "학교 새소식": "univ_news",
+        "학부 학사공지": "cs_bachelor",
+        "학부 소식": "cs_news",
+        "학부 사업단 소식": "cs_project",
+    },
+    "fetch_page_text.source_id": {
+        "셔틀버스 안내": "shuttle",
+        "수강신청 안내": "course_registration_guide",
+    },
+}
 _HANDLERS: dict[str, Callable[..., list[Evidence]]] = {}
 _WORKSPACE_CONTEXT: ContextVar[str | Config | None] = ContextVar("sutra_tool_workspace", default=None)
 
@@ -65,6 +92,69 @@ class NoticeItem:
     date: str
     url: str
     pinned: bool
+    board_label: str = ""
+    excerpt: str = ""
+
+
+@dataclass(frozen=True)
+class NoticeBoard:
+    internal: str
+    display: str
+    title: str
+    url: str
+    parser: str
+
+
+NOTICE_BOARDS: dict[str, NoticeBoard] = {
+    "univ_academic": NoticeBoard(
+        internal="univ_academic",
+        display="학교 학사공지",
+        title="충남대학교 학사공지",
+        url=UNIV_ACADEMIC_NOTICE_URL,
+        parser="plus",
+    ),
+    "univ_news": NoticeBoard(
+        internal="univ_news",
+        display="학교 새소식",
+        title="충남대학교 새소식",
+        url=UNIV_NEWS_NOTICE_URL,
+        parser="plus",
+    ),
+    "cs_bachelor": NoticeBoard(
+        internal="cs_bachelor",
+        display="학부 학사공지",
+        title="컴퓨터인공지능학부 학사공지",
+        url=CS_BACHELOR_NOTICE_URL,
+        parser="computer",
+    ),
+    "cs_news": NoticeBoard(
+        internal="cs_news",
+        display="학부 소식",
+        title="컴퓨터인공지능학부 소식",
+        url=CS_NEWS_NOTICE_URL,
+        parser="computer",
+    ),
+    "cs_project": NoticeBoard(
+        internal="cs_project",
+        display="학부 사업단 소식",
+        title="컴퓨터인공지능학부 사업단 소식",
+        url=CS_PROJECT_NOTICE_URL,
+        parser="computer",
+    ),
+}
+NOTICE_BOARD_ORDER = ["univ_academic", "univ_news", "cs_bachelor", "cs_news", "cs_project"]
+NOTICE_BOARD_ALIASES = {
+    "학사공지": "univ_academic",
+    "컴퓨터융합학부 공지": "cs_bachelor",
+    "컴퓨터인공지능학부 공지": "cs_bachelor",
+    "cs_dept": "cs_bachelor",
+}
+INTERNAL_TO_DISPLAY = {
+    internal: display
+    for mapping in DISPLAY_TO_INTERNAL.values()
+    for display, internal in mapping.items()
+}
+INTERNAL_TO_DISPLAY["cs_dept"] = NOTICE_BOARDS["cs_bachelor"].display
 
 
 def tool(name: str, description: str, parameters: dict | None = None):
@@ -132,11 +222,11 @@ def _parse_tool_arguments(arguments: str | dict | None) -> dict:
     return data if isinstance(data, dict) else {}
 
 
-def _get(url: str, *, params: dict[str, str] | None = None) -> str:
+def _get(url: str, *, params: dict[str, str] | None = None, timeout: float = FETCH_TIMEOUT) -> str:
     response = requests.get(
         url,
         params=params,
-        timeout=FETCH_TIMEOUT,
+        timeout=timeout,
         headers={"User-Agent": USER_AGENT},
     )
     response.raise_for_status()
@@ -243,11 +333,19 @@ def _notice_text(regular: list[NoticeItem], pinned: list[NoticeItem]) -> str:
 
 
 def _format_notice(item: NoticeItem) -> str:
-    return f"[{item.date}] {item.title} ({item.author}) — {item.url}"
+    board = f"[{item.board_label}]" if item.board_label else ""
+    line = f"[{item.date}]{board} {item.title} ({item.author}) — {item.url}"
+    if item.excerpt:
+        line = f"{line}\n본문 발췌: {item.excerpt}"
+    return line
 
 
 def _normalize_short_date(value: str) -> str:
     value = _clean_html(value)
+    match = re.fullmatch(r"(\d{4})[.-](\d{2})[.-](\d{2})", value)
+    if match:
+        year, month, day = match.groups()
+        return f"{year}-{month}-{day}"
     match = re.fullmatch(r"(\d{2})\.(\d{2})\.(\d{2})", value)
     if match:
         year, month, day = match.groups()
@@ -261,6 +359,270 @@ def _today_kst() -> datetime:
 
 def _source_url_with_params(url: str, params: dict[str, str]) -> str:
     return f"{url}?{urlencode(params)}"
+
+
+def _display_choices(key: str) -> list[str]:
+    return list(DISPLAY_TO_INTERNAL[key].keys())
+
+
+def _normalize_display_argument(key: str, value: str) -> str:
+    mapping = DISPLAY_TO_INTERNAL[key]
+    if value in mapping:
+        return mapping[value]
+    if value in mapping.values():
+        return value
+    return value
+
+
+def _normalize_notice_board(value: str | None) -> tuple[str | None, str | None]:
+    if value is None or str(value).strip() == "":
+        return None, None
+    normalized = _normalize_display_argument("fetch_recent_notices.board", str(value).strip())
+    alias = normalized if normalized in NOTICE_BOARD_ALIASES else None
+    normalized = NOTICE_BOARD_ALIASES.get(normalized, normalized)
+    return normalized, alias
+
+
+def _with_board_label(items: list[NoticeItem], board: NoticeBoard, *, include_label: bool) -> list[NoticeItem]:
+    return [
+        NoticeItem(
+            title=item.title,
+            author=item.author,
+            date=item.date,
+            url=item.url,
+            pinned=item.pinned,
+            board_label=board.display if include_label else "",
+            excerpt=item.excerpt,
+        )
+        for item in items
+    ]
+
+
+def _normalize_keywords(keywords: list[str] | tuple[str, ...] | str | None) -> list[str]:
+    if keywords is None:
+        return []
+    raw_values = [keywords] if isinstance(keywords, str) else list(keywords)
+    normalized: list[str] = []
+    seen: set[str] = set()
+    for value in raw_values:
+        keyword = str(value).strip()
+        if not keyword or keyword in seen:
+            continue
+        normalized.append(keyword)
+        seen.add(keyword)
+        if len(normalized) == 3:
+            break
+    return normalized
+
+
+def _normalize_notice_match_text(value: str) -> str:
+    return re.sub(r"\s+", "", value).casefold()
+
+
+def _filter_notice_items_by_title_keywords(items: list[NoticeItem], keywords: list[str]) -> list[NoticeItem]:
+    normalized_keywords = [_normalize_notice_match_text(keyword) for keyword in keywords]
+    normalized_keywords = [keyword for keyword in normalized_keywords if keyword]
+    if not normalized_keywords:
+        return items
+    return [
+        item
+        for item in items
+        if any(keyword in _normalize_notice_match_text(item.title) for keyword in normalized_keywords)
+    ]
+
+
+def _notice_text_with_prefix(regular: list[NoticeItem], pinned: list[NoticeItem], prefix: str | None = None) -> str:
+    text = _notice_text(regular, pinned)
+    return f"{prefix}\n{text}" if prefix else text
+
+
+def _fetch_notice_board(
+    board: NoticeBoard,
+    *,
+    include_label: bool,
+    params: dict[str, str] | None = None,
+    timeout: float = FETCH_TIMEOUT,
+) -> list[NoticeItem]:
+    html = _get(board.url, params=params, timeout=timeout)
+    if board.parser == "computer":
+        items = _parse_cs_notices(html, base_url=board.url)
+    else:
+        items = _parse_univ_notices(html)
+    return _with_board_label(items, board, include_label=include_label)
+
+
+def _dedupe_notice_items(items: list[NoticeItem]) -> list[NoticeItem]:
+    deduped: list[NoticeItem] = []
+    seen_urls: set[str] = set()
+    for item in items:
+        if item.url in seen_urls:
+            continue
+        seen_urls.add(item.url)
+        deduped.append(item)
+    return deduped
+
+
+def _remaining_budget(deadline: float) -> float:
+    return max(0.0, deadline - time.monotonic())
+
+
+def _fetch_notice_boards_parallel(
+    requests_to_make: list[tuple[NoticeBoard, dict[str, str] | None]],
+    *,
+    include_label: bool,
+    stage_timeout: float,
+) -> list[NoticeItem]:
+    if not requests_to_make or stage_timeout <= 0:
+        return []
+    executor = ThreadPoolExecutor(max_workers=len(requests_to_make))
+    futures = [
+        executor.submit(
+            _fetch_notice_board,
+            board,
+            include_label=include_label,
+            params=params,
+            timeout=NOTICE_REQUEST_TIMEOUT,
+        )
+        for board, params in requests_to_make
+    ]
+    items: list[NoticeItem] = []
+    try:
+        for future in as_completed(futures, timeout=stage_timeout):
+            try:
+                items.extend(future.result())
+            except Exception:
+                logger.warning("Failed to fetch notice board", exc_info=True)
+    except FuturesTimeoutError:
+        logger.warning("Notice fetch stage exceeded %.1fs budget", stage_timeout)
+    finally:
+        executor.shutdown(wait=False, cancel_futures=True)
+    return items
+
+
+def _limit_notice_items_per_board(items: list[NoticeItem], per_board_limit: int) -> list[NoticeItem]:
+    regular_counts: dict[str, int] = {}
+    pinned_counts: dict[str, int] = {}
+    limited: list[NoticeItem] = []
+    for item in items:
+        key = item.board_label or item.url
+        counts = pinned_counts if item.pinned else regular_counts
+        if counts.get(key, 0) >= per_board_limit:
+            continue
+        counts[key] = counts.get(key, 0) + 1
+        limited.append(item)
+    return limited
+
+
+def _select_regular_notices(
+    items: list[NoticeItem],
+    *,
+    limit: int,
+    selected_boards: list[NoticeBoard],
+    ensure_each_board: bool,
+) -> list[NoticeItem]:
+    regular = sorted((item for item in items if not item.pinned), key=lambda item: item.date, reverse=True)
+    if not ensure_each_board:
+        return regular[:limit]
+
+    selected: list[NoticeItem] = []
+    seen_urls: set[str] = set()
+    for board in selected_boards:
+        if len(selected) >= limit:
+            break
+        board_item = next((item for item in regular if item.board_label == board.display), None)
+        if board_item and board_item.url not in seen_urls:
+            selected.append(board_item)
+            seen_urls.add(board_item.url)
+
+    for item in regular:
+        if len(selected) >= limit:
+            break
+        if item.url in seen_urls:
+            continue
+        selected.append(item)
+        seen_urls.add(item.url)
+    return sorted(selected, key=lambda item: item.date, reverse=True)
+
+
+PLUS_NOTICE_BODY_SELECTORS = (
+    "board-view-content",
+    "board_view_content",
+    "view-content",
+    "view-con",
+    "view_cont",
+    "content",
+)
+COMPUTER_NOTICE_BODY_SELECTORS = (
+    "b-content",
+    "view-content",
+    "view-con",
+    "board-view-content",
+    "content",
+)
+NOTICE_CHROME_TOKENS = ("본문 바로가기", "로그인", "이전글", "다음글", "목록", "사이트맵")
+
+
+def _extract_first_notice_selector(html: str, selectors: tuple[str, ...]) -> str:
+    for selector in selectors:
+        escaped = re.escape(selector)
+        pattern = rf"""(?is)<(?:article|section|div)\b[^>]*(?:class|id)=["'][^"']*(?<![\w-]){escaped}(?![\w-])[^"']*["'][^>]*>(.*?)</(?:article|section|div)>"""
+        body = _first_match(pattern, html)
+        if body:
+            return body
+    return ""
+
+
+def _notice_fallback_is_noisy(text: str) -> bool:
+    if not text:
+        return False
+    hits = sum(text.count(token) for token in NOTICE_CHROME_TOKENS)
+    chrome_chars = sum(text.count(token) * len(token) for token in NOTICE_CHROME_TOKENS)
+    return hits >= 4 and chrome_chars / max(len(text), 1) >= 0.25
+
+
+def _notice_parser_for_url(url: str) -> str:
+    return "plus" if "plus.cnu.ac.kr" in url else "computer"
+
+
+def _extract_notice_body(html: str, *, parser: str | None = None) -> str:
+    if parser == "plus":
+        selectors = PLUS_NOTICE_BODY_SELECTORS
+    elif parser == "computer":
+        selectors = COMPUTER_NOTICE_BODY_SELECTORS
+    else:
+        selectors = (*PLUS_NOTICE_BODY_SELECTORS, *COMPUTER_NOTICE_BODY_SELECTORS)
+    body = _extract_first_notice_selector(html, selectors)
+    if body:
+        return _clean_html(body)
+    fallback = _clean_html(html)
+    return "" if _notice_fallback_is_noisy(fallback) else fallback
+
+
+def _attach_notice_excerpts(items: list[NoticeItem], *, max_items: int = 2, max_chars: int = 800) -> None:
+    targets = [item for item in items if item.url][:max_items]
+    if not targets:
+        return
+
+    def fetch_excerpt(item: NoticeItem) -> tuple[NoticeItem, str]:
+        html = _get(item.url, timeout=NOTICE_REQUEST_TIMEOUT)
+        excerpt = _extract_notice_body(html, parser=_notice_parser_for_url(item.url))[:max_chars].rstrip()
+        return item, excerpt
+
+    executor = ThreadPoolExecutor(max_workers=len(targets))
+    futures = [executor.submit(fetch_excerpt, item) for item in targets]
+    try:
+        for future in as_completed(futures, timeout=NOTICE_BODY_STAGE_TIMEOUT):
+            try:
+                item, excerpt = future.result()
+            except Exception:
+                logger.warning("Failed to fetch notice detail", exc_info=True)
+                continue
+            if excerpt:
+                item.excerpt = excerpt
+    except FuturesTimeoutError:
+        logger.warning("Notice detail stage exceeded %ss budget", NOTICE_BODY_STAGE_TIMEOUT)
+    finally:
+        executor.shutdown(wait=False, cancel_futures=True)
 
 
 # Tool handlers
@@ -331,59 +693,151 @@ def _matches_domain(document_id: str, metadata: dict, domain: str) -> bool:
 @tool(
     name="fetch_recent_notices",
     description=(
-        "충남대학교 학사공지 게시판에서 최신 일반 공지와 고정 공지를 가져온다. "
+        "충남대학교 학교 학사공지, 학교 새소식, 컴퓨터인공지능학부 학사공지, 학부 소식, 학부 사업단 소식에서 "
+        "최신 일반 공지와 고정 공지를 가져온다. "
         "최신 공지, 최근 안내, 학부 공지처럼 게시판의 현재 글 목록을 물을 때 사용한다. "
-        "univ_academic은 학교 본부 학사공지이고 cs_dept는 컴퓨터융합학부 공지다. "
+        "keywords가 있으면 최근 공지 중 해당 주제어가 제목에 포함된 항목을 찾는다. "
+        "board를 생략하면 전체 보드 통합 조회를 수행하고, 지정하면 해당 게시판만 조회한다. "
+        "사용 예시: 최신 공지 알려줘 → 인자 생략 / 장학금 공지 찾아줘 → keywords=[장학금, 장학] / "
+        "사업단 공지 → board=학부 사업단 소식. "
         "반환값은 제목, 작성자, 날짜, URL이 포함된 공지 목록이며 게시판 HTML 구조 변경 시 빈 결과가 날 수 있다."
     ),
     parameters={
         "type": "object",
+        "description": (
+            "사용 예시: 최신 공지 알려줘 → 인자 생략 / "
+            "장학금 공지 찾아줘 → keywords=[장학금, 장학] / "
+            "사업단 공지 → board=학부 사업단 소식."
+        ),
         "properties": {
             "board": {
                 "type": "string",
-                "enum": ["univ_academic", "cs_dept"],
-                "default": "univ_academic",
-                "description": "조회할 게시판으로, 학교 본부 학사공지는 univ_academic, 컴퓨터융합학부 공지는 cs_dept를 사용한다.",
+                "enum": _display_choices("fetch_recent_notices.board"),
+                "description": "조회할 게시판이다. 생략하면 학교/컴퓨터인공지능학부 5개 보드를 통합 조회한다.",
             },
             "limit": {
                 "type": "integer",
                 "minimum": 1,
                 "maximum": 20,
-                "default": 10,
-                "description": "반환할 최신 일반 공지의 최대 개수이며 1에서 20 사이로 제한된다.",
+                "description": "반환할 최신 일반 공지의 최대 개수이며 1에서 20 사이로 제한된다. board 생략 시 보드당 기본 5개, 지정 시 기본 10개다.",
+            },
+            "keywords": {
+                "type": "array",
+                "items": {"type": "string"},
+                "minItems": 1,
+                "maxItems": 3,
+                "description": "찾을 주제어 변형들. 예: [장학금, 장학]. 최근 공지 중 해당 주제어가 제목에 포함된 것을 찾을 때 사용.",
             },
         },
     },
 )
-def fetch_recent_notices(board: str = "univ_academic", limit: int = 10) -> list[Evidence]:
-    try:
-        limit = max(1, min(int(limit), 20))
-        if board == "cs_dept":
-            html = _get(CS_DEPT_NOTICE_URL)
-            items = _parse_cs_notices(html)
-            title = "컴퓨터융합학부 학사공지"
-            source_url = CS_DEPT_NOTICE_URL
-        else:
-            html = _get(UNIV_ACADEMIC_NOTICE_URL)
-            items = _parse_univ_notices(html)
-            title = "충남대학교 학사공지"
-            source_url = UNIV_ACADEMIC_NOTICE_URL
-    except Exception:
-        logger.warning("Failed to fetch notices", exc_info=True)
+def fetch_recent_notices(
+    board: str | None = None,
+    limit: int | None = None,
+    keywords: list[str] | tuple[str, ...] | str | None = None,
+) -> list[Evidence]:
+    internal_board, alias = _normalize_notice_board(board)
+    if internal_board is not None and internal_board not in NOTICE_BOARDS:
         return []
 
-    regular = sorted((item for item in items if not item.pinned), key=lambda item: item.date, reverse=True)[:limit]
-    pinned = sorted((item for item in items if item.pinned), key=lambda item: item.date, reverse=True)[:limit]
+    keyword_values = _normalize_keywords(keywords)
+    if keyword_values:
+        selected = (
+            [NOTICE_BOARDS[internal_board]]
+            if internal_board
+            else [NOTICE_BOARDS["univ_academic"], NOTICE_BOARDS["cs_bachelor"]]
+        )
+    else:
+        selected = [NOTICE_BOARDS[internal_board]] if internal_board else [NOTICE_BOARDS[key] for key in NOTICE_BOARD_ORDER]
+    requested_limit = max(1, min(int(limit), 20)) if limit is not None else None
+    if internal_board:
+        regular_limit = requested_limit or 10
+        pinned_limit = regular_limit
+        per_board_limit = None
+    else:
+        regular_limit = min(requested_limit or NOTICE_INTEGRATED_REGULAR_LIMIT, NOTICE_INTEGRATED_REGULAR_LIMIT)
+        pinned_limit = NOTICE_INTEGRATED_PINNED_LIMIT
+        per_board_limit = NOTICE_PER_BOARD_FETCH_LIMIT
+
+    items: list[NoticeItem] = []
+    result_boards = selected
+    if keyword_values:
+        include_label = len(selected) > 1
+        search_deadline = time.monotonic() + NOTICE_SEARCH_STAGE_TIMEOUT
+        latest_items = _fetch_notice_boards_parallel(
+            [(board_info, None) for board_info in selected],
+            include_label=include_label,
+            stage_timeout=_remaining_budget(search_deadline),
+        )
+        items = _dedupe_notice_items(_filter_notice_items_by_title_keywords(latest_items, keyword_values))
+        if not items and not internal_board:
+            fanout_boards = [
+                NOTICE_BOARDS[key]
+                for key in NOTICE_BOARD_ORDER
+                if NOTICE_BOARDS[key].internal not in {board_info.internal for board_info in selected}
+            ]
+            fanout_latest_items = _fetch_notice_boards_parallel(
+                [(board_info, None) for board_info in fanout_boards],
+                include_label=True,
+                stage_timeout=_remaining_budget(search_deadline),
+            )
+            items = _dedupe_notice_items(_filter_notice_items_by_title_keywords(fanout_latest_items, keyword_values))
+            if items:
+                result_boards = [*selected, *fanout_boards]
+        if not items:
+            items = latest_items
+            fallback_prefix = f"'{', '.join(keyword_values)}' 관련 최근 공지를 찾지 못해 최신 공지를 표시합니다"
+        else:
+            fallback_prefix = None
+    elif len(selected) == 1:
+        try:
+            items = _fetch_notice_board(selected[0], include_label=False, timeout=NOTICE_REQUEST_TIMEOUT)
+        except Exception:
+            logger.warning("Failed to fetch notices", exc_info=True)
+            return []
+        fallback_prefix = None
+    else:
+        items = _fetch_notice_boards_parallel(
+            [(board_info, None) for board_info in selected],
+            include_label=True,
+            stage_timeout=NOTICE_SEARCH_STAGE_TIMEOUT,
+        )
+        fallback_prefix = None
+
+    if per_board_limit is not None:
+        items = _limit_notice_items_per_board(items, per_board_limit)
+
+    title = result_boards[0].title if len(result_boards) == 1 else "충남대학교/컴퓨터인공지능학부 통합 공지"
+    # Integrated evidence uses the university academic board as representative while item lines keep per-notice URLs.
+    source_url = result_boards[0].url if len(result_boards) == 1 else UNIV_ACADEMIC_NOTICE_URL
+    regular = _select_regular_notices(
+        items,
+        limit=regular_limit,
+        selected_boards=result_boards,
+        ensure_each_board=not internal_board and not keyword_values,
+    )
+    pinned = sorted((item for item in items if item.pinned), key=lambda item: item.date, reverse=True)[:pinned_limit]
     if not regular and not pinned:
         return []
+    if keyword_values and fallback_prefix is None:
+        _attach_notice_excerpts([*regular, *pinned])
+    metadata = {"tool": "fetch_recent_notices"}
+    if len(result_boards) == 1:
+        metadata["board"] = result_boards[0].internal
+        if alias:
+            metadata["board_alias"] = alias
+    else:
+        metadata["boards"] = [item.internal for item in result_boards]
+    if keyword_values:
+        metadata["keywords"] = keyword_values
     return [
         Evidence(
-            id=f"live_notices_{board}",
+            id=f"live_notices_{result_boards[0].internal}" if len(result_boards) == 1 else "live_notices_all",
             title=title,
-            text=_notice_text(regular, pinned),
+            text=_notice_text_with_prefix(regular, pinned, fallback_prefix),
             source_url=source_url,
             source_name=title,
-            metadata={"tool": "fetch_recent_notices", "board": board},
+            metadata=metadata,
         )
     ]
 
@@ -398,7 +852,7 @@ def _parse_univ_notices(html: str) -> list[NoticeItem]:
         href = _first_match(r"<a\b[^>]*href=[\"']([^\"']+)[\"']", cells[1]).replace("&amp;", "&")
         title = _clean_html(cells[1])
         author = _clean_html(cells[2])
-        date = _clean_html(cells[3])
+        date = _normalize_short_date(cells[3])
         if not title or not date:
             continue
         items.append(
@@ -413,7 +867,7 @@ def _parse_univ_notices(html: str) -> list[NoticeItem]:
     return items
 
 
-def _parse_cs_notices(html: str) -> list[NoticeItem]:
+def _parse_cs_notices(html: str, *, base_url: str = CS_BACHELOR_NOTICE_URL) -> list[NoticeItem]:
     items: list[NoticeItem] = []
     for row in _rows(html):
         cells = _cells(row)
@@ -438,7 +892,7 @@ def _parse_cs_notices(html: str) -> list[NoticeItem]:
                 title=title,
                 author=author,
                 date=date,
-                url=urljoin(CS_DEPT_NOTICE_URL, href),
+                url=urljoin(base_url, href),
                 pinned=num == "공지",
             )
         )
@@ -470,20 +924,20 @@ def _parse_cs_notices(html: str) -> list[NoticeItem]:
 )
 def fetch_cafeteria_menu(date: str | None = None, cafeteria: str | None = None) -> list[Evidence]:
     try:
-        target_date = date or _today_kst().strftime("%Y-%m-%d")
-        params = {
-            "searchYmd": target_date.replace("-", "."),
-            "searchLang": "OCL04.10",
-            "searchView": "",
-            "searchCafeteria": "OCL03.02",
-        }
-        html = _get(FOOD_URL, params=params)
-        records = _parse_cafeteria_menu(html, target_date, cafeteria)
-        text = format_dining_day(records, target_date)
+        today = _today_kst().strftime("%Y-%m-%d")
+        target_date = date or today
+        text, params = _fetch_cafeteria_menu_text(target_date, cafeteria)
+        if not text:
+            return []
+        if target_date != today:
+            try:
+                today_text, _ = _fetch_cafeteria_menu_text(today, cafeteria)
+            except Exception:
+                return [_unverified_cafeteria_evidence(target_date, cafeteria)]
+            if _cafeteria_menu_body_text(text) == _cafeteria_menu_body_text(today_text):
+                return [_unverified_cafeteria_evidence(target_date, cafeteria)]
     except Exception:
         logger.warning("Failed to fetch cafeteria menu", exc_info=True)
-        return []
-    if not text:
         return []
     return [
         Evidence(
@@ -495,6 +949,43 @@ def fetch_cafeteria_menu(date: str | None = None, cafeteria: str | None = None) 
             metadata={"tool": "fetch_cafeteria_menu", "date": target_date, "cafeteria": cafeteria},
         )
     ]
+
+
+def _fetch_cafeteria_menu_text(target_date: str, cafeteria: str | None) -> tuple[str, dict[str, str]]:
+    params = _cafeteria_menu_params(target_date)
+    html = _get(FOOD_URL, params=params)
+    records = _parse_cafeteria_menu(html, target_date, cafeteria)
+    return format_dining_day(records, target_date), params
+
+
+def _cafeteria_menu_params(target_date: str) -> dict[str, str]:
+    return {
+        "searchYmd": target_date.replace("-", "."),
+        "searchLang": "OCL04.10",
+        "searchView": "",
+        "searchCafeteria": "OCL03.02",
+    }
+
+
+def _cafeteria_menu_body_text(text: str) -> str:
+    return "\n".join(line for line in text.splitlines() if line.startswith(("##", "- ")))
+
+
+def _unverified_cafeteria_evidence(target_date: str, cafeteria: str | None) -> Evidence:
+    text = f"{target_date}의 식단은 아직 신뢰 가능한 데이터가 제공되지 않습니다. 식단 사이트가 해당 날짜 정보를 갱신하지 않은 상태입니다."
+    return Evidence(
+        id="live_cafeteria_menu_unverified",
+        title="충남대학교 식단",
+        text=text,
+        source_url=FOOD_URL,
+        source_name="충남대학교 식단",
+        metadata={
+            "tool": "fetch_cafeteria_menu",
+            "date": target_date,
+            "cafeteria": cafeteria,
+            "unverified_future_data": True,
+        },
+    )
 
 
 def _parse_cafeteria_menu(html: str, target_date: str, cafeteria: str | None) -> list[DiningMenuRecord]:
@@ -633,24 +1124,25 @@ def _calendar_date_intersects(date_text: str, months: list[int]) -> bool:
     name="fetch_page_text",
     description=(
         "허용된 CNU 안내 페이지의 본문 텍스트를 추출한다. "
-        "셔틀버스 운행 정보(shuttle) 또는 수강신청 안내(course_registration_guide)를 물을 때만 사용한다. "
+        "셔틀버스 운행 정보 또는 수강신청 안내를 물을 때만 사용한다. "
         "반환값은 페이지 본문 일부와 공식 출처 URL이다. "
-        "등록된 source_id 외의 임의 페이지나 졸업요건 문서는 조회하지 않는다."
+        "등록된 정보원 외의 임의 페이지나 졸업요건 문서는 조회하지 않는다."
     ),
     parameters={
         "type": "object",
         "properties": {
             "source_id": {
                 "type": "string",
-                "enum": list(SOURCE_REGISTRY.keys()),
-                "description": "조회할 허용 정보원 ID로 shuttle 또는 course_registration_guide 중 하나다.",
+                "enum": _display_choices("fetch_page_text.source_id"),
+                "description": "조회할 허용 정보원으로 셔틀버스 안내 또는 수강신청 안내 중 하나다.",
             },
         },
         "required": ["source_id"],
     },
 )
 def fetch_page_text(source_id: str) -> list[Evidence]:
-    source = SOURCE_REGISTRY.get(source_id)
+    internal_source_id = _normalize_display_argument("fetch_page_text.source_id", source_id)
+    source = SOURCE_REGISTRY.get(internal_source_id)
     if source is None:
         return []
     try:
@@ -663,12 +1155,12 @@ def fetch_page_text(source_id: str) -> list[Evidence]:
         return []
     return [
         Evidence(
-            id=f"live_page_{source_id}",
+            id=f"live_page_{internal_source_id}",
             title=source["desc"],
             text=text,
             source_url=source["url"],
             source_name=source["desc"],
-            metadata={"tool": "fetch_page_text", "source_id": source_id},
+            metadata={"tool": "fetch_page_text", "source_id": internal_source_id},
         )
     ]
 

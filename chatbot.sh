@@ -136,7 +136,7 @@ shell_path() {
 }
 
 resolved_model_path() {
-  "${SUTRA_CMD[@]}" llama serve "${WORKSPACE_ARGS[@]}" --n-ctx "${SUTRA_N_CTX:-4096}" --dry-run |
+  "${SUTRA_CMD[@]}" llama serve "${WORKSPACE_ARGS[@]}" --n-ctx "${SUTRA_N_CTX:-8192}" --dry-run |
     sed -n 's/^Resolved model path: //p' |
     tail -n 1
 }
@@ -183,7 +183,7 @@ start_server_if_needed() {
   local log_path="${SUTRA_LLAMA_LOG:-$SCRIPT_DIR/outputs/llama-server.log}"
   mkdir -p "$(dirname "$log_path")"
   echo "Starting llama-server in the background; log: $log_path"
-  ("${SUTRA_CMD[@]}" llama serve "${WORKSPACE_ARGS[@]}" --n-ctx "${SUTRA_N_CTX:-4096}" >"$log_path" 2>&1) &
+  ("${SUTRA_CMD[@]}" llama serve "${WORKSPACE_ARGS[@]}" --n-ctx "${SUTRA_N_CTX:-8192}" >"$log_path" 2>&1) &
   local pid=$!
   echo "$pid" > "$SCRIPT_DIR/outputs/llama-server.pid"
 

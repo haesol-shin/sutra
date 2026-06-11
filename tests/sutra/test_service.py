@@ -48,6 +48,30 @@ def test_ask_retrieves_evidence_and_calls_client(tmp_path: Path) -> None:
     assert "수강신청은 2월 1일에 시작합니다." in client.messages[-1].content
 
 
+def test_ask_replaces_internal_ids_in_returned_answer(tmp_path: Path) -> None:
+    workspace = _write_workspace(tmp_path, include_notices=True)
+
+    class LeakyClient(FakeClient):
+        def chat(
+            self,
+            messages: list[Message],
+            *,
+            model: str | None = None,
+            temperature: float = 0.2,
+            max_tokens: int = 512,
+            tools: list[dict[str, Any]] | None = None,
+        ) -> LlamaResult:
+            self.messages = messages
+            return LlamaResult(
+                content="univ_academic와 cs_dept, shuttle, course_registration_guide를 확인하세요.",
+                model=model,
+            )
+
+    answer = ask("최신 공지 알려줘", workspace=workspace, client=LeakyClient())
+
+    assert answer.answer == "학교 학사공지와 학부 학사공지, 셔틀버스 안내, 수강신청 안내를 확인하세요."
+
+
 def test_ask_can_append_batch_trace_without_changing_answer(tmp_path: Path) -> None:
     workspace = _write_workspace(tmp_path)
     trace_path = tmp_path / "logs" / "chat_trace.jsonl"
@@ -100,6 +124,7 @@ def test_ask_returns_insufficient_evidence_without_calling_client(tmp_path: Path
 
     answer = ask("도서관 운영 시간", workspace=workspace, client=client)
 
+    assert answer.answer == "관련 정보를 확인할 수 있는 자료를 찾지 못했습니다. 충남대학교 공식 홈페이지를 확인해 주세요."
     assert answer.trace == {"status": "insufficient_evidence", "retrieved": 0}
     assert client.messages == []
 
@@ -162,6 +187,35 @@ class ToolOnlyEmptySearchClient:
         return LlamaResult(content="제공된 자료에서 확인할 수 있는 근거를 찾지 못했습니다.", model=model)
 
 
+class ToolOnlyEmptyAnswerClient:
+    def __init__(self) -> None:
+        self.calls: list[tuple[list[Message], list[dict[str, Any]] | None]] = []
+
+    def chat(
+        self,
+        messages: list[Message],
+        *,
+        model: str | None = None,
+        temperature: float = 0.2,
+        max_tokens: int = 512,
+        tools: list[dict[str, Any]] | None = None,
+    ) -> LlamaResult:
+        self.calls.append((messages, tools))
+        if len(self.calls) == 1:
+            return LlamaResult(
+                content="",
+                model=model,
+                tool_calls=[
+                    ToolCall(
+                        id="call-1",
+                        function_name="search_knowledge_base",
+                        function_arguments='{"query":"수강신청","domain":"calendar"}',
+                    )
+                ],
+            )
+        return LlamaResult(content="", model=model)
+
+
 def test_ask_tool_only_starts_without_preloaded_evidence_and_uses_tool_results(tmp_path: Path) -> None:
     workspace = _write_workspace(tmp_path)
     client = ToolOnlyClient()
@@ -198,6 +252,16 @@ def test_ask_tool_only_follows_up_and_traces_empty_knowledge_base_results(tmp_pa
     assert answer.trace["tools_called"] == ["search_knowledge_base"]
 
 
+def test_ask_tool_only_uses_korean_message_for_empty_final_answer(tmp_path: Path) -> None:
+    workspace = _write_workspace(tmp_path)
+    client = ToolOnlyEmptyAnswerClient()
+
+    answer = ask("수강신청 언제 시작해?", workspace=workspace, client=client, mode="tool_only")
+
+    assert answer.answer == "관련 정보를 확인할 수 있는 자료를 찾지 못했습니다. 충남대학교 공식 홈페이지를 확인해 주세요."
+    assert answer.evidence[0].id == "calendar-1"
+
+
 class RouterClient:
     def __init__(self, first_result: LlamaResult, second_result: LlamaResult | None = None) -> None:
         self.first_result = first_result
@@ -231,7 +295,7 @@ def test_ask_router_forces_cafeteria_tool_choice_and_prepends_live_evidence(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    workspace = _write_workspace(tmp_path, include_dining=True)
+    workspace = _write_workspace(tmp_path, include_dining=True, runtime_max_tokens=512)
     client = RouterClient(
         LlamaResult(
             content="",
@@ -261,14 +325,124 @@ def test_ask_router_forces_cafeteria_tool_choice_and_prepends_live_evidence(
         "type": "function",
         "function": {"name": "fetch_cafeteria_menu"},
     }
+    assert client.calls[0]["max_tokens"] == 256
+    assert "Current Time:" in client.calls[0]["messages"][-1].content
+    assert "Evidence:" not in client.calls[0]["messages"][-1].content
+    assert "학생회관 점심 메뉴입니다." not in client.calls[0]["messages"][-1].content
+    assert "search_knowledge_base" not in client.calls[0]["messages"][0].content
     assert {tool["function"]["name"] for tool in client.calls[0]["tools"]} >= {"fetch_cafeteria_menu"}
     assert client.calls[1]["tools"] is None
     assert client.calls[1]["tool_choice"] is None
+    assert "Evidence:" in client.calls[1]["messages"][-1].content
+    assert "학생회관 점심 메뉴입니다." in client.calls[1]["messages"][-1].content
     assert answer.answer == "실시간 식단과 저장된 식단 근거로 답합니다."
     assert answer.evidence[0].id == "live_cafeteria_menu"
     assert answer.trace["routed_domain"] == "dining"
     assert answer.trace["forced_tool"] == "fetch_cafeteria_menu"
     assert answer.trace["tools_called"] == ["fetch_cafeteria_menu"]
+
+
+def test_ask_router_runs_forced_cafeteria_tool_when_rag_has_no_evidence(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace = _write_workspace(tmp_path)
+    client = RouterClient(
+        LlamaResult(
+            content="",
+            model="fake-qwen",
+            tool_calls=[
+                ToolCall(
+                    id="call-1",
+                    function_name="fetch_cafeteria_menu",
+                    function_arguments='{"date":"2026-06-11","cafeteria":"제2학생회관"}',
+                )
+            ],
+        ),
+        LlamaResult(content="실시간 식단 근거로 답합니다.", model="fake-qwen"),
+    )
+    live_evidence = Evidence(
+        id="live_cafeteria_menu",
+        title="충남대학교 식단",
+        text="제2학생회관 점심: 칠리치킨까스",
+        source_name="충남대학교 식단",
+    )
+    dispatch_calls: list[tuple[str, str]] = []
+
+    def fake_dispatch(name: str, args: str) -> list[Evidence]:
+        dispatch_calls.append((name, args))
+        return [live_evidence]
+
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question: 3)
+    monkeypatch.setattr("sutra.service.dispatch", fake_dispatch)
+
+    answer = ask("오늘 제2학생회관 점심 뭐야?", workspace=workspace, client=client, mode="router")
+
+    assert len(client.calls) == 2
+    assert client.calls[0]["tool_choice"] == {
+        "type": "function",
+        "function": {"name": "fetch_cafeteria_menu"},
+    }
+    assert dispatch_calls == [
+        ("fetch_cafeteria_menu", '{"date":"2026-06-11","cafeteria":"제2학생회관"}')
+    ]
+    assert answer.answer == "실시간 식단 근거로 답합니다."
+    assert answer.evidence == [live_evidence]
+    assert answer.trace["retrieved"] == 1
+    assert answer.trace["routed_domain"] == "dining"
+    assert answer.trace["forced_tool"] == "fetch_cafeteria_menu"
+    assert answer.trace["tools_called"] == ["fetch_cafeteria_menu"]
+
+
+def test_ask_router_reports_empty_live_and_empty_rag_for_forced_tool_domain(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace = _write_workspace(tmp_path)
+    client = RouterClient(
+        LlamaResult(
+            content="",
+            model="fake-qwen",
+            tool_calls=[
+                ToolCall(
+                    id="call-1",
+                    function_name="fetch_cafeteria_menu",
+                    function_arguments='{"date":"2026-06-11"}',
+                )
+            ],
+        ),
+        LlamaResult(content="호출되면 안 됩니다.", model="fake-qwen"),
+    )
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question: 3)
+    monkeypatch.setattr("sutra.service.dispatch", lambda name, args: [])
+
+    answer = ask("오늘 제2학생회관 점심 뭐야?", workspace=workspace, client=client, mode="router")
+
+    assert len(client.calls) == 1
+    assert answer.answer == "실시간 조회에 실패했고 저장된 자료에서도 관련 정보를 찾지 못했습니다. 충남대학교 공식 홈페이지를 확인해 주세요."
+    assert answer.evidence == []
+    assert answer.trace["routed_domain"] == "dining"
+    assert answer.trace["forced_tool"] == "fetch_cafeteria_menu"
+    assert answer.trace["tools_called"] == ["fetch_cafeteria_menu"]
+
+
+def test_ask_router_keeps_insufficient_evidence_for_empty_non_forced_domain(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace = _write_workspace(tmp_path)
+    client = RouterClient(LlamaResult(content="호출되면 안 됩니다.", model="fake-qwen"))
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question: 2)
+
+    answer = ask("완전히없는쿼리", workspace=workspace, client=client, mode="router")
+
+    assert client.calls == []
+    assert answer.answer == "관련 정보를 확인할 수 있는 자료를 찾지 못했습니다. 충남대학교 공식 홈페이지를 확인해 주세요."
+    assert answer.evidence == []
+    assert answer.trace["status"] == "insufficient_evidence"
+    assert answer.trace["routed_domain"] == "academic_calendar"
+    assert answer.trace["forced_tool"] is None
+    assert answer.trace["tools_called"] == []
 
 
 def test_ask_router_uses_rag_only_for_graduation(
@@ -322,6 +496,52 @@ def test_ask_router_falls_back_to_rag_when_classifier_import_fails(
     assert answer.trace["classifier_fallback"] is True
 
 
+def test_ask_router_routes_standalone_greeting_through_classifier(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace = _write_workspace(tmp_path, include_graduation=True)
+    client = RouterClient(LlamaResult(content="인사 답변", model="fake-qwen"))
+    calls: list[str] = []
+
+    def fake_predict(question: str) -> int:
+        calls.append(question)
+        return 0
+
+    monkeypatch.setattr("sutra.service._predict_router_label", fake_predict)
+
+    answer = ask("안녕하세요!", workspace=workspace, client=client, mode="router")
+
+    assert calls == ["안녕하세요!"]
+    assert client.calls == []
+    assert answer.answer == "관련 정보를 확인할 수 있는 자료를 찾지 못했습니다. 충남대학교 공식 홈페이지를 확인해 주세요."
+    assert answer.trace["routed_domain"] == "graduation"
+    assert answer.trace["forced_tool"] is None
+    assert answer.trace["classifier_fallback"] is False
+
+
+def test_ask_router_routes_mixed_greeting_question_through_classifier(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace = _write_workspace(tmp_path, include_dining=True)
+    client = RouterClient(LlamaResult(content="식단 답변", model="fake-qwen"))
+    calls: list[str] = []
+
+    def fake_predict(question: str) -> int:
+        calls.append(question)
+        return 3
+
+    monkeypatch.setattr("sutra.service._predict_router_label", fake_predict)
+    monkeypatch.setattr("sutra.service.dispatch", lambda name, args: [])
+
+    answer = ask("안녕, 오늘 학식 뭐야?", workspace=workspace, client=client, mode="router")
+
+    assert calls == ["안녕, 오늘 학식 뭐야?"]
+    assert answer.trace["routed_domain"] == "dining"
+    assert answer.trace["classifier_fallback"] is False
+
+
 def test_predict_router_label_returns_none_when_prediction_fails(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -370,9 +590,9 @@ def test_ask_router_forces_recent_notices_tool_choice_and_persists_trace(
     )
     live_evidence = Evidence(
         id="live_notices_cs_dept",
-        title="컴퓨터융합학부 학사공지",
+        title="컴퓨터인공지능학부 학사공지",
         text="최신 공지: 수강신청 안내",
-        source_name="컴퓨터융합학부 학사공지",
+        source_name="컴퓨터인공지능학부 학사공지",
     )
     monkeypatch.setattr("sutra.service._predict_router_label", lambda question: 1)
     monkeypatch.setattr("sutra.service.dispatch", lambda name, args: [live_evidence])
@@ -451,9 +671,9 @@ def test_ask_router_ignores_tool_evidence_from_unexpected_tool_call(
     )
     live_evidence = Evidence(
         id="live_notices_cs_dept",
-        title="컴퓨터융합학부 학사공지",
+        title="컴퓨터인공지능학부 학사공지",
         text="최신 공지: 수강신청 안내",
-        source_name="컴퓨터융합학부 학사공지",
+        source_name="컴퓨터인공지능학부 학사공지",
     )
     dispatch_calls: list[str] = []
 
@@ -526,6 +746,7 @@ def _write_workspace(
     include_graduation: bool = False,
     include_notices: bool = False,
     include_shuttle: bool = False,
+    runtime_max_tokens: int = 128,
 ) -> Path:
     (root / "data").mkdir()
     (root / "prompts").mkdir()
@@ -549,7 +770,7 @@ def _write_workspace(
                 ),
                 *(
                     [
-                        '{"id":"notice-1","title":"최신 공지","text":"컴퓨터융합학부 최신 공지는 수강신청 안내입니다.","source_name":"학사공지","metadata":{"label":"notices"}}',
+                        '{"id":"notice-1","title":"최신 공지","text":"컴퓨터인공지능학부 최신 공지는 수강신청 안내입니다.","source_name":"학사공지","metadata":{"label":"notices"}}',
                     ]
                     if include_notices
                     else []
@@ -580,7 +801,7 @@ backend = "llama-server"
 base_url = "http://127.0.0.1:18080"
 model = "fake-qwen"
 temperature = 0.1
-max_tokens = 128
+max_tokens = {runtime_max_tokens}
 
 [rag]
 index_path = "data/index.jsonl"

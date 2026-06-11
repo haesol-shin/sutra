@@ -12,7 +12,7 @@ from sutra.llama import LlamaClient
 from sutra.models import Answer, Evidence, EvidencePack, LlamaResult, Message, ToolCall
 from sutra.prompts import get_current_time_str, render_prompt
 from sutra.retrieval import retrieve
-from sutra.tools import dispatch, get_tool_definitions
+from sutra.tools import INTERNAL_TO_DISPLAY, dispatch, get_tool_definitions
 from sutra.tracelog import TraceSource, append_chat_trace, default_trace_path
 
 logger = logging.getLogger(__name__)
@@ -21,6 +21,7 @@ TOOL_ONLY_SYSTEM_INSTRUCTION = (
     "저장된 정보가 필요하면 search_knowledge_base를 호출하고, "
     "실시간 정보가 필요하면 해당 fetch 도구를 호출하세요."
 )
+INSUFFICIENT_EVIDENCE_ANSWER = "관련 정보를 확인할 수 있는 자료를 찾지 못했습니다. 충남대학교 공식 홈페이지를 확인해 주세요."
 
 
 class ChatClient(Protocol):
@@ -86,7 +87,7 @@ def ask(
 
     if not evidence.items:
         answer = Answer(
-            answer="I do not have enough evidence in this workspace to answer.",
+            answer=_public_answer_text(INSUFFICIENT_EVIDENCE_ANSWER),
             evidence=[],
             workspace=config.workspace.name,
             model=config.runtime.model,
@@ -152,7 +153,7 @@ def ask(
                 )
 
     answer = Answer(
-        answer=result.content,
+        answer=_public_answer_text(result.content),
         evidence=evidence.items,
         workspace=config.workspace.name,
         model=result.model or config.runtime.model,
@@ -201,10 +202,11 @@ def _ask_router(
 
     documents = load_documents(config)
     evidence = retrieve(question, documents, config)
+    forced_tool = ROUTER_FORCED_TOOLS.get(routed_domain)
 
-    if not evidence.items:
+    if not evidence.items and forced_tool is None:
         answer = Answer(
-            answer="I do not have enough evidence in this workspace to answer.",
+            answer=_public_answer_text(INSUFFICIENT_EVIDENCE_ANSWER),
             evidence=[],
             workspace=config.workspace.name,
             model=config.runtime.model,
@@ -213,7 +215,7 @@ def _ask_router(
                 "status": "insufficient_evidence",
                 "retrieved": 0,
                 "routed_domain": routed_domain,
-                "forced_tool": ROUTER_FORCED_TOOLS.get(routed_domain),
+                "forced_tool": forced_tool,
                 "tools_called": [],
                 "classifier_fallback": classifier_fallback,
             },
@@ -232,19 +234,18 @@ def _ask_router(
             error=None,
             extra={
                 "routed_domain": routed_domain,
-                "forced_tool": ROUTER_FORCED_TOOLS.get(routed_domain),
+                "forced_tool": forced_tool,
                 "classifier_fallback": classifier_fallback,
             },
         )
         return answer
 
-    prompt = render_prompt(question, evidence, config)
     llm = client or LlamaClient(config.runtime.base_url, timeout_seconds=config.runtime.timeout_seconds)
-    forced_tool = ROUTER_FORCED_TOOLS.get(routed_domain)
     called_tools: list[str] = []
     tool_args: list[dict[str, Any]] = []
 
     if forced_tool is None:
+        prompt = render_prompt(question, evidence, config)
         result = llm.chat(
             prompt.messages,
             model=config.runtime.model,
@@ -254,10 +255,10 @@ def _ask_router(
     else:
         tools = get_tool_definitions()
         result = llm.chat(
-            prompt.messages,
+            _render_router_tool_request_messages(question, config),
             model=config.runtime.model,
             temperature=config.runtime.temperature,
-            max_tokens=config.runtime.max_tokens,
+            max_tokens=min(config.runtime.max_tokens, 256),
             tools=tools or None,
             tool_choice=_forced_tool_choice(forced_tool),
         )
@@ -286,6 +287,12 @@ def _ask_router(
                 temperature=config.runtime.temperature,
                 max_tokens=config.runtime.max_tokens,
             )
+        elif not evidence.items:
+            prompt = render_prompt(question, evidence, config)
+            result = LlamaResult(
+                content="실시간 조회에 실패했고 저장된 자료에서도 관련 정보를 찾지 못했습니다. 충남대학교 공식 홈페이지를 확인해 주세요.",
+                model=config.runtime.model,
+            )
         else:
             prompt = render_prompt(question, evidence, config)
             fallback_result = llm.chat(
@@ -305,7 +312,7 @@ def _ask_router(
             )
 
     answer = Answer(
-        answer=result.content,
+        answer=_public_answer_text(result.content),
         evidence=evidence.items,
         workspace=config.workspace.name,
         model=result.model or config.runtime.model,
@@ -406,14 +413,14 @@ def _ask_tool_only(
             )
             if not result.content:
                 result = LlamaResult(
-                    content="I do not have enough evidence in this workspace to answer.",
+                    content=INSUFFICIENT_EVIDENCE_ANSWER,
                     model=result.model,
                     usage=result.usage,
                     raw=result.raw,
                 )
 
     return Answer(
-        answer=result.content,
+        answer=_public_answer_text(result.content),
         evidence=evidence_items,
         workspace=config.workspace.name,
         model=result.model or config.runtime.model,
@@ -444,6 +451,20 @@ def _render_tool_only_messages(question: str, config: Config) -> list[Message]:
     ]
 
 
+def _render_router_tool_request_messages(question: str, config: Config) -> list[Message]:
+    system = config.prompts.system.read_text(encoding="utf-8").strip()
+    user = (
+        f"Workspace: {config.workspace.name}\n"
+        f"Timezone: {config.workspace.timezone}\n"
+        f"Current Time: {get_current_time_str(config.workspace.timezone)}\n\n"
+        f"Question:\n{question}"
+    )
+    return [
+        Message(role="system", content=system),
+        Message(role="user", content=user),
+    ]
+
+
 def fallback_answer(question: str, *, workspace: str | Config) -> Answer:
     """Build a deterministic answer from retrieved evidence only."""
     config = workspace if isinstance(workspace, Config) else load_config(workspace)
@@ -462,7 +483,7 @@ def fallback_answer(question: str, *, workspace: str | Config) -> Answer:
             answer = f"확인된 자료에 따르면 {fact} 출처는 {source}입니다."
 
     return Answer(
-        answer=answer,
+        answer=_public_answer_text(answer),
         evidence=evidence.items,
         workspace=config.workspace.name,
         model=config.runtime.model,
@@ -493,6 +514,12 @@ def _tool_arguments_dict(tool_call: ToolCall) -> dict[str, Any]:
     except json.JSONDecodeError:
         return {}
     return parsed if isinstance(parsed, dict) else {}
+
+
+def _public_answer_text(text: str) -> str:
+    for internal, display in INTERNAL_TO_DISPLAY.items():
+        text = text.replace(internal, display)
+    return text
 
 
 def _append_trace_if_requested(

@@ -57,7 +57,20 @@ def _make_executable(path: Path) -> None:
 
 
 def _generate_requirements(repo_root: Path) -> str:
-    command = ["uv", "export", "--no-dev", "--format", "requirements-txt", "--no-hashes"]
+    command = [
+        "uv",
+        "export",
+        "--no-dev",
+        "--extra",
+        "rag",
+        "--extra",
+        "legacy",
+        "--extra",
+        "ui",
+        "--format",
+        "requirements-txt",
+        "--no-hashes",
+    ]
     completed = subprocess.run(
         command,
         cwd=repo_root,
