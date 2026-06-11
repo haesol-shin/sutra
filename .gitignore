@@ -10,6 +10,7 @@ __pycache__/
 tmp/
 dist/
 outputs/
+logs/
 data/raw/**
 !data/raw/**/
 !data/raw/**/*.meta.json

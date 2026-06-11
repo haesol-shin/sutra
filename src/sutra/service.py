@@ -1,15 +1,19 @@
 from __future__ import annotations
 
+import json
 import logging
-from typing import Literal, Protocol
+import time
+from pathlib import Path
+from typing import Any, Literal, Protocol
 
 from sutra.config import Config, load_config
 from sutra.documents import load_documents
 from sutra.llama import LlamaClient
-from sutra.models import Answer, EvidencePack, LlamaResult, Message
+from sutra.models import Answer, Evidence, EvidencePack, LlamaResult, Message, ToolCall
 from sutra.prompts import get_current_time_str, render_prompt
 from sutra.retrieval import retrieve
 from sutra.tools import dispatch, get_tool_definitions
+from sutra.tracelog import TraceSource, append_chat_trace, default_trace_path
 
 logger = logging.getLogger(__name__)
 
@@ -39,21 +43,25 @@ def ask(
     client: ChatClient | None = None,
     live: bool = False,
     mode: Literal["default", "tool_only"] = "default",
+    trace_source: TraceSource | None = None,
+    trace_path: str | Path | None = None,
 ) -> Answer:
     """Ask a single question and return an Answer.
 
     The live flag is accepted for backward compatibility. Tool definitions are
     always injected; the model decides whether to call one.
     """
+    started = time.perf_counter()
     config = workspace if isinstance(workspace, Config) else load_config(workspace)
     if mode == "tool_only":
         return _ask_tool_only(question, config=config, client=client)
+    trace_file = Path(trace_path) if trace_path is not None else default_trace_path(config.root)
 
     documents = load_documents(config)
     evidence = retrieve(question, documents, config)
 
     if not evidence.items:
-        return Answer(
+        answer = Answer(
             answer="I do not have enough evidence in this workspace to answer.",
             evidence=[],
             workspace=config.workspace.name,
@@ -61,6 +69,20 @@ def ask(
             backend=config.runtime.backend,
             trace={"status": "insufficient_evidence", "retrieved": 0},
         )
+        _append_trace_if_requested(
+            trace_source,
+            trace_file,
+            question=question,
+            answer=answer.answer,
+            evidence=[],
+            tools_called=[],
+            tool_args=[],
+            mode="insufficient_evidence",
+            started=started,
+            usage=None,
+            error=None,
+        )
+        return answer
 
     prompt = render_prompt(question, evidence, config)
     llm = client or LlamaClient(config.runtime.base_url, timeout_seconds=config.runtime.timeout_seconds)
@@ -75,13 +97,15 @@ def ask(
     )
 
     called_tools: list[str] = []
+    tool_args: list[dict[str, Any]] = []
     if tools and result.tool_calls:
         extra = []
         for tc in result.tool_calls:
+            called_tools.append(tc.function_name)
+            tool_args.append(_tool_arguments_dict(tc))
             fresh = dispatch(tc.function_name, tc.function_arguments)
             if fresh:
                 extra.extend(fresh)
-                called_tools.append(tc.function_name)
 
         if extra:
             for item in extra:
@@ -103,7 +127,7 @@ def ask(
                     raw=result.raw,
                 )
 
-    return Answer(
+    answer = Answer(
         answer=result.content,
         evidence=evidence.items,
         workspace=config.workspace.name,
@@ -114,10 +138,26 @@ def ask(
             "status": "answered",
             "retrieved": len(evidence.items),
             "doc_ids": [item.id for item in evidence.items],
+            "doc_scores": [item.score for item in evidence.items],
             "context_chars": len(prompt.context),
             "tools_called": called_tools,
+            "tool_args": tool_args,
         },
     )
+    _append_trace_if_requested(
+        trace_source,
+        trace_file,
+        question=question,
+        answer=answer.answer,
+        evidence=answer.evidence,
+        tools_called=called_tools,
+        tool_args=tool_args,
+        mode="tool" if called_tools else "llm",
+        started=started,
+        usage=answer.usage,
+        error=None,
+    )
+    return answer
 
 
 def _ask_tool_only(
@@ -238,6 +278,45 @@ def _first_fact(text: str) -> str:
     if len(stripped) <= 180:
         return stripped
     return stripped[:179].rstrip() + "..."
+
+
+def _tool_arguments_dict(tool_call: ToolCall) -> dict[str, Any]:
+    try:
+        parsed = json.loads(tool_call.function_arguments or "{}")
+    except json.JSONDecodeError:
+        return {}
+    return parsed if isinstance(parsed, dict) else {}
+
+
+def _append_trace_if_requested(
+    source: TraceSource | None,
+    path: Path,
+    *,
+    question: str,
+    answer: str,
+    evidence: list[Evidence],
+    tools_called: list[str],
+    tool_args: list[dict[str, Any]],
+    mode: str,
+    started: float,
+    usage: dict[str, Any] | None,
+    error: str | None,
+) -> None:
+    if source is None:
+        return
+    append_chat_trace(
+        path,
+        source=source,
+        question=question,
+        answer=answer,
+        evidence=evidence,
+        tools_called=tools_called,
+        tool_args=tool_args,
+        mode=mode,
+        latency_ms=int((time.perf_counter() - started) * 1000),
+        usage=usage,
+        error=error,
+    )
 
 
 def chat(

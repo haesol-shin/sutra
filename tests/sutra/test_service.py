@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
+import json
 
 import pytest
 
@@ -44,6 +45,29 @@ def test_ask_retrieves_evidence_and_calls_client(tmp_path: Path) -> None:
     assert answer.evidence[0].id == "calendar-1"
     assert answer.trace["status"] == "answered"
     assert "수강신청은 2월 1일에 시작합니다." in client.messages[-1].content
+
+
+def test_ask_can_append_batch_trace_without_changing_answer(tmp_path: Path) -> None:
+    workspace = _write_workspace(tmp_path)
+    trace_path = tmp_path / "logs" / "chat_trace.jsonl"
+
+    answer = ask(
+        "수강신청 언제 시작해?",
+        workspace=workspace,
+        client=FakeClient(),
+        trace_source="batch",
+        trace_path=trace_path,
+    )
+
+    row = json.loads(trace_path.read_text(encoding="utf-8").splitlines()[0])
+    assert answer.answer == "수강신청은 2월 1일에 시작합니다."
+    assert row["source"] == "batch"
+    assert row["question"] == "수강신청 언제 시작해?"
+    assert row["answer"] == answer.answer
+    assert row["doc_ids"] == ["calendar-1"]
+    assert row["doc_scores"] == [3.0]
+    assert row["mode"] == "llm"
+    assert row["error"] is None
 
 
 def test_chat_adapts_openai_style_messages_to_ask(tmp_path: Path) -> None:

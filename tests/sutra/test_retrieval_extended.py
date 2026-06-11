@@ -206,4 +206,7 @@ def test_retrieve_relative_today_query_prioritizes_today_dining_document(
 
     pack = retrieve("오늘 학식", docs, _test_config())
 
-    assert [item.id for item in pack.items] == ["dining-11", "dining-10"]
+    # The point of date expansion: today's dining doc is ranked first. The
+    # order of the remaining tie-scored docs (10 vs 12, identical text) is a
+    # BM25 tie-break and not part of the contract.
+    assert pack.items[0].id == "dining-11"

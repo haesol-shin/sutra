@@ -426,7 +426,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             if args.backend:
                 config.rag.backend = args.backend
             client = EchoClient() if args.echo else None
-            answer = ask(args.question, workspace=config, client=client)
+            answer = ask(args.question, workspace=config, client=client, trace_source="batch")
             if args.json:
                 print(answer.model_dump_json(indent=2))
             else:
@@ -478,13 +478,13 @@ def main(argv: Sequence[str] | None = None) -> int:
 
                 client = EchoClient() if args.echo else None
                 try:
-                    answer = ask(question, workspace=config, live=args.live, client=client)
+                    answer = ask(question, workspace=config, live=args.live, client=client, trace_source="batch")
                     results.append(ChatOutputItem(user=question, model=answer.answer).model_dump())
                     provenance.append({"index": i, "mode": "llm", "error": ""})
                     continue
                 except Exception as first_exc:
                     try:
-                        answer = ask(question, workspace=config, live=args.live, client=client)
+                        answer = ask(question, workspace=config, live=args.live, client=client, trace_source="batch")
                         results.append(ChatOutputItem(user=question, model=answer.answer).model_dump())
                         provenance.append({"index": i, "mode": "llm_retry", "error": str(first_exc)})
                         continue

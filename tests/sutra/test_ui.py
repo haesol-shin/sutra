@@ -6,6 +6,7 @@ import socket
 import subprocess
 import sys
 import time
+import types
 from pathlib import Path
 from unittest.mock import patch
 
@@ -13,6 +14,8 @@ import pytest
 import requests
 
 from sutra.cli import build_parser, main
+from sutra.config import load_config
+from sutra.models import Evidence
 
 
 @pytest.fixture
@@ -49,6 +52,221 @@ def _write_workspace(root: Path) -> Path:
         encoding="utf-8",
     )
     return config_path
+
+
+def _ui_module(monkeypatch: pytest.MonkeyPatch):
+    chainlit = types.SimpleNamespace()
+
+    class Text:
+        def __init__(self, **kwargs):
+            self.__dict__.update(kwargs)
+
+    class Action:
+        def __init__(self, **kwargs):
+            self.__dict__.update(kwargs)
+
+    class Message:
+        def __init__(self, **kwargs):
+            self.__dict__.update(kwargs)
+
+    class AskUserMessage(Message):
+        pass
+
+    def decorator(*args, **kwargs):
+        def wrap(func):
+            return func
+        return wrap
+
+    chainlit.Text = Text
+    chainlit.Action = Action
+    chainlit.Message = Message
+    chainlit.AskUserMessage = AskUserMessage
+    chainlit.action_callback = decorator
+    chainlit.on_chat_start = decorator
+    chainlit.on_message = decorator
+    chainlit.make_async = lambda func: func
+    chainlit.Step = object
+    chainlit.user_session = types.SimpleNamespace(
+        get=lambda *args, **kwargs: None,
+        set=lambda *args, **kwargs: None,
+    )
+
+    monkeypatch.setitem(sys.modules, "chainlit", chainlit)
+    sys.modules.pop("sutra.ui", None)
+    import sutra.ui as ui
+    return ui
+
+
+def test_ui_loads_when_exec_module_does_not_register_module(monkeypatch: pytest.MonkeyPatch) -> None:
+    chainlit = types.SimpleNamespace()
+
+    class Text:
+        def __init__(self, **kwargs):
+            self.__dict__.update(kwargs)
+
+    class Action:
+        def __init__(self, **kwargs):
+            self.__dict__.update(kwargs)
+
+    class Message:
+        def __init__(self, **kwargs):
+            self.__dict__.update(kwargs)
+
+    class AskUserMessage(Message):
+        pass
+
+    def decorator(*args, **kwargs):
+        def wrap(func):
+            return func
+        return wrap
+
+    chainlit.Text = Text
+    chainlit.Action = Action
+    chainlit.Message = Message
+    chainlit.AskUserMessage = AskUserMessage
+    chainlit.action_callback = decorator
+    chainlit.on_chat_start = decorator
+    chainlit.on_message = decorator
+    chainlit.make_async = lambda func: func
+    chainlit.Step = object
+    chainlit.user_session = types.SimpleNamespace(
+        get=lambda *args, **kwargs: None,
+        set=lambda *args, **kwargs: None,
+    )
+
+    monkeypatch.setitem(sys.modules, "chainlit", chainlit)
+    module_name = "sutra_ui_chainlit_loader_probe"
+    sys.modules.pop(module_name, None)
+    ui_path = Path(__file__).parents[2] / "src" / "sutra" / "ui.py"
+    spec = importlib.util.spec_from_file_location(module_name, ui_path)
+
+    assert spec is not None
+    assert spec.loader is not None
+
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+
+def _evidence(id_: str, score: float | None) -> Evidence:
+    return Evidence(id=id_, title=id_, text=f"{id_} text", score=score)
+
+
+def _config_language(path: Path) -> str | None:
+    for line in path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if stripped.startswith("language"):
+            return stripped.split("=", 1)[1].strip().strip('"')
+    return None
+
+
+class TestInterfaceLabels:
+    def test_ui_labels_are_english(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        config = load_config(_write_workspace(tmp_path))
+
+        assert ui.RETRIEVAL_STEP_NAME == "🔍 Search"
+        assert ui.LIVE_LOOKUP_STEP_NAME == "🛠️ Live Lookup"
+        assert [action.label for action in ui._feedback_actions(
+            config,
+            question="question",
+            answer="answer",
+        )] == ["👍 Helpful", "👎 Not helpful", "💬 Comment"]
+
+    def test_source_elements_use_english_labels(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        ui = _ui_module(monkeypatch)
+        item = Evidence(
+            id="source-1",
+            title="Academic Calendar",
+            text="Semester begins on March 2.",
+            source_name="calendar",
+            source_url="https://example.edu/calendar",
+            metadata={"date": "2026-03-02"},
+        )
+
+        [element] = ui._source_elements([item])
+
+        assert element.name == "[1] Academic Calendar"
+        assert "Source: calendar" in element.content
+        assert "Date: 2026-03-02" in element.content
+        assert "Excerpt: Semester begins on March 2." in element.content
+
+    def test_source_filter_summary_is_english(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        ui = _ui_module(monkeypatch)
+        items = [_evidence("top", 10.0), _evidence("hidden", 1.0)]
+
+        summary = ui._source_filter_summary(items, shown_count=1, hidden_count=1)
+
+        assert summary == "2 documents (best score 10)\nshowing 1 of 2 (score filter)"
+
+    def test_chainlit_configs_force_english_locale(self) -> None:
+        root = Path(__file__).parents[2]
+
+        assert _config_language(
+            root / "src" / "sutra" / "resources" / "ui" / "chainlit_config.toml",
+        ) == "en-US"
+
+
+class TestSourceScoreFilter:
+    def test_source_filter_uses_relative_ratio(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        ui = _ui_module(monkeypatch)
+        items = [
+            _evidence("top", 3.7),
+            _evidence("below", 1.3),
+            _evidence("low-a", 1.1),
+            _evidence("low-b", 1.0),
+        ]
+
+        filtered, hidden = ui._filter_source_evidence(items, rel_ratio=0.4, abs_floor=0.0)
+
+        assert [item.id for item in filtered] == ["top"]
+        assert hidden == 3
+
+    def test_source_filter_keeps_top_item_if_all_scores_are_filtered(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        items = [
+            _evidence("top", 3.7),
+            _evidence("second", 1.3),
+        ]
+
+        filtered, hidden = ui._filter_source_evidence(items, rel_ratio=0.4, abs_floor=4.0)
+
+        assert [item.id for item in filtered] == ["top"]
+        assert hidden == 1
+
+    def test_source_filter_keeps_items_without_score(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        ui = _ui_module(monkeypatch)
+        items = [
+            _evidence("top", 3.7),
+            _evidence("unknown", None),
+            _evidence("below", 1.3),
+        ]
+
+        filtered, hidden = ui._filter_source_evidence(items, rel_ratio=0.4, abs_floor=0.0)
+
+        assert [item.id for item in filtered] == ["top", "unknown"]
+        assert hidden == 1
+
+    def test_source_filter_preserves_zero_score_top_item(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        items = [
+            _evidence("zero", 0.0),
+            _evidence("negative", -1.0),
+        ]
+
+        filtered, hidden = ui._filter_source_evidence(items, rel_ratio=0.4, abs_floor=1.0)
+
+        assert [item.id for item in filtered] == ["zero"]
+        assert hidden == 1
 
 
 class TestArgParse:

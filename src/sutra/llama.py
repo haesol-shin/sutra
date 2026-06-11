@@ -4,6 +4,7 @@ import json
 import re
 import subprocess
 import sys
+from collections.abc import Iterable, Iterator
 from pathlib import Path
 from typing import Any
 
@@ -26,6 +27,18 @@ class EchoClient:
     ) -> LlamaResult:
         del temperature, max_tokens, tools
         return LlamaResult(content=f"[echo:{model or 'local'}] {messages[-1].content}", model=model)
+
+    def stream_chat(
+        self,
+        messages: list[Message],
+        *,
+        model: str | None = None,
+        temperature: float = 0.2,
+        max_tokens: int = 512,
+        tools: list[dict[str, object]] | None = None,
+    ) -> Iterator[str]:
+        del temperature, max_tokens, tools
+        yield f"[echo:{model or 'local'}] {messages[-1].content}"
 
 
 
@@ -190,11 +203,76 @@ class LlamaClient:
             tool_calls=tool_calls,
         )
 
+    def stream_chat(
+        self,
+        messages: list[Message] | list[dict[str, str]],
+        *,
+        model: str | None = None,
+        temperature: float = 0.2,
+        max_tokens: int = 512,
+        tools: list[dict[str, Any]] | None = None,
+    ) -> Iterator[str]:
+        payload: dict[str, Any] = {
+            "messages": [_dump_message(message) for message in messages],
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+            "stream": True,
+        }
+        if model:
+            payload["model"] = model
+        if tools:
+            payload["tools"] = tools
+            payload["tool_choice"] = "auto"
+
+        response = None
+        try:
+            response = requests.post(
+                f"{self.base_url}/v1/chat/completions",
+                json=payload,
+                timeout=self.timeout_seconds,
+                stream=True,
+            )
+            response.raise_for_status()
+            yield from stream_chat_tokens_from_sse_lines(response.iter_lines())
+        except LlamaError:
+            raise
+        except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
+            raise LlamaError("malformed llama-server stream response") from exc
+        finally:
+            if response is not None:
+                close = getattr(response, "close", None)
+                if close is not None:
+                    close()
+
 
 def _dump_message(message: Message | dict[str, str]) -> dict[str, str]:
     if isinstance(message, Message):
         return message.model_dump()
     return {"role": message["role"], "content": message["content"]}
+
+
+def stream_chat_tokens_from_sse_lines(lines: Iterable[bytes | str]) -> Iterator[str]:
+    """Yield content deltas from OpenAI-compatible chat-completion SSE lines."""
+    for raw_line in lines:
+        line = raw_line.decode("utf-8") if isinstance(raw_line, bytes) else raw_line
+        line = line.strip()
+        if not line or line.startswith(":"):
+            continue
+        if not line.startswith("data:"):
+            continue
+        data = line[len("data:") :].strip()
+        if data == "[DONE]":
+            break
+        body = json.loads(data)
+        choice = body["choices"][0]
+        delta = choice.get("delta") or {}
+        content = delta.get("content")
+        if content:
+            yield str(content)
+
+
+def has_stream_tool_call_marker(content: str) -> bool:
+    return "<tool_call" in content.lower()
 
 
 _TOOL_CALL_RE = re.compile(

@@ -10,8 +10,10 @@ from sutra.errors import LlamaError
 from sutra.llama import (
     LlamaClient,
     download_model,
+    has_stream_tool_call_marker,
     locate_llama_server,
     start_llama_server,
+    stream_chat_tokens_from_sse_lines,
 )
 from sutra.models import Message
 
@@ -54,6 +56,26 @@ def test_llama_client_reads_openai_compatible_chat_response(monkeypatch: pytest.
     assert result.content == "답변"
     assert result.model == "qwen"
     assert result.usage == {"total_tokens": 3}
+
+
+def test_stream_chat_tokens_from_sse_lines_yields_delta_content() -> None:
+    lines = [
+        'data: {"choices":[{"delta":{"content":"안녕"}}]}'.encode("utf-8"),
+        'data: {"choices":[{"delta":{"content":"하세요"}}]}',
+        "data: [DONE]",
+    ]
+
+    assert list(stream_chat_tokens_from_sse_lines(lines)) == ["안녕", "하세요"]
+
+
+def test_stream_tool_call_marker_detection_handles_split_tokens() -> None:
+    buffer = ""
+    detections: list[bool] = []
+    for token in ["확인", "\n<tool", "_call>", "{}"]:
+        buffer += token
+        detections.append(has_stream_tool_call_marker(buffer))
+
+    assert detections == [False, False, True, True]
 
 
 def test_llama_client_parses_qwen_xmlish_tool_call_with_parameters(
