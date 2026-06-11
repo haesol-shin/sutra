@@ -56,6 +56,226 @@ def test_llama_client_reads_openai_compatible_chat_response(monkeypatch: pytest.
     assert result.usage == {"total_tokens": 3}
 
 
+def test_llama_client_parses_qwen_xmlish_tool_call_with_parameters(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fake_post(url: str, json: dict[str, object], timeout: int) -> FakeResponse:
+        return FakeResponse(
+            200,
+            {
+                "model": "qwen",
+                "choices": [
+                    {
+                        "message": {
+                            "content": (
+                                "확인하겠습니다.\n"
+                                "<tool_call>\n"
+                                "<function=fetch_cafeteria_menu>\n"
+                                "<parameter=date>\n"
+                                "today\n"
+                                "</parameter>\n"
+                                "<parameter=location>\n"
+                                "global lounge\n"
+                                "</parameter>\n"
+                                "</function>\n"
+                                "</tool_call>\n"
+                            )
+                        }
+                    }
+                ],
+            },
+        )
+
+    monkeypatch.setattr("requests.post", fake_post)
+
+    result = LlamaClient().chat([{"role": "user", "content": "오늘 글로벌 라운지 메뉴"}])
+
+    assert result.content == "확인하겠습니다."
+    assert len(result.tool_calls) == 1
+    assert result.tool_calls[0].function_name == "fetch_cafeteria_menu"
+    assert result.tool_calls[0].function_arguments == '{"date":"today","location":"global lounge"}'
+
+
+def test_llama_client_parses_qwen_xmlish_tool_call_without_parameters(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fake_post(url: str, json: dict[str, object], timeout: int) -> FakeResponse:
+        return FakeResponse(
+            200,
+            {
+                "choices": [
+                    {
+                        "message": {
+                            "content": (
+                                "<tool_call>\n"
+                                "<function=fetch_latest_notices>\n"
+                                "</function>\n"
+                                "</tool_call>"
+                            )
+                        }
+                    }
+                ],
+            },
+        )
+
+    monkeypatch.setattr("requests.post", fake_post)
+
+    result = LlamaClient().chat([{"role": "user", "content": "최신 공지"}])
+
+    assert result.content == ""
+    assert len(result.tool_calls) == 1
+    assert result.tool_calls[0].function_name == "fetch_latest_notices"
+    assert result.tool_calls[0].function_arguments == "{}"
+
+
+def test_llama_client_parses_qwen_json_tool_call(monkeypatch: pytest.MonkeyPatch) -> None:
+    def fake_post(url: str, json: dict[str, object], timeout: int) -> FakeResponse:
+        return FakeResponse(
+            200,
+            {
+                "choices": [
+                    {
+                        "message": {
+                            "content": (
+                                '<tool_call>\n{"name": "fetch_calendar", '
+                                '"arguments": {"date": "2026-06-11"}}\n</tool_call>'
+                            )
+                        }
+                    }
+                ],
+            },
+        )
+
+    monkeypatch.setattr("requests.post", fake_post)
+
+    result = LlamaClient().chat([{"role": "user", "content": "오늘 학사일정"}])
+
+    assert result.content == ""
+    assert len(result.tool_calls) == 1
+    assert result.tool_calls[0].function_name == "fetch_calendar"
+    assert result.tool_calls[0].function_arguments == '{"date":"2026-06-11"}'
+
+
+def test_llama_client_parses_multiple_text_tool_calls(monkeypatch: pytest.MonkeyPatch) -> None:
+    def fake_post(url: str, json: dict[str, object], timeout: int) -> FakeResponse:
+        return FakeResponse(
+            200,
+            {
+                "choices": [
+                    {
+                        "message": {
+                            "content": (
+                                "<tool_call><function=fetch_cafeteria_menu></function></tool_call>\n"
+                                "and\n"
+                                '<tool_call>{"name":"fetch_latest_notices","arguments":{"limit":2}}</tool_call>'
+                            )
+                        }
+                    }
+                ],
+            },
+        )
+
+    monkeypatch.setattr("requests.post", fake_post)
+
+    result = LlamaClient().chat([{"role": "user", "content": "오늘 식단과 최신 공지"}])
+
+    assert result.content == "and"
+    assert [tool.function_name for tool in result.tool_calls] == [
+        "fetch_cafeteria_menu",
+        "fetch_latest_notices",
+    ]
+    assert [tool.function_arguments for tool in result.tool_calls] == [
+        "{}",
+        '{"limit":2}',
+    ]
+
+
+def test_llama_client_leaves_plain_content_without_tool_calls(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fake_post(url: str, json: dict[str, object], timeout: int) -> FakeResponse:
+        return FakeResponse(200, {"choices": [{"message": {"content": "일반 답변"}}]})
+
+    monkeypatch.setattr("requests.post", fake_post)
+
+    result = LlamaClient().chat([{"role": "user", "content": "안녕"}])
+
+    assert result.content == "일반 답변"
+    assert result.tool_calls == []
+
+
+def test_llama_client_ignores_incomplete_text_tool_call(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    content = "<tool_call>\n<function=fetch_cafeteria_menu>\n"
+
+    def fake_post(url: str, json: dict[str, object], timeout: int) -> FakeResponse:
+        return FakeResponse(200, {"choices": [{"message": {"content": content}}]})
+
+    monkeypatch.setattr("requests.post", fake_post)
+
+    result = LlamaClient().chat([{"role": "user", "content": "오늘 식단"}])
+
+    assert result.content == content
+    assert result.tool_calls == []
+
+
+def test_llama_client_ignores_unparseable_text_tool_call(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    content = "<tool_call>\nnot json or xml\n</tool_call>\n"
+
+    def fake_post(url: str, json: dict[str, object], timeout: int) -> FakeResponse:
+        return FakeResponse(200, {"choices": [{"message": {"content": content}}]})
+
+    monkeypatch.setattr("requests.post", fake_post)
+
+    result = LlamaClient().chat([{"role": "user", "content": "오늘 식단"}])
+
+    assert result.content == content
+    assert result.tool_calls == []
+
+
+def test_llama_client_keeps_server_tool_calls_without_text_parsing(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fake_post(url: str, json: dict[str, object], timeout: int) -> FakeResponse:
+        return FakeResponse(
+            200,
+            {
+                "choices": [
+                    {
+                        "message": {
+                            "content": (
+                                "<tool_call><function=fetch_cafeteria_menu></function></tool_call>"
+                            ),
+                            "tool_calls": [
+                                {
+                                    "id": "server-call",
+                                    "type": "function",
+                                    "function": {
+                                        "name": "server_tool",
+                                        "arguments": '{"source":"server"}',
+                                    },
+                                }
+                            ],
+                        }
+                    }
+                ],
+            },
+        )
+
+    monkeypatch.setattr("requests.post", fake_post)
+
+    result = LlamaClient().chat([{"role": "user", "content": "오늘 식단"}])
+
+    assert result.content == "<tool_call><function=fetch_cafeteria_menu></function></tool_call>"
+    assert len(result.tool_calls) == 1
+    assert result.tool_calls[0].id == "server-call"
+    assert result.tool_calls[0].function_name == "server_tool"
+    assert result.tool_calls[0].function_arguments == '{"source":"server"}'
+
+
 def test_llama_client_rejects_malformed_response(monkeypatch: pytest.MonkeyPatch) -> None:
     def fake_post(url: str, json: dict[str, object], timeout: int) -> FakeResponse:
         return FakeResponse(200, {"choices": []})
