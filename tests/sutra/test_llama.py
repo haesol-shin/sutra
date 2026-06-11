@@ -79,59 +79,45 @@ def test_llama_client_health_uses_health_endpoint(monkeypatch: pytest.MonkeyPatc
 # --- locate_llama_server tests ---
 
 
-def test_locate_cli_path_found(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("pathlib.Path.exists", lambda self: True)
-    monkeypatch.setattr("pathlib.Path.is_file", lambda self: True)
-    fake_path = "C:/fake/llama-server.exe"
-    result = locate_llama_server(fake_path)
-    assert result == Path(fake_path).resolve()
+def test_locate_cli_path_found() -> None:
+    """locate_llama_server is deprecated—always raises LlamaError."""
+    with pytest.raises(LlamaError, match="llama-server binary is no longer used"):
+        locate_llama_server("C:/fake/llama-server.exe")
 
 
-def test_locate_cli_path_not_found(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("pathlib.Path.exists", lambda self: False)
-    monkeypatch.setattr("pathlib.Path.is_file", lambda self: False)
-    with pytest.raises(LlamaError, match="explicitly configured path"):
+def test_locate_cli_path_not_found() -> None:
+    with pytest.raises(LlamaError, match="llama-server binary is no longer used"):
         locate_llama_server("C:/fake/missing.exe")
 
 
-def test_locate_empty_cli_path_raises(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("shutil.which", lambda cmd: None)
-    monkeypatch.delenv("LLAMA_SERVER_PATH", raising=False)
-    with pytest.raises(LlamaError):
+def test_locate_empty_cli_path_raises() -> None:
+    with pytest.raises(LlamaError, match="llama-server binary is no longer used"):
         locate_llama_server("")
 
 
 def test_locate_env_var_found(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("pathlib.Path.exists", lambda self: True)
-    monkeypatch.setattr("pathlib.Path.is_file", lambda self: True)
     monkeypatch.setenv("LLAMA_SERVER_PATH", "D:/llama/llama-server.exe")
-    result = locate_llama_server()
-    assert result == Path("D:/llama/llama-server.exe").resolve()
+    with pytest.raises(LlamaError, match="llama-server binary is no longer used"):
+        locate_llama_server()
 
 
 def test_locate_env_var_not_found(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("pathlib.Path.exists", lambda self: False)
-    monkeypatch.setattr("pathlib.Path.is_file", lambda self: False)
     monkeypatch.setenv("LLAMA_SERVER_PATH", "D:/llama/missing.exe")
-    with pytest.raises(LlamaError, match="LLAMA_SERVER_PATH"):
+    with pytest.raises(LlamaError, match="llama-server binary is no longer used"):
         locate_llama_server()
 
 
 def test_locate_system_path_found(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("pathlib.Path.exists", lambda self: True)
-    monkeypatch.setattr("pathlib.Path.is_file", lambda self: True)
     monkeypatch.setattr("shutil.which", lambda cmd: "C:/bin/llama-server.exe")
     monkeypatch.delenv("LLAMA_SERVER_PATH", raising=False)
-    result = locate_llama_server()
-    assert result == Path("C:/bin/llama-server.exe").resolve()
+    with pytest.raises(LlamaError, match="llama-server binary is no longer used"):
+        locate_llama_server()
 
 
 def test_locate_all_fail(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("pathlib.Path.exists", lambda self: False)
-    monkeypatch.setattr("pathlib.Path.is_file", lambda self: False)
     monkeypatch.setattr("shutil.which", lambda cmd: None)
     monkeypatch.delenv("LLAMA_SERVER_PATH", raising=False)
-    with pytest.raises(LlamaError, match="github.com/ggerganov/llama.cpp/releases"):
+    with pytest.raises(LlamaError, match="llama-server binary is no longer used"):
         locate_llama_server()
 
 
@@ -154,6 +140,7 @@ def test_download_model_raises_if_huggingface_hub_missing(monkeypatch: pytest.Mo
 
 
 def test_download_model_calls_hf_hub_download(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    pytest.importorskip("huggingface_hub")
     dest_dir = tmp_path / "models"
 
     called: dict[str, object] = {}
@@ -185,10 +172,8 @@ def test_download_model_calls_hf_hub_download(monkeypatch: pytest.MonkeyPatch, t
 
 
 def test_start_llama_server_dry_run_basic(capsys: pytest.CaptureFixture) -> None:
-    exe = Path("/usr/bin/llama-server")
     model = Path("/models/qwen.gguf")
     result = start_llama_server(
-        executable_path=exe,
         model_path=model,
         port=18080,
         gpu_layers=0,
@@ -197,17 +182,17 @@ def test_start_llama_server_dry_run_basic(capsys: pytest.CaptureFixture) -> None
     captured = capsys.readouterr()
     assert result is None
     assert "[dry-run] Command:" in captured.out
-    assert str(exe) in captured.out
     assert "--model" in captured.out
     assert str(model) in captured.out
     assert "--port" in captured.out
     assert "18080" in captured.out
-    assert "-ngl" not in captured.out
+    assert "--n_gpu_layers" in captured.out
+    assert "--n_ctx" in captured.out
+    assert "2048" in captured.out
 
 
 def test_start_llama_server_dry_run_with_gpu(capsys: pytest.CaptureFixture) -> None:
     result = start_llama_server(
-        executable_path=Path("llama-server.exe"),
         model_path=Path("model.gguf"),
         port=18080,
         gpu_layers=24,
@@ -215,31 +200,35 @@ def test_start_llama_server_dry_run_with_gpu(capsys: pytest.CaptureFixture) -> N
     )
     captured = capsys.readouterr()
     assert result is None
-    assert "-ngl" in captured.out
+    assert "--n_gpu_layers" in captured.out
     assert "24" in captured.out
+    assert "--n_ctx" in captured.out
+
+
+def test_start_llama_server_dry_run_with_custom_n_ctx(capsys: pytest.CaptureFixture) -> None:
+    result = start_llama_server(
+        model_path=Path("model.gguf"),
+        port=18080,
+        dry_run=True,
+        n_ctx=4096,
+    )
+    captured = capsys.readouterr()
+    assert result is None
+    assert "--n_ctx" in captured.out
+    assert "4096" in captured.out
 
 
 def test_start_llama_server_missing_model(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("pathlib.Path.exists", lambda self: False)
     with pytest.raises(LlamaError, match="Model file not found"):
         start_llama_server(
-            executable_path=Path("llama-server.exe"),
             model_path=Path("missing.gguf"),
             dry_run=False,
         )
 
 
-def test_start_llama_server_missing_binary(monkeypatch: pytest.MonkeyPatch) -> None:
-    def fake_exists(self: Path) -> bool:
-        return "model" in str(self) or "gguf" in str(self)
-
-    monkeypatch.setattr("pathlib.Path.exists", fake_exists)
-    with pytest.raises(LlamaError, match="llama-server binary not found"):
-        start_llama_server(
-            executable_path=Path("missing.exe"),
-            model_path=Path("model.gguf"),
-            dry_run=False,
-        )
+def test_start_llama_server_missing_binary() -> None:
+    pytest.skip("Binary existence check removed; server now uses python -m llama_cpp.server")
 
 
 def test_start_llama_server_spawns_process(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -256,26 +245,26 @@ def test_start_llama_server_spawns_process(monkeypatch: pytest.MonkeyPatch) -> N
     monkeypatch.setattr("subprocess.Popen", fake_popen)
 
     result = start_llama_server(
-        executable_path=Path("/usr/bin/llama-server"),
         model_path=Path("/models/qwen.gguf"),
         port=18080,
         gpu_layers=24,
-        reasoning="off",
+        n_ctx=4096,
         dry_run=False,
     )
 
     assert result is mock_process
-    assert captured_cmd[0][0] == str(Path("/usr/bin/llama-server"))
-    assert captured_cmd[0][1] == "--model"
-    assert captured_cmd[0][2] == str(Path("/models/qwen.gguf"))
-    assert captured_cmd[0][3] == "--port"
-    assert captured_cmd[0][4] == "18080"
-    assert captured_cmd[0][5] == "--reasoning"
-    assert captured_cmd[0][6] == "off"
-    assert captured_cmd[0][7] == "-ngl"
-    assert captured_cmd[0][8] == "24"
+    cmd = captured_cmd[0]
+    assert "--model" in cmd
+    assert str(Path("/models/qwen.gguf")) in cmd
+    assert "--port" in cmd
+    assert "18080" in cmd
+    assert "--n_gpu_layers" in cmd
+    assert "24" in cmd
+    assert "--n_ctx" in cmd
+    assert "4096" in cmd
 
 
+@pytest.mark.skip(reason="Win32 job object wrapping removed; server now uses python -m llama_cpp.server without job object assignment")
 def test_start_llama_server_win32_job_object(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("sys.platform", "win32")
     monkeypatch.setattr("pathlib.Path.exists", lambda self: True)
@@ -297,7 +286,6 @@ def test_start_llama_server_win32_job_object(monkeypatch: pytest.MonkeyPatch) ->
     monkeypatch.setattr("ctypes.WinDLL", lambda name, use_last_error=True: mock_kernel32)
 
     result = start_llama_server(
-        executable_path=Path("llama-server.exe"),
         model_path=Path("model.gguf"),
         dry_run=False,
     )

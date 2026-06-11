@@ -14,6 +14,7 @@ from sutra.retrieval import (
     _get_or_build_bm25,
     rank,
 )
+import sutra.retrieval as _retrieval
 
 
 def _u(s: str) -> str:
@@ -80,6 +81,9 @@ def test_legacy_fallback_warning() -> None:
     docs = [
         Document(id="doc-1", title=_u("\\uc81c\\ubaa91"), text=_u("\\ub0b4\\uc6a91")),
     ]
+    
+    # Reset the module-level warning flag so we get a fresh DeprecationWarning
+    _retrieval._legacy_warned = False
     
     # Mocking availability to force legacy fallback
     with mock.patch("sutra.retrieval._KIWI_AVAILABLE", False), \

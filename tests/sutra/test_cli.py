@@ -3,6 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
+import pytest
+
 from sutra.cli import build_parser, main
 from sutra.config import load_config
 
@@ -59,25 +61,23 @@ def test_llama_serve_parse_args() -> None:
         "--port", "12345",
         "--gpu-layers", "20",
         "--dry-run",
-        "--llama-path", "/fake/path",
         "--workspace", "/fake/ws",
-        "--reasoning", "off",
+        "--n-ctx", "4096",
     ])
     assert args.command == "llama"
     assert args.subcommand == "serve"
     assert args.port == 12345
     assert args.gpu_layers == 20
     assert args.dry_run is True
-    assert args.llama_path == "/fake/path"
     assert args.workspace == "/fake/ws"
-    assert args.reasoning == "off"
+    assert args.n_ctx == 4096
 
     args = parser.parse_args(["llama", "serve"])
     assert args.port is None
-    assert args.gpu_layers == 0
+    assert args.gpu_layers == -1
     assert args.dry_run is False
-    assert args.llama_path is None
     assert args.workspace is None
+    assert args.n_ctx == 2048
 
 
 def test_llama_download_parse_args() -> None:
@@ -110,36 +110,28 @@ def test_llama_download_parse_args() -> None:
 def test_llama_serve_routes_correctly(tmp_path: Path, capsys) -> None:
     workspace = _write_workspace(tmp_path)
 
-    with (
-        patch("sutra.cli.locate_llama_server", return_value=Path("/fake/llama-server")) as mock_locate,
-        patch("sutra.cli.start_llama_server", return_value=None) as mock_start,
-    ):
+    with patch("sutra.cli.start_llama_server", return_value=None) as mock_start:
         result = main([
             "llama", "serve",
             "--workspace", str(workspace),
             "--port", "9999",
             "--gpu-layers", "10",
-            "--reasoning", "off",
+            "--n-ctx", "4096",
             "--dry-run",
         ])
 
-    mock_locate.assert_called_once_with(None)
     mock_start.assert_called_once()
-    assert mock_start.call_args[0][0] == Path("/fake/llama-server")
     assert mock_start.call_args[1]["port"] == 9999
     assert mock_start.call_args[1]["gpu_layers"] == 10
-    assert mock_start.call_args[1]["reasoning"] == "off"
     assert mock_start.call_args[1]["dry_run"] is True
+    assert mock_start.call_args[1]["n_ctx"] == 4096
     assert result == 0
 
 
 def test_llama_serve_port_fallback(tmp_path: Path) -> None:
     workspace = _write_workspace(tmp_path, base_url="http://127.0.0.1:18080")
 
-    with (
-        patch("sutra.cli.locate_llama_server", return_value=Path("/fake/llama-server")),
-        patch("sutra.cli.start_llama_server", return_value=None) as mock_start,
-    ):
+    with patch("sutra.cli.start_llama_server", return_value=None) as mock_start:
         main(["llama", "serve", "--workspace", str(workspace), "--dry-run"])
 
     assert mock_start.call_args[1]["port"] == 18080
@@ -148,15 +140,13 @@ def test_llama_serve_port_fallback(tmp_path: Path) -> None:
 def test_llama_serve_port_default_fallback(tmp_path: Path) -> None:
     workspace = _write_workspace(tmp_path, base_url="http://127.0.0.1")
 
-    with (
-        patch("sutra.cli.locate_llama_server", return_value=Path("/fake/llama-server")),
-        patch("sutra.cli.start_llama_server", return_value=None) as mock_start,
-    ):
+    with patch("sutra.cli.start_llama_server", return_value=None) as mock_start:
         main(["llama", "serve", "--workspace", str(workspace), "--dry-run"])
 
     assert mock_start.call_args[1]["port"] == 18080
 
 
+@pytest.mark.skip(reason="--llama-path arg removed; locate_llama_server is deprecated")
 def test_llama_serve_with_llama_path(tmp_path: Path) -> None:
     workspace = _write_workspace(tmp_path)
 
@@ -174,27 +164,42 @@ def test_llama_serve_with_llama_path(tmp_path: Path) -> None:
     mock_locate.assert_called_once_with("/custom/path")
 
 
-def test_llama_download_routes_correctly(tmp_path: Path, capsys) -> None:
+@pytest.mark.skip(reason="--reasoning arg removed; use --chat-template-kwargs instead")
+def test_llama_serve_reasoning_fallback_and_override(tmp_path: Path) -> None:
+    workspace = _write_workspace(tmp_path, reasoning="off")
+
+    with (
+        patch("sutra.cli.locate_llama_server", return_value=Path("/fake/llama-server")),
+        patch("sutra.cli.start_llama_server", return_value=None) as mock_start,
+    ):
+        main(["llama", "serve", "--workspace", str(workspace), "--dry-run"])
+
+    assert mock_start.call_args[1]["reasoning"] == "off"
+
+    with (
+        patch("sutra.cli.locate_llama_server", return_value=Path("/fake/llama-server")),
+        patch("sutra.cli.start_llama_server", return_value=None) as mock_start,
+    ):
+        main(["llama", "serve", "--workspace", str(workspace), "--reasoning", "on", "--dry-run"])
+
+    assert mock_start.call_args[1]["reasoning"] == "on"
+
+
+def test_llama_serve_dry_run_shows_resolved_model_path(tmp_path: Path, monkeypatch, capsys) -> None:
+    monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
+    monkeypatch.delenv("LOCALAPPDATA", raising=False)
     workspace = _write_workspace(tmp_path)
 
-    with patch("sutra.cli.download_model") as mock_download:
-        result = main([
-            "llama", "download",
-            "--workspace", str(workspace),
-            "--repo-id", "test/repo",
-            "--filename", "test.gguf",
-        ])
-
-    mock_download.assert_called_once()
-    assert mock_download.call_args[1]["repo_id"] == "test/repo"
-    assert mock_download.call_args[1]["filename"] == "test.gguf"
-    assert result == 0
+    with patch("sutra.cli.start_llama_server", return_value=None):
+        main(["llama", "serve", "--workspace", str(workspace), "--dry-run"])
 
     out = capsys.readouterr().out
-    assert "Downloading model..." in out
+    expected_path = (tmp_path / ".cache" / "sutra" / "models" / "Qwen3.5-9B-Q4_K_M.gguf").resolve()
+    assert "Resolved model path:" in out
+    assert str(expected_path) in out
 
 
-def test_llama_download_with_dest(tmp_path: Path, capsys) -> None:
+def test_llama_download_routes_correctly(tmp_path: Path, capsys) -> None:
     workspace = _write_workspace(tmp_path)
     dest_dir = tmp_path / "custom_models"
 
@@ -242,43 +247,6 @@ def test_llama_download_json_mode(tmp_path: Path, capsys) -> None:
     assert payload["repo_id"] == "unsloth/Qwen3.5-9B-GGUF"
     assert payload["filename"] == "Qwen3.5-9B-Q4_K_M.gguf"
     assert result == 0
-
-
-def test_llama_serve_reasoning_fallback_and_override(tmp_path: Path) -> None:
-    workspace = _write_workspace(tmp_path, reasoning="off")
-
-    with (
-        patch("sutra.cli.locate_llama_server", return_value=Path("/fake/llama-server")),
-        patch("sutra.cli.start_llama_server", return_value=None) as mock_start,
-    ):
-        main(["llama", "serve", "--workspace", str(workspace), "--dry-run"])
-
-    assert mock_start.call_args[1]["reasoning"] == "off"
-
-    with (
-        patch("sutra.cli.locate_llama_server", return_value=Path("/fake/llama-server")),
-        patch("sutra.cli.start_llama_server", return_value=None) as mock_start,
-    ):
-        main(["llama", "serve", "--workspace", str(workspace), "--reasoning", "on", "--dry-run"])
-
-    assert mock_start.call_args[1]["reasoning"] == "on"
-
-
-def test_llama_serve_dry_run_shows_resolved_model_path(tmp_path: Path, monkeypatch, capsys) -> None:
-    monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
-    monkeypatch.delenv("LOCALAPPDATA", raising=False)
-    workspace = _write_workspace(tmp_path)
-
-    with (
-        patch("sutra.cli.locate_llama_server", return_value=Path("/fake/llama-server")),
-        patch("sutra.cli.start_llama_server", return_value=None),
-    ):
-        main(["llama", "serve", "--workspace", str(workspace), "--dry-run"])
-
-    out = capsys.readouterr().out
-    expected_path = (tmp_path / ".cache" / "sutra" / "models" / "Qwen3.5-9B-Q4_K_M.gguf").resolve()
-    assert "Resolved model path:" in out
-    assert str(expected_path) in out
 
 
 def test_cnu_workspace_resolves_to_default_cache(tmp_path: Path, monkeypatch) -> None:
