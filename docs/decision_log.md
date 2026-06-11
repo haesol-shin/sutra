@@ -2,6 +2,44 @@
 
 This file records short rationale for important project decisions. It is append-only history and does not override `docs/project_state.md`.
 
+## 2026-06-12
+
+Type: feat
+Decision: Neutralize the system prompt and rewrite all tool descriptions to Anthropic-style 3-4 sentence "when to use" form; re-ground prompt examples to the corpus.
+Reason: The prompt biased the model toward calling specific tools (식단 "먼저 호출"), polluting A1/A2/A3 mode comparison; old examples carried fabricated graduation numbers and a false weekend-shuttle claim.
+Consequence: tool_policy carries only general principles; graduation example uses 컴퓨터인공지능학부 with no fabricated total credits; shuttle example states weekday-only operation; fetch_cafeteria_menu enum drops 제1학생회관 (food court, no per-day menu).
+Links: `examples/cnu-campus/prompts/system.md`, `src/sutra/tools.py` (squash ba7b5ac)
+
+Type: feat
+Decision: Prune the calendar corpus to month-level documents only, removing 276 per-event chunks; rewrite the shuttle corpus and drop the geology-dept-sourced notice document.
+Reason: Per-event calendar chunks (avg 42 chars) competed with month docs in BM25 and added retrieval noise; the shuttle campus-loop route was contaminated with the internal-loop stop list, and the notice doc misattributed shuttle facts to a 지질환경과학과 source.
+Consequence: Index 371 → 94 docs (academic_calendar 50, notices 24, dining 12, graduation 5, shuttle 3). Shuttle now has 3 clean docs (summary + 2 route docs); the notice doc's unique facts (operating period, 2 buses) were absorbed into the summary with provenance labels.
+Links: `examples/cnu-campus/scripts/build_calendar_index.py`, `build_shuttle_index.py` (squash 0089526)
+
+Type: feat
+Decision: Expand fetch_recent_notices to 5 boards with an optional board param, and implement keyword search as client-side title filtering (not server-side params).
+Reason: Live notices are the core of the real-time grading goal; server-side board search parameters proved unreliable on both CMSes (plus board has only the global netpia widget; computer srSearch params return mixed results — verified live by the orchestrator).
+Consequence: Boards = 학교 학사공지/새소식, 학부 학사공지/소식/사업단. Omitting board fetches all 5 in parallel and merges by date. keywords filters fetched titles (OR, partial match) with body excerpts for matches and a fan-out to the remaining 3 boards on zero hits.
+Links: `src/sutra/tools.py`
+
+Type: feat
+Decision: Guard fetch_cafeteria_menu against out-of-range dates by comparing the requested-date menu body against today's; identical bodies are treated as the site's fake-fallback data and blocked.
+Reason: The dining site returns today's content for future dates (verified: 6/12, 6/15, 6/16 menu bodies byte-identical), which surfaced as a hallucinated future menu in the tool_only experiment.
+Consequence: Requests for non-today dates fetch twice and compare; identical → "신뢰 가능한 데이터 없음" evidence; different → real data. The fixed-week guard was rejected in favor of this always-compare approach (auto-handles Sunday site updates).
+Links: `src/sutra/tools.py`
+
+Type: decision
+Decision: Adopt "Option A" — the router executes the forced tool even when RAG returns zero evidence; the empty-evidence early return now applies only to non-forced domains. Also remove the smalltalk prefilter and add internal-identifier leak prevention (Korean enum labels + display↔internal mapping + output sanitization).
+Reason: The forced-tool branch sat below an empty-RAG early return inherited from the original RAG-first ask() design, so live-only questions could skip the live source the router selected; tool enum values (univ_academic 등) leaked into user answers.
+Consequence: dining/notices forced tools fire regardless of RAG; classifier-routed mode is feature-complete and pending a final large experiment to decide grading-path adoption (router vs default). chatbot.sh n_ctx 4096 → 8192; submission requirements include rag/legacy/ui extras (kiwipiepy, bm25s; no torch).
+Links: `src/sutra/service.py`, `src/sutra/tools.py`, `scripts/build_submission.py` (squash 7cf7d56)
+
+Type: decision
+Decision: Reject the predict_proba confidence gate for OOD routing.
+Reason: Calibration probe showed in-scope max-proba (min 0.295) and OOD max-proba (max 0.978) fully overlap; no threshold rejects a majority of OOD without dropping in-scope questions.
+Consequence: OOD handling falls back to RAG default behavior; no confidence gate added. (Smalltalk prefilter also removed as a heuristic.)
+Links: `src/nlp_term/classify/predict.py` (unchanged; probe only)
+
 ## 2026-06-11
 
 Type: feat

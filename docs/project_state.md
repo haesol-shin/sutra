@@ -1,6 +1,6 @@
 # Project State
 
-Last updated: 2026-06-11
+Last updated: 2026-06-12
 
 This file is the primary memory document to read at the start of a new session. It outlines the active project direction and state.
 
@@ -34,9 +34,12 @@ Raw source files are git-ignored, with raw provenance metadata tracked in `data/
    - `fetch_page_text`: Fetches page content
    - `search_knowledge_base`: RAG exposed as a tool for equal footing with live tools
    - Relative-date query expansion: `retrieve()` appends KST date tokens for 오늘/내일/모레/어제 to BM25 query (original question preserved)
-4. **Service Modes**: `service.ask()` supports `mode="tool_only"` (RAG and tools on equal footing); classifier-routed mode in progress.
-5. **Future Work**:
+4. **Service Modes**: `service.ask()` supports `mode="default"` (RAG pre-injected + autonomous tools), `mode="tool_only"` (RAG and tools on equal footing), and `mode="router"` (Task1-classifier forced tool routing for dining/notices, RAG for calendar/graduation/shuttle; includes Option A — forced tools fire even on empty RAG). Default remains the byte-invariant grading path.
+5. **Routing Decision (pending)**: A3 router is the chosen routing design. A large default-vs-router experiment (58 probes, n_ctx 8192, 94-doc corpus) is the basis for deciding whether to switch the grading path from default to router; the switch is the user's call from the report.
+6. **Notices/Dining Tools**: `fetch_recent_notices` now covers 5 boards (학교 학사공지/새소식, 학부 학사공지/소식/사업단) with optional board, client-side keyword filtering, and body excerpts. `fetch_cafeteria_menu` blocks out-of-range dates via menu-body comparison.
+7. **Future Work**:
    - Address CNU graduation requirements PDF OCR constraints (currently limited past page 3).
+   - Hybrid BM25+embedding retrieval (50/50, decided but unimplemented).
 
 ## Legacy Reference Context (Assignment Tasks)
 
