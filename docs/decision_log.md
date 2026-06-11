@@ -2,6 +2,54 @@
 
 This file records short rationale for important project decisions. It is append-only history and does not override `docs/project_state.md`.
 
+## 2026-06-11
+
+Type: feat
+Decision: Rebuild dining corpus as per-day documents + an operating-info doc + 6 제1학생회관 food-court corner docs, removing all "운영안함" noise.
+Reason: "운영안함" was 63% of slot lines and per-cafeteria-per-day docs broke week-range queries (top_k).
+Consequence: 12 dining docs, week queries fit top_k, operating schedule auto-derived from data.
+Links: `examples/cnu-campus/scripts/build_dining_index.py`, `src/sutra/dining_format.py`
+
+## 2026-06-11
+
+Type: feat
+Decision: Share src/sutra/dining_format.py between the corpus build and the live fetch_cafeteria_menu tool.
+Reason: the live tool previously returned raw site text (운영안함 noise, 조식/중식/석식) inconsistent with the cleaned corpus.
+Consequence: live cafeteria fetch returns the same clean 아침/점심/저녁 format in real time; rowspan-safe HTML parsing prevents data loss.
+Links: `src/sutra/tools.py`, `src/sutra/dining_format.py`
+
+## 2026-06-11
+
+Type: feat
+Decision: Add search_knowledge_base tool and ask(mode="tool_only") so RAG competes with live tools on equal footing.
+Reason: with RAG always pre-injected, the model called tools only ~0-17% of the time; an experiment is needed to test whether equal footing improves routing.
+Consequence: experimental tool_only path added; default ask path unchanged.
+Links: `src/sutra/service.py`, `src/sutra/tools.py`
+
+## 2026-06-11
+
+Type: decision
+Decision: Hybrid BM25+embedding retrieval at 50/50 weight, no per-domain weighting.
+Reason: experiments showed embeddings separate relevant/irrelevant better (AUC 0.889 vs BM25 0.769) and recover colloquial/dining queries, while BM25 wins on notices; per-domain weighting gave +0.0%p.
+Consequence: hybrid confirmed at fixed 50/50; per-domain weighting rejected.
+Links: `docs/sutra_architecture.md`
+
+## 2026-06-11
+
+Type: decision
+Decision: Route RAG-vs-tool deterministically via the Task1 classifier, forcing the tool with tool_choice={"type":"function","function":{"name":...}} for dining and notices; calendar/graduation/shuttle use RAG.
+Reason: free model tool-calling is unreliable (0-17%); the server honors named tool_choice forcing (verified) but ignores tool_choice="required".
+Consequence: classifier-routed ask mode in progress; thinking-mode was rejected (no tool-call gain, 3.4x latency).
+Links: `src/sutra/service.py`, `src/nlp_term/classify/predict.py`
+
+## 2026-06-11
+
+Type: feat
+Decision: Chainlit UI gains trace logging (logs/chat_trace.jsonl), feedback actions (👍/👎/💬), source side-panel with score filter (keep docs >= 0.4*top1), streaming, and English interface labels.
+Reason: debugging visibility, feedback collection, and answer readability.
+Consequence: UI rewritten; logs/ gitignored.
+Links: `src/sutra/ui.py`, `src/sutra/tracelog.py`
+
 ## 2026-06-09
 
 Type: docs
