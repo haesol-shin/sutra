@@ -1078,7 +1078,7 @@ def fetch_academic_calendar(month: int | None = None) -> list[Evidence]:
         return []
     if not lines:
         return []
-    header = f"오늘: {today.strftime('%Y-%m-%d')} (KST)"
+    header = f"오늘: {today.strftime('%Y-%m-%d')} (한국 표준시)"
     return [
         Evidence(
             id="live_academic_calendar",

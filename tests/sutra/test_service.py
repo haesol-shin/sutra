@@ -722,7 +722,7 @@ def test_ask_router_falls_back_to_rag_when_forced_tool_returns_no_evidence(
     assert client.calls[1]["tools"] is None
     assert answer.answer == (
         "저장된 식단 근거로 답합니다."
-        "\n\n(Unable to fetch live data. Response is based on stored information.)"
+        "\n\n(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)"
     )
     assert answer.evidence[0].id == "dining-1"
     assert answer.trace["routed_domain"] == "dining"

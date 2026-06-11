@@ -143,7 +143,7 @@ def ask(
                 max_tokens=config.runtime.max_tokens,
             )
         else:
-            disclaimer = "\n\n(Unable to fetch live data. Response is based on stored information.)"
+            disclaimer = "\n\n(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)"
             if result.content:
                 result = LlamaResult(
                     content=result.content + disclaimer,
@@ -304,7 +304,7 @@ def _ask_router(
             result = LlamaResult(
                 content=(
                     fallback_result.content
-                    + "\n\n(Unable to fetch live data. Response is based on stored information.)"
+                    + "\n\n(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)"
                 ),
                 model=fallback_result.model,
                 usage=fallback_result.usage,
