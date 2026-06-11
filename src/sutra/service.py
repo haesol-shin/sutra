@@ -34,7 +34,11 @@ def ask(
     client: ChatClient | None = None,
     live: bool = False,
 ) -> Answer:
-    """Ask a single question and return an Answer."""
+    """Ask a single question and return an Answer.
+
+    The live flag is accepted for backward compatibility. Tool definitions are
+    always injected; the model decides whether to call one.
+    """
     config = workspace if isinstance(workspace, Config) else load_config(workspace)
     documents = load_documents(config)
     evidence = retrieve(question, documents, config)
@@ -52,7 +56,7 @@ def ask(
     prompt = render_prompt(question, evidence, config)
     llm = client or LlamaClient(config.runtime.base_url, timeout_seconds=config.runtime.timeout_seconds)
 
-    tools = get_tool_definitions() if live else None
+    tools = get_tool_definitions()
     result = llm.chat(
         prompt.messages,
         model=config.runtime.model,
@@ -65,7 +69,7 @@ def ask(
     if tools and result.tool_calls:
         extra = []
         for tc in result.tool_calls:
-            fresh = dispatch(tc.function_name)
+            fresh = dispatch(tc.function_name, tc.function_arguments)
             if fresh:
                 extra.extend(fresh)
                 called_tools.append(tc.function_name)

@@ -1,0 +1,240 @@
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
+
+from requests import Response
+
+from sutra import service
+from sutra.models import LlamaResult, Message
+from sutra.tools import (
+    SOURCE_REGISTRY,
+    _get,
+    dispatch,
+    fetch_academic_calendar,
+    fetch_cafeteria_menu,
+    fetch_page_text,
+    fetch_recent_notices,
+    get_tool_definitions,
+)
+
+
+FIXTURES = Path(__file__).parent / "fixtures"
+
+
+class FakeResponse:
+    def __init__(self, text: str) -> None:
+        self.text = text
+        self.headers = {"Content-Type": "text/html; charset=utf-8"}
+
+    def raise_for_status(self) -> None:
+        return None
+
+
+def fake_get_factory(mapping: dict[str, str]):
+    def fake_get(url: str, **kwargs: Any) -> FakeResponse:
+        for key, fixture_name in mapping.items():
+            if key in url:
+                return FakeResponse((FIXTURES / fixture_name).read_text(encoding="utf-8"))
+        raise AssertionError(f"unexpected URL: {url}")
+
+    return fake_get
+
+
+def test_get_decodes_charsetless_utf8_response(monkeypatch) -> None:
+    response = Response()
+    response.status_code = 200
+    response._content = "2026학년도 학교셔틀버스 운영 안내".encode("utf-8")
+    response.encoding = "latin-1"
+    response.headers["Content-Type"] = "text/html"
+
+    def fake_get(url: str, **kwargs: Any) -> Response:
+        return response
+
+    monkeypatch.setattr("sutra.tools.requests.get", fake_get)
+
+    assert _get("https://plus.cnu.ac.kr/example") == "2026학년도 학교셔틀버스 운영 안내"
+
+
+def test_recent_university_notices_separate_pinned_and_sort_regular_by_date(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "sutra.tools.requests.get",
+        fake_get_factory({"_board": "notice_board.html"}),
+    )
+
+    evidence = fetch_recent_notices(board="univ_academic", limit=3)
+
+    text = evidence[0].text
+    assert "최신 공지" in text
+    assert "고정 공지" in text
+    recent_section = text.split("고정 공지", 1)[0]
+    assert recent_section.index("[2026-06-11]") < recent_section.index("[2026-06-09]")
+    assert recent_section.index("[2026-06-09]") < recent_section.index("[2026-06-08]")
+    assert "[2026-04-16]" not in recent_section
+    assert "[2026-04-16] 2026학년도 하기 계절학기 국내 다른 대학 수학 안내" in text
+
+
+def test_recent_cs_notices_use_department_skin_date_and_absolute_url(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "sutra.tools.requests.get",
+        fake_get_factory({"bachelor.do": "dept_cs_notice.html"}),
+    )
+
+    evidence = fetch_recent_notices(board="cs_dept", limit=2)
+
+    text = evidence[0].text
+    assert "[2026-06-01] 2026 하기 계절학기 수강료 추기 납부 안내 (조교 김정화) — https://computer.cnu.ac.kr/computer/notice/bachelor.do?mode=view&articleNo=588027&article.offset=0&articleLimit=10" in text
+    assert "고정 공지" in text
+    assert "[2026-06-09] [종합설계1] 결과보고서 제출 안내 (조교 김정화)" in text
+
+
+def test_cafeteria_menu_parses_known_dish_price_and_closed_entries(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "sutra.tools.requests.get",
+        fake_get_factory({"food": "food.html"}),
+    )
+
+    evidence = fetch_cafeteria_menu(date="2026-06-11", cafeteria="제2학생회관")
+
+    text = evidence[0].text
+    assert "오늘: 2026-06-11 (KST)" in text
+    assert "제2학생회관 중식(학생): 정식(4000) 안동찜닭덮밥, 왕새우튀김" in text
+    assert "제2학생회관 조식(직원): 운영안함" in text
+
+
+def test_academic_calendar_filters_requested_month(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "sutra.tools.requests.get",
+        fake_get_factory({"academic_calendar": "calendar.html"}),
+    )
+
+    evidence = fetch_academic_calendar(month=6)
+
+    text = evidence[0].text
+    assert text.startswith("오늘:")
+    assert "[06.09~06.12] 정기휴업일 수업결손 보충강의" in text
+    assert "[06.22~07.10] 하기 계절학기" in text
+    assert "05.07" not in text
+
+
+def test_page_text_registry_extracts_shuttle_text_and_strips_noise(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "sutra.tools.requests.get",
+        fake_get_factory({"sub05_050403": "shuttle.html"}),
+    )
+
+    evidence = fetch_page_text(source_id="shuttle")
+
+    text = evidence[0].text
+    assert text.startswith("2026학년도 학교셔틀버스 운영 안내")
+    assert "학교셔틀버스 운영 안내" in text
+    assert "월평역" in text
+    assert "08:20" in text
+    assert "사이트맵" not in text
+    assert "window.noise" not in text
+    assert len(text) <= 3000
+
+
+def test_source_registry_excludes_unverified_graduation_curriculum_url() -> None:
+    assert "graduation_curriculum" not in SOURCE_REGISTRY
+    assert all("graduation.do" not in source["url"] for source in SOURCE_REGISTRY.values())
+
+
+def test_tool_schemas_enum_constrain_string_arguments() -> None:
+    schemas = {item["function"]["name"]: item["function"]["parameters"] for item in get_tool_definitions()}
+
+    assert schemas["fetch_recent_notices"]["properties"]["board"]["enum"] == ["univ_academic", "cs_dept"]
+    assert schemas["fetch_cafeteria_menu"]["properties"]["cafeteria"]["enum"] == [
+        "제1학생회관",
+        "제2학생회관",
+        "제3학생회관",
+        "제4학생회관",
+        "생활과학대학",
+        None,
+    ]
+    assert schemas["fetch_page_text"]["properties"]["source_id"]["enum"] == [
+        "shuttle",
+        "course_registration_guide",
+    ]
+
+
+def test_dispatch_passes_tool_arguments(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "sutra.tools.requests.get",
+        fake_get_factory({"_board": "notice_board.html"}),
+    )
+
+    evidence = dispatch("fetch_recent_notices", '{"board":"univ_academic","limit":1}')
+
+    assert len(evidence) == 1
+    assert evidence[0].text.count("[2026-06-") == 1
+
+
+class CapturingClient:
+    def __init__(self) -> None:
+        self.tools: list[dict[str, Any]] | None = None
+
+    def chat(
+        self,
+        messages: list[Message],
+        *,
+        model: str | None = None,
+        temperature: float = 0.2,
+        max_tokens: int = 512,
+        tools: list[dict[str, Any]] | None = None,
+    ) -> LlamaResult:
+        self.tools = tools
+        return LlamaResult(content="답변", model=model)
+
+
+def test_service_ask_injects_tools_even_when_live_false(tmp_path: Path) -> None:
+    workspace = _write_workspace(tmp_path)
+    client = CapturingClient()
+
+    service.ask("수강신청 언제 시작해?", workspace=workspace, client=client, live=False)
+
+    assert client.tools
+    assert {item["function"]["name"] for item in client.tools} >= {
+        "fetch_recent_notices",
+        "fetch_cafeteria_menu",
+        "fetch_academic_calendar",
+        "fetch_page_text",
+    }
+
+
+def _write_workspace(root: Path) -> Path:
+    (root / "data").mkdir()
+    (root / "prompts").mkdir()
+    (root / "data" / "index.jsonl").write_text(
+        '{"id":"calendar-1","title":"수강신청 일정","text":"수강신청은 2월 1일에 시작합니다.","source_name":"학사일정","metadata":{"label":"calendar"}}\n',
+        encoding="utf-8",
+    )
+    (root / "prompts" / "system.md").write_text("You are a grounded assistant.", encoding="utf-8")
+    (root / "prompts" / "answer.md").write_text("Use the evidence context.", encoding="utf-8")
+    config_path = root / "sutra.toml"
+    config_path.write_text(
+        """
+[workspace]
+name = "fixture"
+timezone = "Asia/Seoul"
+
+[runtime]
+backend = "llama-server"
+base_url = "http://127.0.0.1:18080"
+model = "fake-qwen"
+temperature = 0.1
+max_tokens = 128
+
+[rag]
+index_path = "data/index.jsonl"
+top_k = 1
+max_fact_chars = 120
+backend = "lexical"
+
+[prompts]
+system = "prompts/system.md"
+answer = "prompts/answer.md"
+""".strip(),
+        encoding="utf-8",
+    )
+    return config_path
