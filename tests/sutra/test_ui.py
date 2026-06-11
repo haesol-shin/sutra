@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import os
 import socket
 import subprocess
@@ -102,7 +103,7 @@ class TestDependencyCheck:
         assert result == 0
 
 
-@pytest.mark.skip(reason="integration test requires chainlit which is not installed in base+dev sync")
+@pytest.mark.skipif(importlib.util.find_spec("chainlit") is None, reason="requires chainlit (ui extra)")
 @pytest.mark.integration
 def test_ui_echo_server_starts_and_responds(tmp_path: Path, ephemeral_port: int) -> None:
     workspace = _write_workspace(tmp_path)

@@ -1,59 +1,61 @@
-"""Legacy test collection filtering — skip modules that depend on unavailable deps or test obsolete nlp_term behavior."""
+"""Legacy test collection filtering.
 
-import pytest
+Two exclusion tiers:
+- Import-blocked modules are excluded only when their required optional
+  dependency is actually missing in the current environment.
+- Lean-environment exclusions (legacy nlp_term suites, raw-data-dependent
+  examples tests) apply only when SUTRA_LEAN_TESTS=1, which worker
+  worktrees set per the AGENTS.md worktree policy. The main working tree
+  runs the full suite.
+"""
 
+import importlib.util
+import os
 
-LEGACY_SKIP_REASON = "legacy nlp_term behavior superseded by Sutra RAG direction (2026-06-11)"
+LEAN_TESTS = os.environ.get("SUTRA_LEAN_TESTS") == "1"
 
-# Modules that fail to import due to missing optional deps (olefile)
-SKIP_COLLECT_IMPORT_ERROR = {
-    "test_graduation_requirement_adapter",
-    "test_prepare_from_sources",
+# Modules that fail to import when optional deps are missing.
+SKIP_COLLECT_REQUIRES = {
+    "test_graduation_requirement_adapter": "olefile",
+    "test_prepare_from_sources": "olefile",
+    "test_backend_evidence_separation": "sklearn",
+    "test_chat_composer": "sklearn",
+    "test_chat_provenance": "sklearn",
+    "test_classify_gold_eval": "sklearn",
+    "test_harness_safety_experiment": "sklearn",
+    "test_phase_a_harness_contract": "sklearn",
+    "test_probe39_experiment": "sklearn",
+    "test_public_probe_experiment": "sklearn",
+    "test_qwen_public_probe_baseline": "sklearn",
+    "test_task1_gold_error_report": "sklearn",
+    "test_task1_router_policy": "sklearn",
+    "test_task2_answer_eval_artifact": "sklearn",
+    "test_task2_vertical_slice": "sklearn",
 }
 
-# Legacy nlp_term adapter tests — test obsolete structured adapter behavior
-SKIP_COLLECT_LEGACY_ADAPTERS = {
+# Lean-only exclusions: legacy adapter suites and examples tests that
+# depend on git-ignored raw data not present in worker worktrees.
+SKIP_COLLECT_LEAN_ONLY = {
     "test_calendar_adapter",
     "test_dining_adapter",
     "test_notice_adapter",
     "test_shuttle_adapter",
     "test_source_audit",
-}
-
-# Examples tests that depend on cached raw data not available in this worktree
-SKIP_COLLECT_EXAMPLES = {
     "test_calendar_parser",
     "test_dining_parser",
     "test_shuttle_parser",
 }
 
-# Legacy nlp_term task tests that depend on heavy sklearn/joblib fixtures
-SKIP_COLLECT_LEGACY_TASKS = {
-    "test_backend_evidence_separation",
-    "test_chat_composer",
-    "test_chat_provenance",
-    "test_classify_gold_eval",
-    "test_harness_safety_experiment",
-    "test_phase_a_harness_contract",
-    "test_probe39_experiment",
-    "test_public_probe_experiment",
-    "test_qwen_public_probe_baseline",
-    "test_task1_gold_error_report",
-    "test_task1_router_policy",
-    "test_task2_answer_eval_artifact",
-    "test_task2_vertical_slice",
-}
 
-ALL_SKIP = (
-    SKIP_COLLECT_IMPORT_ERROR
-    | SKIP_COLLECT_LEGACY_ADAPTERS
-    | SKIP_COLLECT_EXAMPLES
-    | SKIP_COLLECT_LEGACY_TASKS
-)
+def _missing(package: str) -> bool:
+    return importlib.util.find_spec(package) is None
 
 
 def pytest_ignore_collect(collection_path, config):
     module_name = collection_path.stem
-    if module_name in ALL_SKIP:
+    required = SKIP_COLLECT_REQUIRES.get(module_name)
+    if required is not None and _missing(required):
+        return True
+    if LEAN_TESTS and module_name in SKIP_COLLECT_LEAN_ONLY:
         return True
     return None
