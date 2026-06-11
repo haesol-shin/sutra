@@ -16,7 +16,7 @@ import requests
 
 from sutra.cli import build_parser, main
 from sutra.config import load_config
-from sutra.models import Evidence
+from sutra.models import Evidence, EvidencePack, LlamaResult, ToolCall
 
 
 @pytest.fixture
@@ -82,10 +82,32 @@ def _ui_module(monkeypatch: pytest.MonkeyPatch):
     class AskUserMessage(Message):
         pass
 
+    class Step:
+        def __init__(self, **kwargs):
+            self.__dict__.update(kwargs)
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, exc_type, exc, tb):
+            return False
+
     def decorator(*args, **kwargs):
+        if args and callable(args[0]) and len(args) == 1 and not kwargs:
+            return args[0]
+
         def wrap(func):
             return func
         return wrap
+
+    def make_async(func):
+        async def wrapped(*args, **kwargs):
+            result = func(*args, **kwargs)
+            if asyncio.iscoroutine(result):
+                return await result
+            return result
+
+        return wrapped
 
     chainlit.Text = Text
     chainlit.Action = Action
@@ -94,8 +116,8 @@ def _ui_module(monkeypatch: pytest.MonkeyPatch):
     chainlit.action_callback = decorator
     chainlit.on_chat_start = decorator
     chainlit.on_message = decorator
-    chainlit.make_async = lambda func: func
-    chainlit.Step = object
+    chainlit.make_async = make_async
+    chainlit.Step = Step
     chainlit.user_session = types.SimpleNamespace(
         store=session_store,
         get=lambda key, *args, **kwargs: session_store.get(key),
@@ -279,6 +301,58 @@ class TestInterfaceLabels:
         assert _config_language(
             root / "src" / "sutra" / "resources" / "ui" / "chainlit_config.toml",
         ) == "en-US"
+
+
+class TestAnswerLocalization:
+    def test_tool_no_result_suffix_is_korean(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        config = load_config(_write_workspace(tmp_path))
+
+        class ToolNoResultClient:
+            def __init__(self) -> None:
+                self.calls = 0
+
+            def chat(self, messages, *, model, temperature, max_tokens, tools=None):
+                self.calls += 1
+                if self.calls == 1:
+                    return LlamaResult(content="", model=model)
+                return LlamaResult(
+                    content="저장된 자료를 기준으로 답변합니다.",
+                    model=model,
+                    tool_calls=[
+                        ToolCall(
+                            id="call-1",
+                            function_name="fetch_recent_notices",
+                            function_arguments='{"keyword":"장학"}',
+                        ),
+                    ],
+                )
+
+        client = ToolNoResultClient()
+        ui.cl.user_session.set("workspace", config)
+        ui.cl.user_session.set("client", client)
+        monkeypatch.setattr(
+            ui,
+            "retrieve",
+            lambda question, documents, config: EvidencePack(
+                question=question,
+                items=[_evidence("stored", 1.0)],
+            ),
+        )
+        monkeypatch.setattr(ui, "dispatch", lambda name, arguments: [])
+
+        asyncio.run(ui.on_message(ui.cl.Message(content="test")))
+
+        [message] = ui.cl.sent_messages
+        assert client.calls == 2
+        assert message.content.endswith(
+            "\n\n(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)",
+        )
+        assert "Unable to fetch live data" not in message.content
 
 
 class TestSourceScoreFilter:

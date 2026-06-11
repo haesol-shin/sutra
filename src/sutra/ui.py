@@ -595,7 +595,7 @@ async def on_message(message: cl.Message) -> None:
             else:
                 final_answer = result.content
                 if final_answer:
-                    final_answer += "\n\n(Unable to fetch live data. Response is based on stored information.)"
+                    final_answer += "\n\n(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)"
                 final_msg.content = final_answer
                 await final_msg.update()
                 mode = "tool_no_result"
