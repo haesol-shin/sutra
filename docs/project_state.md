@@ -14,12 +14,12 @@ Sutra is a lightweight, local-first RAG runtime plus llama.cpp server client.
 
 ## Current Workspace Data (CNU Campus Clean Corpus)
 
-The active verified corpus consists of **371 clean documents** merged under [knowledge-index.jsonl](../examples/cnu-campus/data/processed/knowledge-index.jsonl):
-- **Academic Calendar**: 326 documents
+The active verified corpus consists of **94 clean documents** merged under [knowledge-index.jsonl](../examples/cnu-campus/data/processed/knowledge-index.jsonl):
+- **Academic Calendar**: 50 documents
 - **Notices**: 24 documents
 - **Dining**: 12 documents (5 per-day menu docs with 아침/점심/저녁 labels, 1 dining_operating_info doc, 6 제1학생회관 food-court corner docs for 라면&간식/양식/스낵/한식/일식/중식)
 - **Graduation**: 5 documents
-- **Shuttle**: 4 documents
+- **Shuttle**: 3 documents
 
 Raw source files are git-ignored, with raw provenance metadata tracked in `data/raw/**/*.meta.json`.
 

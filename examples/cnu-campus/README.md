@@ -4,11 +4,12 @@ A reference Sutra workspace implementing the CNU Campus ChatBot use case.
 
 ## Clean Corpus Counts
 
-The active checked-in clean index is compiled into [data/processed/knowledge-index.jsonl](data/processed/knowledge-index.jsonl), containing a total of **355 clean documents**:
-- **Dining**: 20 documents
-- **Shuttle**: 4 documents
-- **Academic Calendar**: 326 documents
+The active checked-in clean index is compiled into [data/processed/knowledge-index.jsonl](data/processed/knowledge-index.jsonl), containing a total of **94 clean documents**:
+- **Dining**: 12 documents
+- **Shuttle**: 3 documents
+- **Academic Calendar**: 50 documents
 - **Graduation**: 5 documents
+- **Notices**: 24 documents
 
 This is separate from the legacy, noisy 2414-document `knowledge_seed.json` corpus, which is no longer active.
 
@@ -27,7 +28,7 @@ The workspace contains the following scripts:
 
 ### Build Scripts
 - `examples/cnu-campus/scripts/build_dining_index.py`: Parses raw dining HTML and builds the dining index.
-- `examples/cnu-campus/scripts/build_shuttle_index.py`: Parses shuttle schedule tables and builds the shuttle index.
+- `examples/cnu-campus/scripts/build_shuttle_index.py`: Generates curated shuttle documents from the captured shuttle page artifact.
 - `examples/cnu-campus/scripts/build_calendar_index.py`: Parses the CNU academic calendar and builds the calendar index.
 - `examples/cnu-campus/scripts/build_graduation_index.py`: Parses graduation requirements and builds the graduation index.
 - `examples/cnu-campus/scripts/build_clean_index.py`: Merges all individual domain indexes into the single `knowledge-index.jsonl`.

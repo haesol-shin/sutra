@@ -1,59 +1,14 @@
 {
-  "parsed_files": [
-    "data/raw/academic_calendar/academic_calendar_2023.html",
-    "data/raw/academic_calendar/academic_calendar_2024.html",
-    "data/raw/academic_calendar/academic_calendar_2025.html",
-    "data/raw/academic_calendar/academic_calendar_2026.html"
-  ],
-  "skipped_files": [
-    {
-      "file": "data/raw/academic_calendar/academic_calendar.html",
-      "reason": "Skipped file: academic_calendar.html"
-    },
-    {
-      "file": "data/raw/academic_calendar/academic_calendar_english_education_undergrad.html",
-      "reason": "Skipped file: academic_calendar_english_education_undergrad.html"
-    },
-    {
-      "file": "data/raw/academic_calendar/homepage_academic_calendar_module.html",
-      "reason": "Skipped file: homepage_academic_calendar_module.html"
-    }
-  ],
-  "raw_event_count": 280,
-  "unique_event_count": 276,
-  "generated_event_docs": 276,
+  "parsed_files": [],
+  "skipped_files": [],
+  "raw_event_count": 0,
+  "unique_event_count": 0,
+  "generated_event_docs": 0,
   "generated_month_docs": 50,
-  "duplicate_count": 4,
+  "duplicate_count": 0,
   "date_parse_failures": [],
-  "date_range_coverage": {
-    "2022": {
-      "min_date": "2022-12-21",
-      "max_date": "2023-01-10"
-    },
-    "2023": {
-      "min_date": "2023-01-01",
-      "max_date": "2024-01-15"
-    },
-    "2024": {
-      "min_date": "2024-01-01",
-      "max_date": "2025-01-15"
-    },
-    "2025": {
-      "min_date": "2025-01-01",
-      "max_date": "2026-01-13"
-    },
-    "2026": {
-      "min_date": "2026-01-01",
-      "max_date": "2027-01-12"
-    }
-  },
-  "events_by_year": {
-    "2022": 1,
-    "2023": 69,
-    "2024": 69,
-    "2025": 69,
-    "2026": 68
-  },
+  "date_range_coverage": {},
+  "events_by_year": {},
   "months_by_year": {
     "2022": [
       12
@@ -119,10 +74,66 @@
     ]
   },
   "known_limitations": [
-    "Event year metadata reflects the resolved event start year; source academic calendar page year is preserved as page_year for traceability",
+    "Month document metadata reflects the covered year-month; source academic calendar page years are preserved in page_years for traceability",
     "In-source duplicates (e.g. 수강신청 확인 및 정정 appears twice in March 2026) are collapsed by (start_date, end_date, event_name) key",
-    "Cross-year date ranges (e.g., Dec 2025 ~ Jan 2026) produce event and month docs for both years; year reflects actual event start year, page_year tracks the source page",
+    "Cross-year date ranges (e.g., Dec 2025 ~ Jan 2026) appear in each covered month document; page_years tracks the source pages",
     "Month docs are generated per year-month; events spanning multiple months appear in all covered month docs",
-    "Holiday names (e.g., 설날, 추석) are preserved as-is from source without normalization"
-  ]
+    "Holiday names (e.g., 설날, 추석) are preserved as-is from source without normalization",
+    "Raw academic calendar HTML was unavailable; existing calendar index was pruned to month docs only"
+  ],
+  "raw_missing_fallback": true,
+  "previous_raw_provenance": {
+    "parsed_files": [
+      "data/raw/academic_calendar/academic_calendar_2023.html",
+      "data/raw/academic_calendar/academic_calendar_2024.html",
+      "data/raw/academic_calendar/academic_calendar_2025.html",
+      "data/raw/academic_calendar/academic_calendar_2026.html"
+    ],
+    "skipped_files": [
+      {
+        "file": "data/raw/academic_calendar/academic_calendar.html",
+        "reason": "Skipped file: academic_calendar.html"
+      },
+      {
+        "file": "data/raw/academic_calendar/academic_calendar_english_education_undergrad.html",
+        "reason": "Skipped file: academic_calendar_english_education_undergrad.html"
+      },
+      {
+        "file": "data/raw/academic_calendar/homepage_academic_calendar_module.html",
+        "reason": "Skipped file: homepage_academic_calendar_module.html"
+      }
+    ],
+    "raw_event_count": 280,
+    "unique_event_count": 276,
+    "duplicate_count": 4,
+    "date_range_coverage": {
+      "2022": {
+        "min_date": "2022-12-21",
+        "max_date": "2023-01-10"
+      },
+      "2023": {
+        "min_date": "2023-01-01",
+        "max_date": "2024-01-15"
+      },
+      "2024": {
+        "min_date": "2024-01-01",
+        "max_date": "2025-01-15"
+      },
+      "2025": {
+        "min_date": "2025-01-01",
+        "max_date": "2026-01-13"
+      },
+      "2026": {
+        "min_date": "2026-01-01",
+        "max_date": "2027-01-12"
+      }
+    },
+    "events_by_year": {
+      "2022": 1,
+      "2023": 69,
+      "2024": 69,
+      "2025": 69,
+      "2026": 68
+    }
+  }
 }

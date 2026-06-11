@@ -46,7 +46,7 @@ uv run python -c "import torch; print(torch.__version__); print(torch.xpu.is_ava
 ## Workspace & Data Policy
 
 The CNU Campus ([examples/cnu-campus](examples/cnu-campus)) workspace operates under these rules:
-- **Clean Corpus**: The active index contains **355 clean documents** merged under [knowledge-index.jsonl](examples/cnu-campus/data/processed/knowledge-index.jsonl) (dining: 20 docs, shuttle: 4 docs, academic calendar: 326 docs, graduation: 5 docs). This is separate from the legacy, noisy 2414-document `knowledge_seed.json` corpus.
+- **Clean Corpus**: The active index contains **94 clean documents** merged under [knowledge-index.jsonl](examples/cnu-campus/data/processed/knowledge-index.jsonl) (dining: 12 docs, shuttle: 3 docs, academic calendar: 50 docs, graduation: 5 docs, notices: 24 docs). This is separate from the legacy, noisy 2414-document `knowledge_seed.json` corpus.
 - **Raw Data Policy**: Raw source files are ignored by Git. Raw provenance metadata is tracked via `data/raw/**/*.meta.json` (such as [computer_ai_2026_graduation_requirements.meta.json](data/raw/graduation/computer_ai_2026_graduation_requirements.meta.json)).
 
 ---

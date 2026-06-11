@@ -21,29 +21,114 @@ def _event_overlaps_month(
     return start_date <= month_end and end_date >= month_start
 
 
-def _build_event_doc(event: CalendarEvent, idx: int) -> dict:
-    doc_id = f"calendar_event_{event.year}_{idx:04d}"
-    title = f"{event.year}년 {event.event_name}"
-    text_lines = [
-        f"날짜: {event.start_date} ~ {event.end_date}",
-        f"일정: {event.event_name}",
-    ]
-    return {
-        "id": doc_id,
-        "title": title,
-        "text": "\n".join(text_lines),
-        "source_url": event.source_url or CALENDAR_SOURCE_URL,
-        "source_name": event.source_name or CALENDAR_SOURCE_NAME,
-        "metadata": {
-            "domain": "academic_calendar",
-            "doc_type": "event",
-            "year": event.year,
-            "page_year": event.page_year,
-            "start_date": event.start_date,
-            "end_date": event.end_date,
-            "source_file": event.source_file,
+def _is_month_doc(doc: dict) -> bool:
+    metadata = doc.get("metadata", {})
+    return doc.get("id", "").startswith("calendar_month_") or metadata.get("doc_type") == "month"
+
+
+def _write_jsonl(path: Path, docs: list[dict]) -> None:
+    with open(path, "w", encoding="utf-8") as f:
+        for doc in docs:
+            f.write(json.dumps(doc, ensure_ascii=False) + "\n")
+
+
+def _load_existing_month_docs(path: Path) -> list[dict]:
+    docs = []
+    if not path.exists():
+        return docs
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            doc = json.loads(line)
+            if _is_month_doc(doc):
+                docs.append(_normalize_month_doc(doc))
+    return docs
+
+
+def _normalize_month_doc(doc: dict) -> dict:
+    metadata = doc.get("metadata", {})
+    year = metadata.get("year")
+    month = metadata.get("month")
+    if not isinstance(year, int) or not isinstance(month, int):
+        return doc
+    padded = f"{year:04d}년 {month:02d}월"
+    natural = f"{year:04d}년 {month}월"
+    for field in ("title", "text"):
+        value = doc.get(field)
+        if isinstance(value, str):
+            doc[field] = value.replace(padded, natural)
+    return doc
+
+
+def _write_fallback_report(report_path: Path, month_docs: list[dict]) -> None:
+    report = {}
+    if report_path.exists():
+        try:
+            with open(report_path, "r", encoding="utf-8") as f:
+                report = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            report = {}
+
+    provenance_keys = (
+        "parsed_files",
+        "skipped_files",
+        "raw_event_count",
+        "unique_event_count",
+        "duplicate_count",
+        "date_parse_failures",
+        "date_range_coverage",
+        "events_by_year",
+    )
+    previous_raw_provenance = report.get("previous_raw_provenance")
+    if previous_raw_provenance is None:
+        previous_raw_provenance = {
+            key: report[key]
+            for key in provenance_keys
+            if key in report and report[key] not in (None, [], {}, 0)
+        }
+
+    months_by_year: dict[str, list[int]] = defaultdict(list)
+    for doc in month_docs:
+        metadata = doc.get("metadata", {})
+        year = metadata.get("year")
+        month = metadata.get("month")
+        if not isinstance(year, int) or not isinstance(month, int):
+            match = re.match(r"calendar_month_(\d{4})_(\d{2})$", doc.get("id", ""))
+            if match:
+                year = int(match.group(1))
+                month = int(match.group(2))
+        if isinstance(year, int) and isinstance(month, int) and month not in months_by_year[str(year)]:
+            months_by_year[str(year)].append(month)
+
+    limitations = list(report.get("known_limitations", []))
+    fallback_note = "Raw academic calendar HTML was unavailable; existing calendar index was pruned to month docs only"
+    if fallback_note not in limitations:
+        limitations.append(fallback_note)
+
+    report = {
+        "parsed_files": [],
+        "skipped_files": [],
+        "raw_event_count": 0,
+        "unique_event_count": 0,
+        "generated_event_docs": 0,
+        "generated_month_docs": len(month_docs),
+        "duplicate_count": 0,
+        "date_parse_failures": [],
+        "date_range_coverage": {},
+        "events_by_year": {},
+        "months_by_year": {
+            year: sorted(months)
+            for year, months in sorted(months_by_year.items())
         },
+        "known_limitations": limitations,
+        "raw_missing_fallback": True,
     }
+    if previous_raw_provenance:
+        report["previous_raw_provenance"] = previous_raw_provenance
+    with open(report_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
 
 
 def _build_month_doc(
@@ -53,14 +138,15 @@ def _build_month_doc(
     event_start_idx: int,
 ) -> dict:
     doc_id = f"calendar_month_{year:04d}_{month:02d}"
-    title = f"{year}년 {month:02d}월 학사일정"
+    month_label = f"{year}년 {month}월"
+    title = f"{month_label} 학사일정"
     bullet_lines = []
     for e in events:
         if e.start_date == e.end_date:
             bullet_lines.append(f"- {e.start_date}: {e.event_name}")
         else:
             bullet_lines.append(f"- {e.start_date} ~ {e.end_date}: {e.event_name}")
-    text = f"{year}년 {month:02d}월 충남대학교 학사일정입니다.\n\n" + "\n".join(bullet_lines)
+    text = f"{month_label} 충남대학교 학사일정입니다.\n\n" + "\n".join(bullet_lines)
     return {
         "id": doc_id,
         "title": title,
@@ -147,7 +233,13 @@ def main():
                     "reason": result.error_msg or "Unknown skip reason",
                 })
     else:
-        print(f"Error: Raw directory not found at {raw_dir}")
+        month_docs = _load_existing_month_docs(output_index_path)
+        if not month_docs:
+            print(f"Error: Raw directory not found at {raw_dir} and no existing month docs were available")
+            return
+        _write_jsonl(output_index_path, month_docs)
+        _write_fallback_report(output_report_path, month_docs)
+        print(f"Raw directory not found at {raw_dir}; kept {len(month_docs)} month docs in {output_index_path}")
         return
 
     raw_event_count = len(all_events)
@@ -168,19 +260,6 @@ def main():
     events_by_year = defaultdict(list)
     for e in unique_events:
         events_by_year[e.year].append(e)
-
-    event_docs = []
-    year_event_idx = defaultdict(int)
-    for e in unique_events:
-        idx = year_event_idx[e.year]
-        year_event_idx[e.year] += 1
-        doc = _build_event_doc(e, idx)
-        if doc["metadata"].get("source_file"):
-            try:
-                doc["metadata"]["source_file"] = Path(doc["metadata"]["source_file"]).relative_to(project_root).as_posix()
-            except ValueError:
-                pass
-        event_docs.append(doc)
 
     month_events_map = defaultdict(list)
     covered_year_months = set()
@@ -206,12 +285,10 @@ def main():
         events = month_events_map[(year, month)]
         month_docs.append(_build_month_doc(year, month, events, 0))
 
-    all_chunks = event_docs + month_docs
+    all_chunks = month_docs
 
     try:
-        with open(output_index_path, "w", encoding="utf-8") as f:
-            for chunk in all_chunks:
-                f.write(json.dumps(chunk, ensure_ascii=False) + "\n")
+        _write_jsonl(output_index_path, all_chunks)
         print(f"Successfully wrote {len(all_chunks)} docs to {output_index_path}")
     except Exception as e:
         print(f"Error writing index JSONL: {e}")
@@ -233,7 +310,7 @@ def main():
         "skipped_files": skipped_files,
         "raw_event_count": raw_event_count,
         "unique_event_count": unique_event_count,
-        "generated_event_docs": len(event_docs),
+        "generated_event_docs": 0,
         "generated_month_docs": len(month_docs),
         "duplicate_count": duplicate_count,
         "date_parse_failures": [

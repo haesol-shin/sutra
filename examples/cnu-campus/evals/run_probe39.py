@@ -1252,8 +1252,8 @@ def generate_compare_report(metadata, traces, report_path):
     ])
 
     spot_checks = [
-        ("public_probe_02", "수강신청", "calendar_event_2026_0007"),
-        ("public_probe_11", "종강", "calendar_event_2026_0035"),
+        ("public_probe_02", "수강신청", "calendar_month_2026_02"),
+        ("public_probe_11", "종강", "calendar_month_2026_06"),
         ("public_probe_03", "오늘 학식", "dining_2026-06-09 (today's date)"),
         ("public_probe_13", "다음주 화요일 2학생회관", "dining (data gap expected)"),
         ("gp046", "다음주 화요일 2학생회관", "dining (data gap expected)"),
@@ -1288,10 +1288,10 @@ def generate_compare_report(metadata, traces, report_path):
     lines.extend([
         "",
         "### Spot-Check Notes",
-        "- **수강신청 (public_probe_02):** Expected `calendar_event_2026_0007` (2026 정규수강신청).",
+        "- **수강신청 (public_probe_02):** Expected `calendar_month_2026_02` (2026 정규수강신청 포함 월).",
         "  - Kiwi should tokenize '수강신청' as a compound via COMPOUND_MAP.",
-        "  - BM25 should rank the 2026 calendar event higher due to year/term token match.",
-        "- **종강 (public_probe_11):** Expected `calendar_event_2026_0035` (2026 하기종강).",
+        "  - BM25 should rank the 2026 calendar month higher due to year/term token match.",
+        "- **종강 (public_probe_11):** Expected `calendar_month_2026_06` (2026 하기방학/하기 계절학기 시작 포함 월).",
         "  - Kiwi tokenizer keeps '종강' as a single noun.",
         "  - Check if BM25 prefers the 2026 version over 2024.",
         "- **오늘 학식 (public_probe_03):** Today is 2026-06-09. Verify correct date's menu.",

@@ -1,11 +1,11 @@
 {
-  "parsed_files": [
-    "data/raw/shuttle/shuttle_bus.html",
-    "data/raw/shuttle/shuttle_geo_notice_2026.html"
+  "parsed_files": [],
+  "curated_artifact_sources": [
+    "tmp/shuttle_page_full.txt"
   ],
   "skipped_files": [],
-  "raw_records_count": 4,
-  "unique_chunk_count": 4,
+  "raw_records_count": 3,
+  "unique_chunk_count": 3,
   "duplicate_count": 0,
   "missing_source_url_count": 0,
   "missing_source_name_count": 0,
@@ -13,14 +13,12 @@
     "교내 순환 (대덕캠퍼스 내)",
     "캠퍼스 순환 (대덕캠퍼스 ↔ 보운캠퍼스)"
   ],
-  "dates_found": [
-    "2026-02-24"
-  ],
+  "dates_found": [],
   "missing_source_meta": [],
   "known_limitations": [
     "셔틀버스 운영 시간표는 학기 중 평일 기준이며 방학/주말/공휴일은 미운영",
-    "shuttle_geo_notice_2026.html 내용은 한글(HWP) 문서가 첨부된 WordPress 공지로, HTML 본문에서 추출 가능한 텍스트만 포함",
     "운행 시간은 교통 상황 등으로 5분 내외 오차 가능",
-    "2026학년도 기준(2026.3.3~12.18) 스냅샷이며 이후 변경 가능"
+    "raw HTML은 git-ignored 상태라 summary/route 문서는 untracked review artifact인 tmp/shuttle_page_full.txt에서 도출한 curated constants로 작성",
+    "운영기간과 차량 정보는 tmp/shuttle_page_full.txt에서 확인되지 않아 삭제된 지질환경과학과 공지 기준으로 summary에 명시"
   ]
 }

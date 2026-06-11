@@ -1,10 +1,13 @@
 from __future__ import annotations
 
-import joblib
+import importlib.util
+
 import pytest
 
-from nlp_term.classify.evaluate_probe import assert_no_eval_leakage, evaluate_model_on_rows
-from nlp_term.schemas import ClassificationExample, Task1HumanGoldExample
+pytestmark = pytest.mark.skipif(
+    importlib.util.find_spec("joblib") is None,
+    reason="requires optional joblib dependency",
+)
 
 
 class FixedModel:
@@ -13,6 +16,10 @@ class FixedModel:
 
 
 def test_probe_eval_rejects_training_question_overlap() -> None:
+    pytest.importorskip("joblib")
+    from nlp_term.classify.evaluate_probe import assert_no_eval_leakage
+    from nlp_term.schemas import ClassificationExample, Task1HumanGoldExample
+
     train_rows = [
         ClassificationExample(question="복수전공하면 졸업학점 어떻게 돼?", label=0, validated=True)
     ]
@@ -31,6 +38,10 @@ def test_probe_eval_rejects_training_question_overlap() -> None:
 
 
 def test_probe_eval_reports_wrong_rows(tmp_path) -> None:
+    joblib = pytest.importorskip("joblib")
+    from nlp_term.classify.evaluate_probe import evaluate_model_on_rows
+    from nlp_term.schemas import Task1HumanGoldExample
+
     model_path = tmp_path / "classifier.joblib"
     joblib.dump(FixedModel(), model_path)
     rows = [
