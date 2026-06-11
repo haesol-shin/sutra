@@ -15,7 +15,7 @@ chat_template_kwargs = "config/chat_template.json"
 [rag]
 index_path = "data/processed/knowledge-index.jsonl"
 top_k = 8
-max_fact_chars = 500
+max_fact_chars = 2000
 backend = "bm25"
 token_config = "data/token_config.json"
 
