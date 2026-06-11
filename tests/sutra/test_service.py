@@ -120,6 +120,7 @@ max_tokens = 128
 index_path = "data/index.jsonl"
 top_k = 2
 max_fact_chars = 120
+backend = "lexical"
 
 [prompts]
 system = "prompts/system.md"
