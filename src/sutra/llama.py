@@ -108,7 +108,13 @@ class LlamaClient:
     def health(self, timeout_seconds: int = 5) -> bool:
         try:
             response = requests.get(f"{self.base_url}/health", timeout=timeout_seconds)
-            return response.status_code < 400
+            if response.status_code < 400:
+                return True
+            if response.status_code == 404:
+                # llama-cpp-python's OpenAI-compatible server exposes no /health route.
+                response = requests.get(f"{self.base_url}/v1/models", timeout=timeout_seconds)
+                return response.status_code < 400
+            return False
         except Exception:
             return False
 

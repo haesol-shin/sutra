@@ -233,9 +233,12 @@ def check_docs(toml_path: Path | None, config: Config | None = None) -> dict[str
 
 
 def check_llama_health(base_url: str, timeout_seconds: int = 5) -> dict[str, Any]:
-    url = f"{base_url.rstrip('/')}/health"
+    root = base_url.rstrip("/")
     try:
-        response = requests.get(url, timeout=timeout_seconds)
+        response = requests.get(f"{root}/health", timeout=timeout_seconds)
+        if response.status_code == 404:
+            # llama-cpp-python's OpenAI-compatible server exposes no /health route.
+            response = requests.get(f"{root}/v1/models", timeout=timeout_seconds)
         reachable = response.status_code < 400
         return {
             "base_url": base_url,
