@@ -59,11 +59,25 @@ Prefer conventional commit-style subjects when committing, for example `env: con
 
 ## Delegation Policy
 
-- When `codex-spark` is available, delegate low-judgment execution tasks to it before doing them inline.
-- Good `codex-spark` tasks include crawling/fetching candidate pages, exploratory source discovery, repetitive parser trials, mechanical code edits from an already-approved design, and routine verification command runs.
-- Keep architecture, tradeoff decisions, task prioritization, final acceptance, commits, and user-facing summaries with the main Codex agent unless the user explicitly asks otherwise.
-- Give delegated tasks narrow inputs, expected outputs, and stop conditions. Require concrete evidence such as fetched URLs, file paths, count tables, failing/passing commands, or short implementation diffs.
-- If `codex-spark` is unavailable, continue inline and note that the work was not delegated.
+Implementation work is delegated to CLI sub-agents; the orchestrating agent (Claude) keeps design judgment, review, merge, and user-facing reporting.
+
+- **Routing by difficulty**:
+  - `codex` (`codex exec --full-auto -c model_reasoning_effort=high`, model gpt-5.5): **default for all code work** — implementation, fixes, parsers, entry-point work, anything where failure-mode design matters.
+  - `opencode` (deepseek-v4-flash-free): mechanical/secondary work only. **Code tasks delegated to opencode MUST use the Executor agent** defined at [.opencode/agent/executor.md](.opencode/agent/executor.md): `opencode run --agent executor "Read tmp/TASK.md and execute it"`. Plain `opencode run` without the agent is reserved for non-code chores.
+  - Internal Claude subagents (search, research, review assistance): model **sonnet**.
+- **Task contract**: every delegation gets a self-contained `tmp/TASK.md` in its worktree containing verified facts, explicit deliverables, file-scope constraints ("do not touch X — owned by parallel agent"), required verification commands, and a stop-condition report format. Launch with a one-line pointer prompt ("Read tmp/TASK.md and execute it").
+- **Review loop**: when an executor session finishes, a FRESH codex session reviews the branch diff (writes `tmp/REVIEW_round<N>.md`), the executor session addresses findings, repeated for at most 3 rounds; unresolved issues escalate to the orchestrator. opencode outputs get the same codex review.
+- **Commit convention**: strictly `type: message` (feat/fix/test/docs/env/refactor/chore). No scope prefixes. Branch merges into dev use **squash merge** (`git merge --squash <branch>` then one `type: message` commit carrying gate evidence) — merge-commit chains were judged noisy by the user.
+- **User approval gate**: the orchestrator reports findings and a proposed plan FIRST and waits for explicit user approval before dispatching new work, committing, or merging. "~하자" during discussion is consensus on direction, not a go signal; ask "시작할까요?" and wait.
+- **Orchestrator keeps**: architecture and tradeoff decisions, task prioritization, prompt/policy design, diff review, test gating, merges into the main tree, commits on `dev`, and user-facing summaries.
+- **Evidence required** from every delegate: files changed, commits made, verification command output (e.g. `pytest -q` tail). Unverified claims are treated as not done.
+- If both CLIs are unavailable, continue inline and note that the work was not delegated.
+
+## Worktree Environment Policy
+
+- Worker worktrees sync **base + dev dependency group only** (`uv sync`); the uv global cache (hardlinks, same drive) makes this take seconds-to-minutes. Never install `xpu`/`ui` extras in worker worktrees.
+- Heavy integration verification (llama-server, Chainlit UI, XPU torch) happens only in the main working tree.
+- Prefer reusing existing worktrees that already have a `.venv`. Branch naming for delegated work: `p0/<topic>`, `p1/<topic>` matching the active plan phase.
 
 ## Documentation Policy & Roles
 
