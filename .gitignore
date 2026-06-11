@@ -8,6 +8,7 @@ __pycache__/
 .mypy_cache/
 .ipynb_checkpoints/
 tmp/
+dist/
 outputs/
 data/raw/**
 !data/raw/**/
