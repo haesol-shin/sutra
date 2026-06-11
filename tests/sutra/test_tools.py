@@ -142,6 +142,10 @@ def test_source_registry_excludes_unverified_graduation_curriculum_url() -> None
 
 def test_tool_schemas_enum_constrain_string_arguments() -> None:
     schemas = {item["function"]["name"]: item["function"]["parameters"] for item in get_tool_definitions()}
+    experimental_schemas = {
+        item["function"]["name"]: item["function"]["parameters"]
+        for item in get_tool_definitions(include_knowledge_base=True)
+    }
 
     assert schemas["fetch_recent_notices"]["properties"]["board"]["enum"] == ["univ_academic", "cs_dept"]
     assert schemas["fetch_cafeteria_menu"]["properties"]["cafeteria"]["enum"] == [
@@ -156,6 +160,15 @@ def test_tool_schemas_enum_constrain_string_arguments() -> None:
         "shuttle",
         "course_registration_guide",
     ]
+    assert "search_knowledge_base" not in schemas
+    assert experimental_schemas["search_knowledge_base"]["properties"]["domain"]["enum"] == [
+        "academic_calendar",
+        "calendar",
+        "dining",
+        "graduation",
+        "shuttle",
+        None,
+    ]
 
 
 def test_dispatch_passes_tool_arguments(monkeypatch) -> None:
@@ -168,6 +181,56 @@ def test_dispatch_passes_tool_arguments(monkeypatch) -> None:
 
     assert len(evidence) == 1
     assert evidence[0].text.count("[2026-06-") == 1
+
+
+def test_dispatch_search_knowledge_base_returns_workspace_evidence(tmp_path: Path) -> None:
+    workspace = _write_workspace(tmp_path)
+
+    evidence = dispatch("search_knowledge_base", {"query": "수강신청"}, workspace=workspace)
+
+    assert len(evidence) == 1
+    assert evidence[0].id == "calendar-1"
+    assert evidence[0].metadata["tool"] == "search_knowledge_base"
+
+
+def test_dispatch_search_knowledge_base_filters_by_domain(tmp_path: Path) -> None:
+    workspace = _write_workspace(tmp_path, include_dining=True)
+
+    evidence = dispatch(
+        "search_knowledge_base",
+        {"query": "학생회관", "domain": "dining"},
+        workspace=workspace,
+    )
+
+    assert [item.id for item in evidence] == ["dining-1"]
+
+
+def test_dispatch_search_knowledge_base_filters_multiword_domain_from_document_id(tmp_path: Path) -> None:
+    workspace = _write_workspace(tmp_path, include_academic_calendar=True)
+
+    evidence = dispatch(
+        "search_knowledge_base",
+        {"query": "개강", "domain": "academic_calendar"},
+        workspace=workspace,
+    )
+
+    assert [item.id for item in evidence] == ["academic_calendar-1"]
+
+
+def test_dispatch_search_knowledge_base_returns_empty_for_no_matches_and_invalid_query(tmp_path: Path) -> None:
+    workspace = _write_workspace(tmp_path)
+
+    no_domain_matches = dispatch(
+        "search_knowledge_base",
+        {"query": "수강신청", "domain": "graduation"},
+        workspace=workspace,
+    )
+    blank_query = dispatch("search_knowledge_base", {"query": "   "}, workspace=workspace)
+    missing_query = dispatch("search_knowledge_base", {"domain": "calendar"}, workspace=workspace)
+
+    assert no_domain_matches == []
+    assert blank_query == []
+    assert missing_query == []
 
 
 class CapturingClient:
@@ -202,13 +265,26 @@ def test_service_ask_injects_tools_even_when_live_false(tmp_path: Path) -> None:
     }
 
 
-def _write_workspace(root: Path) -> Path:
+def _write_workspace(
+    root: Path,
+    *,
+    include_dining: bool = False,
+    include_academic_calendar: bool = False,
+) -> Path:
     (root / "data").mkdir()
     (root / "prompts").mkdir()
-    (root / "data" / "index.jsonl").write_text(
-        '{"id":"calendar-1","title":"수강신청 일정","text":"수강신청은 2월 1일에 시작합니다.","source_name":"학사일정","metadata":{"label":"calendar"}}\n',
-        encoding="utf-8",
-    )
+    docs = [
+        '{"id":"calendar-1","title":"수강신청 일정","text":"수강신청은 2월 1일에 시작합니다.","source_name":"학사일정","metadata":{"label":"calendar"}}',
+    ]
+    if include_dining:
+        docs.append(
+            '{"id":"dining-1","title":"식단","text":"학생회관 점심 메뉴입니다.","source_name":"식단","metadata":{"label":"dining"}}'
+        )
+    if include_academic_calendar:
+        docs.append(
+            '{"id":"academic_calendar-1","title":"개강 일정","text":"개강은 3월 2일입니다.","source_name":"학사일정","metadata":{}}'
+        )
+    (root / "data" / "index.jsonl").write_text("\n".join(docs) + "\n", encoding="utf-8")
     (root / "prompts" / "system.md").write_text("You are a grounded assistant.", encoding="utf-8")
     (root / "prompts" / "answer.md").write_text("Use the evidence context.", encoding="utf-8")
     config_path = root / "sutra.toml"

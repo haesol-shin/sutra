@@ -7,7 +7,7 @@ import pytest
 
 from sutra import ask, chat
 from sutra.config import load_config
-from sutra.models import LlamaResult, Message
+from sutra.models import LlamaResult, Message, ToolCall
 from sutra.errors import ConfigError
 
 
@@ -77,6 +77,100 @@ def test_ask_returns_insufficient_evidence_without_calling_client(tmp_path: Path
 
     assert answer.trace == {"status": "insufficient_evidence", "retrieved": 0}
     assert client.messages == []
+
+
+class ToolOnlyClient:
+    def __init__(self) -> None:
+        self.calls: list[tuple[list[Message], list[dict[str, Any]] | None]] = []
+
+    def chat(
+        self,
+        messages: list[Message],
+        *,
+        model: str | None = None,
+        temperature: float = 0.2,
+        max_tokens: int = 512,
+        tools: list[dict[str, Any]] | None = None,
+    ) -> LlamaResult:
+        self.calls.append((messages, tools))
+        if len(self.calls) == 1:
+            return LlamaResult(
+                content="",
+                model=model,
+                tool_calls=[
+                    ToolCall(
+                        id="call-1",
+                        function_name="search_knowledge_base",
+                        function_arguments='{"query":"수강신청","domain":"calendar"}',
+                    )
+                ],
+            )
+        return LlamaResult(content="수강신청은 2월 1일에 시작합니다.", model=model)
+
+
+class ToolOnlyEmptySearchClient:
+    def __init__(self) -> None:
+        self.calls: list[tuple[list[Message], list[dict[str, Any]] | None]] = []
+
+    def chat(
+        self,
+        messages: list[Message],
+        *,
+        model: str | None = None,
+        temperature: float = 0.2,
+        max_tokens: int = 512,
+        tools: list[dict[str, Any]] | None = None,
+    ) -> LlamaResult:
+        self.calls.append((messages, tools))
+        if len(self.calls) == 1:
+            return LlamaResult(
+                content="",
+                model=model,
+                tool_calls=[
+                    ToolCall(
+                        id="call-1",
+                        function_name="search_knowledge_base",
+                        function_arguments='{"query":"졸업요건","domain":"graduation"}',
+                    )
+                ],
+            )
+        return LlamaResult(content="제공된 자료에서 확인할 수 있는 근거를 찾지 못했습니다.", model=model)
+
+
+def test_ask_tool_only_starts_without_preloaded_evidence_and_uses_tool_results(tmp_path: Path) -> None:
+    workspace = _write_workspace(tmp_path)
+    client = ToolOnlyClient()
+
+    answer = ask("수강신청 언제 시작해?", workspace=workspace, client=client, mode="tool_only")
+
+    first_messages, first_tools = client.calls[0]
+    assert first_tools
+    assert {item["function"]["name"] for item in first_tools} >= {"search_knowledge_base"}
+    assert "Evidence:" not in first_messages[-1].content
+    assert "수강신청은 2월 1일에 시작합니다." not in first_messages[-1].content
+
+    second_messages, second_tools = client.calls[1]
+    assert second_tools is None
+    assert "Evidence:" in second_messages[-1].content
+    assert "수강신청은 2월 1일에 시작합니다." in second_messages[-1].content
+    assert answer.evidence[0].id == "calendar-1"
+    assert answer.trace["tools_called"] == ["search_knowledge_base"]
+
+
+def test_ask_tool_only_follows_up_and_traces_empty_knowledge_base_results(tmp_path: Path) -> None:
+    workspace = _write_workspace(tmp_path)
+    client = ToolOnlyEmptySearchClient()
+
+    answer = ask("졸업요건 알려줘", workspace=workspace, client=client, mode="tool_only")
+
+    assert len(client.calls) == 2
+    second_messages, second_tools = client.calls[1]
+    assert second_tools is None
+    assert "No evidence was retrieved from the workspace." in second_messages[-1].content
+    assert answer.answer
+    assert answer.evidence == []
+    assert answer.trace["retrieved"] == 0
+    assert answer.trace["tools_called"] == ["search_knowledge_base"]
 
 
 @pytest.mark.skip(reason="answer prompt validation removed; render_prompt no longer checks answer prompt existence")

@@ -1,17 +1,22 @@
 from __future__ import annotations
 
 import logging
-from typing import Protocol
+from typing import Literal, Protocol
 
 from sutra.config import Config, load_config
 from sutra.documents import load_documents
 from sutra.llama import LlamaClient
-from sutra.models import Answer, LlamaResult, Message
-from sutra.prompts import render_prompt
+from sutra.models import Answer, EvidencePack, LlamaResult, Message
+from sutra.prompts import get_current_time_str, render_prompt
 from sutra.retrieval import retrieve
 from sutra.tools import dispatch, get_tool_definitions
 
 logger = logging.getLogger(__name__)
+
+TOOL_ONLY_SYSTEM_INSTRUCTION = (
+    "저장된 정보가 필요하면 search_knowledge_base를 호출하고, "
+    "실시간 정보가 필요하면 해당 fetch 도구를 호출하세요."
+)
 
 
 class ChatClient(Protocol):
@@ -33,6 +38,7 @@ def ask(
     workspace: str | Config,
     client: ChatClient | None = None,
     live: bool = False,
+    mode: Literal["default", "tool_only"] = "default",
 ) -> Answer:
     """Ask a single question and return an Answer.
 
@@ -40,6 +46,9 @@ def ask(
     always injected; the model decides whether to call one.
     """
     config = workspace if isinstance(workspace, Config) else load_config(workspace)
+    if mode == "tool_only":
+        return _ask_tool_only(question, config=config, client=client)
+
     documents = load_documents(config)
     evidence = retrieve(question, documents, config)
 
@@ -109,6 +118,83 @@ def ask(
             "tools_called": called_tools,
         },
     )
+
+
+def _ask_tool_only(
+    question: str,
+    *,
+    config: Config,
+    client: ChatClient | None = None,
+) -> Answer:
+    llm = client or LlamaClient(config.runtime.base_url, timeout_seconds=config.runtime.timeout_seconds)
+    tools = get_tool_definitions(include_knowledge_base=True)
+    messages = _render_tool_only_messages(question, config)
+    result = llm.chat(
+        messages,
+        model=config.runtime.model,
+        temperature=config.runtime.temperature,
+        max_tokens=config.runtime.max_tokens,
+        tools=tools or None,
+    )
+
+    called_tools: list[str] = []
+    evidence_items = []
+    context = ""
+    if tools and result.tool_calls:
+        for tc in result.tool_calls:
+            called_tools.append(tc.function_name)
+            fresh = dispatch(tc.function_name, tc.function_arguments, workspace=config)
+            if fresh:
+                evidence_items.extend(fresh)
+
+        if called_tools:
+            evidence = EvidencePack(question=question, items=evidence_items)
+            prompt = render_prompt(question, evidence, config)
+            context = prompt.context
+            result = llm.chat(
+                prompt.messages,
+                model=config.runtime.model,
+                temperature=config.runtime.temperature,
+                max_tokens=config.runtime.max_tokens,
+            )
+            if not result.content:
+                result = LlamaResult(
+                    content="I do not have enough evidence in this workspace to answer.",
+                    model=result.model,
+                    usage=result.usage,
+                    raw=result.raw,
+                )
+
+    return Answer(
+        answer=result.content,
+        evidence=evidence_items,
+        workspace=config.workspace.name,
+        model=result.model or config.runtime.model,
+        backend=config.runtime.backend,
+        usage=result.usage,
+        trace={
+            "status": "answered",
+            "retrieved": len(evidence_items),
+            "doc_ids": [item.id for item in evidence_items],
+            "context_chars": len(context),
+            "tools_called": called_tools,
+        },
+    )
+
+
+def _render_tool_only_messages(question: str, config: Config) -> list[Message]:
+    system = config.prompts.system.read_text(encoding="utf-8").strip()
+    system = f"{system}\n\n{TOOL_ONLY_SYSTEM_INSTRUCTION}"
+    user = (
+        f"Workspace: {config.workspace.name}\n"
+        f"Timezone: {config.workspace.timezone}\n"
+        f"Current Time: {get_current_time_str(config.workspace.timezone)}\n\n"
+        f"Question:\n{question}"
+    )
+    return [
+        Message(role="system", content=system),
+        Message(role="user", content=user),
+    ]
 
 
 def fallback_answer(question: str, *, workspace: str | Config) -> Answer:

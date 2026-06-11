@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 import re
+from contextvars import ContextVar
 from dataclasses import dataclass
 from datetime import datetime
 from html import unescape
@@ -12,7 +13,10 @@ from zoneinfo import ZoneInfo
 
 import requests
 
+from sutra.config import Config, load_config
+from sutra.documents import load_documents
 from sutra.models import Evidence
+from sutra.retrieval import retrieve
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +50,10 @@ SOURCE_REGISTRY = {
     },
 }
 
+KNOWLEDGE_BASE_DOMAINS = ["academic_calendar", "calendar", "dining", "graduation", "shuttle"]
+
 _HANDLERS: dict[str, Callable[..., list[Evidence]]] = {}
+_WORKSPACE_CONTEXT: ContextVar[str | Config | None] = ContextVar("sutra_tool_workspace", default=None)
 
 
 @dataclass
@@ -72,7 +79,7 @@ def tool(name: str, description: str, parameters: dict | None = None):
     return decorator
 
 
-def get_tool_definitions() -> list[dict]:
+def get_tool_definitions(*, include_knowledge_base: bool = False) -> list[dict]:
     """All registered tools as OpenAI-compatible function definitions."""
     return [
         {
@@ -84,21 +91,31 @@ def get_tool_definitions() -> list[dict]:
             },
         }
         for h in _HANDLERS.values()
+        if include_knowledge_base or h._tool_name != "search_knowledge_base"
     ]
 
 
-def dispatch(name: str, arguments: str | dict | None = None) -> list[Evidence]:
+def dispatch(
+    name: str,
+    arguments: str | dict | None = None,
+    *,
+    workspace: str | Config | None = None,
+) -> list[Evidence]:
     """Invoke a registered tool by name and return Evidence objects."""
     handler = _HANDLERS.get(name)
     if handler is None:
         logger.warning("Unknown tool requested: %s", name)
         return []
+    token = _WORKSPACE_CONTEXT.set(workspace) if workspace is not None else None
     try:
         parsed = _parse_tool_arguments(arguments)
         return handler(**parsed)
     except Exception:
         logger.warning("Tool %s execution failed", name, exc_info=True)
         return []
+    finally:
+        if token is not None:
+            _WORKSPACE_CONTEXT.reset(token)
 
 
 # Helpers
@@ -193,6 +210,63 @@ def _source_url_with_params(url: str, params: dict[str, str]) -> str:
 
 
 # Tool handlers
+
+
+@tool(
+    name="search_knowledge_base",
+    description="워크스페이스에 저장된 지식 베이스 문서를 검색해 관련 근거를 반환한다.",
+    parameters={
+        "type": "object",
+        "properties": {
+            "query": {
+                "type": "string",
+                "description": "검색할 질문 또는 키워드",
+            },
+            "domain": {
+                "type": ["string", "null"],
+                "enum": [*KNOWLEDGE_BASE_DOMAINS, None],
+                "description": "선택적 문서 도메인 필터",
+            },
+        },
+        "required": ["query"],
+    },
+)
+def search_knowledge_base(query: str, domain: str | None = None) -> list[Evidence]:
+    workspace = _WORKSPACE_CONTEXT.get()
+    if workspace is None or not query.strip():
+        return []
+
+    config = workspace if isinstance(workspace, Config) else load_config(workspace)
+    documents = load_documents(config)
+    if domain:
+        documents = [doc for doc in documents if _matches_domain(doc.id, doc.metadata, domain)]
+    pack = retrieve(query, documents, config)
+    return [
+        item.model_copy(
+            update={
+                "metadata": {
+                    **item.metadata,
+                    "tool": "search_knowledge_base",
+                    "domain": domain,
+                }
+            }
+        )
+        for item in pack.items
+    ]
+
+
+def _matches_domain(document_id: str, metadata: dict, domain: str) -> bool:
+    expected = domain.lower()
+    normalized_id = document_id.lower()
+    candidates = {
+        str(metadata.get("domain", "")).lower(),
+        str(metadata.get("label", "")).lower(),
+    }
+    return (
+        expected in candidates
+        or normalized_id.startswith(f"{expected}_")
+        or normalized_id.startswith(f"{expected}-")
+    )
 
 
 @tool(
