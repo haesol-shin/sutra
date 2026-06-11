@@ -1,0 +1,317 @@
+[
+  {
+    "question": "복수전공하면 졸업학점 어떻게 돼?",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "교직이수 졸업 조건 뭐야?",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "졸업논문 대신 작품전 되나?",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "영어 점수 없으면 졸업 안 돼?",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "이수 학점 모자란데 졸업 가능해?",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "교양 필수 뭐 들어야 졸업돼?",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "졸업유예 하려면 어떻게 해?",
+    "label": 0,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "등록금 분할납부 안내 올라왔어?",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "근로장학 모집 공지 봤어?",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "수강신청 변경 안내문 어디 있어?",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "기숙사 입사 공지 떴나?",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "학과 사무실에서 새 글 올렸어?",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "교환학생 모집 공고 찾아줘",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "휴학 신청 방법 공지 링크 줘",
+    "label": 1,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "종강 언제야?",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "중간고사 기간 알려줘",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "계절학기 언제 시작해?",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "복학 신청 기간 지났어?",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "다음 학기 개강일이 며칠이지?",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "성적 정정 기간 언제까지야?",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "수강 포기 가능한 기간은?",
+    "label": 2,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "오늘 3학 저녁 뭐 나옴?",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "내일 점심 학식 메뉴 알려줘",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "이번주 생과대 식단표 보여줘",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "아침 하는 식당 있어?",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "학식 가격 얼마야?",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "금요일 1학생회관 메뉴 뭐야?",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "직원식당 오늘 메뉴 알려줘",
+    "label": 3,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "막차 몇 시야?",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "월평역에서 학교 가는 버스 언제 와?",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "시험기간에도 버스 다녀?",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "보운캠퍼스 가는 차 있어?",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "등교 버스 어디서 타?",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "방학 때 셔틀 운행해?",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  },
+  {
+    "question": "노선도 보여줘",
+    "label": 4,
+    "source_doc_id": null,
+    "difficulty": "natural",
+    "ambiguous_reason": null,
+    "annotator": "orchestrator",
+    "validated": true
+  }
+]
