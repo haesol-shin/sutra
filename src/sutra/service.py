@@ -5,6 +5,7 @@ from typing import Protocol
 
 from sutra.config import Config, load_config
 from sutra.documents import load_documents
+from sutra.llama import LlamaClient
 from sutra.models import Answer, LlamaResult, Message
 from sutra.prompts import render_prompt
 from sutra.retrieval import retrieve

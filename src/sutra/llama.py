@@ -73,6 +73,7 @@ def start_llama_server(
     gpu_layers: int = -1,
     chat_template_kwargs: str | None = None,
     dry_run: bool = False,
+    n_ctx: int = 2048,
 ) -> subprocess.Popen | None:
     """Start llama-cpp-python server via `python -m llama_cpp.server`."""
     cmd = [
@@ -81,6 +82,7 @@ def start_llama_server(
         "--port", str(port),
         "--n_gpu_layers", str(gpu_layers),
         "--host", "127.0.0.1",
+        "--n_ctx", str(n_ctx),
     ]
     if chat_template_kwargs:
         cmd.extend(["--chat_template_kwargs", chat_template_kwargs])

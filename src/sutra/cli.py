@@ -369,6 +369,7 @@ def build_parser() -> argparse.ArgumentParser:
     llama_serve_parser.add_argument("--port", type=int, help="Port to run llama-server on.")
     llama_serve_parser.add_argument("--gpu-layers", type=int, default=-1, help="Number of layers to offload to GPU (-1 for all).")
     llama_serve_parser.add_argument("--chat-template-kwargs", help="JSON string passed to llama-cpp-python server (e.g. '{\"enable_thinking\": false}' for Qwen3 reasoning off).")
+    llama_serve_parser.add_argument("--n-ctx", type=int, default=2048, help="Context size in tokens (default: 2048).")
     llama_serve_parser.add_argument("--dry-run", action="store_true", help="Print the command without executing.")
 
     # llama download
@@ -627,7 +628,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
         ctk = args.chat_template_kwargs or config.runtime.chat_template_kwargs or None
 
-        process = start_llama_server(model_path, port=port, gpu_layers=args.gpu_layers, chat_template_kwargs=ctk, dry_run=args.dry_run)
+        process = start_llama_server(model_path, port=port, gpu_layers=args.gpu_layers, chat_template_kwargs=ctk, dry_run=args.dry_run, n_ctx=args.n_ctx)
 
         if process is not None:
             try:
