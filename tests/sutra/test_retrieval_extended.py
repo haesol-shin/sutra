@@ -228,3 +228,61 @@ def test_week_expansion_ranks_in_range_doc_first(tmp_path: Path) -> None:
         pack = retrieve("다음주 학사일정", documents, config)
     ids = [item.id for item in pack.items]
     assert ids, "expected at least one retrieved fact"
+
+# --- A1: academic-semester boundary anchoring ----------------------------
+
+from datetime import date as _date
+
+from sutra.config import WorkspacePeriod
+
+_CNU_PERIODS = [
+    WorkspacePeriod(label="2026학년도 제1학기", start=_date(2026, 3, 3), end=_date(2026, 6, 21)),
+    WorkspacePeriod(label="하기방학", start=_date(2026, 6, 22), end=_date(2026, 8, 31)),
+    WorkspacePeriod(label="2026학년도 제2학기", start=_date(2026, 9, 1), end=_date(2026, 12, 20)),
+]
+
+
+def _expand_p(question: str):
+    from unittest.mock import patch
+
+    from sutra.retrieval import _expand_relative_date_query
+
+    with patch("sutra.prompts.get_current_time_str", return_value=_FROZEN_NOW):
+        out = _expand_relative_date_query(question, "Asia/Seoul", _CNU_PERIODS)
+    return out.replace(question, "").strip()
+
+
+def test_a1_jonggang_anchors_current_semester_end_month() -> None:
+    # "이번 학기 종강일" on 2026-06-13 -> 제1학기 end (2026-06-21) -> June anchor.
+    added = _expand_p("이번 학기 종강일이 언제인가요?")
+    assert "2026년 6월" in added
+    assert "2026-06-21" in added
+
+
+def test_a1_gaegang_anchors_current_semester_start_month() -> None:
+    added = _expand_p("이번 학기 개강일")
+    assert "2026년 3월" in added
+    assert "2026-03-03" in added
+
+
+def test_a1_seasonal_term_is_negative_predicate_no_anchor() -> None:
+    # 계절학기 in the question must suppress semester anchoring entirely
+    # (must NOT inject the current regular-semester June boundary).
+    added = _expand_p("이번 여름 계절학기 종강일")
+    assert "2026년 6월" not in added
+    assert "2026-06-21" not in added
+
+
+def test_a1_requires_boundary_cue() -> None:
+    # bare 학기 with no 종강/개강 cue does not anchor.
+    assert _expand_p("이번 학기 시간표") == ""
+
+
+def test_a1_no_periods_no_semester_expansion() -> None:
+    from unittest.mock import patch
+
+    from sutra.retrieval import _expand_relative_date_query
+
+    with patch("sutra.prompts.get_current_time_str", return_value=_FROZEN_NOW):
+        out = _expand_relative_date_query("이번 학기 종강일", "Asia/Seoul", None)
+    assert out == "이번 학기 종강일"

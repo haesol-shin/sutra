@@ -434,7 +434,9 @@ def retrieve(
             for doc in documents
             if (doc.domain or (doc.metadata or {}).get("domain")) not in exclude_domains
         ]
-    retrieval_question = _expand_relative_date_query(question, config.workspace.timezone)
+    retrieval_question = _expand_relative_date_query(
+        question, config.workspace.timezone, config.workspace.periods
+    )
     backend = config.rag.backend
     token_config = _load_token_config(config)
     bm25_pack = EvidencePack(question=question, items=[])
@@ -721,10 +723,34 @@ _RELATIVE_WEEK_RE = re.compile(
 )
 
 
-def _expand_relative_date_query(question: str, timezone_name: str) -> str:
+def _semester_boundary_kinds(question: str) -> list[str]:
+    """Which academic-semester boundary a question asks about.
+
+    NEGATIVE-predicate gate: returns [] when the question mentions 계절학기
+    (seasonal term) so a seasonal query is never anchored to the current regular
+    semester. Requires a 학기 cue plus a 종강/종료 (end) or 개강 (start) boundary cue.
+    """
+    if "계절학기" in question or "학기" not in question:
+        return []
+    kinds: list[str] = []
+    if "종강" in question or "종료" in question:
+        kinds.append("end")
+    if "개강" in question:
+        kinds.append("start")
+    return kinds
+
+
+def _expand_relative_date_query(
+    question: str,
+    timezone_name: str,
+    periods: "list | None" = None,
+) -> str:
     day_terms = _RELATIVE_DATE_RE.findall(question)
     week_terms = _RELATIVE_WEEK_RE.findall(question)
-    if (not day_terms and not week_terms) or _ISO_DATE_RE.search(question):
+    if _ISO_DATE_RE.search(question):
+        return question
+    semester_kinds = _semester_boundary_kinds(question)
+    if not day_terms and not week_terms and not semester_kinds:
         return question
 
     from sutra.prompts import get_current_time_str
@@ -735,11 +761,13 @@ def _expand_relative_date_query(question: str, timezone_name: str) -> str:
     additions: list[str] = []
     seen: set[str] = set()
 
+    def _add_text(token: str) -> None:
+        if token and token not in question and token not in seen:
+            additions.append(token)
+            seen.add(token)
+
     def _add(day) -> None:
-        date_text = day.strftime("%Y-%m-%d")
-        if date_text not in question and date_text not in seen:
-            additions.append(date_text)
-            seen.add(date_text)
+        _add_text(day.strftime("%Y-%m-%d"))
 
     for term in day_terms:
         _add(current_date + timedelta(days=_RELATIVE_DATE_OFFSETS[term]))
@@ -747,6 +775,15 @@ def _expand_relative_date_query(question: str, timezone_name: str) -> str:
         start, end = _RELATIVE_WEEK_PATTERNS[term]
         for offset in range(start, end + 1):
             _add(monday + timedelta(days=offset))
+    if semester_kinds and periods:
+        current_period = next(
+            (p for p in periods if p.start <= current_date <= p.end), None
+        )
+        if current_period is not None:
+            for kind in semester_kinds:
+                boundary = current_period.end if kind == "end" else current_period.start
+                _add_text(f"{boundary.year}년 {boundary.month}월")
+                _add(boundary)
 
     if not additions:
         return question
