@@ -14,9 +14,8 @@ dependencies = [
 ]
 
 # Install:
-#   Local XPU:  uv sync --extra xpu --extra rag --extra ui --extra legacy --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/vulkan
-#   Colab CUDA: uv sync --extra cuda --extra rag --extra ui --extra legacy --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu121
-#   Note: --extra-index-url is per-environment and cannot be baked into pyproject.toml (Vulkan vs CUDA conflict).
+#   Local XPU:  uv sync --extra xpu --extra rag --extra ui --extra legacy
+#   Colab CUDA: uv sync --extra cuda --extra rag --extra ui --extra legacy
 [project.optional-dependencies]
 xpu = [
   "torch==2.9.1",
@@ -33,6 +32,7 @@ rag = [
   # Bounded so a --system install does not clobber Colab's preinstalled numpy
   # (ABI break risk); the range covers Colab's 2.0.x and the locked 2.2.x.
   "numpy>=1.26,<2.3",
+  "joblib",
 ]
 # torch-dependent embedding backend, opt-in only: the grading environment
 # pins torch==2.5.1 and the default install path must not touch it.
@@ -44,7 +44,6 @@ ui = [
 ]
 legacy = [
   "scikit-learn",
-  "joblib",
 ]
 
 [project.scripts]
@@ -73,12 +72,43 @@ include = ["sutra*"]
 [tool.setuptools.package-data]
 sutra = ["resources/ui/*", "resources/ui/public/*"]
 
+[tool.uv]
+conflicts = [
+  [
+    { extra = "xpu" },
+    { extra = "cuda" },
+  ],
+]
+
 [tool.uv.sources]
+llama-cpp-python = [
+  { index = "llama-cpp-vulkan", extra = "xpu" },
+  { index = "llama-cpp-cu121", extra = "cuda" },
+]
+torch = [
+  { index = "pytorch-xpu", extra = "xpu" },
+  { index = "pytorch-cu121", extra = "cuda" },
+]
 pytorch-triton-xpu = { index = "pytorch-xpu" }
 
 [[tool.uv.index]]
 name = "pytorch-xpu"
 url = "https://download.pytorch.org/whl/xpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
+
+[[tool.uv.index]]
+name = "llama-cpp-vulkan"
+url = "https://abetlen.github.io/llama-cpp-python/whl/vulkan"
+explicit = true
+
+[[tool.uv.index]]
+name = "llama-cpp-cu121"
+url = "https://abetlen.github.io/llama-cpp-python/whl/cu121"
 explicit = true
 
 [tool.pytest.ini_options]
