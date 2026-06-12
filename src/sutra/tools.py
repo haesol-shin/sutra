@@ -1000,7 +1000,7 @@ def _format_cafeteria_records_including_closed(records: list[DiningMenuRecord], 
     lines = [
         f"# {target_date} ({weekday}) 학생식당 식단",
         "",
-        f"{target_date} ({weekday}) 이번주 학식 메뉴입니다.",
+        f"{target_date} ({weekday}) 학식 메뉴입니다.",
         "",
     ]
     meal_order = {"조식": 0, "중식": 1, "석식": 2}

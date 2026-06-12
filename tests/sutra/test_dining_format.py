@@ -53,7 +53,7 @@ def test_format_dining_day_matches_clean_daily_document_rules() -> None:
     assert format_dining_day(records, "2026-06-11") == (
         "# 2026-06-11 (목) 학생식당 식단\n"
         "\n"
-        "2026-06-11 (목) 이번주 학식 메뉴입니다.\n"
+        "2026-06-11 (목) 학식 메뉴입니다.\n"
         "\n"
         "## 제2학생회관\n"
         "- 아침(학생) 정식 1,000원: 육개장(beef included), 깍두기\n"

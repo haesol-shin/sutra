@@ -43,7 +43,7 @@ def format_dining_day(records: list[DiningRecordLike], date: str) -> str:
 
     weekday = WEEKDAY_LABELS[datetime.strptime(date, "%Y-%m-%d").weekday()]
     title = f"{date} ({weekday}) 학생식당 식단"
-    lines = [f"# {title}", "", f"{date} ({weekday}) 이번주 학식 메뉴입니다.", ""]
+    lines = [f"# {title}", "", f"{date} ({weekday}) 학식 메뉴입니다.", ""]
 
     by_cafeteria: dict[str, list[DiningRecordLike]] = defaultdict(list)
     for record in date_records:

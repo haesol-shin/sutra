@@ -146,7 +146,7 @@ def test_daily_menu_docs_merge_cafeterias_and_drop_closed_slots():
     assert doc["metadata"]["date"] == "2026-06-11"
     assert doc["metadata"]["domain"] == "dining"
     assert "# 2026-06-11 (목) 학생식당 식단" in doc["text"]
-    assert "이번주 학식" in doc["text"]
+    assert "학식 메뉴입니다" in doc["text"]
     assert "## 제1학생회관" not in doc["text"]
     assert "운영안함" not in doc["text"]
     assert "- 아침(학생) 정식 1,000원: 육개장(beef included), 연두부&양념장, 깍두기" in doc["text"]
