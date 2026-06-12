@@ -19,6 +19,13 @@ from sutra.llama import download_model, EchoClient, start_llama_server
 from sutra.models import Document
 from sutra.service import ask, fallback_answer
 
+# JAX is pulled in transitively by the Chainlit UI's telemetry deps (traceloop ->
+# datasets -> jax) and by default preallocates 75% of GPU VRAM (~11 GB on a T4),
+# which then starves the llama server and causes a spurious CUDA "out of memory".
+# Disable preallocation for this process and every subprocess it spawns (the
+# Chainlit UI inherits this env). No effect on the jax-free batch/serve paths.
+os.environ.setdefault("XLA_PYTHON_CLIENT_PREALLOCATE", "false")
+
 _WORKSPACE_COMMANDS = {"ask", "batch", "workspace", "docs", "llama", "doctor", "ui"}
 
 
