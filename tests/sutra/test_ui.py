@@ -757,7 +757,7 @@ class TestRouterUiFlow:
                             ToolCall(
                                 id="call-1",
                                 function_name="fetch_cafeteria_menu",
-                                function_arguments='{"date":"2026-06-13"}',
+                                function_arguments='{"date":"2026-06-13","cafeteria":"제2학생회관"}',
                             )
                         ],
                     )

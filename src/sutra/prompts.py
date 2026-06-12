@@ -36,6 +36,18 @@ def get_current_date(timezone_name: str) -> date:
     return datetime.now(tz).date()
 
 
+def build_relative_date_anchors(today: date) -> str:
+    """Return compact Korean relative-date anchors with explicit ISO dates."""
+    weekdays = ["월", "화", "수", "목", "금", "토", "일"]
+    anchors = [
+        ("오늘", today),
+        ("어제", today - timedelta(days=1)),
+        ("내일", today + timedelta(days=1)),
+        ("모레", today + timedelta(days=2)),
+    ]
+    return " | ".join(f"{label}: {value:%Y-%m-%d} ({weekdays[value.weekday()]})" for label, value in anchors)
+
+
 def build_temporal_context(today: date, periods: "list[WorkspacePeriod] | None" = None) -> str:
     """Resolve this/next week date ranges and the current named period (if any).
 
@@ -59,13 +71,18 @@ def build_temporal_context(today: date, periods: "list[WorkspacePeriod] | None" 
     return "\n".join(lines)
 
 
+def build_forced_tool_temporal_context(today: date, periods: "list[WorkspacePeriod] | None" = None) -> str:
+    """Shared temporal context for answer prompts and forced tool requests."""
+    return f"{build_relative_date_anchors(today)}\n{build_temporal_context(today, periods)}"
+
+
 def render_prompt(question: str, evidence: EvidencePack, config: Config) -> PromptBundle:
     """Build a PromptBundle with system prompt, question, and evidence context."""
     system = config.prompts.system.read_text(encoding="utf-8").strip()
     context = render_evidence(evidence)
     
     current_time = get_current_time_str(config.workspace.timezone)
-    temporal_context = build_temporal_context(
+    temporal_context = build_forced_tool_temporal_context(
         get_current_date(config.workspace.timezone), config.workspace.periods
     )
     

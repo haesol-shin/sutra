@@ -59,6 +59,7 @@ ACADEMIC_CALENDAR_URL = (
 
 CAFETERIAS = ["제1학생회관", "제2학생회관", "제3학생회관", "제4학생회관", "생활과학대학"]
 CAFETERIA_MENU_CHOICES = ["제2학생회관", "제3학생회관", "제4학생회관", "생활과학대학"]
+CAFETERIA_ENUM = ["전체", "제1학생회관", *CAFETERIA_MENU_CHOICES]
 
 SOURCE_REGISTRY = {
     "shuttle": {
@@ -939,27 +940,23 @@ def _parse_cs_notices(html: str, *, base_url: str = CS_BACHELOR_NOTICE_URL) -> l
         "오늘 또는 특정 날짜의 학식, 식당, 메뉴를 물을 때 사용한다. "
         "반환값은 식당, 식사 구분, 대상, 메뉴명, 가격을 포함한 식단 근거다. "
         "제1학생회관은 푸드코트라 코너 정보는 지식베이스에 있고, 일별 식단은 충남대학교 식단 사이트의 실제 날짜별 응답을 따른다. "
-        "여러 날을 한 번에 물으면 date 대신 dates에 날짜 목록을 넘긴다. 날짜는 사용자 메시지의 '이번 주'·'다음 주' 범위에서 계산한다. "
-        "예: '오늘 학식' → 인자 생략. '다음주 화요일 메뉴' → date='2026-06-16'(다음주 화요일). "
-        "'다음주 월요일 화요일 학식' → dates=['2026-06-15','2026-06-16']. "
-        "'이번주/다음주 식단', '주간 식단' → 해당 주 평일 5일 → dates=['2026-06-15','2026-06-16','2026-06-17','2026-06-18','2026-06-19']."
+        "날짜는 사용자 메시지에 주어진 날짜 앵커(오늘/어제/내일/모레, 이번 주·다음 주 평일 목록)를 그대로 사용한다. "
+        "여러 날이면 dates에 ISO 날짜 목록(최대5)을 넣는다."
     ),
     parameters={
         "type": "object",
         "properties": {
-            "date": {
-                "type": ["string", "null"],
-                "description": "조회할 단일 날짜로 YYYY-MM-DD 형식을 사용하며 생략하면 KST 기준 오늘을 조회한다.",
-            },
             "dates": {
-                "type": ["array", "null"],
-                "items": {"type": "string"},
-                "description": "여러 날을 한 번에 조회할 때 YYYY-MM-DD 날짜 목록(최대 5일). 2일 이하는 상세, 3일 이상은 요약으로 반환한다.",
+                "type": "array",
+                "items": {"type": "string", "pattern": r"^\d{4}-\d{2}-\d{2}$"},
+                "minItems": 1,
+                "maxItems": 5,
+                "description": "YYYY-MM-DD 날짜 목록, 최대 5일",
             },
             "cafeteria": {
-                "type": ["string", "null"],
-                "enum": [*CAFETERIA_MENU_CHOICES, None],
-                "description": "조회할 일별 식단 지원 식당이며 생략하면 지원 식당 전체를 조회한다.",
+                "type": "string",
+                "enum": CAFETERIA_ENUM,
+                "description": "전체=일별 식단 지원 식당 전체, 제1학생회관=푸드코트(코너 정보), 제2/제3/제4학생회관·생활과학대학=일별 학식",
             },
         },
     },
@@ -1076,7 +1073,7 @@ def _cafeteria_menu_params(target_date: str) -> dict[str, str]:
 
 
 def _parse_cafeteria_menu(html: str, target_date: str, cafeteria: str | None) -> list[DiningMenuRecord]:
-    wanted = CAFETERIAS if cafeteria is None else [cafeteria]
+    wanted = CAFETERIA_MENU_CHOICES if cafeteria is None else [cafeteria]
     records: list[DiningMenuRecord] = []
     current_meal = ""
     for cells in _expanded_table_rows(html):

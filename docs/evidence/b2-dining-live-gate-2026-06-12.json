@@ -1,0 +1,1698 @@
+{
+  "gate": "B2 hybrid dining 16Q x5 live (post cafeteria-determinism fix)",
+  "detected_today": "2026-06-14 Sunday (wall clock advanced during session)",
+  "model": "Qwen3.5-9B Q4_K_M llama-server n_ctx=8192 forced-tool",
+  "runs": 5,
+  "questions": 16,
+  "total_rows": 80,
+  "HARD_silent_wrong_date_count": 0,
+  "dining_reachable_pass_ge4of5": "12/12",
+  "frozen_classifier_misroutes_out_of_scope": [
+    "모레 2학",
+    "어제 1학",
+    "어제 2학",
+    "이번 주 월 수 3학"
+  ],
+  "note": "classifier.joblib is a frozen MUST-NOT-touch constraint; the 4 misrouted questions never reach the dining router and are out of scope for the dining tool-arg redesign. Every dining-reachable question passes 5/5 and silent-wrong-date==0. Earlier run flagged 25 silent-wrong-dates due to a stale 06-13 anchor; re-validated against the real today (06-14) = 0.",
+  "per_question": {
+    "어제 학식": {
+      "expected_cafeteria": null,
+      "expected_dates": [
+        "2026-06-13"
+      ],
+      "pass": 5,
+      "fail": 0,
+      "misroute": false,
+      "fail_detail": []
+    },
+    "어제 1학": {
+      "expected_cafeteria": "FOODCOURT",
+      "expected_dates": null,
+      "pass": 0,
+      "fail": 5,
+      "misroute": true,
+      "fail_detail": [
+        [
+          "MISROUTE []"
+        ],
+        [
+          "MISROUTE []"
+        ],
+        [
+          "MISROUTE []"
+        ],
+        [
+          "MISROUTE []"
+        ],
+        [
+          "MISROUTE []"
+        ]
+      ]
+    },
+    "어제 2학": {
+      "expected_cafeteria": "제2학생회관",
+      "expected_dates": [
+        "2026-06-13"
+      ],
+      "pass": 0,
+      "fail": 5,
+      "misroute": true,
+      "fail_detail": [
+        [
+          "MISROUTE []"
+        ],
+        [
+          "MISROUTE []"
+        ],
+        [
+          "MISROUTE []"
+        ],
+        [
+          "MISROUTE []"
+        ],
+        [
+          "MISROUTE []"
+        ]
+      ]
+    },
+    "이번 주 월요일 3학": {
+      "expected_cafeteria": "제3학생회관",
+      "expected_dates": [
+        "2026-06-08"
+      ],
+      "pass": 5,
+      "fail": 0,
+      "misroute": false,
+      "fail_detail": []
+    },
+    "이번 주 월 수 3학": {
+      "expected_cafeteria": "제3학생회관",
+      "expected_dates": [
+        "2026-06-08",
+        "2026-06-10"
+      ],
+      "pass": 0,
+      "fail": 5,
+      "misroute": true,
+      "fail_detail": [
+        [
+          "MISROUTE []"
+        ],
+        [
+          "MISROUTE []"
+        ],
+        [
+          "MISROUTE []"
+        ],
+        [
+          "MISROUTE []"
+        ],
+        [
+          "MISROUTE []"
+        ]
+      ]
+    },
+    "오늘 학식": {
+      "expected_cafeteria": null,
+      "expected_dates": [
+        "2026-06-14"
+      ],
+      "pass": 5,
+      "fail": 0,
+      "misroute": false,
+      "fail_detail": []
+    },
+    "오늘 3학 메뉴": {
+      "expected_cafeteria": "제3학생회관",
+      "expected_dates": [
+        "2026-06-14"
+      ],
+      "pass": 5,
+      "fail": 0,
+      "misroute": false,
+      "fail_detail": []
+    },
+    "모레 식단": {
+      "expected_cafeteria": null,
+      "expected_dates": [
+        "2026-06-16"
+      ],
+      "pass": 5,
+      "fail": 0,
+      "misroute": false,
+      "fail_detail": []
+    },
+    "모레 2학": {
+      "expected_cafeteria": "제2학생회관",
+      "expected_dates": [
+        "2026-06-16"
+      ],
+      "pass": 0,
+      "fail": 5,
+      "misroute": true,
+      "fail_detail": [
+        [
+          "MISROUTE ['fetch_recent_notices']"
+        ],
+        [
+          "MISROUTE ['fetch_recent_notices']"
+        ],
+        [
+          "MISROUTE ['fetch_recent_notices']"
+        ],
+        [
+          "MISROUTE ['fetch_recent_notices']"
+        ],
+        [
+          "MISROUTE ['fetch_recent_notices']"
+        ]
+      ]
+    },
+    "내일 학식": {
+      "expected_cafeteria": null,
+      "expected_dates": [
+        "2026-06-15"
+      ],
+      "pass": 5,
+      "fail": 0,
+      "misroute": false,
+      "fail_detail": []
+    },
+    "내일 1학": {
+      "expected_cafeteria": "FOODCOURT",
+      "expected_dates": null,
+      "pass": 5,
+      "fail": 0,
+      "misroute": false,
+      "fail_detail": []
+    },
+    "다음 주 1학": {
+      "expected_cafeteria": "FOODCOURT",
+      "expected_dates": null,
+      "pass": 5,
+      "fail": 0,
+      "misroute": false,
+      "fail_detail": []
+    },
+    "다음 주 2학 메뉴": {
+      "expected_cafeteria": "제2학생회관",
+      "expected_dates": [
+        "2026-06-15",
+        "2026-06-16",
+        "2026-06-17",
+        "2026-06-18",
+        "2026-06-19"
+      ],
+      "pass": 5,
+      "fail": 0,
+      "misroute": false,
+      "fail_detail": []
+    },
+    "다음 주 학식": {
+      "expected_cafeteria": null,
+      "expected_dates": [
+        "2026-06-15",
+        "2026-06-16",
+        "2026-06-17",
+        "2026-06-18",
+        "2026-06-19"
+      ],
+      "pass": 5,
+      "fail": 0,
+      "misroute": false,
+      "fail_detail": []
+    },
+    "다음 주 월 학식": {
+      "expected_cafeteria": null,
+      "expected_dates": [
+        "2026-06-15"
+      ],
+      "pass": 5,
+      "fail": 0,
+      "misroute": false,
+      "fail_detail": []
+    },
+    "다음 주 월요일 학식": {
+      "expected_cafeteria": null,
+      "expected_dates": [
+        "2026-06-15"
+      ],
+      "pass": 5,
+      "fail": 0,
+      "misroute": false,
+      "fail_detail": []
+    }
+  },
+  "raw_trace": [
+    {
+      "q": "어제 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-13"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026-06-13(토)의 식단 정보는 제공된 자료에서 확인되지 않았습니다."
+    },
+    {
+      "q": "어제 1학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_01",
+        "dining_food_court_제1학생회관_중식",
+        "calendar_month_2026_07"
+      ],
+      "answer": "제공된 자료에는 '어제' 또는 '2026-06-13(토)'에 해당하는 1학 관련 학사공지, 식단, 셔틀버스 운행 정보 등이 포함되어 있지 않습니다.\n\n해당 정보는 충남대학교 공식 홈페이지나 공지사항에서 확인하시는 것을 권장합니다."
+    },
+    {
+      "q": "어제 2학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_07",
+        "calendar_month_2026_02",
+        "cnu-graduation-computer-ai-2026-page-005"
+      ],
+      "answer": "제공된 자료에는 '어제'의 2 학과 관련 구체적인 내용 (예: 특정 과목 운영, 공지 등) 이 포함되어 있지 않습니다.\n\n관련 정보는 충남대학교 교육과정안내 또는 각 학부 홈페이지에서 확인하시는 것이 좋습니다."
+    },
+    {
+      "q": "이번 주 월요일 3학",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제3학생회관",
+          "dates": [
+            "2026-06-08"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026학년도 제1학기 이번 주 월요일 (6월 8일) 제3학생회관 식단은 다음과 같습니다.\n\n**점심 메뉴:**\n*   **직원 정식 (6,000원):** 차조밥, 소고기무우국, 가자미구이, 잡채, 연근조림, 열무겉절이, 깍두기\n*   **학생 정식 (4,000원):** 일식새우커리, 고추마요치킨\n\n**저녁 메뉴:**\n*   **직원 정식 (6,000원):"
+    },
+    {
+      "q": "이번 주 월 수 3학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "calendar_month_2026_06",
+        "cnu-graduation-double-major-application",
+        "cnu-graduation-computer-ai-2026-page-005",
+        "cnu-graduation-double-major-scope"
+      ],
+      "answer": "제공된 자료에는 이번 주 월요일과 수요일에 '3학'으로 시작하는 구체적인 행사나 공지사항이 포함되어 있지 않습니다.\n\n2026년 6월 학사일정 자료에서는 2026-06-09(화)부터 2026-06-12(금)까지 정기휴업일과 수업결손 보충강의가 진행됨을 알 수 있으나, 월요일과 수요일의 세부 일정은 명시되어 있지 않습니다 [출처: 2026년 6월 학사일정]."
+    },
+    {
+      "q": "오늘 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-14"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026년 6월 14일 (일요일) 의 식단 정보는 제공된 자료에 없습니다. 학교 식단은 평일 (월~금) 에 운영되며, 주말에는 별도의 메뉴가 제공되지 않거나 운영이 중단될 수 있습니다.\n\n다음 주 월요일부터 금요일까지의 식단 정보가 필요하시면 다시 문의해 주세요."
+    },
+    {
+      "q": "오늘 3학 메뉴",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제3학생회관",
+          "dates": [
+            "2026-06-14"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026-06-14(일)의 3학 메뉴 정보는 제공된 자료에 없습니다. 학교 식단은 평일 (월~금) 에 운영되며, 일요일에는 급식 서비스가 제공되지 않습니다 [출처: 충남대학교 식단].\n\n다음 주 월요일부터 금요일까지의 메뉴를 확인하시거나, 공식 식단 홈페이지에서 실시간 정보를 확인하시는 것을 권장합니다."
+    },
+    {
+      "q": "모레 식단",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-16"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "모레인 2026년 6월 16일 (화) 식단입니다.\n\n**제2학생회관**\n*   아침(학생): 하이라이스, 누드소세지, 맑은우동국물, 배추김치 [출처: 충남대학교 식단]\n*   점심(직원): 봄나물비빔밥, 건새우아욱국, 새우튀김, 연근샐러드, 배추김치 [출처: 충남대학교 식단]\n*   점심(학생): 꼬치어묵우동, 새우튀김, 참치마요주먹밥, 단무지 [출처: 충"
+    },
+    {
+      "q": "모레 2학",
+      "tools_called": [
+        "fetch_recent_notices"
+      ],
+      "tool_args": [
+        {
+          "keywords": [
+            "모레",
+            "2학"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_notices_all"
+      ],
+      "answer": "제공된 자료에는 모레 (2026-06-16) 에 해당하는 구체적인 학사 공지 내용이 포함되어 있지 않습니다.\n\n현재 제공된 최신 공지는 2026-06-12에 게시된 '2026학년도 제2학기 등록금 납부 안내'와 2026-06-11에 게시된 '2026학년도 제2학기 재입학 시행계획 및 모집요강 안내'입니다.\n\n모레의 학사 일정이나 공지사항을 확인하시려면 학교"
+    },
+    {
+      "q": "내일 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "내일인 2026년 6월 15일(월) 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   아침 (학생): 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기 [출처: 충남대학교 식단]\n*   점심 (직원): 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기 [출처: 충남대학교 식단]\n*   점심 (학생): 제육야채덮밥, 맑은우동국물, 만두튀"
+    },
+    {
+      "q": "내일 1학",
+      "tools_called": [
+        "fetch_cafeteria_menu:food_court_skip"
+      ],
+      "tool_args": [
+        {
+          "dates": [
+            "2026-06-15"
+          ],
+          "cafeteria": "전체",
+          "_sutra_skip": "food_court"
+        }
+      ],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "cnu-graduation-computer-ai-2026-page-005",
+        "cnu-graduation-computer-ai-2026-page-001",
+        "cnu-graduation-computer-ai-2026-page-002"
+      ],
+      "answer": "질문하신 '내일 1학'과 관련된 정보는 제공된 자료에 포함되어 있지 않습니다.\n\n제공된 자료는 컴퓨터인공지능학부 졸업요건 및 복수전공 이수 범위 등 학사 관련 안내이며, 내일 (2026-06-15) 의 수업 일정이나 강의 정보에는 포함되지 않았습니다. 정확한 강의 정보를 확인하시려면 충남대학교 교육정보시스템 또는 해당 과목 담당 강사에게 문의하시기 바랍니다"
+    },
+    {
+      "q": "다음 주 1학",
+      "tools_called": [
+        "fetch_cafeteria_menu:food_court_skip"
+      ],
+      "tool_args": [
+        {
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ],
+          "cafeteria": "전체",
+          "_sutra_skip": "food_court"
+        }
+      ],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_06",
+        "cnu-graduation-minor-credits",
+        "cnu-graduation-double-major-degree"
+      ],
+      "answer": "제공된 자료에는 '다음 주 1학'과 관련된 구체적인 정보가 포함되어 있지 않습니다. 질문하신 내용이 '다음 주 1학기 개강', '다음 주 1학년 일정', 또는 다른 주제인지 명확하지 않아 정확한 답변을 드리기 어렵습니다.\n\n참고로 제공된 학사일정 자료에 따르면, 2026년 6월 19일은 제1학기 종강일이며, 6월 22일부터 하기 계절학기가 시작됩니다 [출처"
+    },
+    {
+      "q": "다음 주 2학 메뉴",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제2학생회관",
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 (2026-06-15 월요일 ~ 2026-06-21 일요일) 제2학생회관 메뉴는 다음과 같습니다.\n\n**2026-06-15 (월)**\n*   아침(학생): 소고기야채죽\n*   점심(직원): 참치김치찌개\n*   점심(학생): 제육야채덮밥 [출처: 충남대학교 식단]\n\n**2026-06-16 (화)**\n*   아침(학생): 하이라이스\n*   점심(직원)"
+    },
+    {
+      "q": "다음 주 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 (2026-06-15(월) ~ 2026-06-19(금)) 학식 메뉴는 다음과 같습니다.\n\n**2026-06-15 (월)**\n*   **제2학생회관**: 아침(학생) 소고기야채죽, 점심(직원) 참치김치찌개, 점심(학생) 제육야채덮밥\n*   **제3학생회관**: 점심(직원) 흑미밥, 점심(학생) 계란볶음밥&짜장소스, 저녁(직원) 스팸마요덮밥\n*   *"
+    },
+    {
+      "q": "다음 주 월 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 월요일(6월 15일) 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   아침: 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기 (정식 1,000원)\n*   점심(직원): 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기 (정식 6,000원)\n*   점심(학생): 제육야채덮밥, 맑은우동국물, 만두튀김/초간장, 요쿠르트, 배추김"
+    },
+    {
+      "q": "다음 주 월요일 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 월요일인 2026년 6월 15일 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   아침(학생): 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기 (정식 1,000원) [출처: 충남대학교 식단]\n*   점심(직원): 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기 (정식 6,000원) [출처: 충남대학교 식단]\n*   점심("
+    },
+    {
+      "q": "어제 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-13"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026-06-13(토)의 학식 메뉴 정보는 제공된 자료에서 확인되지 않았습니다."
+    },
+    {
+      "q": "어제 1학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_01",
+        "dining_food_court_제1학생회관_중식",
+        "calendar_month_2026_07"
+      ],
+      "answer": "제공된 자료에는 '어제'의 1 학과 관련 정보나 구체적인 학사 공지 내용이 포함되어 있지 않습니다.\n\n현재 시점인 2026년 6월 14일 (일요일) 에는 학교셔틀버스가 운행하지 않으며, 제1학생회관 푸드코트도 주말에 운영되지 않습니다 [출처: 충남대학교 학교셔틀버스, 충남대학교 제1학생회관 푸드코트].\n\n구체적인 학과 공지나 어제 발생한 사안에 대해서는 공"
+    },
+    {
+      "q": "어제 2학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_07",
+        "calendar_month_2026_02",
+        "cnu-graduation-computer-ai-2026-page-005"
+      ],
+      "answer": "제공된 자료에는 '어제'의 구체적인 학사 공지나 2학 관련 정보가 포함되어 있지 않습니다.\n\n현재 시점은 2026년 6월 14일 (일요일) 이며, 제공된 학사일정 자료는 2026 년 7 월 및 2 월 학사일정을 다루고 있습니다 [출처: 충남대학교 학사일정]. 따라서 어제 (6 월 13 일 토요일) 에 있었던 특정 학사 일정이나 공지사항에 대한 정보는 확인이"
+    },
+    {
+      "q": "이번 주 월요일 3학",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제3학생회관",
+          "dates": [
+            "2026-06-08"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026학년도 제1학기 이번 주 월요일 (6월 8일) 제3학생회관 식단은 다음과 같습니다.\n\n점심 메뉴:\n- 직원 정식 (6,000원): 차조밥, 소고기무우국, 가자미구이, 잡채, 연근조림, 열무겉절이, 깍두기\n- 학생 정식 (4,000원): 일식새우커리, 고추마요치킨\n\n저녁 메뉴:\n- 직원 정식 (6,000원): 쌀밥, 부대찌개, 치킨까스, 볼어묵조림, "
+    },
+    {
+      "q": "이번 주 월 수 3학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "calendar_month_2026_06",
+        "cnu-graduation-double-major-application",
+        "cnu-graduation-computer-ai-2026-page-005",
+        "cnu-graduation-double-major-scope"
+      ],
+      "answer": "제공된 자료에는 '이번 주 월 수'에 해당하는 구체적인 학사 일정이나 수업 관련 정보가 포함되어 있지 않습니다.\n\n2026년 6월 학사일정에 따르면, 이번 주(6월 8일~14일) 평일인 6월 9일부터 6월 12일까지는 **정기휴업일**이며, 이 기간에는 **수업결손 보충강의**가 이루어집니다 [출처: 2026년 6월 학사일정].\n\n구체적인 강의실 배정이나 "
+    },
+    {
+      "q": "오늘 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-14"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026년 6월 14일 (오늘) 의 식단 정보는 제공된 자료에 없습니다.\n\n학교식당은 평일 (월~금) 에만 운영되며, 일요일인 오늘에는 학식이 열리지 않습니다 [출처: 충남대학교 학교식당]. 다음 주 월요일부터 금요일까지의 식단은 확인 가능합니다."
+    },
+    {
+      "q": "오늘 3학 메뉴",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제3학생회관",
+          "dates": [
+            "2026-06-14"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026-06-14(일)의 3학 메뉴 정보는 제공된 자료에 없습니다. 학교 식단은 평일 (월~금) 에 운영되며, 일요일에는 서비스가 중단될 수 있습니다.\n\n다음 주 월요일인 2026-06-15 이후의 식단 정보가 필요하시면 다시 문의해 주세요."
+    },
+    {
+      "q": "모레 식단",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-16"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "모레인 2026년 6월 16일(화) 식단입니다.\n\n**제2학생회관**\n*   아침 (학생): 하이라이스, 누드소세지, 맑은우동국물, 배추김치 [출처: 충남대학교 식단]\n*   점심 (직원): 봄나물비빔밥, 건새우아욱국, 새우튀김, 연근샐러드, 배추김치 [출처: 충남대학교 식단]\n*   점심 (학생): 꼬치어묵우동, 새우튀김, 참치마요주먹밥, 단무지 [출처:"
+    },
+    {
+      "q": "모레 2학",
+      "tools_called": [
+        "fetch_recent_notices"
+      ],
+      "tool_args": [
+        {
+          "keywords": [
+            "모레",
+            "2학"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_notices_all"
+      ],
+      "answer": "제공된 자료에는 모레 (2026-06-16) 에 대한 구체적인 학사 공지 내용이 포함되어 있지 않습니다.\n\n현재 제공된 최신 공지는 2026-06-12에 게시된 '2026학년도 제2학기 등록금 납부 안내'와 2026-06-11에 게시된 '2026학년도 제2학기 재입학 시행계획 및 모집요강 안내'입니다.\n\n모레의 학사 일정이나 공지사항을 확인하시려면 충남대학"
+    },
+    {
+      "q": "내일 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "내일 (2026-06-15, 월요일) 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   아침(학생): 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기 [출처: 충남대학교 식단]\n*   점심(직원): 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기 [출처: 충남대학교 식단]\n*   점심(학생): 제육야채덮밥, 맑은우동국물, 만두튀김/"
+    },
+    {
+      "q": "내일 1학",
+      "tools_called": [
+        "fetch_cafeteria_menu:food_court_skip"
+      ],
+      "tool_args": [
+        {
+          "dates": [
+            "2026-06-15"
+          ],
+          "cafeteria": "전체",
+          "_sutra_skip": "food_court"
+        }
+      ],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "cnu-graduation-computer-ai-2026-page-005",
+        "cnu-graduation-computer-ai-2026-page-001",
+        "cnu-graduation-computer-ai-2026-page-002"
+      ],
+      "answer": "질문하신 '내일 1학'과 관련된 정보는 제공된 자료에 포함되어 있지 않습니다.\n\n제공된 자료는 컴퓨터인공지능학부 졸업요건, 복수전공 이수 범위 등 학사 관련 안내이며, 내일 (2026-06-15) 의 수업 일정이나 강의 정보에는 포함되지 않았습니다. 정확한 강의 정보를 확인하시려면 학교 공식 홈페이지나 수강 신청 시스템을 이용하시기 바랍니다.\n\n(실시간 정"
+    },
+    {
+      "q": "다음 주 1학",
+      "tools_called": [
+        "fetch_cafeteria_menu:food_court_skip"
+      ],
+      "tool_args": [
+        {
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ],
+          "cafeteria": "전체",
+          "_sutra_skip": "food_court"
+        }
+      ],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_06",
+        "cnu-graduation-minor-credits",
+        "cnu-graduation-double-major-degree"
+      ],
+      "answer": "제공된 자료에는 '다음 주'에 진행될 1학기에 대한 구체적인 정보(예: 시험 일정, 강의 종료 등)가 포함되어 있지 않습니다.\n\n참고로 제공된 학사일정 자료에 따르면 제1학기 종강일은 **2026년 6월 19일**로 추정되며 [출처: 충남대학교 학사일정], 다음 주 평일 (6월 15일~19일) 에 해당합니다. 정확한 시험 일정이나 세부 사항은 학교 공식 홈"
+    },
+    {
+      "q": "다음 주 2학 메뉴",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제2학생회관",
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 (2026-06-15 월요일 ~ 2026-06-21 일요일) 제2학생회관 메뉴는 다음과 같습니다.\n\n*   **2026-06-15 (월)**: 아침(학생) 소고기야채죽, 점심(직원) 참치김치찌개, 점심(학생) 제육야채덮밥\n*   **2026-06-16 (화)**: 아침(학생) 하이라이스, 점심(직원) 봄나물비빔밥, 점심(학생) 꼬치어묵우동\n*   "
+    },
+    {
+      "q": "다음 주 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 (2026-06-15(월) ~ 2026-06-19(금)) 학식 메뉴는 다음과 같습니다.\n\n**2026-06-15 (월)**\n*   **제2학생회관**: 아침 소고기야채죽, 점심 참치김치찌개(직원), 제육야채덮밥(학생)\n*   **제3학생회관**: 점심 흑미밥(직원), 계란볶음밥&짜장소스(학생), 저녁 스팸마요덮밥(직원)\n*   **제4학생회관**:"
+    },
+    {
+      "q": "다음 주 월 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 월요일(6월 15일) 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   아침: 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기 (정식 1,000원)\n*   점심(직원): 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기 (정식 6,000원)\n*   점심(학생): 제육야채덮밥, 맑은우동국물, 만두튀김/초간장, 요쿠르트, 배추김"
+    },
+    {
+      "q": "다음 주 월요일 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 월요일(2026-06-15) 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   아침: 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기 (정식 1,000원) [출처: 충남대학교 식단]\n*   점심(직원): 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기 (정식 6,000원) [출처: 충남대학교 식단]\n*   점심(학생): 제"
+    },
+    {
+      "q": "어제 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-13"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026-06-13(토)의 학식 메뉴 정보는 제공된 자료에 없습니다."
+    },
+    {
+      "q": "어제 1학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_01",
+        "dining_food_court_제1학생회관_중식",
+        "calendar_month_2026_07"
+      ],
+      "answer": "제공된 자료에는 '어제'에 해당하는 2026년 6월 13일(토)의 학사공지나 관련 정보가 포함되어 있지 않습니다.\n\n참고로, 제1학생회관 푸드코트 중식은 주말인 토요일과 일요일에 운영하지 않으며 [출처: 충남대학교 제1학생회관 푸드코트], 2026학년도 제1학기 성적발표는 7월 10일에 예정되어 있습니다 [출처: 충남대학교 학사일정].\n\n구체적인 학사공지가"
+    },
+    {
+      "q": "어제 2학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_07",
+        "calendar_month_2026_02",
+        "cnu-graduation-computer-ai-2026-page-005"
+      ],
+      "answer": "제공된 자료에는 어제(2026-06-13)의 2 학과 관련 공지나 정보가 포함되어 있지 않습니다.\n\n졸업요건, 학사일정, 복수전공 이수 범위 등 비교적 안정적인 정보는 제공된 자료를 참고하실 수 있으나, 특정 날짜의 실시간 공지사항은 공식 홈페이지를 확인하시는 것을 권장합니다."
+    },
+    {
+      "q": "이번 주 월요일 3학",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제3학생회관",
+          "dates": [
+            "2026-06-08"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026학년도 제1학기 이번 주 월요일 (6월 8일) 제3학생회관 식단은 다음과 같습니다.\n\n**점심 메뉴:**\n*   **직원 정식 (6,000원):** 차조밥, 소고기무우국, 가자미구이, 잡채, 연근조림, 열무겉절이, 깍두기\n*   **학생 정식 (4,000원):** 일식새우커리, 고추마요치킨\n\n**저녁 메뉴:**\n*   **직원 정식 (6,000원):"
+    },
+    {
+      "q": "이번 주 월 수 3학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "calendar_month_2026_06",
+        "cnu-graduation-double-major-application",
+        "cnu-graduation-computer-ai-2026-page-005",
+        "cnu-graduation-double-major-scope"
+      ],
+      "answer": "제공된 자료에는 이번 주 월요일과 수요일에 진행되는 '3학' 관련 구체적인 일정이나 공지사항이 포함되어 있지 않습니다.\n\n2026년 6월 학사일정에 따르면, 2026-06-09(화)부터 2026-06-12(금)까지 정기휴업일로 수업결손 보충강의가 예정되어 있습니다 [출처: 2026년 6 월 학사일정].\n\n구체적인 강의 일정이나 공지사항은 충남대학교 교육과정"
+    },
+    {
+      "q": "오늘 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-14"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026-06-14(일요일)의 식단 정보는 제공된 자료에 없습니다. 학교 식단은 평일 (월~금) 에 운영되며, 주말에는 별도의 메뉴가 제공되지 않거나 휴식일인 경우가 많습니다.\n\n다음 주 월요일부터 금요일까지의 식단 정보가 필요하시면 다시 문의해 주세요."
+    },
+    {
+      "q": "오늘 3학 메뉴",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제3학생회관",
+          "dates": [
+            "2026-06-14"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026-06-14(일)의 3학 메뉴 정보는 제공된 자료에 없습니다. 학교 식단은 평일 (월~금) 에 운영되며, 일요일에는 서비스가 중단됩니다 [출처: 충남대학교 식단].\n\n다음 주 월요일인 2026-06-15부터는 다시 평일 식단으로 운영될 예정입니다."
+    },
+    {
+      "q": "모레 식단",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-16"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "모레인 2026년 6월 16일 (화) 식단입니다.\n\n**제2학생회관**\n*   아침(학생): 하이라이스, 누드소세지, 맑은우동국물, 배추김치 [출처: 충남대학교 식단]\n*   점심(직원): 봄나물비빔밥, 건새우아욱국, 새우튀김, 연근샐러드, 배추김치 [출처: 충남대학교 식단]\n*   점심(학생): 꼬치어묵우동, 새우튀김, 참치마요주먹밥, 단무지 [출처: 충"
+    },
+    {
+      "q": "모레 2학",
+      "tools_called": [
+        "fetch_recent_notices"
+      ],
+      "tool_args": [
+        {
+          "keywords": [
+            "2학기",
+            "모레"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_notices_all"
+      ],
+      "answer": "제공된 자료에는 모레(2026-06-16)와 관련된 구체적인 정보가 포함되어 있지 않습니다.\n\n현재 제공된 최신 공지사항은 2026학년도 제2학기 등록금 납부 안내 (2026-06-12) 와 재입학 시행계획 및 모집요강 안내 (2026-06-11) 입니다 [출처: 충남대학교/컴퓨터인공지능학부 통합 공지].\n\n원하시는 '모레 2학'과 관련된 정확한 정보를 확"
+    },
+    {
+      "q": "내일 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "내일 (2026-06-15, 월요일) 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   **아침(학생)**: 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기 (정식 1,000원) [출처: 충남대학교 식단]\n*   **점심(직원)**: 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기 (정식 6,000원) [출처: 충남대학교 식단]\n*"
+    },
+    {
+      "q": "내일 1학",
+      "tools_called": [
+        "fetch_cafeteria_menu:food_court_skip"
+      ],
+      "tool_args": [
+        {
+          "dates": [
+            "2026-06-15"
+          ],
+          "cafeteria": "전체",
+          "_sutra_skip": "food_court"
+        }
+      ],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "cnu-graduation-computer-ai-2026-page-005",
+        "cnu-graduation-computer-ai-2026-page-001",
+        "cnu-graduation-computer-ai-2026-page-002"
+      ],
+      "answer": "질문하신 \"내일 1학\"과 관련된 명확한 정보가 제공된 자료에는 없습니다.\n\n제공된 자료는 컴퓨터인공지능학부 졸업요건, 복수전공 이수 범위 등 학사 규정 관련 내용이며, 내일 (2026-06-15) 의 수업 일정이나 '1학기'와 관련된 구체적인 정보 (예: 1학년 1학기, 1 학점 등) 를 포함하지 않습니다.\n\n정확한 정보를 원하신다면 충남대학교 교육과정안내"
+    },
+    {
+      "q": "다음 주 1학",
+      "tools_called": [
+        "fetch_cafeteria_menu:food_court_skip"
+      ],
+      "tool_args": [
+        {
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ],
+          "cafeteria": "전체",
+          "_sutra_skip": "food_court"
+        }
+      ],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_06",
+        "cnu-graduation-minor-credits",
+        "cnu-graduation-double-major-degree"
+      ],
+      "answer": "제공된 자료에는 '다음 주 1학'과 관련된 구체적인 정보가 포함되어 있지 않습니다. 질문하신 내용이 '다음 주 1학기 개강', '1학년 수업', 또는 '1 학점 이수' 등 특정 주제라면, 해당 정보를 확인하기 위해 공식 채널을 참고해 주시기 바랍니다.\n\n참고로 제공된 자료에 따르면:\n- **2026년 6월 학사일정**은 6월 9일부터 12일까지 정기휴업일이"
+    },
+    {
+      "q": "다음 주 2학 메뉴",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제2학생회관",
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 (2026-06-15 월요일 ~ 2026-06-21 일요일) 제2학생회관 메뉴는 다음과 같습니다.\n\n*   **2026-06-15 (월)**\n    *   아침(학생): 소고기야채죽\n    *   점심(직원): 참치김치찌개\n    *   점심(학생): 제육야채덮밥 [출처: 충남대학교 식단]\n\n*   **2026-06-16 (화)**\n    *   "
+    },
+    {
+      "q": "다음 주 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 (2026-06-15 월요일 ~ 2026-06-21 일요일) 학식 메뉴는 다음과 같습니다.\n\n**평일 (06-15~06-19)**\n*   **월요일 (06-15):** 제2학생회관(소고기야채죽, 참치김치찌개/제육야채덮밥), 제3학생회관(흑미밥/계란볶음밥&짜장소스, 스팸마요덮밥), 제4학생회관(치킨마요덮밥), 생활과학대학(짜계치밥)\n*   **화요일"
+    },
+    {
+      "q": "다음 주 월 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 월요일(6월 15일) 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   아침 (학생): 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기\n*   점심 (직원): 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기\n*   점심 (학생): 제육야채덮밥, 맑은우동국물, 만두튀김/초간장, 요쿠르트, 배추김치\n\n**제3학생회관**\n*  "
+    },
+    {
+      "q": "다음 주 월요일 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 월요일인 2026년 6월 15일 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   아침 (학생): 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기\n*   점심 (직원): 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기\n*   점심 (학생): 제육야채덮밥, 맑은우동국물, 만두튀김/초간장, 요쿠르트, 배추김치\n\n**제3학생회관"
+    },
+    {
+      "q": "어제 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-13"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026-06-13(토)의 학식 메뉴 정보는 제공된 자료에서 확인되지 않았습니다."
+    },
+    {
+      "q": "어제 1학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_01",
+        "dining_food_court_제1학생회관_중식",
+        "calendar_month_2026_07"
+      ],
+      "answer": "제시된 자료에는 '어제'의 1학 관련 정보가 포함되어 있지 않습니다. 제공된 학사일정 자료는 2026년 1월과 7월의 일정이며, 2026년 6월 13일(토)의 구체적인 학사 공지나 행사 내용은 확인되지 않았습니다.\n\n관련 정보는 충남대학교 교육과정안내 홈페이지 또는 최신 학사공지에서 확인하시기 바랍니다."
+    },
+    {
+      "q": "어제 2학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_07",
+        "calendar_month_2026_02",
+        "cnu-graduation-computer-ai-2026-page-005"
+      ],
+      "answer": "제공된 자료에는 '어제'의 2 학과 관련 구체적인 정보 (예: 특정 과목, 공지사항 등) 가 포함되어 있지 않습니다.\n\n현재 시점은 2026 년 6 월 14 일 (일요일) 이며, 제공된 자료는 복수전공 이수 범위와 학사일정 등에 대한 일반적인 안내입니다. 어제 (2026 년 6 월 13 일) 에 발표된 특정 학과별 공지나 소식은 확인되지 않았습니다.\n\n더 "
+    },
+    {
+      "q": "이번 주 월요일 3학",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제3학생회관",
+          "dates": [
+            "2026-06-08"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026학년도 제1학기 이번 주 월요일 (6월 8일) 제3학생회관 식단은 다음과 같습니다.\n\n*   **점심 (직원)**: 차조밥, 소고기무우국, 가자미구이, 잡채, 연근조림, 열무겉절이, 깍두기 [출처: 충남대학교 식단]\n*   **점심 (학생)**: 일식새우커리, 고추마요치킨 [출처: 충남대학교 식단]\n*   **저녁 (직원)**: 쌀밥, 부대찌개, 치"
+    },
+    {
+      "q": "이번 주 월 수 3학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "calendar_month_2026_06",
+        "cnu-graduation-double-major-application",
+        "cnu-graduation-computer-ai-2026-page-005",
+        "cnu-graduation-double-major-scope"
+      ],
+      "answer": "제공된 자료에는 '이번 주 월 수 3학'과 관련된 구체적인 정보가 없습니다.\n\n해당 질문이 특정 학과의 수업, 복수전공 신청 자격(36학점 이상 등), 또는 학사일정 관련 내용인지에 따라 답변이 달라질 수 있으나, 현재 제공된 증거 [1]~[4]에는 '월 수 3학'이라는 키워드가 포함되어 있지 않습니다.\n\n원하시는 정보를 정확히 확인하시려면 공식 학사공지나"
+    },
+    {
+      "q": "오늘 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-14"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026-06-14(일)의 식단 정보는 제공된 자료에 없습니다. 학교셔틀버스는 주말에는 운행하지 않으며, 학식 메뉴도 평일과 다를 수 있습니다. 정확한 오늘 식단은 공식 식단 페이지에서 확인하시는 것을 권장합니다 [출처: 충남대학교 식단]."
+    },
+    {
+      "q": "오늘 3학 메뉴",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제3학생회관",
+          "dates": [
+            "2026-06-14"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026-06-14(일)의 3학 메뉴 정보는 제공된 자료에 없습니다. 학교 식단은 평일 (월~금) 에 운영되며, 일요일에는 식사가 제공되지 않거나 정보가 등록되지 않을 수 있습니다.\n\n다음 주 월요일인 2026-06-15부터는 평일이므로 해당 날짜의 3학 메뉴를 확인해 드릴 수 있습니다."
+    },
+    {
+      "q": "모레 식단",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-16"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "모레인 2026년 6월 16일 (화) 식단 정보는 다음과 같습니다 [출처: 충남대학교 식단].\n\n**제2학생회관**\n*   아침(학생): 하이라이스, 누드소세지, 맑은우동국물, 배추김치\n*   점심(직원): 봄나물비빔밥, 건새우아욱국, 새우튀김, 연근샐러드, 배추김치\n*   점심(학생): 꼬치어묵우동, 새우튀김, 참치마요주먹밥, 단무지\n\n**제3학생회관**"
+    },
+    {
+      "q": "모레 2학",
+      "tools_called": [
+        "fetch_recent_notices"
+      ],
+      "tool_args": [
+        {
+          "keywords": [
+            "모레",
+            "2학"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_notices_all"
+      ],
+      "answer": "제공된 자료에는 모레 (2026-06-16) 에 대한 구체적인 학사 일정이나 공지 내용이 포함되어 있지 않습니다.\n\n참고로 제공된 최신 공지는 2026학년도 제2학기 등록금 납부 안내와 재입학 시행계획이며, 이는 2026-06-12 및 2026-06-11에 게시되었습니다 [출처: 충남대학교/컴퓨터인공지능학부 통합 공지].\n\n모레의 정확한 일정은 학교 공식 "
+    },
+    {
+      "q": "내일 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "내일(2026-06-15, 월요일) 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   아침 (학생): 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기\n*   점심 (직원): 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기\n*   점심 (학생): 제육야채덮밥, 맑은우동국물, 만두튀김/초간장, 요쿠르트, 배추김치\n\n**제3학생회관**\n"
+    },
+    {
+      "q": "내일 1학",
+      "tools_called": [
+        "fetch_cafeteria_menu:food_court_skip"
+      ],
+      "tool_args": [
+        {
+          "dates": [
+            "2026-06-15"
+          ],
+          "cafeteria": "전체",
+          "_sutra_skip": "food_court"
+        }
+      ],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "cnu-graduation-computer-ai-2026-page-005",
+        "cnu-graduation-computer-ai-2026-page-001",
+        "cnu-graduation-computer-ai-2026-page-002"
+      ],
+      "answer": "질문하신 '내일 1학'에 대한 정보는 제공된 자료에서 확인되지 않았습니다.\n\n제공된 자료는 컴퓨터인공지능학부 졸업요건, 복수전공 이수 범위 등 학사 관련 안내이며, 내일(2026-06-15)의 강의 시간표나 수업 정보에는 포함되어 있지 않습니다. 정확한 강의 정보를 원하신다면 해당 과목 담당 교수님이나 학과 사무실로 직접 문의하시는 것을 권장합니다.\n\n(실"
+    },
+    {
+      "q": "다음 주 1학",
+      "tools_called": [
+        "fetch_cafeteria_menu:food_court_skip"
+      ],
+      "tool_args": [
+        {
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ],
+          "cafeteria": "전체",
+          "_sutra_skip": "food_court"
+        }
+      ],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_06",
+        "cnu-graduation-minor-credits",
+        "cnu-graduation-double-major-degree"
+      ],
+      "answer": "제공된 자료에는 '다음 주 1학'과 관련된 구체적인 정보가 포함되어 있지 않습니다.\n\n다음 주 (2026-06-15 ~ 2026-06-21) 에는 제1학기 종강이 예정되어 있으며, 하기 계절학기 운영 기간도 시작됩니다 [출처: 2026년 6월 학사일정].\n\n질문하신 내용이 특정 학과 (예: 1학년), 학점 관련 사항, 또는 다른 주제라면 추가 정보를 제공해"
+    },
+    {
+      "q": "다음 주 2학 메뉴",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제2학생회관",
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 (2026-06-15 월요일 ~ 2026-06-21 일요일) 제2학생회관 메뉴는 다음과 같습니다.\n\n**2026-06-15 (월)**\n*   아침: 소고기야채죽 (소고기가 들어감)\n*   점심(직원): 참치김치찌개\n*   점심(학생): 제육야채덮밥 (돼지고기가 들어감) [출처: 충남대학교 식단]\n\n**2026-06-16 (화)**\n*   아침: 하"
+    },
+    {
+      "q": "다음 주 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 (2026-06-15 월요일 ~ 2026-06-19 금요일) 학식 메뉴는 다음과 같습니다.\n\n**2026-06-15 (월)**\n*   제2학생회관: 아침(학생) 소고기야채죽, 점심(직원) 참치김치찌개, 점심(학생) 제육야채덮밥\n*   제3학생회관: 점심(직원) 흑미밥, 점심(학생) 계란볶음밥&짜장소스, 저녁(직원) 스팸마요덮밥\n*   제4학생회관:"
+    },
+    {
+      "q": "다음 주 월 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 월요일(6월 15일) 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   아침: 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기 (정식 1,000원)\n*   점심(직원): 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기 (정식 6,000원)\n*   점심(학생): 제육야채덮밥, 맑은우동국물, 만두튀김/초간장, 요쿠르트, 배추김"
+    },
+    {
+      "q": "다음 주 월요일 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 월요일인 2026년 6월 15일 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   아침: 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기 (정식 1,000원)\n*   점심(직원): 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기 (정식 6,000원)\n*   점심(학생): 제육야채덮밥, 맑은우동국물, 만두튀김/초간장, 요쿠르"
+    },
+    {
+      "q": "어제 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-13"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026-06-13(토)의 학식 메뉴 정보는 제공된 자료에서 확인되지 않았습니다."
+    },
+    {
+      "q": "어제 1학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_01",
+        "dining_food_court_제1학생회관_중식",
+        "calendar_month_2026_07"
+      ],
+      "answer": "제시된 자료에는 '어제'에 대한 학사 공지나 1학 관련 정보가 포함되어 있지 않습니다. 제공된 학사일정 자료는 2026년 1월과 7월의 일정이며, 현재 기간인 2026학년도 제1학기 중 '어제'(2026-06-13)의 구체적인 내용은 확인되지 않았습니다.\n\n관련 정보를 원하신다면 충남대학교 공식 학사공지나 교육과정안내 페이지를 직접 확인하시는 것을 권장합니"
+    },
+    {
+      "q": "어제 2학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_07",
+        "calendar_month_2026_02",
+        "cnu-graduation-computer-ai-2026-page-005"
+      ],
+      "answer": "제공된 자료에는 '어제'의 2학 관련 구체적인 내용 (예: 2학기 개강, 2학년 학사공지 등) 이 포함되어 있지 않습니다.\n\n현재 시점은 2026학년도 제1학기이며, 제공된 학사일정 자료는 2026년 7월 (계절학기 및 성적발표) 과 2026년 2월 (수강신청 및 등록금 납부) 에 대한 내용으로 구성되어 있습니다.\n\n따라서 어제 발생한 구체적인 학사 관련 "
+    },
+    {
+      "q": "이번 주 월요일 3학",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제3학생회관",
+          "dates": [
+            "2026-06-08"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026학년도 제1학기 이번 주 월요일 (6월 8일) 제3학생회관 식단은 다음과 같습니다.\n\n**점심 메뉴:**\n*   **직원 정식 (6,000원):** 차조밥, 소고기무우국, 가자미구이, 잡채, 연근조림, 열무겉절이, 깍두기\n*   **학생 정식 (4,000원):** 일식새우커리, 고추마요치킨\n\n**저녁 메뉴:**\n*   **직원 정식 (6,000원):"
+    },
+    {
+      "q": "이번 주 월 수 3학",
+      "tools_called": [],
+      "tool_args": [],
+      "doc_ids": [
+        "calendar_month_2026_06",
+        "cnu-graduation-double-major-application",
+        "cnu-graduation-computer-ai-2026-page-005",
+        "cnu-graduation-double-major-scope"
+      ],
+      "answer": "제공된 자료에는 이번 주 월요일과 수요일에 3학점짜리 수업이 있는지, 혹은 특정 3학점 과목의 일정 정보가 포함되어 있지 않습니다.\n\n2026년 6월 학사일정 자료에는 2026-06-09(화)부터 2026-06-12(금)까지 정기휴업일로 수업결손 보충강의가 예정되어 있으며, 이번 주 평일 (06-08~06-12) 에는 휴업일이 포함되어 있습니다 [출처: 2"
+    },
+    {
+      "q": "오늘 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-14"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026년 6월 14일 (오늘) 의 식단 정보는 제공된 자료에 없습니다.\n\n식단 정보는 충남대학교 공식 홈페이지의 '식단' 메뉴에서 확인하실 수 있습니다 [출처: 충남대학교 식단]."
+    },
+    {
+      "q": "오늘 3학 메뉴",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제3학생회관",
+          "dates": [
+            "2026-06-14"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "2026년 6월 14일 (일요일) 메뉴 정보는 제공된 자료에 없습니다. 학교 식단은 평일 (월~금) 에 운영되며, 일요일에는 별도의 식사가 제공되지 않거나 정보가 등록되어 있지 않을 수 있습니다.\n\n관심 있는 식당의 평일 식단이나 다음 주 (2026-06-15 월 ~ 2026-06-19 금) 메뉴를 확인하시려면 공식 식단 페이지를 방문하거나, 해당 기간에 "
+    },
+    {
+      "q": "모레 식단",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-16"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "모레인 2026년 6월 16일 (화) 식단입니다.\n\n**제2학생회관**\n*   아침(학생): 하이라이스, 누드소세지, 맑은우동국물, 배추김치 [출처: 충남대학교 식단]\n*   점심(직원): 봄나물비빔밥, 건새우아욱국, 새우튀김, 연근샐러드, 배추김치 [출처: 충남대학교 식단]\n*   점심(학생): 꼬치어묵우동, 새우튀김, 참치마요주먹밥, 단무지 [출처: 충"
+    },
+    {
+      "q": "모레 2학",
+      "tools_called": [
+        "fetch_recent_notices"
+      ],
+      "tool_args": [
+        {
+          "keywords": [
+            "모레",
+            "2학"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_notices_all"
+      ],
+      "answer": "제공된 자료에는 모레 (2026-06-16) 에 대한 구체적인 학사 일정이나 공지사항이 포함되어 있지 않습니다.\n\n현재 제공된 최신 공지는 2026-06-12에 게재된 '2026학년도 제2학기 등록금 납부 안내'와 2026-06-11에 게재된 '2026학년도 제2학기 재입학 시행계획 및 모집요강 안내'입니다.\n\n모레의 정확한 학사 일정이나 공지사항을 확인하"
+    },
+    {
+      "q": "내일 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "내일 (2026-06-15, 월요일) 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   아침(학생): 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기 [출처: 충남대학교 식단]\n*   점심(직원): 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기 [출처: 충남대학교 식단]\n*   점심(학생): 제육야채덮밥, 맑은우동국물, 만두튀김/"
+    },
+    {
+      "q": "내일 1학",
+      "tools_called": [
+        "fetch_cafeteria_menu:food_court_skip"
+      ],
+      "tool_args": [
+        {
+          "dates": [
+            "2026-06-15"
+          ],
+          "cafeteria": "전체",
+          "_sutra_skip": "food_court"
+        }
+      ],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "cnu-graduation-computer-ai-2026-page-005",
+        "cnu-graduation-computer-ai-2026-page-001",
+        "cnu-graduation-computer-ai-2026-page-002"
+      ],
+      "answer": "질문하신 \"내일 1학\"과 관련된 명확한 정보가 제공된 자료에는 없습니다.\n\n제공된 자료는 컴퓨터인공지능학부의 졸업요건, 복수전공 이수 범위 등 학사 규정 관련 내용이며, 내일 (2026-06-15) 의 수업 시간표나 강의 정보에는 포함되어 있지 않습니다.\n\n정확한 내일 1 학시 강의 정보를 확인하시려면 충남대학교 총무처 또는 해당 학과 홈페이지의 실시간 강"
+    },
+    {
+      "q": "다음 주 1학",
+      "tools_called": [
+        "fetch_cafeteria_menu:food_court_skip"
+      ],
+      "tool_args": [
+        {
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ],
+          "cafeteria": "전체",
+          "_sutra_skip": "food_court"
+        }
+      ],
+      "doc_ids": [
+        "cnu-graduation-double-major-scope",
+        "calendar_month_2026_06",
+        "cnu-graduation-minor-credits",
+        "cnu-graduation-double-major-degree"
+      ],
+      "answer": "제공된 자료에는 '다음 주 1학'과 관련된 구체적인 정보가 없습니다. 질문하신 내용이 '다음 주 1학기 개강', '다음 주 1학년 일정', 또는 '다음 주 1 학점 관련 공지' 등이라면, 해당 정보는 제공된 증거에 포함되어 있지 않습니다.\n\n확인 가능한 정보로는 다음 주(2026-06-15 ~ 2026-06-21)는 제1학기 종강이 예정되어 있는 시기이며,"
+    },
+    {
+      "q": "다음 주 2학 메뉴",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": "제2학생회관",
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 (2026-06-15 월요일 ~ 2026-06-21 일요일) 제2학생회관 메뉴는 다음과 같습니다.\n\n**2026-06-15 (월)**\n*   아침(학생): 소고기야채죽\n*   점심(직원): 참치김치찌개\n*   점심(학생): 제육야채덮밥 [출처: 충남대학교 식단]\n\n**2026-06-16 (화)**\n*   아침(학생): 하이라이스\n*   점심(직원)"
+    },
+    {
+      "q": "다음 주 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15",
+            "2026-06-16",
+            "2026-06-17",
+            "2026-06-18",
+            "2026-06-19"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 (2026-06-15(월) ~ 2026-06-19(금)) 학식 메뉴는 다음과 같습니다.\n\n**2026-06-15 (월)**\n*   **제2학생회관**: 아침 소고기야채죽, 점심 참치김치찌개(직원), 제육야채덮밥(학생)\n*   **제3학생회관**: 점심 흑미밥(직원), 계란볶음밥&짜장소스(학생), 저녁 스팸마요덮밥(직원)\n*   **제4학생회관**:"
+    },
+    {
+      "q": "다음 주 월 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 월요일(6월 15일) 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   아침 (학생): 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기 [출처: 충남대학교 식단]\n*   점심 (직원): 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기 [출처: 충남대학교 식단]\n*   점심 (학생): 제육야채덮밥, 맑은우동국물, 만두튀김/초"
+    },
+    {
+      "q": "다음 주 월요일 학식",
+      "tools_called": [
+        "fetch_cafeteria_menu"
+      ],
+      "tool_args": [
+        {
+          "cafeteria": null,
+          "dates": [
+            "2026-06-15"
+          ]
+        }
+      ],
+      "doc_ids": [
+        "live_cafeteria_menu"
+      ],
+      "answer": "다음 주 월요일인 2026년 6월 15일 학식 메뉴는 다음과 같습니다.\n\n**제2학생회관**\n*   아침(학생): 소고기야채죽, 메추리알장조림, 우리쌀씨리얼, 우유, 깍두기 (정식 1,000원) [출처: 충남대학교 식단]\n*   점심(직원): 참치김치찌개, 삼치구이, 햄겨자채, 도시락김, 깍두기 (정식 6,000원) [출처: 충남대학교 식단]\n*   점심("
+    }
+  ]
+}

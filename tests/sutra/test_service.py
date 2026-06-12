@@ -460,7 +460,7 @@ def test_ask_router_overrides_forced_cafeteria_dates_from_question(
     assert answer.evidence == [live_evidence]
 
 
-def test_ask_router_uses_question_cafeteria_when_model_omits_it(
+def test_ask_router_uses_model_cafeteria_enum(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -473,7 +473,7 @@ def test_ask_router_uses_question_cafeteria_when_model_omits_it(
                 ToolCall(
                     id="call-1",
                     function_name="fetch_cafeteria_menu",
-                    function_arguments='{"date":"2026-06-13"}',
+                    function_arguments='{"cafeteria":"제2학생회관"}',
                 )
             ],
         ),
@@ -515,7 +515,7 @@ def test_ask_router_resolves_today_cafeteria_date(
                 ToolCall(
                     id="call-1",
                     function_name="fetch_cafeteria_menu",
-                    function_arguments='{"cafeteria":"2학"}',
+                    function_arguments='{"cafeteria":"제2학생회관"}',
                 )
             ],
         ),
@@ -620,6 +620,61 @@ def test_ask_router_reports_empty_live_and_empty_rag_for_forced_tool_domain(
     assert answer.trace["forced_tool"] == "fetch_cafeteria_menu"
     assert answer.trace["tools_called"] == ["fetch_cafeteria_menu"]
 
+
+
+def test_ask_router_refuses_unresolved_model_supplied_cafeteria_date(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace = _write_workspace(tmp_path)
+    client = RouterClient(
+        LlamaResult(
+            content="",
+            model="fake-qwen",
+            tool_calls=[
+                ToolCall(
+                    id="call-1",
+                    function_name="fetch_cafeteria_menu",
+                    function_arguments='{"cafeteria":"전체","dates":["2026-06-17"]}',
+                )
+            ],
+        ),
+        LlamaResult(
+            content="",
+            model="fake-qwen",
+            tool_calls=[
+                ToolCall(
+                    id="call-2",
+                    function_name="fetch_cafeteria_menu",
+                    function_arguments='{"cafeteria":"전체","dates":["2026-06-17"]}',
+                )
+            ],
+        ),
+    )
+    dispatch_calls: list[tuple[str, Any]] = []
+
+    def fake_dispatch(name: str, args: Any) -> list[Evidence]:
+        dispatch_calls.append((name, args))
+        return [
+            Evidence(
+                id="live_cafeteria_menu",
+                title="충남대학교 식단",
+                text="호출되면 안 되는 식단",
+            )
+        ]
+
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 3)
+    monkeypatch.setattr("sutra.service.dispatch", fake_dispatch)
+    monkeypatch.setattr("sutra.menu_resolver.datetime", FrozenMenuResolverDateTime)
+
+    answer = ask("학식 메뉴", workspace=workspace, client=client, mode="router")
+
+    assert len(client.calls) == 2
+    assert dispatch_calls == []
+    assert answer.answer == "요청하신 날짜를 정확히 해석하지 못했습니다. 날짜를 YYYY-MM-DD 또는 오늘/내일/이번주처럼 다시 알려주세요."
+    assert answer.evidence == []
+    assert answer.trace["tools_called"] == []
+    assert answer.trace["tool_args"] == []
 
 def test_ask_router_keeps_insufficient_evidence_for_empty_non_forced_domain(
     tmp_path: Path,

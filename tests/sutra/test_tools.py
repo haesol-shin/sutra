@@ -747,6 +747,17 @@ def test_cafeteria_menu_parser_preserves_rowspanned_cafeteria_columns() -> None:
     assert breakfast[0].menu_name == "정식(1000)"
     assert "육개장(beef included)" in breakfast[0].menu_text
 
+def test_cafeteria_menu_parser_default_excludes_food_court() -> None:
+    html = (FIXTURES / "food.html").read_text(encoding="utf-8")
+
+    records = _parse_cafeteria_menu(html, "2026-06-11", None)
+
+    cafeterias = {record.cafeteria for record in records}
+    assert "제1학생회관" not in cafeterias
+    assert cafeterias <= {"제2학생회관", "제3학생회관", "제4학생회관", "생활과학대학"}
+    assert "제2학생회관" in cafeterias
+
+
 
 def test_academic_calendar_filters_requested_month(monkeypatch) -> None:
     monkeypatch.setattr(
@@ -820,13 +831,21 @@ def test_tool_schemas_enum_constrain_string_arguments() -> None:
     assert "장학금 공지 찾아줘 → keywords=[장학금, 장학]" in notice_schema_text
     assert "사업단 공지 → board=학부 사업단 소식" in notice_schema_text
     assert "최근 공지 중 해당 주제어가 제목에 포함된 것" in notice_schema_text
-    assert schemas["fetch_cafeteria_menu"]["properties"]["cafeteria"]["enum"] == [
+    cafeteria_schema = schemas["fetch_cafeteria_menu"]["properties"]["cafeteria"]
+    assert "date" not in schemas["fetch_cafeteria_menu"]["properties"]
+    assert "dates" in schemas["fetch_cafeteria_menu"]["properties"]
+    assert cafeteria_schema["enum"] == [
+        "전체",
+        "제1학생회관",
         "제2학생회관",
         "제3학생회관",
         "제4학생회관",
         "생활과학대학",
-        None,
     ]
+    dates_schema = schemas["fetch_cafeteria_menu"]["properties"]["dates"]
+    assert dates_schema["minItems"] == 1
+    assert dates_schema["maxItems"] == 5
+    assert dates_schema["items"]["pattern"] == r"^\d{4}-\d{2}-\d{2}$"
     assert schemas["fetch_page_text"]["properties"]["source_id"]["enum"] == ["셔틀버스 안내", "수강신청 안내"]
     exposed = json.dumps([schemas["fetch_recent_notices"], schemas["fetch_page_text"]], ensure_ascii=False)
     assert "univ_academic" not in exposed

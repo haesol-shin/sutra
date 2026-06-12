@@ -14,7 +14,7 @@ from sutra.documents import load_documents
 from sutra.errors import SutraError
 from sutra.llama import EchoClient, LlamaClient, has_stream_tool_call_marker
 from sutra.models import Evidence, EvidencePack, LlamaResult, Message, ToolCall
-from sutra.menu_resolver import normalize_cafeteria, resolve_menu_dates
+from sutra.dining_router import run_forced_cafeteria_call
 from sutra.prompts import render_prompt
 from sutra.retrieval import retrieve
 from sutra.service import (
@@ -639,6 +639,7 @@ async def on_message(message: cl.Message) -> None:
     final_msg: cl.Message | None = None
     evidence_for_trace = list(rag_items)
     mode = "router_llm_stream"
+    refused = False
     try:
         if forced_tool is not None:
             tools = get_tool_definitions()
@@ -654,50 +655,68 @@ async def on_message(message: cl.Message) -> None:
                 tool_labels = [_tool_label(tc) for tc in result.tool_calls]
                 step.input = "; ".join(tool_labels) if tool_labels else f"{forced_tool}()"
                 tool_summaries: list[str] = []
-                for tool_call in result.tool_calls:
-                    if forced_tool == "fetch_cafeteria_menu" and tool_call.function_name == forced_tool:
-                        args = _tool_arguments(tool_call)
-                        canon, food_court = normalize_cafeteria(args.get("cafeteria"))
-                        if canon is None and not food_court:
-                            canon, food_court = normalize_cafeteria(question)
-                        if food_court and canon is None:
-                            tools_called.append(f"{tool_call.function_name}:food_court_skip")
-                            tool_args.append({**args, "_sutra_skip": "food_court"})
-                            tool_summaries.append("fetch_cafeteria_menu() → food-court knowledge-base fallback")
-                            continue
-
-                        resolved_dates = resolve_menu_dates(question, config)
-                        if resolved_dates is not None:
-                            args["dates"] = resolved_dates
-                            args.pop("date", None)
-                        args["cafeteria"] = canon
-
-                        tools_called.append(tool_call.function_name)
-                        tool_args.append(dict(args))
-                        fresh = await cl.make_async(dispatch)("fetch_cafeteria_menu", args)
-                        fresh_items.extend(fresh)
-                        tool_summaries.append(_tool_summary("fetch_cafeteria_menu", args, fresh))
-                        continue
-
-                    tools_called.append(tool_call.function_name)
-                    raw_args = _tool_arguments(tool_call)
-                    tool_args.append(raw_args)
-                    if tool_call.function_name != forced_tool:
-                        logger.warning(
-                            "Router forced %s but model returned %s; ignoring tool evidence",
-                            forced_tool,
-                            tool_call.function_name,
+                if forced_tool == "fetch_cafeteria_menu":
+                    def retry_cafeteria_call() -> LlamaResult:
+                        return llm.chat(
+                            _render_router_tool_request_messages(question, config),
+                            model=config.runtime.model,
+                            temperature=config.runtime.temperature,
+                            max_tokens=min(config.runtime.max_tokens, 256),
+                            tools=tools or None,
+                            tool_choice=_forced_tool_choice(forced_tool),
                         )
-                        continue
-                    fresh = await cl.make_async(dispatch)(
-                        tool_call.function_name,
-                        tool_call.function_arguments,
+
+                    outcome = await cl.make_async(run_forced_cafeteria_call)(
+                        question=question,
+                        config=config,
+                        tool_calls=result.tool_calls,
+                        call_model=retry_cafeteria_call,
+                        dispatch_fn=dispatch,
                     )
-                    fresh_items.extend(fresh)
-                    tool_summaries.append(_tool_result_summary(tool_call, fresh))
+                    tools_called.extend(outcome.called_tools)
+                    tool_args.extend(outcome.tool_args)
+                    if outcome.refused:
+                        refused = True
+                        final_answer = outcome.refusal_text or ""
+                        final_msg = cl.Message(content=final_answer)
+                        await final_msg.send()
+                        result = LlamaResult(content=final_answer, model=config.runtime.model)
+                        evidence_for_trace = []
+                        rag_items = []
+                        tool_summaries.append("fetch_cafeteria_menu() → refused unverified date")
+                    elif outcome.evidence:
+                        fresh_items.extend(outcome.evidence)
+                        for name, args in zip(outcome.called_tools, outcome.tool_args):
+                            if name == "fetch_cafeteria_menu":
+                                tool_summaries.append(_tool_summary(name, args, outcome.evidence))
+                            elif name == "fetch_cafeteria_menu:food_court_skip":
+                                tool_summaries.append("fetch_cafeteria_menu() → food-court knowledge-base fallback")
+                    elif outcome.use_kb_fallback:
+                        tool_summaries.append("fetch_cafeteria_menu() → food-court knowledge-base fallback")
+                    else:
+                        for name, args in zip(outcome.called_tools, outcome.tool_args):
+                            tool_summaries.append(f"{name}({json.dumps(args, ensure_ascii=False)}) → 0 results")
+                else:
+                    for tool_call in result.tool_calls:
+                        tools_called.append(tool_call.function_name)
+                        raw_args = _tool_arguments(tool_call)
+                        tool_args.append(raw_args)
+                        if tool_call.function_name != forced_tool:
+                            logger.warning(
+                                "Router forced %s but model returned %s; ignoring tool evidence",
+                                forced_tool,
+                                tool_call.function_name,
+                            )
+                            continue
+                        fresh = await cl.make_async(dispatch)(
+                            tool_call.function_name,
+                            tool_call.function_arguments,
+                        )
+                        fresh_items.extend(fresh)
+                        tool_summaries.append(_tool_result_summary(tool_call, fresh))
                 step.output = "; ".join(tool_summaries) if tool_summaries else f"{forced_tool}() → 0 results"
 
-        if forced_tool is not None and not fresh_items:
+        if forced_tool is not None and not fresh_items and not refused:
             fallback_pack = await cl.make_async(retrieve)(
                 question,
                 documents,
@@ -707,7 +726,9 @@ async def on_message(message: cl.Message) -> None:
             if fallback_pack.items:
                 rag_items = list(fallback_pack.items)
 
-        if forced_tool is not None and not fresh_items and not rag_items:
+        if refused:
+            pass
+        elif forced_tool is not None and not fresh_items and not rag_items:
             final_answer = (
                 "실시간 조회에 실패했고 저장된 자료에서도 관련 정보를 찾지 못했습니다. "
                 "충남대학교 공식 홈페이지를 확인해 주세요."
@@ -753,7 +774,7 @@ async def on_message(message: cl.Message) -> None:
                 final_answer = fallback_result.content
                 final_msg.content = final_answer
                 await final_msg.update()
-            if forced_tool is not None and not fresh_items:
+            if forced_tool is not None and not fresh_items and not refused:
                 final_answer += "\n\n(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)"
                 final_msg.content = final_answer
                 await final_msg.update()
@@ -763,7 +784,7 @@ async def on_message(message: cl.Message) -> None:
 
         if forced_tool is not None and fresh_items:
             evidence_for_trace = list(fresh_items)
-        elif forced_tool is not None:
+        elif forced_tool is not None and not refused:
             evidence_for_trace = rag_items
 
         if final_msg is None:

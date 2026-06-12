@@ -4,7 +4,7 @@ from pathlib import Path
 
 from sutra.config import load_config
 from sutra.models import Evidence, EvidencePack
-from sutra.prompts import build_temporal_context, render_prompt
+from sutra.prompts import build_relative_date_anchors, build_temporal_context, render_prompt
 
 
 def test_render_prompt_does_not_inline_tool_listing(tmp_path: Path) -> None:
@@ -79,6 +79,32 @@ def test_render_prompt_injects_temporal_context(tmp_path: Path) -> None:
         prompt = render_prompt("이번 학기 종강일", evidence, config)
     assert "현재 기간: 2026학년도 제1학기" in prompt.messages[1].content
     assert "이번 주:" in prompt.messages[1].content
+
+
+def test_answer_and_forced_tool_prompts_share_temporal_anchors(tmp_path: Path) -> None:
+    from datetime import date
+    from unittest.mock import patch
+
+    from sutra.service import _render_router_tool_request_messages
+
+    workspace = _write_workspace(tmp_path)
+    config = load_config(workspace)
+    evidence = EvidencePack(question="q", items=[])
+    anchor_line = build_relative_date_anchors(date(2026, 6, 13))
+
+    with patch("sutra.prompts.get_current_date", return_value=date(2026, 6, 13)), patch(
+        "sutra.service.get_current_date", return_value=date(2026, 6, 13)
+    ):
+        answer_prompt = render_prompt("오늘 학식", evidence, config)
+        forced_messages = _render_router_tool_request_messages("오늘 학식", config)
+
+    answer_user = answer_prompt.messages[1].content
+    forced_user = forced_messages[1].content
+    assert anchor_line in answer_user
+    assert anchor_line in forced_user
+    for line in ("이번 주:", "다음 주:"):
+        assert line in answer_user
+        assert line in forced_user
 
 
 def _write_workspace(root: Path) -> Path:

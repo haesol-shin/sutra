@@ -12,8 +12,13 @@ from sutra.config import Config, load_config
 from sutra.documents import load_documents
 from sutra.llama import LlamaClient
 from sutra.models import Answer, Evidence, EvidencePack, LlamaResult, Message, ToolCall
-from sutra.prompts import get_current_time_str, render_prompt
-from sutra.menu_resolver import normalize_cafeteria, resolve_menu_dates
+from sutra.dining_router import run_forced_cafeteria_call
+from sutra.prompts import (
+    build_forced_tool_temporal_context,
+    get_current_date,
+    get_current_time_str,
+    render_prompt,
+)
 from sutra.retrieval import retrieve
 from sutra.tools import INTERNAL_TO_DISPLAY, dispatch, get_tool_definitions
 from sutra.tracelog import TraceSource, append_chat_trace, default_trace_path
@@ -272,45 +277,57 @@ def _ask_router(
             tool_choice=_forced_tool_choice(forced_tool),
         )
         extra: list[Evidence] = []
+        refused = False
         if result.tool_calls:
-            for tc in result.tool_calls:
-                if forced_tool == "fetch_cafeteria_menu" and tc.function_name == forced_tool:
-                    args = _tool_arguments_dict(tc)
-                    canon, food_court = normalize_cafeteria(args.get("cafeteria"))
-                    if canon is None and not food_court:
-                        canon, food_court = normalize_cafeteria(question)
-                    if food_court and canon is None:
-                        called_tools.append(f"{tc.function_name}:food_court_skip")
-                        tool_args.append({**args, "_sutra_skip": "food_court"})
-                        continue
+            if forced_tool == "fetch_cafeteria_menu":
+                def retry_cafeteria_call() -> LlamaResult:
+                    return llm.chat(
+                        _render_router_tool_request_messages(question, config),
+                        model=config.runtime.model,
+                        temperature=config.runtime.temperature,
+                        max_tokens=min(config.runtime.max_tokens, 256),
+                        tools=tools or None,
+                        tool_choice=_forced_tool_choice(forced_tool),
+                    )
 
-                    resolved_dates = resolve_menu_dates(question, config)
-                    if resolved_dates is not None:
-                        args["dates"] = resolved_dates
-                        args.pop("date", None)
-                    args["cafeteria"] = canon
-
+                outcome = run_forced_cafeteria_call(
+                    question=question,
+                    config=config,
+                    tool_calls=result.tool_calls,
+                    call_model=retry_cafeteria_call,
+                    dispatch_fn=dispatch,
+                )
+                called_tools.extend(outcome.called_tools)
+                tool_args.extend(outcome.tool_args)
+                if outcome.refused:
+                    refused = True
+                    evidence.items = []
+                    prompt = render_prompt(question, evidence, config)
+                    result = LlamaResult(
+                        content=outcome.refusal_text or "",
+                        model=result.model or config.runtime.model,
+                        usage=result.usage,
+                        raw=result.raw,
+                    )
+                elif outcome.evidence:
+                    extra.extend(outcome.evidence)
+            else:
+                for tc in result.tool_calls:
                     called_tools.append(tc.function_name)
-                    tool_args.append(dict(args))
-                    fresh = dispatch("fetch_cafeteria_menu", args)
+                    tool_args.append(_tool_arguments_dict(tc))
+                    if tc.function_name != forced_tool:
+                        logger.warning(
+                            "Router forced %s but model returned %s; ignoring tool evidence",
+                            forced_tool,
+                            tc.function_name,
+                        )
+                        continue
+                    fresh = dispatch(tc.function_name, tc.function_arguments)
                     if fresh:
                         extra.extend(fresh)
-                    continue
-
-                called_tools.append(tc.function_name)
-                tool_args.append(_tool_arguments_dict(tc))
-                if tc.function_name != forced_tool:
-                    logger.warning(
-                        "Router forced %s but model returned %s; ignoring tool evidence",
-                        forced_tool,
-                        tc.function_name,
-                    )
-                    continue
-                fresh = dispatch(tc.function_name, tc.function_arguments)
-                if fresh:
-                    extra.extend(fresh)
-
-        if extra:
+        if refused:
+            pass
+        elif extra:
             evidence.items = list(extra)
             prompt = render_prompt(question, evidence, config)
             result = llm.chat(
@@ -525,7 +542,8 @@ def _render_router_tool_request_messages(question: str, config: Config) -> list[
     user = (
         f"Workspace: {config.workspace.name}\n"
         f"Timezone: {config.workspace.timezone}\n"
-        f"Current Time: {get_current_time_str(config.workspace.timezone)}\n\n"
+        f"Current Time: {get_current_time_str(config.workspace.timezone)}\n"
+        f"{build_forced_tool_temporal_context(get_current_date(config.workspace.timezone), config.workspace.periods)}\n\n"
         f"Question:\n{question}"
     )
     return [

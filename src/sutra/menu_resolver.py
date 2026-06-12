@@ -5,12 +5,6 @@ from datetime import date, datetime, timedelta
 from typing import Any
 from zoneinfo import ZoneInfo
 
-CAFETERIA_CANONICAL = {
-    "2": "제2학생회관",
-    "3": "제3학생회관",
-    "4": "제4학생회관",
-}
-CAFETERIA_FULL_NAMES = {"제2학생회관", "제3학생회관", "제4학생회관", "생활과학대학"}
 
 _WEEKDAY_OFFSETS = {
     "월": 0,
@@ -81,24 +75,28 @@ def resolve_menu_dates(question: str, config: Any) -> list[str] | None:
 
     return None
 
+CAFETERIA_TOKENS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("제1학생회관", re.compile(r"(?:제\s*)?1\s*학(?!기|년)(?:생\s*회관)?")),
+    ("제2학생회관", re.compile(r"(?:제\s*)?2\s*학(?!기|년)(?:생\s*회관)?")),
+    ("제3학생회관", re.compile(r"(?:제\s*)?3\s*학(?!기|년)(?:생\s*회관)?")),
+    ("제4학생회관", re.compile(r"(?:제\s*)?4\s*학(?!기|년)(?:생\s*회관)?")),
+    ("생활과학대학", re.compile(r"생활\s*과학(?:대학)?")),
+)
 
-def normalize_cafeteria(raw: str | None) -> tuple[str | None, bool]:
-    """Normalize Korean cafeteria aliases, preserving 제1학생회관 as food-court-only."""
-    if raw is None or not str(raw).strip():
-        return None, False
-    text = str(raw).strip()
 
-    for digit, canonical in CAFETERIA_CANONICAL.items():
-        if re.search(rf"(?:제\s*)?{digit}\s*학|제\s*{digit}\s*학생회관|{re.escape(canonical)}", text):
-            return canonical, False
-    if "생활과학대학" in text:
-        return "생활과학대학", False
-    if re.search(r"(?:제\s*)?1\s*학|제\s*1\s*학생회관", text):
-        return None, True
-    if text in CAFETERIA_FULL_NAMES:
-        return text, False
-    return None, False
+def resolve_cafeteria(question: str) -> str | None:
+    """Deterministically resolve an explicit cafeteria named in the question.
 
+    Returns the canonical cafeteria name when the question names one
+    (제1학생회관 is the food court). Returns None when no cafeteria is named,
+    meaning "all daily-menu cafeterias" (전체). The 9B forced-tool model is
+    unreliable at picking the cafeteria enum (verified live), so the server
+    derives it from the question text — same determinism applied to dates.
+    """
+    for name, pattern in CAFETERIA_TOKENS:
+        if pattern.search(question):
+            return name
+    return None
 
 def _consume_explicit_dates(text: str, today: date) -> tuple[list[date], str]:
     dates: list[date] = []

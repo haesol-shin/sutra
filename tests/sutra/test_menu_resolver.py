@@ -7,7 +7,7 @@ from zoneinfo import ZoneInfo
 import pytest
 
 from sutra import menu_resolver
-from sutra.menu_resolver import normalize_cafeteria, resolve_menu_dates
+from sutra.menu_resolver import resolve_cafeteria, resolve_menu_dates
 
 
 class FrozenDateTime(datetime):
@@ -139,23 +139,23 @@ def test_sort_dedup_and_cap_five(config: SimpleNamespace) -> None:
     ]
 
 
+
+
 @pytest.mark.parametrize(
-    ("raw", "expected"),
+    ("question", "expected"),
     [
-        (None, (None, False)),
-        ("", (None, False)),
-        ("2학", ("제2학생회관", False)),
-        ("3학", ("제3학생회관", False)),
-        ("4학", ("제4학생회관", False)),
-        ("생활과학대학", ("생활과학대학", False)),
-        ("제2학생회관", ("제2학생회관", False)),
-        ("제3학생회관", ("제3학생회관", False)),
-        ("제4학생회관", ("제4학생회관", False)),
-        ("1학", (None, True)),
-        ("제1학생회관", (None, True)),
-        ("1학,2학", ("제2학생회관", False)),
-        ("중앙도서관", (None, False)),
+        ("어제 2학", "제2학생회관"),
+        ("이번 주 월요일 3학", "제3학생회관"),
+        ("내일 1학", "제1학생회관"),
+        ("오늘 3학 메뉴", "제3학생회관"),
+        ("생활과학대학 식단", "생활과학대학"),
+        ("제2학생회관 점심", "제2학생회관"),
+        ("다음 주 학식", None),
+        ("다음 주 월 학식", None),
+        ("오늘 학식", None),
+        ("이번 학기 종강", None),
+        ("2학년 학식", None),
     ],
 )
-def test_normalize_cafeteria(raw: str | None, expected: tuple[str | None, bool]) -> None:
-    assert normalize_cafeteria(raw) == expected
+def test_resolve_cafeteria(question: str, expected: str | None) -> None:
+    assert resolve_cafeteria(question) == expected
