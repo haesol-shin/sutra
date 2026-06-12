@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import subprocess
+import zipfile
 from pathlib import Path
 
 
@@ -13,6 +14,16 @@ def _load_build_module(repo_root: Path):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+EXPECTED_NLP_TERM_FILES = {
+    "__init__.py",
+    "classify/__init__.py",
+    "classify/predict.py",
+    "paths.py",
+    "schemas.py",
+    "validators.py",
+}
 
 
 def test_build_submission_creates_whitelist_and_generated_docs(tmp_path, capsys):
@@ -30,6 +41,12 @@ def test_build_submission_creates_whitelist_and_generated_docs(tmp_path, capsys)
     assert (package_dir / "src" / "classifier.ipynb").is_file()
     assert (package_dir / "src" / "sutra").is_dir()
     assert (package_dir / "src" / "nlp_term").is_dir()
+    nlp_term_files = {
+        path.relative_to(package_dir / "src" / "nlp_term").as_posix()
+        for path in (package_dir / "src" / "nlp_term").rglob("*")
+        if path.is_file()
+    }
+    assert nlp_term_files == EXPECTED_NLP_TERM_FILES
     assert (package_dir / "examples" / "cnu-campus" / "sutra.toml").is_file()
     assert (package_dir / "examples" / "cnu-campus" / "prompts").is_dir()
     assert (package_dir / "examples" / "cnu-campus" / "config").is_dir()
@@ -61,6 +78,13 @@ def test_build_submission_creates_whitelist_and_generated_docs(tmp_path, capsys)
     assert not (package_dir / "outputs").exists()
     assert not any("__pycache__" in path.parts for path in package_dir.rglob("*"))
     assert result.zip_path.is_file()
+    with zipfile.ZipFile(result.zip_path) as archive:
+        zipped_nlp_term_files = {
+            name.split("/src/nlp_term/", 1)[1]
+            for name in archive.namelist()
+            if "/src/nlp_term/" in name
+        }
+    assert zipped_nlp_term_files == EXPECTED_NLP_TERM_FILES
     assert result.file_count > 0
     assert result.total_bytes > 0
 
