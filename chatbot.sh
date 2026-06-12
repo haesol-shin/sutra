@@ -32,7 +32,9 @@ WORKSPACE="$REPO_DIR/examples/cnu-campus/sutra.toml"
 export SUTRA_MODEL_DIR="${SUTRA_MODEL_DIR:-$RUNTIME_DIR/models}"
 export SUTRA_CLASSIFIER_PATH="${SUTRA_CLASSIFIER_PATH:-$SCRIPT_DIR/model/classifier.joblib}"
 export UV_CACHE_DIR="${UV_CACHE_DIR:-$RUNTIME_DIR/uv-cache}"
-N_CTX="${SUTRA_N_CTX:-8192}"
+# 4096 fits the short grading inputs with room for RAG + tool context and keeps
+# GPU memory headroom on a 15GB T4. Override with SUTRA_N_CTX for longer context.
+N_CTX="${SUTRA_N_CTX:-4096}"
 
 mkdir -p "$RUNTIME_DIR" "$SCRIPT_DIR/outputs" "$SUTRA_MODEL_DIR"
 
@@ -171,6 +173,17 @@ ensure_model() {
 
 health_ready() { "${SUTRA_CMD[@]}" llama health --workspace "$WORKSPACE" >/dev/null 2>&1; }
 
+cleanup_stale_servers() {
+  # A llama-server launched from a previous run keeps holding the GPU (terminal
+  # background processes survive notebook/kernel restarts), so a new one OOMs.
+  # Only called when no healthy server is reachable, so we never kill a good one.
+  if command -v pkill >/dev/null 2>&1; then
+    pkill -9 -f "sutra.cli llama serve" 2>/dev/null || true
+    pkill -9 -f "llama_cpp.server" 2>/dev/null || true
+    sleep 2
+  fi
+}
+
 start_server() {
   if [ "${SUTRA_SKIP_SERVER:-0}" = "1" ]; then
     log "SUTRA_SKIP_SERVER=1; skipping llama-server startup."
@@ -180,8 +193,9 @@ start_server() {
     log "llama-server already healthy."
     return 0
   fi
+  cleanup_stale_servers
   local log_path="$RUNTIME_DIR/llama-server.log"
-  log "Starting llama-server (log: $log_path) ..."
+  log "Starting llama-server (n_ctx=$N_CTX, log: $log_path) ..."
   ("${SUTRA_CMD[@]}" llama serve --workspace "$WORKSPACE" --n-ctx "$N_CTX" >"$log_path" 2>&1) &
   local pid=$! timeout="${SUTRA_HEALTH_TIMEOUT:-300}" elapsed=0
   while [ "$elapsed" -lt "$timeout" ]; do

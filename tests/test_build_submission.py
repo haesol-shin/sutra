@@ -19,6 +19,8 @@ def _load_build_module(repo_root: Path):
 
 EXPECTED_FILES = {
     "chatbot.sh",
+    "requirements.txt",
+    "README.md",
     "src/classifier.ipynb",
     "data/test_cls.json",
     "data/test_chat.json",
@@ -32,6 +34,7 @@ def _make_inputs(tmp_path: Path) -> Path:
     repo = tmp_path / "src_repo"
     contents = {
         "chatbot.sh": "#!/usr/bin/env bash\necho hi\n",
+        "requirements.txt": "pydantic\n",
         "src/classifier.ipynb": "{}\n",
         "data/test_cls.json": "[]\n",
         "data/test_chat.json": "[]\n",
@@ -65,7 +68,6 @@ def test_build_submission_ships_only_bootstrap_manifest(tmp_path):
     assert not (package_dir / "src" / "nlp_term").exists()
     assert not (package_dir / "examples").exists()
     assert not (package_dir / "pyproject.toml").exists()
-    assert not (package_dir / "requirements.txt").exists()
     assert not any("__pycache__" in path.parts for path in package_dir.rglob("*"))
 
     assert result.zip_path.is_file()
