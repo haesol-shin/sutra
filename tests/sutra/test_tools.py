@@ -46,6 +46,30 @@ def fake_get_factory(mapping: dict[str, str]):
     return fake_get
 
 
+def cafeteria_fixture_get(call_dates: list[str] | None = None):
+    fixtures = {
+        "2026.06.12": "cafeteria_menu_2026-06-12.html",
+        "2026.06.17": "cafeteria_menu_2026-06-17.html",
+        "2026.06.24": "cafeteria_menu_2026-06-24.html",
+        "2026.07.01": "cafeteria_menu_2026-07-01.html",
+    }
+
+    def fake_get(url: str, **kwargs: Any) -> str:
+        assert url == tools_module.FOOD_URL
+        params = kwargs["params"]
+        assert params["searchView"] == "cafeteria"
+        search_ymd = params["searchYmd"]
+        if call_dates is not None:
+            call_dates.append(search_ymd)
+        try:
+            fixture_name = fixtures[search_ymd]
+        except KeyError as exc:
+            raise AssertionError(f"unexpected searchYmd: {search_ymd}") from exc
+        return (FIXTURES / fixture_name).read_text(encoding="utf-8")
+
+    return fake_get
+
+
 class RecordingExecutor:
     submit_calls: list[tuple[Any, tuple[Any, ...], dict[str, Any]]] = []
     shutdown_calls: list[dict[str, Any]] = []
@@ -582,84 +606,126 @@ def test_cafeteria_menu_returns_clean_rag_style_daily_text(monkeypatch) -> None:
     assert "운영안함" not in text
 
 
-def test_cafeteria_menu_body_text_extracts_only_menu_lines() -> None:
-    extract = getattr(tools_module, "_cafeteria_menu_body_text", None)
-    assert extract is not None
+def test_cafeteria_menu_params_selects_cafeteria_view() -> None:
+    params = tools_module._cafeteria_menu_params("2026-06-17")
 
-    today_text = "# 2026-06-11 (목) 학생식당 식단\n\n## 제2학생회관\n- 점심(학생) 정식: A"
-    target_same = "# 2026-06-18 (목) 학생식당 식단\n\n## 제2학생회관\n- 점심(학생) 정식: A"
-    target_other = "# 2026-06-18 (목) 학생식당 식단\n\n## 제2학생회관\n- 점심(학생) 정식: B"
-
-    assert extract(today_text) == extract(target_same)
-    assert extract(today_text) != extract(target_other)
-    assert extract("# 2026-06-18 (목) 학생식당 식단") == ""
+    assert params["searchView"] == "cafeteria"
+    assert params["searchYmd"] == "2026.06.17"
+    assert params["searchLang"] == "OCL04.10"
+    assert params["searchCafeteria"] == "OCL03.02"
 
 
-def test_cafeteria_menu_flags_non_today_identical_body_as_unverified(monkeypatch) -> None:
-    monkeypatch.setattr("sutra.tools._today_kst", lambda: datetime(2026, 6, 11))
+def test_cafeteria_menu_future_date_returns_real_menu_evidence(monkeypatch) -> None:
+    monkeypatch.setattr("sutra.tools._today_kst", lambda: datetime(2026, 6, 12))
+    monkeypatch.setattr("sutra.tools._get", cafeteria_fixture_get())
+
+    evidence = fetch_cafeteria_menu(date="2026-06-17")
+
+    assert len(evidence) == 1
+    assert "2026-06-17" in evidence[0].text
+    assert "목살필라프&계란후라이(pork included)" in evidence[0].text
+    assert "식단 정보가 없습니다" not in evidence[0].text
+    assert set(evidence[0].metadata) == {"tool", "date", "cafeteria"}
+
+
+def test_cafeteria_menu_returns_distinct_menus_across_real_dates(monkeypatch) -> None:
+    monkeypatch.setattr("sutra.tools._today_kst", lambda: datetime(2026, 6, 12))
+    monkeypatch.setattr("sutra.tools._get", cafeteria_fixture_get())
+
+    june_12 = fetch_cafeteria_menu(date="2026-06-12")[0].text
+    june_17 = fetch_cafeteria_menu(date="2026-06-17")[0].text
+    june_24 = fetch_cafeteria_menu(date="2026-06-24")[0].text
+
+    assert june_12 != june_17
+    assert june_17 != june_24
+    assert june_12 != june_24
+
+
+def test_cafeteria_menu_future_date_issues_single_fetch(monkeypatch) -> None:
+    monkeypatch.setattr("sutra.tools._today_kst", lambda: datetime(2026, 6, 12))
     calls: list[str] = []
+    monkeypatch.setattr("sutra.tools._get", cafeteria_fixture_get(calls))
 
-    def fake_get(url: str, **kwargs: Any) -> FakeResponse:
-        calls.append(kwargs["params"]["searchYmd"])
-        return FakeResponse((FIXTURES / "food.html").read_text(encoding="utf-8"))
-
-    monkeypatch.setattr("sutra.tools.requests.get", fake_get)
-
-    evidence = fetch_cafeteria_menu(date="2026-06-18", cafeteria="제2학생회관")
-
-    assert calls == ["2026.06.18", "2026.06.11"]
-    assert len(evidence) == 1
-    assert "2026-06-18의 식단은 아직 신뢰 가능한 데이터가 제공되지 않습니다." in evidence[0].text
-    assert evidence[0].metadata["unverified_future_data"] is True
-    assert evidence[0].metadata["date"] == "2026-06-18"
-
-
-def test_cafeteria_menu_returns_non_today_data_when_body_differs(monkeypatch) -> None:
-    monkeypatch.setattr("sutra.tools._today_kst", lambda: datetime(2026, 6, 11))
-    today_html = (FIXTURES / "food.html").read_text(encoding="utf-8")
-    target_html = today_html.replace("칠리치킨까스(chicken included)", "수제돈까스")
-
-    def fake_get(url: str, **kwargs: Any) -> FakeResponse:
-        if kwargs["params"]["searchYmd"] == "2026.06.18":
-            return FakeResponse(target_html)
-        return FakeResponse(today_html)
-
-    monkeypatch.setattr("sutra.tools.requests.get", fake_get)
-
-    evidence = fetch_cafeteria_menu(date="2026-06-18", cafeteria="제2학생회관")
+    evidence = fetch_cafeteria_menu(date="2026-06-17")
 
     assert len(evidence) == 1
-    assert "수제돈까스" in evidence[0].text
-    assert "unverified_future_data" not in evidence[0].metadata
+    assert calls == ["2026.06.17"]
 
 
-def test_cafeteria_menu_returns_empty_for_non_today_empty_target(monkeypatch) -> None:
-    monkeypatch.setattr("sutra.tools._today_kst", lambda: datetime(2026, 6, 11))
+def test_cafeteria_menu_vacation_date_returns_honest_operating_status(monkeypatch) -> None:
+    monkeypatch.setattr("sutra.tools._today_kst", lambda: datetime(2026, 6, 12))
+    monkeypatch.setattr("sutra.tools._get", cafeteria_fixture_get())
 
-    def fake_get(url: str, **kwargs: Any) -> FakeResponse:
-        if kwargs["params"]["searchYmd"] == "2026.06.18":
-            return FakeResponse("<html><body>메뉴는 준비중입니다.</body></html>")
-        return FakeResponse((FIXTURES / "food.html").read_text(encoding="utf-8"))
+    evidence = fetch_cafeteria_menu(date="2026-07-01")
 
-    monkeypatch.setattr("sutra.tools.requests.get", fake_get)
+    assert len(evidence) == 1
+    assert "2026-07-01" in evidence[0].text
+    assert "운영안함" in evidence[0].text
+    assert "식단 정보가 없습니다" not in evidence[0].text
+    assert set(evidence[0].metadata) == {"tool", "date", "cafeteria"}
 
-    assert fetch_cafeteria_menu(date="2026-06-18", cafeteria="제2학생회관") == []
 
-
-def test_cafeteria_menu_fetches_today_once(monkeypatch) -> None:
-    monkeypatch.setattr("sutra.tools._today_kst", lambda: datetime(2026, 6, 11))
+def test_cafeteria_menu_without_date_uses_today_and_returns_real_menu(monkeypatch) -> None:
+    monkeypatch.setattr("sutra.tools._today_kst", lambda: datetime(2026, 6, 12))
     calls: list[str] = []
+    monkeypatch.setattr("sutra.tools._get", cafeteria_fixture_get(calls))
 
-    def fake_get(url: str, **kwargs: Any) -> FakeResponse:
-        calls.append(kwargs["params"]["searchYmd"])
-        return FakeResponse((FIXTURES / "food.html").read_text(encoding="utf-8"))
+    evidence = fetch_cafeteria_menu()
 
-    monkeypatch.setattr("sutra.tools.requests.get", fake_get)
-
-    evidence = fetch_cafeteria_menu(date="2026-06-11", cafeteria="제2학생회관")
-
-    assert calls == ["2026.06.11"]
     assert len(evidence) == 1
+    assert "2026-06-12" in evidence[0].text
+    assert "해물볶음밥" in evidence[0].text
+    assert evidence[0].metadata["date"] == "2026-06-12"
+    assert calls == ["2026.06.12"]
+
+
+def test_cafeteria_menu_filter_narrows_to_requested_cafeteria(monkeypatch) -> None:
+    monkeypatch.setattr("sutra.tools._today_kst", lambda: datetime(2026, 6, 12))
+    monkeypatch.setattr("sutra.tools._get", cafeteria_fixture_get())
+
+    evidence = fetch_cafeteria_menu(date="2026-06-17", cafeteria="제2학생회관")
+
+    text = evidence[0].text
+    assert "## 제2학생회관" in text
+    assert "## 제3학생회관" not in text
+    assert "목살필라프&계란후라이(pork included)" in text
+    assert "보리열무비빔밥" not in text
+
+
+def test_cafeteria_menu_source_url_includes_cafeteria_view(monkeypatch) -> None:
+    monkeypatch.setattr("sutra.tools._today_kst", lambda: datetime(2026, 6, 12))
+    monkeypatch.setattr("sutra.tools._get", cafeteria_fixture_get())
+
+    evidence = fetch_cafeteria_menu(date="2026-06-17")
+
+    assert "searchYmd=2026.06.17" in evidence[0].source_url
+    assert "searchView=cafeteria" in evidence[0].source_url
+
+
+def test_cafeteria_menu_empty_parse_returns_brief_no_menu_note(monkeypatch) -> None:
+    monkeypatch.setattr("sutra.tools._today_kst", lambda: datetime(2026, 6, 12))
+
+    def fake_get(url: str, **kwargs: Any) -> str:
+        assert kwargs["params"]["searchView"] == "cafeteria"
+        return "<html><body><table><tbody><tr><td>학생</td><td>메뉴는 준비중입니다.</td></tr></tbody></table></body></html>"
+
+    monkeypatch.setattr("sutra.tools._get", fake_get)
+
+    evidence = fetch_cafeteria_menu(date="2026-06-25", cafeteria="제2학생회관")
+
+    assert len(evidence) == 1
+    assert evidence[0].text == "2026-06-25의 식단 정보가 없습니다."
+    assert evidence[0].metadata["date"] == "2026-06-25"
+    assert set(evidence[0].metadata) == {"tool", "date", "cafeteria"}
+
+
+def test_cafeteria_menu_never_sets_unverified_future_metadata(monkeypatch) -> None:
+    monkeypatch.setattr("sutra.tools._today_kst", lambda: datetime(2026, 6, 12))
+    monkeypatch.setattr("sutra.tools._get", cafeteria_fixture_get())
+
+    for target_date in ["2026-06-12", "2026-06-17", "2026-06-24", "2026-07-01"]:
+        evidence = fetch_cafeteria_menu(date=target_date)
+        assert set(evidence[0].metadata) == {"tool", "date", "cafeteria"}
 
 
 def test_cafeteria_menu_parser_preserves_rowspanned_cafeteria_columns() -> None:

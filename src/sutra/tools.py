@@ -17,7 +17,7 @@ from zoneinfo import ZoneInfo
 import requests
 
 from sutra.config import Config, load_config
-from sutra.dining_format import DiningMenuRecord, format_dining_day
+from sutra.dining_format import DiningMenuRecord, format_dining_day, format_dining_line
 from sutra.documents import load_documents
 from sutra.models import Evidence
 from sutra.retrieval import retrieve
@@ -905,7 +905,7 @@ def _parse_cs_notices(html: str, *, base_url: str = CS_BACHELOR_NOTICE_URL) -> l
         "충남대학교 학생회관의 일별 식단을 아침, 점심, 저녁 단위로 조회한다. "
         "오늘 또는 특정 날짜의 학식, 식당, 메뉴를 물을 때 사용한다. "
         "반환값은 식당, 식사 구분, 대상, 메뉴명, 가격을 포함한 식단 근거다. "
-        "제1학생회관은 푸드코트라 일별 메뉴를 지원하지 않으며 코너 정보는 지식베이스에 있고, 다음 주 같은 미래 날짜 데이터는 신뢰하기 어렵다."
+        "제1학생회관은 푸드코트라 코너 정보는 지식베이스에 있고, 일별 식단은 충남대학교 식단 사이트의 실제 날짜별 응답을 따른다."
     ),
     parameters={
         "type": "object",
@@ -927,15 +927,6 @@ def fetch_cafeteria_menu(date: str | None = None, cafeteria: str | None = None) 
         today = _today_kst().strftime("%Y-%m-%d")
         target_date = date or today
         text, params = _fetch_cafeteria_menu_text(target_date, cafeteria)
-        if not text:
-            return []
-        if target_date != today:
-            try:
-                today_text, _ = _fetch_cafeteria_menu_text(today, cafeteria)
-            except Exception:
-                return [_unverified_cafeteria_evidence(target_date, cafeteria)]
-            if _cafeteria_menu_body_text(text) == _cafeteria_menu_body_text(today_text):
-                return [_unverified_cafeteria_evidence(target_date, cafeteria)]
     except Exception:
         logger.warning("Failed to fetch cafeteria menu", exc_info=True)
         return []
@@ -955,37 +946,55 @@ def _fetch_cafeteria_menu_text(target_date: str, cafeteria: str | None) -> tuple
     params = _cafeteria_menu_params(target_date)
     html = _get(FOOD_URL, params=params)
     records = _parse_cafeteria_menu(html, target_date, cafeteria)
-    return format_dining_day(records, target_date), params
+    if not records:
+        return f"{target_date}의 식단 정보가 없습니다.", params
+    text = format_dining_day(records, target_date)
+    if not text:
+        text = _format_cafeteria_records_including_closed(records, target_date)
+    return text or f"{target_date}의 식단 정보가 없습니다.", params
+
+
+def _format_cafeteria_records_including_closed(records: list[DiningMenuRecord], target_date: str) -> str:
+    date_records = [
+        record
+        for record in records
+        if record.date == target_date and record.cafeteria in CAFETERIA_MENU_CHOICES and record.menu_text.strip()
+    ]
+    if not date_records:
+        return ""
+
+    weekday = ["월", "화", "수", "목", "금", "토", "일"][datetime.strptime(target_date, "%Y-%m-%d").weekday()]
+    lines = [
+        f"# {target_date} ({weekday}) 학생식당 식단",
+        "",
+        f"{target_date} ({weekday}) 이번주 학식 메뉴입니다.",
+        "",
+    ]
+    meal_order = {"조식": 0, "중식": 1, "석식": 2}
+    audience_order = {"직원": 0, "학생": 1}
+
+    for cafeteria_name in CAFETERIA_MENU_CHOICES:
+        cafeteria_records = [record for record in date_records if record.cafeteria == cafeteria_name]
+        if not cafeteria_records:
+            continue
+        lines.append(f"## {cafeteria_name}")
+        for record in sorted(
+            cafeteria_records,
+            key=lambda item: (meal_order.get(item.meal, 99), audience_order.get(item.audience, 99)),
+        ):
+            lines.append(format_dining_line(record))
+        lines.append("")
+
+    return "\n".join(lines).strip()
 
 
 def _cafeteria_menu_params(target_date: str) -> dict[str, str]:
     return {
         "searchYmd": target_date.replace("-", "."),
         "searchLang": "OCL04.10",
-        "searchView": "",
+        "searchView": "cafeteria",
         "searchCafeteria": "OCL03.02",
     }
-
-
-def _cafeteria_menu_body_text(text: str) -> str:
-    return "\n".join(line for line in text.splitlines() if line.startswith(("##", "- ")))
-
-
-def _unverified_cafeteria_evidence(target_date: str, cafeteria: str | None) -> Evidence:
-    text = f"{target_date}의 식단은 아직 신뢰 가능한 데이터가 제공되지 않습니다. 식단 사이트가 해당 날짜 정보를 갱신하지 않은 상태입니다."
-    return Evidence(
-        id="live_cafeteria_menu_unverified",
-        title="충남대학교 식단",
-        text=text,
-        source_url=FOOD_URL,
-        source_name="충남대학교 식단",
-        metadata={
-            "tool": "fetch_cafeteria_menu",
-            "date": target_date,
-            "cafeteria": cafeteria,
-            "unverified_future_data": True,
-        },
-    )
 
 
 def _parse_cafeteria_menu(html: str, target_date: str, cafeteria: str | None) -> list[DiningMenuRecord]:

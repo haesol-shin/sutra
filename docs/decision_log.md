@@ -46,6 +46,12 @@ Reason: Calibration probe showed in-scope max-proba (min 0.295) and OOD max-prob
 Consequence: OOD handling falls back to RAG default behavior; no confidence gate added. (Smalltalk prefilter also removed as a heuristic.)
 Links: `src/nlp_term/classify/predict.py` (unchanged; probe only)
 
+Type: fix
+Decision: Request the CNU food endpoint with `searchView="cafeteria"` and remove the today-comparison future-menu guard from `fetch_cafeteria_menu`.
+Reason: The real root cause was the empty `searchView` parameter; with `searchView=""`, the server ignored `searchYmd` and returned today's menu for future dates.
+Consequence: Future-week cafeteria menus are now treated as trustworthy per-date responses from the live endpoint, reversing the earlier "future menus unreliable" rationale. Empty parses still return only a brief no-menu evidence note.
+Links: `src/sutra/tools.py`
+
 ## 2026-06-11
 
 Type: feat
