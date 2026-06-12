@@ -53,6 +53,14 @@ ROUTER_FORCED_TOOLS = {
 CLASSIFIER_MODEL_PATH = Path("model/classifier.joblib")
 
 
+def route_question(question: str, config: Config) -> tuple[str, str | None, int | None]:
+    """Route a question to a domain and optional forced live tool."""
+    label = _predict_router_label(question, config=config)
+    routed_domain = ROUTER_DOMAINS.get(label, "unknown")
+    forced_tool = ROUTER_FORCED_TOOLS.get(routed_domain)
+    return routed_domain, forced_tool, label
+
+
 def ask(
     question: str,
     *,
@@ -197,13 +205,11 @@ def _ask_router(
 ) -> Answer:
     started = time.perf_counter() if started is None else started
     trace_file = Path(trace_path) if trace_path is not None else default_trace_path(config.root)
-    label = _predict_router_label(question, config=config)
+    routed_domain, forced_tool, label = route_question(question, config)
     classifier_fallback = label is None
-    routed_domain = ROUTER_DOMAINS.get(label, "unknown")
 
     documents = load_documents(config)
     evidence = retrieve(question, documents, config)
-    forced_tool = ROUTER_FORCED_TOOLS.get(routed_domain)
 
     if not evidence.items and forced_tool is None:
         answer = Answer(

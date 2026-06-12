@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 import time
+from pathlib import Path
 from typing import Any
 
 import chainlit as cl
@@ -14,17 +16,24 @@ from sutra.llama import EchoClient, LlamaClient, has_stream_tool_call_marker
 from sutra.models import Evidence, EvidencePack, LlamaResult, Message, ToolCall
 from sutra.prompts import render_prompt
 from sutra.retrieval import retrieve
+from sutra.service import (
+    _forced_tool_choice,
+    _render_router_tool_request_messages,
+    route_question,
+)
 from sutra.tools import dispatch, get_tool_definitions
 from sutra.tracelog import append_chat_trace, append_feedback, default_trace_path
 
 
+logger = logging.getLogger(__name__)
+
 _FEEDBACK_ACTION = "sutra_feedback"
 _SOURCES_ACTION = "sutra_sources"
 _SOURCES_SESSION_PREFIX = "sutra_sources:"
-_FEEDBACK_COMMENT_TIMEOUT_SECONDS = 120
+_FEEDBACK_SESSION_PREFIX = "sutra_feedback:"
 _FEEDBACK_ANSWER_LIMIT = 200
-RETRIEVAL_STEP_NAME = "🔍 Search"
-LIVE_LOOKUP_STEP_NAME = "🛠️ Live Lookup"
+RETRIEVAL_STEP_NAME = "🧠 Knowledge Base"
+LIVE_LOOKUP_STEP_NAME = "🔍 Web Search"
 UI_SCORE_REL_RATIO = float(os.environ.get("SUTRA_UI_SCORE_REL_RATIO", "0.4"))
 UI_SCORE_ABS_FLOOR = float(os.environ.get("SUTRA_UI_SCORE_ABS_FLOOR", "0.0"))
 
@@ -35,6 +44,10 @@ class StreamOutcome:
     def __init__(self, content: str, marker_detected: bool) -> None:
         self.content = content
         self.marker_detected = marker_detected
+
+
+def _default_workspace_path() -> Path:
+    return Path(__file__).resolve().parents[2] / "examples" / "cnu-campus" / "sutra.toml"
 
 
 def _retrieval_summary(evidence_items: list[Evidence]) -> str:
@@ -81,9 +94,14 @@ def _source_filter_summary(
     return f"{summary}\nshowing {shown_count} of {len(evidence_items)} (score filter)"
 
 
-def _source_elements(evidence_items: list[Evidence]) -> list[cl.Text]:
+def _source_group_elements(group_name: str, evidence_items: list[Evidence]) -> list[cl.Text]:
+    # The existing relative score filter is applied independently per source group.
     evidence_items, _ = _filter_source_evidence(evidence_items)
+    if not evidence_items:
+        return []
+
     elements: list[cl.Text] = []
+    elements.append(cl.Text(name=group_name, content=group_name, display="side"))
     for i, ev in enumerate(evidence_items, 1):
         title = ev.title or "Untitled"
         source = ev.source_name or ev.source_url or ev.id
@@ -96,7 +114,7 @@ def _source_elements(evidence_items: list[Evidence]) -> list[cl.Text]:
         lines.append(f"Excerpt: {_excerpt(ev.text, 500)}")
         elements.append(
             cl.Text(
-                name=f"[{i}] {title}",
+                name=f"[{group_name} {i}] {title}",
                 content="\n".join(lines),
                 display="side",
             )
@@ -104,14 +122,27 @@ def _source_elements(evidence_items: list[Evidence]) -> list[cl.Text]:
     return elements
 
 
-def _source_element_payloads(evidence_items: list[Evidence]) -> list[dict[str, str]]:
+def _source_elements(
+    knowledge_base_items: list[Evidence],
+    web_search_items: list[Evidence] | None = None,
+) -> list[cl.Text]:
+    elements = _source_group_elements("Knowledge Base", knowledge_base_items)
+    if web_search_items is not None:
+        elements.extend(_source_group_elements("Web Search", web_search_items))
+    return elements
+
+
+def _source_element_payloads(
+    knowledge_base_items: list[Evidence],
+    web_search_items: list[Evidence] | None = None,
+) -> list[dict[str, str]]:
     return [
         {
             "name": element.name,
             "content": element.content,
             "display": element.display,
         }
-        for element in _source_elements(evidence_items)
+        for element in _source_elements(knowledge_base_items, web_search_items)
     ]
 
 
@@ -132,22 +163,33 @@ def _source_action(source_key: str) -> cl.Action:
     raise TypeError("could not build Chainlit sources action") from last_error
 
 
-def _source_actions(evidence_items: list[Evidence]) -> list[cl.Action]:
+def _source_actions(
+    knowledge_base_items: list[Evidence],
+    web_search_items: list[Evidence] | None = None,
+) -> list[cl.Action]:
     source_key = f"{_SOURCES_SESSION_PREFIX}{time.time_ns()}"
-    if not _store_source_payload(source_key, evidence_items):
+    if not _store_source_payload(source_key, knowledge_base_items, web_search_items):
         return []
     return [_source_action(source_key)]
 
 
-def _store_source_payload(source_key: str, evidence_items: list[Evidence]) -> bool:
-    payloads = _source_element_payloads(evidence_items)
+def _store_source_payload(
+    source_key: str,
+    knowledge_base_items: list[Evidence],
+    web_search_items: list[Evidence] | None = None,
+) -> bool:
+    payloads = _source_element_payloads(knowledge_base_items, web_search_items)
     if not payloads:
         return False
     cl.user_session.set(source_key, payloads)
     return True
 
 
-def _replace_source_actions(msg: cl.Message, evidence_items: list[Evidence]) -> None:
+def _replace_source_actions(
+    msg: cl.Message,
+    knowledge_base_items: list[Evidence],
+    web_search_items: list[Evidence] | None = None,
+) -> None:
     actions = list(getattr(msg, "actions", None) or [])
     source_action = next(
         (action for action in actions if getattr(action, "name", None) == _SOURCES_ACTION),
@@ -158,16 +200,16 @@ def _replace_source_actions(msg: cl.Message, evidence_items: list[Evidence]) -> 
         if getattr(action, "name", None) != _SOURCES_ACTION
     ]
     if source_action is None:
-        msg.actions = [*_source_actions(evidence_items), *existing]
+        msg.actions = [*_source_actions(knowledge_base_items, web_search_items), *existing]
         return
 
     payload = _payload_from_action(source_action)
     source_key = str(payload.get("source_key") or "")
     if not source_key:
-        msg.actions = [*_source_actions(evidence_items), *existing]
+        msg.actions = [*_source_actions(knowledge_base_items, web_search_items), *existing]
         return
 
-    if _store_source_payload(source_key, evidence_items):
+    if _store_source_payload(source_key, knowledge_base_items, web_search_items):
         msg.actions = [source_action, *existing]
     else:
         msg.actions = existing
@@ -196,12 +238,14 @@ def _feedback_payload(
     question: str,
     answer: str,
     rating: str,
+    feedback_key: str,
 ) -> dict[str, str]:
     return {
         "trace_path": str(default_trace_path(config.root)),
         "question": question,
         "answer": _excerpt(answer, _FEEDBACK_ANSWER_LIMIT),
         "rating": rating,
+        "feedback_key": feedback_key,
     }
 
 
@@ -222,18 +266,27 @@ def _feedback_action(label: str, payload: dict[str, str]) -> cl.Action:
 
 
 def _feedback_actions(config: Config, *, question: str, answer: str) -> list[cl.Action]:
+    feedback_key = f"{_FEEDBACK_SESSION_PREFIX}{time.time_ns()}"
     return [
         _feedback_action(
             "👍 Helpful",
-            _feedback_payload(config, question=question, answer=answer, rating="helpful"),
+            _feedback_payload(
+                config,
+                question=question,
+                answer=answer,
+                rating="helpful",
+                feedback_key=feedback_key,
+            ),
         ),
         _feedback_action(
             "👎 Not helpful",
-            _feedback_payload(config, question=question, answer=answer, rating="unhelpful"),
-        ),
-        _feedback_action(
-            "💬 Comment",
-            _feedback_payload(config, question=question, answer=answer, rating="comment"),
+            _feedback_payload(
+                config,
+                question=question,
+                answer=answer,
+                rating="unhelpful",
+                feedback_key=feedback_key,
+            ),
         ),
     ]
 
@@ -253,6 +306,25 @@ async def _attach_feedback_actions(
     ]
     msg.actions = [*existing, *_feedback_actions(config, question=question, answer=answer)]
     await msg.update()
+
+
+def _feedback_status_text(rating: str) -> str:
+    marker = "👍" if rating == "helpful" else "👎"
+    return f"Recorded: {marker}"
+
+
+async def _update_feedback_status(feedback_key: str, rating: str) -> None:
+    content = _feedback_status_text(rating)
+    stored = cl.user_session.get(feedback_key) if feedback_key else None
+    if stored is not None and hasattr(stored, "content") and hasattr(stored, "update"):
+        stored.content = content
+        await stored.update()
+        return
+
+    msg = cl.Message(content=content)
+    await msg.send()
+    if feedback_key:
+        cl.user_session.set(feedback_key, msg)
 
 
 def _payload_from_action(action: cl.Action) -> dict[str, Any]:
@@ -288,19 +360,6 @@ async def on_sources(action: cl.Action) -> None:
         await cl.Message(content="No sources available.").send()
         return
     await cl.Message(content="Sources", elements=elements).send()
-
-
-def _ask_user_output(response: Any) -> str | None:
-    if response is None:
-        return None
-    if isinstance(response, dict):
-        value = response.get("output")
-    else:
-        value = getattr(response, "output", None)
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _tool_arguments(tool_call: ToolCall) -> dict[str, Any]:
@@ -339,31 +398,18 @@ async def on_feedback(action: cl.Action) -> None:
     question = str(payload.get("question") or "")
     answer = str(payload.get("answer") or "")
     rating = str(payload.get("rating") or "")
-    if not trace_path or rating not in {"helpful", "unhelpful", "comment"}:
+    feedback_key = str(payload.get("feedback_key") or "")
+    if not trace_path or rating not in {"helpful", "unhelpful"}:
         await cl.Message(content="Could not record feedback.").send()
         return
-
-    comment = None
-    if rating == "comment":
-        response = await cl.AskUserMessage(
-            content="Please enter your comment.",
-            timeout=_FEEDBACK_COMMENT_TIMEOUT_SECONDS,
-        ).send()
-        comment = _ask_user_output(response)
-        if comment is None:
-            return
 
     append_feedback(
         trace_path,
         question=question,
         answer=answer,
         rating=rating,  # type: ignore[arg-type]
-        comment=comment,
     )
-    remove = getattr(action, "remove", None)
-    if callable(remove):
-        await remove()
-    await cl.Message(content="Feedback recorded.").send()
+    await _update_feedback_status(feedback_key, rating)
 
 
 async def _stream_to_message(
@@ -419,6 +465,7 @@ def _append_ui_trace(
     mode: str,
     usage: dict[str, Any] | None = None,
     error: str | None = None,
+    extra: dict[str, Any] | None = None,
 ) -> None:
     append_chat_trace(
         default_trace_path(config.root),
@@ -432,13 +479,26 @@ def _append_ui_trace(
         latency_ms=int((time.perf_counter() - started) * 1000),
         usage=usage,
         error=error,
+        extra=extra,
     )
 
 
 @cl.on_chat_start
 async def on_chat_start() -> None:
     """Initialize session state on chat start."""
-    workspace = os.environ.get("SUTRA_WORKSPACE")
+    workspace: str | Path | None = os.environ.get("SUTRA_WORKSPACE")
+    if not workspace or (isinstance(workspace, str) and not workspace.strip()):
+        default_workspace = _default_workspace_path()
+        if default_workspace.exists():
+            workspace = default_workspace.resolve()
+        else:
+            workspace = None
+            await cl.Message(
+                content=(
+                    "**오류**: 워크스페이스 설정을 찾을 수 없습니다. "
+                    "SUTRA_WORKSPACE를 설정하거나 examples/cnu-campus/sutra.toml 파일을 확인하세요."
+                ),
+            ).send()
     echo = os.environ.get("SUTRA_ECHO") == "1"
     cl.user_session.set("workspace", workspace)
     cl.user_session.set("echo", echo)
@@ -458,8 +518,16 @@ async def on_message(message: cl.Message) -> None:
     try:
         config = workspace if isinstance(workspace, Config) else load_config(workspace)
     except SutraError as e:
-        await cl.Message(content=f"**Error**: {e}").send()
+        await cl.Message(content=f"**오류**: {e}").send()
         return
+
+    routed_domain, forced_tool, label = route_question(question, config)
+    classifier_fallback = label is None
+    trace_extra = {
+        "routed_domain": routed_domain,
+        "forced_tool": forced_tool,
+        "classifier_fallback": classifier_fallback,
+    }
 
     try:
         async with cl.Step(name=RETRIEVAL_STEP_NAME, type="retrieval") as step:
@@ -478,11 +546,14 @@ async def on_message(message: cl.Message) -> None:
             tool_args=[],
             mode="retrieval_error",
             error=str(e),
+            extra=trace_extra,
         )
         await cl.Message(content="**Error**: Search failed.").send()
         return
 
-    if not evidence.items:
+    rag_items = list(evidence.items)
+    fresh_items: list[Evidence] = []
+    if not rag_items and forced_tool is None:
         answer = "제공된 자료에서 확인할 수 있는 근거를 찾지 못했습니다."
         _append_ui_trace(
             config,
@@ -492,7 +563,8 @@ async def on_message(message: cl.Message) -> None:
             evidence=[],
             tools_called=[],
             tool_args=[],
-            mode="insufficient_evidence",
+            mode="router_insufficient_evidence",
+            extra=trace_extra,
         )
         await cl.Message(
             content=answer,
@@ -500,122 +572,157 @@ async def on_message(message: cl.Message) -> None:
         ).send()
         return
 
-    try:
-        prompt = await cl.make_async(render_prompt)(question, evidence, config)
-    except Exception as e:
-        _append_ui_trace(
-            config,
-            started=started,
-            question=question,
-            answer="",
-            evidence=evidence.items,
-            tools_called=[],
-            tool_args=[],
-            mode="prompt_error",
-            error=str(e),
-        )
-        await cl.Message(content="**Error**: Document analysis failed.").send()
-        return
-
     llm = client or LlamaClient(
         config.runtime.base_url,
         timeout_seconds=config.runtime.timeout_seconds,
     )
-    tools = get_tool_definitions()
-    final_msg = cl.Message(content="", actions=_source_actions(evidence.items))
-    await final_msg.send()
-
     result: LlamaResult | None = None
     final_answer = ""
-    mode = "stream"
+    final_msg: cl.Message | None = None
+    evidence_for_trace = list(rag_items)
+    mode = "router_llm_stream"
     try:
-        outcome = await _stream_to_message(
-            llm,
-            prompt.messages,
-            final_msg,
-            model=config.runtime.model,
-            temperature=config.runtime.temperature,
-            max_tokens=config.runtime.max_tokens,
-            tools=tools or None,
-        )
-        if outcome.marker_detected:
-            mode = "tool_fallback"
+        if forced_tool is not None:
+            tools = get_tool_definitions()
             result = await cl.make_async(llm.chat)(
-                prompt.messages,
+                _render_router_tool_request_messages(question, config),
                 model=config.runtime.model,
                 temperature=config.runtime.temperature,
-                max_tokens=config.runtime.max_tokens,
+                max_tokens=min(config.runtime.max_tokens, 256),
                 tools=tools or None,
+                tool_choice=_forced_tool_choice(forced_tool),
             )
-        else:
-            final_answer = outcome.content
-
-        if result is None and not final_answer:
-            result = await cl.make_async(llm.chat)(
-                prompt.messages,
-                model=config.runtime.model,
-                temperature=config.runtime.temperature,
-                max_tokens=config.runtime.max_tokens,
-                tools=tools or None,
-            )
-
-        if result is not None and result.tool_calls:
-            fresh_items: list[Evidence] = []
-            tool_summaries: list[str] = []
             async with cl.Step(name=LIVE_LOOKUP_STEP_NAME, type="tool") as step:
-                step.input = "; ".join(_tool_label(tc) for tc in result.tool_calls)
+                tool_labels = [_tool_label(tc) for tc in result.tool_calls]
+                step.input = "; ".join(tool_labels) if tool_labels else f"{forced_tool}()"
+                tool_summaries: list[str] = []
                 for tool_call in result.tool_calls:
                     tools_called.append(tool_call.function_name)
                     tool_args.append(_tool_arguments(tool_call))
+                    if tool_call.function_name != forced_tool:
+                        logger.warning(
+                            "Router forced %s but model returned %s; ignoring tool evidence",
+                            forced_tool,
+                            tool_call.function_name,
+                        )
+                        continue
                     fresh = await cl.make_async(dispatch)(
                         tool_call.function_name,
                         tool_call.function_arguments,
                     )
                     fresh_items.extend(fresh)
                     tool_summaries.append(_tool_result_summary(tool_call, fresh))
-                step.output = "; ".join(tool_summaries)
+                step.output = "; ".join(tool_summaries) if tool_summaries else f"{forced_tool}() → 0 results"
 
+        if forced_tool is not None and not fresh_items and not rag_items:
+            final_answer = (
+                "실시간 조회에 실패했고 저장된 자료에서도 관련 정보를 찾지 못했습니다. "
+                "충남대학교 공식 홈페이지를 확인해 주세요."
+            )
+            final_msg = cl.Message(content=final_answer)
+            await final_msg.send()
+            mode = "router_tool_no_result"
+        else:
+            evidence_for_prompt = [*fresh_items, *rag_items]
+            evidence_for_trace = evidence_for_prompt
+            prompt = await cl.make_async(render_prompt)(
+                question,
+                EvidencePack(question=question, items=evidence_for_prompt),
+                config,
+            )
+            source_actions = _source_actions(
+                rag_items,
+                fresh_items if forced_tool is not None else None,
+            )
+            final_msg = cl.Message(content="", actions=source_actions)
+            await final_msg.send()
             if fresh_items:
-                evidence = EvidencePack(question=evidence.question, items=[*fresh_items, *evidence.items])
-                prompt = await cl.make_async(render_prompt)(question, evidence, config)
-                final_msg.elements = []
-                _replace_source_actions(final_msg, evidence.items)
-                final_msg.content = ""
-                await final_msg.update()
-                outcome = await _stream_to_message(
-                    llm,
+                mode = "router_tool_stream"
+            elif forced_tool is not None:
+                mode = "router_tool_no_result"
+            else:
+                mode = "router_llm_stream"
+
+            outcome = await _stream_to_message(
+                llm,
+                prompt.messages,
+                final_msg,
+                model=config.runtime.model,
+                temperature=config.runtime.temperature,
+                max_tokens=config.runtime.max_tokens,
+            )
+            final_answer = outcome.content
+            if outcome.marker_detected or not final_answer:
+                fallback_result = await cl.make_async(llm.chat)(
                     prompt.messages,
-                    final_msg,
                     model=config.runtime.model,
                     temperature=config.runtime.temperature,
                     max_tokens=config.runtime.max_tokens,
                 )
-                final_answer = outcome.content
-                mode = "tool_stream"
-            else:
-                final_answer = result.content
-                if final_answer:
-                    final_answer += "\n\n(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)"
+                result = fallback_result
+                final_answer = fallback_result.content
                 final_msg.content = final_answer
                 await final_msg.update()
-                mode = "tool_no_result"
-        elif result is not None:
+            if forced_tool is not None and not fresh_items:
+                final_answer += "\n\n(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)"
+                final_msg.content = final_answer
+                await final_msg.update()
+
+            if fresh_items:
+                _replace_source_actions(final_msg, rag_items, fresh_items)
+                await final_msg.update()
+
+            if result is None:
+                result = LlamaResult(content=final_answer, model=config.runtime.model)
+
+        if forced_tool is not None and fresh_items:
+            evidence_for_trace = [*fresh_items, *rag_items]
+        elif forced_tool is not None:
+            evidence_for_trace = rag_items
+
+        if final_msg is None:
+            final_msg = cl.Message(content=final_answer)
+            await final_msg.send()
+
+        if result is None:
+            result = LlamaResult(content=final_answer, model=config.runtime.model)
+
+        if fresh_items and final_msg.content != final_answer:
+            final_msg.content = final_answer
+            await final_msg.update()
+
+        if final_answer and not getattr(final_msg, "actions", None):
+            _replace_source_actions(
+                final_msg,
+                rag_items,
+                fresh_items if forced_tool is not None else None,
+            )
+            await final_msg.update()
+
+        if final_answer == "" and result.content:
             final_answer = result.content
             final_msg.content = final_answer
             await final_msg.update()
-            mode = "llm"
+
+        if forced_tool is not None and fresh_items:
+            mode = "router_tool_stream"
+        elif forced_tool is not None:
+            mode = "router_tool_no_result"
+        else:
+            mode = "router_llm_stream"
 
         _append_ui_trace(
             config,
             started=started,
             question=question,
             answer=final_answer,
-            evidence=evidence.items,
+            evidence=evidence_for_trace,
             tools_called=tools_called,
             tool_args=tool_args,
             mode=mode,
             usage=result.usage if result is not None else None,
             error=None,
+            extra=trace_extra,
         )
         await _attach_feedback_actions(config, final_msg, question=question, answer=final_answer)
     except Exception as e:
@@ -624,11 +731,12 @@ async def on_message(message: cl.Message) -> None:
             started=started,
             question=question,
             answer=final_answer,
-            evidence=evidence.items,
+            evidence=evidence_for_trace,
             tools_called=tools_called,
             tool_args=tool_args,
             mode="generation_error",
             usage=result.usage if result is not None else None,
             error=str(e),
+            extra=trace_extra,
         )
         await cl.Message(content="**Error**: Response generation failed.").send()

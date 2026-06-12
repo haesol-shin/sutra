@@ -87,7 +87,10 @@ class Config(BaseModel):
     evals: EvalConfig = Field(default_factory=EvalConfig)
 
 
-def load_config(path: str | Path) -> Config:
+def load_config(path: str | Path | None) -> Config:
+    if path is None or (isinstance(path, str) and not path.strip()):
+        raise ConfigError("workspace config path is required")
+
     config_path = Path(path).expanduser().resolve()
     if not config_path.exists():
         raise ConfigError(f"workspace config not found: {config_path}")

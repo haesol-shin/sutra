@@ -47,6 +47,12 @@ def test_load_config_reports_missing_file(tmp_path: Path) -> None:
         load_config(tmp_path / "missing.toml")
 
 
+@pytest.mark.parametrize("path", [None, ""])
+def test_load_config_rejects_missing_path(path: object) -> None:
+    with pytest.raises(ConfigError, match="workspace config path is required"):
+        load_config(path)  # type: ignore[arg-type]
+
+
 def test_load_config_resolves_explicit_model_path(tmp_path: Path) -> None:
     (tmp_path / "data").mkdir()
     (tmp_path / "prompts").mkdir()

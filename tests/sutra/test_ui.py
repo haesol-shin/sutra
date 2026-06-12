@@ -59,6 +59,7 @@ def _ui_module(monkeypatch: pytest.MonkeyPatch):
     chainlit = types.SimpleNamespace()
     session_store = {}
     sent_messages = []
+    steps = []
 
     class Text:
         def __init__(self, **kwargs):
@@ -71,13 +72,20 @@ def _ui_module(monkeypatch: pytest.MonkeyPatch):
     class Message:
         def __init__(self, **kwargs):
             self.__dict__.update(kwargs)
+            self.actions = getattr(self, "actions", [])
+            self.elements = getattr(self, "elements", [])
+            self.update_count = 0
 
         async def send(self):
             sent_messages.append(self)
             return self
 
         async def update(self):
+            self.update_count += 1
             return self
+
+        async def stream_token(self, token):
+            self.content = getattr(self, "content", "") + token
 
     class AskUserMessage(Message):
         pass
@@ -87,6 +95,7 @@ def _ui_module(monkeypatch: pytest.MonkeyPatch):
             self.__dict__.update(kwargs)
 
         async def __aenter__(self):
+            steps.append(self)
             return self
 
         async def __aexit__(self, exc_type, exc, tb):
@@ -124,6 +133,7 @@ def _ui_module(monkeypatch: pytest.MonkeyPatch):
         set=lambda key, value, *args, **kwargs: session_store.__setitem__(key, value),
     )
     chainlit.sent_messages = sent_messages
+    chainlit.steps = steps
 
     monkeypatch.setitem(sys.modules, "chainlit", chainlit)
     sys.modules.pop("sutra.ui", None)
@@ -193,6 +203,14 @@ def _config_language(path: Path) -> str | None:
     return None
 
 
+def _config_name(path: Path) -> str | None:
+    for line in path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if stripped.startswith("name"):
+            return stripped.split("=", 1)[1].strip().strip('"')
+    return None
+
+
 class TestInterfaceLabels:
     def test_ui_labels_are_english(
         self,
@@ -202,17 +220,20 @@ class TestInterfaceLabels:
         ui = _ui_module(monkeypatch)
         config = load_config(_write_workspace(tmp_path))
 
-        assert ui.RETRIEVAL_STEP_NAME == "🔍 Search"
-        assert ui.LIVE_LOOKUP_STEP_NAME == "🛠️ Live Lookup"
+        assert ui.RETRIEVAL_STEP_NAME == "🧠 Knowledge Base"
+        assert ui.LIVE_LOOKUP_STEP_NAME == "🔍 Web Search"
         assert [action.label for action in ui._feedback_actions(
             config,
             question="question",
             answer="answer",
-        )] == ["👍 Helpful", "👎 Not helpful", "💬 Comment"]
+        )] == ["👍 Helpful", "👎 Not helpful"]
 
-    def test_source_elements_use_english_labels(self, monkeypatch: pytest.MonkeyPatch) -> None:
+    def test_source_elements_split_knowledge_base_and_web_search_groups(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
         ui = _ui_module(monkeypatch)
-        item = Evidence(
+        kb_item = Evidence(
             id="source-1",
             title="Academic Calendar",
             text="Semester begins on March 2.",
@@ -220,13 +241,25 @@ class TestInterfaceLabels:
             source_url="https://example.edu/calendar",
             metadata={"date": "2026-03-02"},
         )
+        web_item = Evidence(
+            id="live-1",
+            title="Notice",
+            text="Scholarship notice.",
+            source_name="recent notices",
+        )
 
-        [element] = ui._source_elements([item])
+        elements = ui._source_elements([kb_item], [web_item])
 
-        assert element.name == "[1] Academic Calendar"
-        assert "Source: calendar" in element.content
-        assert "Date: 2026-03-02" in element.content
-        assert "Excerpt: Semester begins on March 2." in element.content
+        assert [element.name for element in elements] == [
+            "Knowledge Base",
+            "[Knowledge Base 1] Academic Calendar",
+            "Web Search",
+            "[Web Search 1] Notice",
+        ]
+        assert "Source: calendar" in elements[1].content
+        assert "Date: 2026-03-02" in elements[1].content
+        assert "Excerpt: Semester begins on March 2." in elements[1].content
+        assert "Source: recent notices" in elements[3].content
 
     def test_source_filter_summary_is_english(self, monkeypatch: pytest.MonkeyPatch) -> None:
         ui = _ui_module(monkeypatch)
@@ -243,13 +276,18 @@ class TestInterfaceLabels:
         ui = _ui_module(monkeypatch)
         items = [_evidence("top", 10.0), _evidence("hidden", 1.0)]
 
-        actions = ui._source_actions(items)
+        actions = ui._source_actions(items, [_evidence("live", None)])
 
         assert [action.label for action in actions] == ["📚 Sources"]
         assert actions[0].name == "sutra_sources"
         source_key = ui._payload_from_action(actions[0])["source_key"]
         stored = ui.cl.user_session.store[source_key]
-        assert [item["name"] for item in stored] == ["[1] top"]
+        assert [item["name"] for item in stored] == [
+            "Knowledge Base",
+            "[Knowledge Base 1] top",
+            "Web Search",
+            "[Web Search 1] live",
+        ]
         assert "hidden text" not in stored[0]["content"]
 
     def test_source_action_is_hidden_without_sources(
@@ -258,7 +296,7 @@ class TestInterfaceLabels:
     ) -> None:
         ui = _ui_module(monkeypatch)
 
-        assert ui._source_actions([]) == []
+        assert ui._source_actions([], []) == []
 
     def test_on_sources_sends_stored_source_elements(
         self,
@@ -271,8 +309,11 @@ class TestInterfaceLabels:
 
         [message] = ui.cl.sent_messages
         assert message.content == "Sources"
-        assert [element.name for element in message.elements] == ["[1] top"]
-        assert "top text" in message.elements[0].content
+        assert [element.name for element in message.elements] == [
+            "Knowledge Base",
+            "[Knowledge Base 1] top",
+        ]
+        assert "top text" in message.elements[1].content
 
     def test_replace_source_actions_updates_existing_source_payload(
         self,
@@ -284,7 +325,7 @@ class TestInterfaceLabels:
         feedback_action = ui.cl.Action(name="sutra_feedback", label="feedback")
         msg = types.SimpleNamespace(actions=[source_action, feedback_action])
 
-        ui._replace_source_actions(msg, [_evidence("fresh", 10.0)])
+        ui._replace_source_actions(msg, [_evidence("fresh", 10.0)], [_evidence("live", None)])
 
         source_actions = [
             action for action in msg.actions
@@ -293,7 +334,12 @@ class TestInterfaceLabels:
         assert source_actions == [source_action]
         assert ui._payload_from_action(source_action)["source_key"] == source_key
         assert sorted(ui.cl.user_session.store) == [source_key]
-        assert [item["name"] for item in ui.cl.user_session.store[source_key]] == ["[1] fresh"]
+        assert [item["name"] for item in ui.cl.user_session.store[source_key]] == [
+            "Knowledge Base",
+            "[Knowledge Base 1] fresh",
+            "Web Search",
+            "[Web Search 1] live",
+        ]
 
     def test_chainlit_configs_force_english_locale(self) -> None:
         root = Path(__file__).parents[2]
@@ -302,8 +348,73 @@ class TestInterfaceLabels:
             root / "src" / "sutra" / "resources" / "ui" / "chainlit_config.toml",
         ) == "en-US"
 
+    def test_chainlit_configs_use_temporary_sutra_icon_branding(self) -> None:
+        root = Path(__file__).parents[2]
+
+        assert _config_name(
+            root / "src" / "sutra" / "resources" / "ui" / "chainlit_config.toml",
+        ) == "✨ Sutra"
+
+    def test_packaged_chainlit_welcome_readme_is_empty(self) -> None:
+        root = Path(__file__).parents[2]
+
+        assert (
+            root / "src" / "sutra" / "resources" / "ui" / "chainlit.md"
+        ).read_text(encoding="utf-8") == ""
+
 
 class TestAnswerLocalization:
+    def test_chat_start_falls_back_to_default_workspace(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        monkeypatch.delenv("SUTRA_WORKSPACE", raising=False)
+
+        asyncio.run(ui.on_chat_start())
+
+        workspace = ui.cl.user_session.store["workspace"]
+        assert workspace == (
+            Path(__file__).parents[2] / "examples" / "cnu-campus" / "sutra.toml"
+        ).resolve()
+        assert ui.cl.sent_messages == []
+
+    def test_chat_start_reports_missing_workspace_in_korean(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        monkeypatch.delenv("SUTRA_WORKSPACE", raising=False)
+        monkeypatch.setattr(
+            ui,
+            "_default_workspace_path",
+            lambda: tmp_path / "missing" / "sutra.toml",
+            raising=False,
+        )
+
+        asyncio.run(ui.on_chat_start())
+
+        assert ui.cl.user_session.store["workspace"] is None
+        [message] = ui.cl.sent_messages
+        assert message.content.startswith("**오류**:")
+        assert "SUTRA_WORKSPACE" in message.content
+
+    def test_on_message_reports_config_errors_in_korean(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        ui.cl.user_session.set("workspace", tmp_path / "missing.toml")
+        ui.cl.user_session.set("client", None)
+
+        asyncio.run(ui.on_message(ui.cl.Message(content="test")))
+
+        [message] = ui.cl.sent_messages
+        assert message.content.startswith("**오류**:")
+        assert "workspace config not found" in message.content
+
     def test_insufficient_evidence_answer_is_korean(
         self,
         monkeypatch: pytest.MonkeyPatch,
@@ -327,8 +438,76 @@ class TestAnswerLocalization:
         assert [action.label for action in message.actions] == [
             "👍 Helpful",
             "👎 Not helpful",
-            "💬 Comment",
         ]
+
+    def test_comment_feedback_rating_is_rejected(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        config = load_config(_write_workspace(tmp_path))
+        [action] = [
+            ui.cl.Action(name="sutra_feedback", payload={
+                "trace_path": str(tmp_path / "trace.jsonl"),
+                "question": "q",
+                "answer": "a",
+                "rating": "comment",
+            }),
+        ]
+
+        asyncio.run(ui.on_feedback(action))
+
+        [message] = ui.cl.sent_messages
+        assert message.content == "Could not record feedback."
+        assert not (tmp_path / "trace.jsonl").exists()
+
+    def test_feedback_click_keeps_buttons_and_records_status_once(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        config = load_config(_write_workspace(tmp_path))
+        actions = ui._feedback_actions(config, question="q", answer="a")
+        removed = []
+
+        async def remove():
+            removed.append(True)
+
+        actions[0].remove = remove
+
+        asyncio.run(ui.on_feedback(actions[0]))
+
+        assert removed == []
+        [message] = ui.cl.sent_messages
+        assert message.content == "Recorded: 👍"
+        assert "Feedback recorded." not in message.content
+
+        trace_path = tmp_path / "logs" / "chat_trace.jsonl"
+        rows = trace_path.read_text(encoding="utf-8").splitlines()
+        assert '"rating":"helpful"' in rows[-1]
+
+    def test_feedback_click_toggles_status_message_in_place(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        config = load_config(_write_workspace(tmp_path))
+        helpful, unhelpful = ui._feedback_actions(config, question="q", answer="a")
+
+        asyncio.run(ui.on_feedback(helpful))
+        asyncio.run(ui.on_feedback(unhelpful))
+
+        [message] = ui.cl.sent_messages
+        assert message.content == "Recorded: 👎"
+        assert message.update_count == 1
+
+        trace_path = tmp_path / "logs" / "chat_trace.jsonl"
+        rows = trace_path.read_text(encoding="utf-8").splitlines()
+        assert '"rating":"helpful"' in rows[-2]
+        assert '"rating":"unhelpful"' in rows[-1]
 
     def test_tool_no_result_suffix_is_korean(
         self,
@@ -342,25 +521,30 @@ class TestAnswerLocalization:
             def __init__(self) -> None:
                 self.calls = 0
 
-            def chat(self, messages, *, model, temperature, max_tokens, tools=None):
+            def chat(self, messages, *, model, temperature, max_tokens, tools=None, tool_choice=None):
                 self.calls += 1
-                if self.calls == 1:
-                    return LlamaResult(content="", model=model)
-                return LlamaResult(
-                    content="저장된 자료를 기준으로 답변합니다.",
-                    model=model,
-                    tool_calls=[
-                        ToolCall(
-                            id="call-1",
-                            function_name="fetch_recent_notices",
-                            function_arguments='{"keyword":"장학"}',
-                        ),
-                    ],
-                )
+                if tool_choice is not None:
+                    return LlamaResult(
+                        content="",
+                        model=model,
+                        tool_calls=[
+                            ToolCall(
+                                id="call-1",
+                                function_name="fetch_recent_notices",
+                                function_arguments='{"keyword":"장학"}',
+                            ),
+                        ],
+                    )
+                return LlamaResult(content="저장된 자료를 기준으로 답변합니다.", model=model)
 
         client = ToolNoResultClient()
         ui.cl.user_session.set("workspace", config)
         ui.cl.user_session.set("client", client)
+        monkeypatch.setattr(
+            ui,
+            "route_question",
+            lambda question, config: ("notices", "fetch_recent_notices", 1),
+        )
         monkeypatch.setattr(
             ui,
             "retrieve",
@@ -379,6 +563,184 @@ class TestAnswerLocalization:
             "\n\n(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)",
         )
         assert "Unable to fetch live data" not in message.content
+
+
+class TestRouterUiFlow:
+    def test_on_message_uses_router_rag_path_without_web_search_step(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        config = load_config(_write_workspace(tmp_path))
+
+        class RagClient:
+            def __init__(self) -> None:
+                self.calls = []
+
+            def chat(self, messages, *, model, temperature, max_tokens, tools=None, tool_choice=None):
+                self.calls.append({
+                    "tools": tools,
+                    "tool_choice": tool_choice,
+                    "max_tokens": max_tokens,
+                })
+                return LlamaResult(content="rag answer", model=model)
+
+        client = RagClient()
+        ui.cl.user_session.set("workspace", config)
+        ui.cl.user_session.set("client", client)
+        monkeypatch.setattr(
+            ui,
+            "route_question",
+            lambda question, config: ("academic_calendar", None, 2),
+        )
+        monkeypatch.setattr(
+            ui,
+            "retrieve",
+            lambda question, documents, config: EvidencePack(
+                question=question,
+                items=[_evidence("stored", 1.0)],
+            ),
+        )
+
+        asyncio.run(ui.on_message(ui.cl.Message(content="semester dates?")))
+
+        assert [step.name for step in ui.cl.steps] == ["🧠 Knowledge Base"]
+        [message] = ui.cl.sent_messages
+        assert message.content == "rag answer"
+        assert client.calls == [{
+            "tools": None,
+            "tool_choice": None,
+            "max_tokens": config.runtime.max_tokens,
+        }]
+
+    def test_on_message_forces_router_tool_and_splits_sources(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        config = load_config(_write_workspace(tmp_path))
+        rag_item = _evidence("stored", 1.0)
+        live_item = Evidence(
+            id="live",
+            title="Live Notice",
+            text="Live notice text",
+            source_name="recent notices",
+        )
+
+        class ForcedToolClient:
+            def __init__(self) -> None:
+                self.calls = []
+
+            def chat(self, messages, *, model, temperature, max_tokens, tools=None, tool_choice=None):
+                self.calls.append({
+                    "tools": tools,
+                    "tool_choice": tool_choice,
+                    "max_tokens": max_tokens,
+                })
+                if tool_choice is not None:
+                    return LlamaResult(
+                        content="",
+                        model=model,
+                        tool_calls=[
+                            ToolCall(
+                                id="call-1",
+                                function_name="fetch_recent_notices",
+                                function_arguments='{"keyword":"장학"}',
+                            ),
+                        ],
+                    )
+                return LlamaResult(content="fresh answer", model=model)
+
+        client = ForcedToolClient()
+        ui.cl.user_session.set("workspace", config)
+        ui.cl.user_session.set("client", client)
+        monkeypatch.setattr(
+            ui,
+            "route_question",
+            lambda question, config: ("notices", "fetch_recent_notices", 1),
+        )
+        monkeypatch.setattr(
+            ui,
+            "retrieve",
+            lambda question, documents, config: EvidencePack(
+                question=question,
+                items=[rag_item],
+            ),
+        )
+        monkeypatch.setattr(ui, "dispatch", lambda name, arguments: [live_item])
+
+        asyncio.run(ui.on_message(ui.cl.Message(content="장학 공지 알려줘")))
+
+        assert [step.name for step in ui.cl.steps] == [
+            "🧠 Knowledge Base",
+            "🔍 Web Search",
+        ]
+        assert ui.cl.steps[1].input == "fetch_recent_notices(keyword=장학)"
+        assert ui.cl.steps[1].output == "fetch_recent_notices(keyword=장학) → 1 result"
+        assert client.calls[0]["tool_choice"] == {
+            "type": "function",
+            "function": {"name": "fetch_recent_notices"},
+        }
+        assert client.calls[0]["max_tokens"] == min(config.runtime.max_tokens, 256)
+        [message] = ui.cl.sent_messages
+        assert message.content == "fresh answer"
+        source_key = ui._payload_from_action(message.actions[0])["source_key"]
+        assert [item["name"] for item in ui.cl.user_session.store[source_key]] == [
+            "Knowledge Base",
+            "[Knowledge Base 1] stored",
+            "Web Search",
+            "[Web Search 1] Live Notice",
+        ]
+
+    def test_on_message_forced_tool_empty_rag_uses_router_failure_message(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        config = load_config(_write_workspace(tmp_path))
+
+        class EmptyToolClient:
+            def chat(self, messages, *, model, temperature, max_tokens, tools=None, tool_choice=None):
+                return LlamaResult(
+                    content="",
+                    model=model,
+                    tool_calls=[
+                        ToolCall(
+                            id="call-1",
+                            function_name="fetch_cafeteria_menu",
+                            function_arguments='{"date":"2026-06-12"}',
+                        ),
+                    ],
+                )
+
+        ui.cl.user_session.set("workspace", config)
+        ui.cl.user_session.set("client", EmptyToolClient())
+        monkeypatch.setattr(
+            ui,
+            "route_question",
+            lambda question, config: ("dining", "fetch_cafeteria_menu", 3),
+        )
+        monkeypatch.setattr(
+            ui,
+            "retrieve",
+            lambda question, documents, config: EvidencePack(question=question, items=[]),
+        )
+        monkeypatch.setattr(ui, "dispatch", lambda name, arguments: [])
+
+        asyncio.run(ui.on_message(ui.cl.Message(content="오늘 학식 뭐야?")))
+
+        [message] = ui.cl.sent_messages
+        assert message.content == (
+            "실시간 조회에 실패했고 저장된 자료에서도 관련 정보를 찾지 못했습니다. "
+            "충남대학교 공식 홈페이지를 확인해 주세요."
+        )
+        assert [action.label for action in message.actions] == [
+            "👍 Helpful",
+            "👎 Not helpful",
+        ]
 
 
 class TestSourceScoreFilter:

@@ -19,6 +19,30 @@ def test_cli_ask_uses_echo_client(tmp_path: Path, capsys) -> None:
     assert "수강신청은 2월 1일입니다." in output
 
 
+def test_ui_prepares_empty_chainlit_readme_in_temp_app_root(tmp_path: Path) -> None:
+    workspace = _write_workspace(tmp_path)
+
+    class FakeProcess:
+        returncode = 0
+
+        def __init__(self, cmd, cwd, env) -> None:
+            readme = Path(cwd) / "chainlit.md"
+            assert readme.exists()
+            assert readme.read_text(encoding="utf-8") == ""
+
+        def wait(self) -> None:
+            return None
+
+        def terminate(self) -> None:
+            return None
+
+    with (
+        patch("importlib.util.find_spec", return_value=object()),
+        patch("subprocess.Popen", FakeProcess),
+    ):
+        assert main(["ui", "--workspace", str(workspace), "--echo"]) == 0
+
+
 def _write_workspace(root: Path, base_url: str | None = None, reasoning: str | None = None) -> Path:
     (root / "data").mkdir()
     (root / "prompts").mkdir()

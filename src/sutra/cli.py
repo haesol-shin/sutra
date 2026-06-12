@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import sys
 from collections.abc import Sequence
 from pathlib import Path
@@ -28,6 +29,35 @@ class ChatOutputItem(BaseModel):
 
 
 ChatOutput = RootModel[list[ChatOutputItem]]
+
+
+def _prepare_chainlit_app_root(app_root: Path, toml_path: Path) -> None:
+    chainlit_dir = app_root / ".chainlit"
+    chainlit_dir.mkdir(exist_ok=True)
+
+    # Priority: 1) cwd/.chainlit/config.toml  2) workspace/.chainlit/config.toml  3) packaged default
+    user_config = None
+    cwd_local = Path.cwd() / ".chainlit" / "config.toml"
+    if cwd_local.exists():
+        user_config = cwd_local
+    if user_config is None:
+        ws_config = toml_path.parent / ".chainlit" / "config.toml"
+        if ws_config.exists():
+            user_config = ws_config
+
+    pkg_dir = Path(__file__).resolve().parent
+    if user_config:
+        shutil.copy2(user_config, chainlit_dir / "config.toml")
+    else:
+        pkg_config = pkg_dir / "resources" / "ui" / "chainlit_config.toml"
+        shutil.copy2(pkg_config, chainlit_dir / "config.toml")
+
+    pkg_readme = pkg_dir / "resources" / "ui" / "chainlit.md"
+    app_readme = app_root / "chainlit.md"
+    if pkg_readme.exists():
+        shutil.copy2(pkg_readme, app_readme)
+    else:
+        app_readme.write_text("", encoding="utf-8")
 
 
 def resolve_workspace_path(cli_workspace: str | None = None) -> Path:
@@ -786,7 +816,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         import importlib.resources
         import importlib.util
         import pathlib
-        import shutil
         import subprocess
         import tempfile
 
@@ -807,26 +836,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             env["SUTRA_ECHO"] = "1"
 
         temp_dir = tempfile.TemporaryDirectory(prefix="sutra-ui-")
-        env["CHAINLIT_APP_ROOT"] = temp_dir.name
-        chainlit_dir = pathlib.Path(temp_dir.name) / ".chainlit"
-        chainlit_dir.mkdir(exist_ok=True)
-
-        # Priority: 1) cwd/.chainlit/config.toml  2) workspace/.chainlit/config.toml  3) packaged default
-        user_config = None
-        cwd_local = pathlib.Path.cwd() / ".chainlit" / "config.toml"
-        if cwd_local.exists():
-            user_config = cwd_local
-        if user_config is None:
-            ws_config = toml_path.parent / ".chainlit" / "config.toml"
-            if ws_config.exists():
-                user_config = ws_config
-
-        if user_config:
-            shutil.copy2(user_config, chainlit_dir / "config.toml")
-        else:
-            pkg_dir = pathlib.Path(__file__).resolve().parent
-            pkg_config = pkg_dir / "resources" / "ui" / "chainlit_config.toml"
-            shutil.copy2(pkg_config, chainlit_dir / "config.toml")
+        temp_root = pathlib.Path(temp_dir.name)
+        env["CHAINLIT_APP_ROOT"] = str(temp_root)
+        _prepare_chainlit_app_root(temp_root, toml_path)
 
         cmd = [
             sys.executable,
