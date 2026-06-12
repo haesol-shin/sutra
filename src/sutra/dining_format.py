@@ -61,6 +61,45 @@ def format_dining_day(records: list[DiningRecordLike], date: str) -> str:
     return "\n".join(lines).strip()
 
 
+def format_dining_multi(records: list[DiningRecordLike], dates: list[str]) -> str:
+    """Format menus across multiple dates.
+
+    <=2 dates: full per-day detail (reuses format_dining_day). >=3 dates: compact
+    main-dish-only (one line per cafeteria/meal, side dishes dropped) to bound the
+    context size of a weekly ask."""
+    ordered = list(dict.fromkeys(dates))
+    if len(ordered) <= 2:
+        parts = [format_dining_day(records, date) for date in ordered]
+        return "\n\n".join(part for part in parts if part).strip()
+
+    lines: list[str] = ["# 주간 학생식당 식단", ""]
+    for date in ordered:
+        day_records = [record for record in records if _include_daily_record(record, date)]
+        if not day_records:
+            continue
+        weekday = WEEKDAY_LABELS[datetime.strptime(date, "%Y-%m-%d").weekday()]
+        lines.append(f"## {date} ({weekday})")
+        by_cafeteria: dict[str, list[DiningRecordLike]] = defaultdict(list)
+        for record in day_records:
+            by_cafeteria[record.cafeteria].append(record)
+        for cafeteria in CAFETERIA_ORDER:
+            cafeteria_records = by_cafeteria.get(cafeteria, [])
+            if not cafeteria_records:
+                continue
+            mains: list[str] = []
+            for record in sorted(
+                cafeteria_records,
+                key=lambda r: (MEAL_ORDER.get(r.meal, 99), AUDIENCE_ORDER.get(r.audience, 99)),
+            ):
+                label, items = split_menu_label_and_items(record)
+                meal = MEAL_LABELS.get(record.meal, record.meal)
+                main = items[0] if items else label
+                mains.append(f"{meal}({record.audience}) {main}")
+            lines.append(f"- {cafeteria}: " + " / ".join(mains))
+        lines.append("")
+    return "\n".join(lines).strip()
+
+
 def active_dining_cafeterias(records: list[DiningRecordLike], date: str) -> list[str]:
     cafeterias = {record.cafeteria for record in records if _include_daily_record(record, date)}
     return [cafeteria for cafeteria in CAFETERIA_ORDER if cafeteria in cafeterias]

@@ -938,14 +938,23 @@ def _parse_cs_notices(html: str, *, base_url: str = CS_BACHELOR_NOTICE_URL) -> l
         "충남대학교 학생회관의 일별 식단을 아침, 점심, 저녁 단위로 조회한다. "
         "오늘 또는 특정 날짜의 학식, 식당, 메뉴를 물을 때 사용한다. "
         "반환값은 식당, 식사 구분, 대상, 메뉴명, 가격을 포함한 식단 근거다. "
-        "제1학생회관은 푸드코트라 코너 정보는 지식베이스에 있고, 일별 식단은 충남대학교 식단 사이트의 실제 날짜별 응답을 따른다."
+        "제1학생회관은 푸드코트라 코너 정보는 지식베이스에 있고, 일별 식단은 충남대학교 식단 사이트의 실제 날짜별 응답을 따른다. "
+        "여러 날을 한 번에 물으면 date 대신 dates에 날짜 목록을 넘긴다. 날짜는 사용자 메시지의 '이번 주'·'다음 주' 범위에서 계산한다. "
+        "예: '오늘 학식' → 인자 생략. '다음주 화요일 메뉴' → date='2026-06-16'(다음주 화요일). "
+        "'다음주 월요일 화요일 학식' → dates=['2026-06-15','2026-06-16']. "
+        "'이번주/다음주 식단', '주간 식단' → 해당 주 평일 5일 → dates=['2026-06-15','2026-06-16','2026-06-17','2026-06-18','2026-06-19']."
     ),
     parameters={
         "type": "object",
         "properties": {
             "date": {
                 "type": ["string", "null"],
-                "description": "조회할 날짜로 YYYY-MM-DD 형식을 사용하며 생략하면 KST 기준 오늘을 조회한다.",
+                "description": "조회할 단일 날짜로 YYYY-MM-DD 형식을 사용하며 생략하면 KST 기준 오늘을 조회한다.",
+            },
+            "dates": {
+                "type": ["array", "null"],
+                "items": {"type": "string"},
+                "description": "여러 날을 한 번에 조회할 때 YYYY-MM-DD 날짜 목록(최대 5일). 2일 이하는 상세, 3일 이상은 요약으로 반환한다.",
             },
             "cafeteria": {
                 "type": ["string", "null"],
@@ -955,7 +964,15 @@ def _parse_cs_notices(html: str, *, base_url: str = CS_BACHELOR_NOTICE_URL) -> l
         },
     },
 )
-def fetch_cafeteria_menu(date: str | None = None, cafeteria: str | None = None) -> list[Evidence]:
+def fetch_cafeteria_menu(
+    date: str | None = None,
+    cafeteria: str | None = None,
+    dates: list[str] | tuple[str, ...] | None = None,
+) -> list[Evidence]:
+    # Multi-day path: 'dates' (cap 5) fetches each day and renders one combined
+    # block (<=2 days full, >=3 days compact). Single-day path is unchanged.
+    if dates:
+        return _fetch_cafeteria_menu_multi(list(dates)[:5], cafeteria)
     try:
         today = _today_kst().strftime("%Y-%m-%d")
         target_date = date or today
@@ -971,6 +988,34 @@ def fetch_cafeteria_menu(date: str | None = None, cafeteria: str | None = None) 
             source_url=_source_url_with_params(FOOD_URL, params),
             source_name="충남대학교 식단",
             metadata={"tool": "fetch_cafeteria_menu", "date": target_date, "cafeteria": cafeteria},
+        )
+    ]
+
+
+def _fetch_cafeteria_menu_multi(target_dates: list[str], cafeteria: str | None) -> list[Evidence]:
+    from sutra.dining_format import format_dining_multi
+
+    ordered = list(dict.fromkeys(target_dates))
+    try:
+        all_records: list[DiningMenuRecord] = []
+        last_params: dict[str, str] | None = None
+        for target_date in ordered:
+            params = _cafeteria_menu_params(target_date)
+            html = _get(FOOD_URL, params=params)
+            all_records.extend(_parse_cafeteria_menu(html, target_date, cafeteria))
+            last_params = params
+    except Exception:
+        logger.warning("Failed to fetch multi-day cafeteria menu", exc_info=True)
+        return []
+    text = format_dining_multi(all_records, ordered) or f"{', '.join(ordered)}의 식단 정보가 없습니다."
+    return [
+        Evidence(
+            id="live_cafeteria_menu",
+            title="충남대학교 식단",
+            text=text,
+            source_url=_source_url_with_params(FOOD_URL, last_params or {}),
+            source_name="충남대학교 식단",
+            metadata={"tool": "fetch_cafeteria_menu", "dates": ordered, "cafeteria": cafeteria},
         )
     ]
 
