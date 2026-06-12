@@ -132,6 +132,45 @@ def _source_elements(
     return elements
 
 
+def _sources_element(
+    knowledge_base_items: list[Evidence],
+    web_search_items: list[Evidence] | None = None,
+) -> cl.Text | None:
+    """Build a single collapsed '📚 Sources' side element.
+
+    The element shows as one reference on the answer; the grouped source detail only
+    opens in the side panel when the user clicks it (not auto-expanded inline).
+    """
+    sections: list[str] = []
+
+    def _render_group(group_name: str, items: list[Evidence]) -> None:
+        filtered, _ = _filter_source_evidence(items)
+        if not filtered:
+            return
+        lines = [f"## {group_name}"]
+        for i, ev in enumerate(filtered, 1):
+            title = ev.title or "Untitled"
+            source = ev.source_name or ev.source_url or ev.id
+            date = _evidence_date(ev)
+            lines.append(f"\n**[{i}] {title}**")
+            lines.append(f"- Source: {source}")
+            if date:
+                lines.append(f"- Date: {date}")
+            if ev.source_url:
+                lines.append(f"- URL: {ev.source_url}")
+            lines.append(f"- Excerpt: {_excerpt(ev.text, 500)}")
+        sections.append("\n".join(lines))
+
+    _render_group("Knowledge Base", knowledge_base_items)
+    if web_search_items is not None:
+        _render_group("Web Search", web_search_items)
+    if not sections:
+        return None
+    # display="page": the chip is shown in the answer but the sources only open on click
+    # (display="side" auto-opens the side panel when attached, which is not wanted).
+    return cl.Text(name="📚 Sources", content="\n\n".join(sections), display="page")
+
+
 def _source_element_payloads(
     knowledge_base_items: list[Evidence],
     web_search_items: list[Evidence] | None = None,
@@ -409,7 +448,13 @@ async def on_feedback(action: cl.Action) -> None:
         answer=answer,
         rating=rating,  # type: ignore[arg-type]
     )
-    await _update_feedback_status(feedback_key, rating)
+    # Record silently: do not spawn a new chat message (keeps the feedback buttons
+    # fixed on the answer). Show an ephemeral toast when the Chainlit build supports it.
+    marker = "👍" if rating == "helpful" else "👎"
+    try:
+        await cl.context.emitter.send_toast(f"피드백이 기록되었습니다 {marker}", type="success")
+    except Exception:
+        pass
 
 
 async def _stream_to_message(
@@ -665,10 +710,6 @@ async def on_message(message: cl.Message) -> None:
                 final_msg.content = final_answer
                 await final_msg.update()
 
-            if use_fresh_only:
-                _replace_source_actions(final_msg, [], fresh_items)
-                await final_msg.update()
-
             if result is None:
                 result = LlamaResult(content=final_answer, model=config.runtime.model)
 
@@ -688,13 +729,18 @@ async def on_message(message: cl.Message) -> None:
             final_msg.content = final_answer
             await final_msg.update()
 
-        if final_answer and not getattr(final_msg, "actions", None):
-            _replace_source_actions(
-                final_msg,
+        if final_answer:
+            sources_element = _sources_element(
                 [] if forced_tool is not None and fresh_items else rag_items,
                 fresh_items if forced_tool is not None and fresh_items else None,
             )
-            await final_msg.update()
+            if sources_element is not None:
+                # A side element only renders a clickable chip when its name is referenced
+                # in the message content. Append a footer reference so the user gets a single
+                # "📚 Sources" chip that opens the side panel on click (not auto-expanded).
+                final_msg.content = f"{final_answer}\n\n{sources_element.name}"
+                final_msg.elements = [sources_element]
+                await final_msg.update()
 
         if final_answer == "" and result.content:
             final_answer = result.content

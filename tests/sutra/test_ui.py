@@ -498,9 +498,8 @@ class TestAnswerLocalization:
         asyncio.run(ui.on_feedback(actions[0]))
 
         assert removed == []
-        [message] = ui.cl.sent_messages
-        assert message.content == "Recorded: 👍"
-        assert "Feedback recorded." not in message.content
+        # Recording feedback no longer spawns a chat message; the buttons stay fixed.
+        assert ui.cl.sent_messages == []
 
         trace_path = tmp_path / "logs" / "chat_trace.jsonl"
         rows = trace_path.read_text(encoding="utf-8").splitlines()
@@ -518,9 +517,8 @@ class TestAnswerLocalization:
         asyncio.run(ui.on_feedback(helpful))
         asyncio.run(ui.on_feedback(unhelpful))
 
-        [message] = ui.cl.sent_messages
-        assert message.content == "Recorded: 👎"
-        assert message.update_count == 1
+        # Toggling feedback records both ratings without spawning any chat message.
+        assert ui.cl.sent_messages == []
 
         trace_path = tmp_path / "logs" / "chat_trace.jsonl"
         rows = trace_path.read_text(encoding="utf-8").splitlines()
@@ -577,8 +575,9 @@ class TestAnswerLocalization:
 
         [message] = ui.cl.sent_messages
         assert client.calls == 2
-        assert message.content.endswith(
-            "\n\n(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)",
+        assert (
+            "(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)"
+            in message.content
         )
         assert "Unable to fetch live data" not in message.content
 
@@ -625,7 +624,8 @@ class TestRouterUiFlow:
 
         assert [step.name for step in ui.cl.steps] == ["🧠 Knowledge Base"]
         [message] = ui.cl.sent_messages
-        assert message.content == "rag answer"
+        assert message.content == "rag answer\n\n📚 Sources"
+        assert [element.name for element in message.elements] == ["📚 Sources"]
         assert client.calls == [{
             "tools": None,
             "tool_choice": None,
@@ -704,13 +704,19 @@ class TestRouterUiFlow:
         }
         assert client.calls[0]["max_tokens"] == min(config.runtime.max_tokens, 256)
         [message] = ui.cl.sent_messages
-        assert message.content == "fresh answer"
+        assert message.content == "fresh answer\n\n📚 Sources"
         assert "Live notice text" in client.calls[1]["messages"][-1].content
         assert "stored text" not in client.calls[1]["messages"][-1].content
-        source_key = ui._payload_from_action(message.actions[0])["source_key"]
-        assert [item["name"] for item in ui.cl.user_session.store[source_key]] == [
-            "Web Search",
-            "[Web Search 1] Live Notice",
+        # Fresh-only forced-tool answer: sources are a single side element with the
+        # Web Search group only (stale Knowledge Base corpus excluded).
+        assert [element.name for element in message.elements] == ["📚 Sources"]
+        sources_content = message.elements[0].content
+        assert "Web Search" in sources_content
+        assert "[1] Live Notice" in sources_content
+        assert "Knowledge Base" not in sources_content
+        assert [action.label for action in message.actions] == [
+            "👍 Helpful",
+            "👎 Not helpful",
         ]
 
     def test_on_message_attaches_sources_and_feedback_after_streaming_finishes(
@@ -751,9 +757,10 @@ class TestRouterUiFlow:
 
         assert observed_actions_during_stream == [[]]
         [message] = ui.cl.sent_messages
-        assert message.content == "streamed answer"
+        assert message.content == "streamed answer\n\n📚 Sources"
+        # Sources are a fixed side element (click-to-open); only feedback are actions.
+        assert [element.name for element in message.elements] == ["📚 Sources"]
         assert [action.label for action in message.actions] == [
-            "📚 Sources",
             "👍 Helpful",
             "👎 Not helpful",
         ]
