@@ -34,12 +34,15 @@ Raw source files are git-ignored, with raw provenance metadata tracked in `data/
    - `fetch_page_text`: Fetches page content
    - `search_knowledge_base`: RAG exposed as a tool for equal footing with live tools
    - Relative-date query expansion: `retrieve()` appends KST date tokens for 오늘/내일/모레/어제 to BM25 query (original question preserved)
-4. **Service Modes**: `service.ask()` supports `mode="default"` (RAG pre-injected + autonomous tools), `mode="tool_only"` (RAG and tools on equal footing), and `mode="router"` (Task1-classifier forced tool routing for dining/notices, RAG for calendar/graduation/shuttle; includes Option A — forced tools fire even on empty RAG). Default remains the byte-invariant grading path.
-5. **Routing Decision (pending)**: A3 router is the chosen routing design. A large default-vs-router experiment (58 probes, n_ctx 8192, 94-doc corpus) is the basis for deciding whether to switch the grading path from default to router; the switch is the user's call from the report.
-6. **Notices/Dining Tools**: `fetch_recent_notices` now covers 5 boards (학교 학사공지/새소식, 학부 학사공지/소식/사업단) with optional board, client-side keyword filtering, and body excerpts. `fetch_cafeteria_menu` blocks out-of-range dates via menu-body comparison.
-7. **Future Work**:
-   - Address CNU graduation requirements PDF OCR constraints (currently limited past page 3).
+4. **Service Modes**: `service.ask()` supports `mode="default"`, `mode="tool_only"`, and `mode="router"` (Task1-classifier forced tool routing for dining/notices, RAG for calendar/graduation/shuttle; Option A — forced tools fire even on empty RAG). **Grading path = router** (decided 2026-06-12, commit 3aa6d41): `sutra batch` (chatbot.sh chat + realtime) now calls `mode="router"`. classifier.joblib resolves via env→workspace→repo→cwd; missing classifier falls back to RAG. Output schema unchanged (cls=question/label, chat/realtime=user/model).
+5. **Submission bootstrap (merged, 2026-06-12)**: the router now loads the classifier inline via a cached `joblib.load` (`src/sutra/service.py::_load_classifier`) — `sutra` no longer imports `nlp_term` at all. The grading classifier is found via an absolute `SUTRA_CLASSIFIER_PATH` (the clone's `model/` is gitignored).
+6. **Notices/Dining Tools**: `fetch_recent_notices` covers 5 boards (학교 학사공지/새소식, 학부 학사공지/소식/사업단) with optional board, client-side keyword filtering, body excerpts. `fetch_cafeteria_menu` blocks out-of-range dates via menu-body comparison.
+7. **Submission**: `dist/Termproject_신해솔.zip` is now a **minimal git-clone bootstrap** — exactly 6 files (`chatbot.sh`, `src/classifier.ipynb`, `data/test_{cls,chat,realtime}.json`, `model/classifier.joblib`; ~0.12MB). No source/corpus/prompts in the zip: `chatbot.sh` (no args) clones the public `submission` branch at run time so RAG/tool/UI stay editable after the deadline (see decision_log 2026-06-12). Task 1 notebook is self-contained (bundled joblib + inline predict, scikit-learn==1.7.2, no nlp_term/clone). `submission` pushed at `8e402c0`. Verified: local + real public `@submission` clone both yield chat/realtime with 0 fallback and live notice/dining routing. **Remaining for user: full Colab rehearsal of the install path** (uv `--system` install, GGUF download, GPU llama-server) — the only path not exercisable on the Windows dev box.
+8. **Future Work**:
+   - Docs polish: root README run-guide (logic/deps/prereqs/run), sutra_architecture.md tool-registry section.
+   - CNU graduation PDF OCR constraints (limited past page 3).
    - Hybrid BM25+embedding retrieval (50/50, decided but unimplemented).
+   - WP8 video/slides (excluded for now per user).
 
 ## Legacy Reference Context (Assignment Tasks)
 
