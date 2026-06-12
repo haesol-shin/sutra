@@ -14,6 +14,7 @@ from sutra.documents import load_documents
 from sutra.errors import SutraError
 from sutra.llama import EchoClient, LlamaClient, has_stream_tool_call_marker
 from sutra.models import Evidence, EvidencePack, LlamaResult, Message, ToolCall
+from sutra.menu_resolver import normalize_cafeteria, resolve_menu_dates
 from sutra.prompts import render_prompt
 from sutra.retrieval import retrieve
 from sutra.service import (
@@ -429,6 +430,19 @@ def _tool_result_summary(tool_call: ToolCall, fresh: list[Evidence]) -> str:
     return f"{label} → {len(fresh)} {result_label}"
 
 
+def _tool_summary(function_name: str, arguments: dict[str, Any], fresh: list[Evidence]) -> str:
+    rendered = ", ".join(f"{key}={value}" for key, value in list(arguments.items())[:4])
+    label = f"{function_name}({rendered})" if rendered else f"{function_name}()"
+    if function_name == "fetch_cafeteria_menu":
+        menu_lines = [
+            line for item in fresh for line in item.text.splitlines()
+            if line.strip() and not line.startswith("오늘:")
+        ]
+        return f"{label} → {len(menu_lines)} cafeteria menus"
+    result_label = "result" if len(fresh) == 1 else "results"
+    return f"{label} → {len(fresh)} {result_label}"
+
+
 @cl.action_callback(_FEEDBACK_ACTION)
 async def on_feedback(action: cl.Action) -> None:
     """Persist explicit user feedback for an answer message."""
@@ -437,7 +451,6 @@ async def on_feedback(action: cl.Action) -> None:
     question = str(payload.get("question") or "")
     answer = str(payload.get("answer") or "")
     rating = str(payload.get("rating") or "")
-    feedback_key = str(payload.get("feedback_key") or "")
     if not trace_path or rating not in {"helpful", "unhelpful"}:
         await cl.Message(content="Could not record feedback.").send()
         return
@@ -642,8 +655,33 @@ async def on_message(message: cl.Message) -> None:
                 step.input = "; ".join(tool_labels) if tool_labels else f"{forced_tool}()"
                 tool_summaries: list[str] = []
                 for tool_call in result.tool_calls:
+                    if forced_tool == "fetch_cafeteria_menu" and tool_call.function_name == forced_tool:
+                        args = _tool_arguments(tool_call)
+                        canon, food_court = normalize_cafeteria(args.get("cafeteria"))
+                        if canon is None and not food_court:
+                            canon, food_court = normalize_cafeteria(question)
+                        if food_court and canon is None:
+                            tools_called.append(f"{tool_call.function_name}:food_court_skip")
+                            tool_args.append({**args, "_sutra_skip": "food_court"})
+                            tool_summaries.append("fetch_cafeteria_menu() → food-court knowledge-base fallback")
+                            continue
+
+                        resolved_dates = resolve_menu_dates(question, config)
+                        if resolved_dates is not None:
+                            args["dates"] = resolved_dates
+                            args.pop("date", None)
+                        args["cafeteria"] = canon
+
+                        tools_called.append(tool_call.function_name)
+                        tool_args.append(dict(args))
+                        fresh = await cl.make_async(dispatch)("fetch_cafeteria_menu", args)
+                        fresh_items.extend(fresh)
+                        tool_summaries.append(_tool_summary("fetch_cafeteria_menu", args, fresh))
+                        continue
+
                     tools_called.append(tool_call.function_name)
-                    tool_args.append(_tool_arguments(tool_call))
+                    raw_args = _tool_arguments(tool_call)
+                    tool_args.append(raw_args)
                     if tool_call.function_name != forced_tool:
                         logger.warning(
                             "Router forced %s but model returned %s; ignoring tool evidence",
@@ -658,6 +696,16 @@ async def on_message(message: cl.Message) -> None:
                     fresh_items.extend(fresh)
                     tool_summaries.append(_tool_result_summary(tool_call, fresh))
                 step.output = "; ".join(tool_summaries) if tool_summaries else f"{forced_tool}() → 0 results"
+
+        if forced_tool is not None and not fresh_items:
+            fallback_pack = await cl.make_async(retrieve)(
+                question,
+                documents,
+                config,
+                exclude_domains=set(),
+            )
+            if fallback_pack.items:
+                rag_items = list(fallback_pack.items)
 
         if forced_tool is not None and not fresh_items and not rag_items:
             final_answer = (

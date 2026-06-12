@@ -9,7 +9,9 @@ import sys
 import time
 import types
 from pathlib import Path
+from datetime import datetime
 from unittest.mock import patch
+from zoneinfo import ZoneInfo
 
 import pytest
 import requests
@@ -190,6 +192,14 @@ def test_ui_loads_when_exec_module_does_not_register_module(monkeypatch: pytest.
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
 
+
+class FrozenMenuResolverDateTime(datetime):
+    @classmethod
+    def now(cls, tz=None):  # noqa: ANN001
+        value = cls(2026, 6, 13, 9, 0, 0)
+        if tz is None:
+            return value
+        return value.replace(tzinfo=ZoneInfo("Asia/Seoul")).astimezone(tz)
 
 def _evidence(id_: str, score: float | None) -> Evidence:
     return Evidence(id=id_, title=id_, text=f"{id_} text", score=score)
@@ -464,7 +474,6 @@ class TestAnswerLocalization:
         tmp_path: Path,
     ) -> None:
         ui = _ui_module(monkeypatch)
-        config = load_config(_write_workspace(tmp_path))
         [action] = [
             ui.cl.Action(name="sutra_feedback", payload={
                 "trace_path": str(tmp_path / "trace.jsonl"),
@@ -564,7 +573,7 @@ class TestAnswerLocalization:
         monkeypatch.setattr(
             ui,
             "retrieve",
-            lambda question, documents, config: EvidencePack(
+            lambda question, documents, config, **kwargs: EvidencePack(
                 question=question,
                 items=[_evidence("stored", 1.0)],
             ),
@@ -719,6 +728,137 @@ class TestRouterUiFlow:
             "👎 Not helpful",
         ]
 
+
+    def test_on_message_forced_dining_corrects_dates_and_question_cafeteria(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        config = load_config(_write_workspace(tmp_path))
+        live_item = Evidence(
+            id="live_cafeteria_menu",
+            title="충남대학교 식단",
+            text="제2학생회관 2026-06-16 메뉴",
+            source_name="충남대학교 식단",
+        )
+
+        class DiningClient:
+            def __init__(self) -> None:
+                self.calls = []
+
+            def chat(self, messages, *, model, temperature, max_tokens, tools=None, tool_choice=None):
+                self.calls.append({"messages": messages, "tool_choice": tool_choice, "max_tokens": max_tokens})
+                if tool_choice is not None:
+                    return LlamaResult(
+                        content="",
+                        model=model,
+                        tool_calls=[
+                            ToolCall(
+                                id="call-1",
+                                function_name="fetch_cafeteria_menu",
+                                function_arguments='{"date":"2026-06-13"}',
+                            )
+                        ],
+                    )
+                return LlamaResult(content="2학 answer", model=model)
+
+        dispatch_calls: list[tuple[str, dict[str, object]]] = []
+        client = DiningClient()
+        ui.cl.user_session.set("workspace", config)
+        ui.cl.user_session.set("client", client)
+        monkeypatch.setattr(ui, "route_question", lambda question, config: ("dining", "fetch_cafeteria_menu", 3))
+        monkeypatch.setattr(
+            ui,
+            "retrieve",
+            lambda question, documents, config, **kwargs: EvidencePack(question=question, items=[]),
+        )
+
+        def fake_dispatch(name: str, arguments: dict[str, object]) -> list[Evidence]:
+            dispatch_calls.append((name, dict(arguments)))
+            return [live_item]
+
+        monkeypatch.setattr(ui, "dispatch", fake_dispatch)
+        monkeypatch.setattr("sutra.menu_resolver.datetime", FrozenMenuResolverDateTime)
+
+        asyncio.run(ui.on_message(ui.cl.Message(content="다음주 화요일 2학 메뉴")))
+
+        assert dispatch_calls == [
+            (
+                "fetch_cafeteria_menu",
+                {"cafeteria": "제2학생회관", "dates": ["2026-06-16"]},
+            )
+        ]
+        [message] = ui.cl.sent_messages
+        assert message.content == "2학 answer\n\n📚 Sources"
+        assert "제2학생회관" in ui.cl.steps[1].output
+        assert "2026-06-16" in ui.cl.steps[1].output
+
+    def test_on_message_forced_dining_food_court_uses_fallback_docs(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        config = load_config(_write_workspace(tmp_path))
+        food_court_item = Evidence(
+            id="dining_food_court_제1학생회관_중식",
+            title="제1학생회관 중식",
+            text="제1학생회관 푸드코트 중식 메뉴",
+            source_name="충남대학교 제1학생회관 푸드코트",
+            score=1.0,
+        )
+
+        class FoodCourtClient:
+            def __init__(self) -> None:
+                self.calls = []
+
+            def chat(self, messages, *, model, temperature, max_tokens, tools=None, tool_choice=None):
+                self.calls.append({"messages": messages, "tool_choice": tool_choice})
+                if tool_choice is not None:
+                    return LlamaResult(
+                        content="",
+                        model=model,
+                        tool_calls=[
+                            ToolCall(
+                                id="call-1",
+                                function_name="fetch_cafeteria_menu",
+                                function_arguments='{"cafeteria":"제1학생회관"}',
+                            )
+                        ],
+                    )
+                return LlamaResult(content="푸드코트 answer", model=model)
+
+        retrieve_calls: list[dict[str, object]] = []
+        dispatch_calls: list[tuple[str, object]] = []
+        client = FoodCourtClient()
+        ui.cl.user_session.set("workspace", config)
+        ui.cl.user_session.set("client", client)
+        monkeypatch.setattr(ui, "route_question", lambda question, config: ("dining", "fetch_cafeteria_menu", 3))
+
+        def fake_retrieve(question, documents, config, **kwargs):  # noqa: ANN001
+            retrieve_calls.append(dict(kwargs))
+            if kwargs.get("exclude_domains") == set():
+                return EvidencePack(question=question, items=[food_court_item])
+            return EvidencePack(question=question, items=[])
+
+        monkeypatch.setattr(ui, "retrieve", fake_retrieve)
+        monkeypatch.setattr(ui, "dispatch", lambda name, arguments: dispatch_calls.append((name, arguments)) or [])
+
+        asyncio.run(ui.on_message(ui.cl.Message(content="1학 메뉴 뭐야")))
+
+        assert dispatch_calls == []
+        assert retrieve_calls == [{}, {"exclude_domains": set()}]
+        assert ui.cl.steps[1].output == "fetch_cafeteria_menu() → food-court knowledge-base fallback"
+        [message] = ui.cl.sent_messages
+        assert message.content == (
+            "푸드코트 answer\n\n"
+            "(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)\n\n"
+            "📚 Sources"
+        )
+        assert "제1학생회관 푸드코트 중식 메뉴" in client.calls[1]["messages"][-1].content
+        assert [element.name for element in message.elements] == ["📚 Sources"]
+
     def test_on_message_attaches_sources_and_feedback_after_streaming_finishes(
         self,
         monkeypatch: pytest.MonkeyPatch,
@@ -797,7 +937,7 @@ class TestRouterUiFlow:
         monkeypatch.setattr(
             ui,
             "retrieve",
-            lambda question, documents, config: EvidencePack(question=question, items=[]),
+            lambda question, documents, config, **kwargs: EvidencePack(question=question, items=[]),
         )
         monkeypatch.setattr(ui, "dispatch", lambda name, arguments: [])
 
