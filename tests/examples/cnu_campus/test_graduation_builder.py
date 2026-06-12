@@ -262,9 +262,13 @@ def test_merged_knowledge_index_includes_graduation():
 
     lines = [json.loads(line) for line in index_path.read_text(encoding="utf-8").splitlines() if line.strip()]
     graduation_docs = [doc for doc in lines if doc["metadata"].get("domain") == "graduation"]
-    assert len(graduation_docs) == 5
+    # Corpus = computer-ai 2026 pages (5) + general graduation docs (22) from
+    # graduation-general-index.jsonl.
+    assert len(graduation_docs) == 27
     for doc in graduation_docs:
-        assert doc["id"].startswith("cnu-graduation-computer-ai-2026-page-")
+        assert doc["id"].startswith("cnu-graduation-")
+    computer_ai_pages = [d for d in graduation_docs if d["id"].startswith("cnu-graduation-computer-ai-2026-page-")]
+    assert len(computer_ai_pages) == 5
 
 
 def test_graduation_report_exists():

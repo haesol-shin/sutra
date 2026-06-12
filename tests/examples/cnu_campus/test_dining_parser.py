@@ -189,7 +189,7 @@ def test_operating_info_doc_derives_weekday_schedule_from_records():
     assert doc["metadata"]["domain"] == "dining"
     assert "| 제2학생회관 | 학생 | 직원, 학생 | 학생 |" in doc["text"]
     assert "| 제4학생회관 | - | 학생 | - |" in doc["text"]
-    assert "주말 운영 정보 별도 확인" in doc["text"]
+    assert "주말·공휴일 미운영" in doc["text"]
     assert "| 라면&간식 | 10:00~14:00 | 2,500~4,000원 |" in doc["text"]
     assert "운영안함" not in doc["text"]
 
