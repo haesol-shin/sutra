@@ -696,23 +696,57 @@ _RELATIVE_DATE_OFFSETS: dict[str, int] = {
 }
 _RELATIVE_DATE_RE = re.compile("|".join(_RELATIVE_DATE_OFFSETS))
 
+# Week-level relative terms -> (start, end) day offsets from the current week's
+# Monday (weekday()==0). The match regex is built longest-first so weekend
+# variants ('이번 주말') win over plain-week variants ('이번 주').
+_RELATIVE_WEEK_PATTERNS: dict[str, tuple[int, int]] = {
+    "이번 주말": (5, 6),
+    "이번주말": (5, 6),
+    "다음 주말": (12, 13),
+    "다음주말": (12, 13),
+    "지난 주말": (-2, -1),
+    "지난주말": (-2, -1),
+    "이번 주": (0, 6),
+    "이번주": (0, 6),
+    "다음 주": (7, 13),
+    "다음주": (7, 13),
+    "지난 주": (-7, -1),
+    "지난주": (-7, -1),
+}
+_RELATIVE_WEEK_RE = re.compile(
+    "|".join(
+        re.escape(term)
+        for term in sorted(_RELATIVE_WEEK_PATTERNS, key=len, reverse=True)
+    )
+)
+
 
 def _expand_relative_date_query(question: str, timezone_name: str) -> str:
-    terms = _RELATIVE_DATE_RE.findall(question)
-    if not terms or _ISO_DATE_RE.search(question):
+    day_terms = _RELATIVE_DATE_RE.findall(question)
+    week_terms = _RELATIVE_WEEK_RE.findall(question)
+    if (not day_terms and not week_terms) or _ISO_DATE_RE.search(question):
         return question
 
     from sutra.prompts import get_current_time_str
 
     current_date_text = get_current_time_str(timezone_name).split()[0]
     current_date = datetime.strptime(current_date_text, "%Y-%m-%d").date()
+    monday = current_date - timedelta(days=current_date.weekday())
     additions: list[str] = []
     seen: set[str] = set()
-    for term in terms:
-        date_text = (current_date + timedelta(days=_RELATIVE_DATE_OFFSETS[term])).strftime("%Y-%m-%d")
+
+    def _add(day) -> None:
+        date_text = day.strftime("%Y-%m-%d")
         if date_text not in question and date_text not in seen:
             additions.append(date_text)
             seen.add(date_text)
+
+    for term in day_terms:
+        _add(current_date + timedelta(days=_RELATIVE_DATE_OFFSETS[term]))
+    for term in week_terms:
+        start, end = _RELATIVE_WEEK_PATTERNS[term]
+        for offset in range(start, end + 1):
+            _add(monday + timedelta(days=offset))
 
     if not additions:
         return question

@@ -145,4 +145,86 @@ def test_fallback_research_includes_notices_when_exclusion_cleared(tmp_path: Pat
 
 def test_default_excluded_domains_is_notices(tmp_path: Path) -> None:
     assert "notices" in GENERAL_SEARCH_EXCLUDED_DOMAINS
-    assert "dining" not in GENERAL_SEARCH_EXCLUDED_DOMAINS  # dining removed from corpus, not filtered
+    assert "dining" not in GENERAL_SEARCH_EXCLUDED_DOMAINS  # stable dining docs are general-searchable
+
+# --- Fix C: relative week-date expansion ---------------------------------
+
+# Frozen "current date" = 2026-06-13 (Saturday). weekday()==5, so the current
+# week's Monday is 2026-06-08.
+_FROZEN_NOW = "2026-06-13 14:00 토요일"
+
+
+def _expand(question: str):
+    from unittest.mock import patch
+
+    from sutra.retrieval import _expand_relative_date_query
+
+    with patch("sutra.prompts.get_current_time_str", return_value=_FROZEN_NOW):
+        out = _expand_relative_date_query(question, "Asia/Seoul")
+    return out.replace(question, "").split()
+
+
+@pytest.mark.parametrize(
+    "question, expected",
+    [
+        ("이번주 일정", ["2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-13", "2026-06-14"]),
+        ("다음주 학식 메뉴", ["2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19", "2026-06-20", "2026-06-21"]),
+        ("지난주 공지", ["2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-06", "2026-06-07"]),
+    ],
+)
+def test_week_expansion_appends_full_week(question, expected) -> None:
+    assert _expand(question) == expected
+
+
+@pytest.mark.parametrize(
+    "question, expected",
+    [
+        ("이번 주말 셔틀", ["2026-06-13", "2026-06-14"]),
+        ("다음 주말 운영", ["2026-06-20", "2026-06-21"]),
+        ("지난 주말 행사", ["2026-06-06", "2026-06-07"]),
+    ],
+)
+def test_weekend_expansion_appends_two_days(question, expected) -> None:
+    assert _expand(question) == expected
+
+
+def test_week_only_question_expands_f1_regression() -> None:
+    # F1 pin-down: a week-only question (no day-offset term) must still expand.
+    assert _expand("다음주 학식 메뉴") != []
+
+
+@pytest.mark.parametrize(
+    "question, expected",
+    [
+        ("오늘 메뉴", ["2026-06-13"]),
+        ("내일 일정", ["2026-06-14"]),
+        ("모레 셔틀", ["2026-06-15"]),
+        ("어제 공지", ["2026-06-12"]),
+    ],
+)
+def test_day_offset_expansion_unchanged(question, expected) -> None:
+    assert _expand(question) == expected
+
+
+def test_no_expansion_without_relative_term() -> None:
+    assert _expand("졸업 요건 알려줘") == []
+
+
+def test_iso_date_present_short_circuits() -> None:
+    # An explicit ISO date suppresses relative expansion.
+    assert _expand("다음주 2026-07-01 일정") == []
+
+
+def test_week_expansion_ranks_in_range_doc_first(tmp_path: Path) -> None:
+    # F4: the expanded query must rank an in-range dated doc above an
+    # out-of-range one when retrieved through retrieve().
+    from unittest.mock import patch
+
+    config = load_config(str(_write_workspace(tmp_path / "ws")))
+    documents = load_documents(config)
+    with patch("sutra.prompts.get_current_time_str", return_value=_FROZEN_NOW):
+        # "다음주" -> 2026-06-15..21; calendar_month_2026_03 has 2026-03 dates
+        # (out of range), so the in-range doc should win when present.
+        pack = retrieve("다음주 학사일정", documents, config)
+    ids = [item.id for item in pack.items]
+    assert ids, "expected at least one retrieved fact"
