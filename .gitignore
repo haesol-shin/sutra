@@ -1,5 +1,6 @@
 .omx/
 .omc/
+.gjc/
 .venv/
 __pycache__/
 *.py[cod]
