@@ -4,6 +4,12 @@ This file records short rationale for important project decisions. It is append-
 
 ## 2026-06-12
 
+Type: decision
+Decision: Adopt router as the grading-path default. `sutra batch` (chatbot.sh chat + realtime) now calls `ask(mode="router")` instead of default.
+Reason: A 58-probe default-vs-router experiment (n_ctx 8192, 94-doc corpus) showed router is the only mode that reliably serves live notices (default fails on dept notices absent from the corpus) and is also faster (median 27.9s vs 33.1s); an independent codex review rated it SUPPORT_WITH_CHANGES. Real-time is an explicit graded dimension (+30).
+Consequence: grading path is classifier-routed; classifier.joblib resolves via env→workspace→repo→cwd with RAG fallback if missing. Output schema unchanged (cls=question/label, chat/realtime=user/model). Remaining risk: classifier.joblib must load in the Colab grading env — verify in WP7 rehearsal.
+Links: `src/sutra/cli.py`, `src/sutra/service.py` (squash 3aa6d41)
+
 Type: feat
 Decision: Neutralize the system prompt and rewrite all tool descriptions to Anthropic-style 3-4 sentence "when to use" form; re-ground prompt examples to the corpus.
 Reason: The prompt biased the model toward calling specific tools (식단 "먼저 호출"), polluting A1/A2/A3 mode comparison; old examples carried fabricated graduation numbers and a false weekend-shuttle claim.
