@@ -468,26 +468,22 @@ def test_ask_router_uses_rag_only_for_graduation(
     assert answer.trace["tools_called"] == []
 
 
-def test_ask_router_falls_back_to_rag_when_classifier_import_fails(
+def test_ask_router_falls_back_to_rag_when_classifier_load_fails(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     workspace = _write_workspace(tmp_path)
     client = RouterClient(LlamaResult(content="저장된 학사일정 근거로 답합니다.", model="fake-qwen"))
-    real_import = __import__
 
-    def fake_import(
-        name: str,
-        globals: dict[str, Any] | None = None,
-        locals: dict[str, Any] | None = None,
-        fromlist: tuple[str, ...] = (),
-        level: int = 0,
-    ) -> Any:
-        if name == "nlp_term.classify.predict":
-            raise ImportError("classifier package missing")
-        return real_import(name, globals, locals, fromlist, level)
+    monkeypatch.setattr(
+        "sutra.service._resolve_classifier_model_path",
+        lambda config=None: tmp_path / "model" / "classifier.joblib",
+    )
 
-    monkeypatch.setattr("builtins.__import__", fake_import)
+    def _raise_on_load(model_path: Path) -> Any:
+        raise RuntimeError("classifier load failed")
+
+    monkeypatch.setattr("sutra.service._load_classifier", _raise_on_load)
 
     answer = ask("수강신청 언제 시작해?", workspace=workspace, client=client, mode="router")
 
@@ -548,25 +544,15 @@ def test_ask_router_routes_mixed_greeting_question_through_classifier(
 def test_predict_router_label_returns_none_when_prediction_fails(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    class BrokenPredictModule:
-        @staticmethod
-        def predict_label(question: str, model_path: Path) -> int:
-            raise RuntimeError("missing classifier model")
+    monkeypatch.setattr(
+        "sutra.service._resolve_classifier_model_path",
+        lambda config=None: Path("model") / "classifier.joblib",
+    )
 
-    real_import = __import__
+    def _raise_on_load(model_path: Path) -> Any:
+        raise RuntimeError("missing classifier model")
 
-    def fake_import(
-        name: str,
-        globals: dict[str, Any] | None = None,
-        locals: dict[str, Any] | None = None,
-        fromlist: tuple[str, ...] = (),
-        level: int = 0,
-    ) -> Any:
-        if name == "nlp_term.classify.predict":
-            return BrokenPredictModule
-        return real_import(name, globals, locals, fromlist, level)
-
-    monkeypatch.setattr("builtins.__import__", fake_import)
+    monkeypatch.setattr("sutra.service._load_classifier", _raise_on_load)
 
     assert _predict_router_label("오늘 식단 알려줘") is None
 
@@ -618,6 +604,12 @@ def test_resolve_classifier_model_path_returns_none_when_missing(
     workspace = _write_workspace(workspace_root)
     monkeypatch.chdir(tmp_path)
     monkeypatch.delenv("SUTRA_CLASSIFIER_PATH", raising=False)
+    # Use a sentinel relative path so no candidate (env/workspace/repo/cwd) can
+    # resolve to a real file — including the development checkout's model/ dir.
+    monkeypatch.setattr(
+        "sutra.service.CLASSIFIER_MODEL_PATH",
+        Path("model") / "__missing_for_test__.joblib",
+    )
 
     assert _resolve_classifier_model_path(load_config(workspace)) is None
 
@@ -634,26 +626,16 @@ def test_predict_router_label_uses_resolved_classifier_path(
     classifier_path.write_text("classifier", encoding="utf-8")
     seen_paths: list[Path] = []
 
-    class PredictModule:
+    class _FakeModel:
         @staticmethod
-        def predict_label(question: str, model_path: Path | None = None) -> int:
-            seen_paths.append(model_path)
-            return 3
+        def predict(questions: list[str]) -> list[int]:
+            return [3]
 
-    real_import = __import__
+    def _capture_load(model_path: Path) -> Any:
+        seen_paths.append(model_path)
+        return _FakeModel()
 
-    def fake_import(
-        name: str,
-        globals: dict[str, Any] | None = None,
-        locals: dict[str, Any] | None = None,
-        fromlist: tuple[str, ...] = (),
-        level: int = 0,
-    ) -> Any:
-        if name == "nlp_term.classify.predict":
-            return PredictModule
-        return real_import(name, globals, locals, fromlist, level)
-
-    monkeypatch.setattr("builtins.__import__", fake_import)
+    monkeypatch.setattr("sutra.service._load_classifier", _capture_load)
 
     assert _predict_router_label("오늘 학식 뭐야?", config=load_config(workspace)) == 3
     assert seen_paths == [classifier_path.resolve()]
