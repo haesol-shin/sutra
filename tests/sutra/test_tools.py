@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+import importlib
 import json
+import os
+
+import pytest
 from concurrent.futures import Future, TimeoutError as FuturesTimeoutError
 from datetime import datetime
 from pathlib import Path
@@ -423,7 +427,8 @@ def test_recent_notices_keyword_search_falls_back_to_latest_when_empty(monkeypat
     assert evidence[0].text.startswith("'등록금' 관련 최근 공지를 찾지 못해 최신 공지를 표시합니다")
     assert "최신 학사" in evidence[0].text
     assert "2026 하기 계절학기 수강료" in evidence[0].text
-    assert len(calls) == 5
+    # each of the 5 boards is fetched at least once; failing boards may retry (NOTICE_FETCH_MAX_ATTEMPTS)
+    assert len({url for url, _ in calls}) == 5
     assert all(params is None for _, params in calls)
 
 
@@ -833,7 +838,6 @@ def test_tool_schemas_enum_constrain_string_arguments() -> None:
     assert experimental_schemas["search_knowledge_base"]["properties"]["domain"]["enum"] == [
         "academic_calendar",
         "calendar",
-        "dining",
         "graduation",
         "shuttle",
         None,
@@ -944,6 +948,90 @@ def test_service_ask_injects_tools_even_when_live_false(tmp_path: Path) -> None:
         "fetch_academic_calendar",
         "fetch_page_text",
     }
+
+
+def test_get_notice_html_retries_once_then_succeeds(monkeypatch) -> None:
+    calls = {"n": 0}
+
+    def fake_get(url: str, **kwargs: Any) -> str:
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise RuntimeError("transient")
+        return "<html>ok</html>"
+
+    monkeypatch.setattr("sutra.tools._get", fake_get)
+    monkeypatch.setattr("sutra.tools.NOTICE_FETCH_MAX_ATTEMPTS", 2)
+
+    assert tools_module._get_notice_html("https://example.test/board") == "<html>ok</html>"
+    assert calls["n"] == 2
+
+
+def test_get_notice_html_reraises_after_exhausting_attempts(monkeypatch) -> None:
+    calls = {"n": 0}
+
+    def fake_get(url: str, **kwargs: Any) -> str:
+        calls["n"] += 1
+        raise RuntimeError("down")
+
+    monkeypatch.setattr("sutra.tools._get", fake_get)
+    monkeypatch.setattr("sutra.tools.NOTICE_FETCH_MAX_ATTEMPTS", 2)
+
+    with pytest.raises(RuntimeError, match="down"):
+        tools_module._get_notice_html("https://example.test/board")
+    assert calls["n"] == 2
+
+
+def test_notice_timeouts_honor_env_overrides() -> None:
+    # Manage env + reload manually so the env vars are cleared BEFORE the final
+    # reload; using monkeypatch.setenv would defer cleanup past the finally
+    # block and leave the shared module mutated for later tests.
+    keys = (
+        "SUTRA_NOTICE_REQUEST_TIMEOUT",
+        "SUTRA_NOTICE_SEARCH_STAGE_TIMEOUT",
+        "SUTRA_NOTICE_FETCH_MAX_ATTEMPTS",
+    )
+    saved = {k: os.environ.get(k) for k in keys}
+    try:
+        os.environ["SUTRA_NOTICE_REQUEST_TIMEOUT"] = "25"
+        os.environ["SUTRA_NOTICE_SEARCH_STAGE_TIMEOUT"] = "40"
+        os.environ["SUTRA_NOTICE_FETCH_MAX_ATTEMPTS"] = "3"
+        importlib.reload(tools_module)
+        assert tools_module.NOTICE_REQUEST_TIMEOUT == 25.0
+        assert tools_module.NOTICE_SEARCH_STAGE_TIMEOUT == 40.0
+        assert tools_module.NOTICE_FETCH_MAX_ATTEMPTS == 3
+    finally:
+        for key, value in saved.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
+        importlib.reload(tools_module)
+    # defaults restored after env cleared + reload
+    assert tools_module.NOTICE_REQUEST_TIMEOUT == 15.0
+    assert tools_module.NOTICE_SEARCH_STAGE_TIMEOUT == 30.0
+    assert tools_module.NOTICE_FETCH_MAX_ATTEMPTS == 2
+
+
+def test_recent_notices_partial_board_success_avoids_fallback(monkeypatch) -> None:
+    monkeypatch.setattr("sutra.tools._attach_notice_excerpts", lambda items: None)
+
+    def fake_get(url: str, **kwargs: Any) -> FakeResponse:
+        if "0702" in url:
+            return FakeResponse(
+                "<table><tbody><tr><td>1</td>"
+                "<td><a href='./?mode=V&amp;no=1'>성공 공지</a></td>"
+                "<td>학사지원과</td><td>2026.06.11</td></tr></tbody></table>"
+            )
+        raise RuntimeError("board down")
+
+    monkeypatch.setattr("sutra.tools.requests.get", fake_get)
+
+    evidence = fetch_recent_notices()
+
+    assert evidence
+    text = evidence[0].text
+    assert "성공 공지" in text
+    assert "찾지 못해" not in text
 
 
 def _write_workspace(

@@ -14,6 +14,7 @@ class Document(BaseModel):
     id: str
     text: str
     title: str = ""
+    domain: str | None = None
     source_url: str | None = None
     source_name: str | None = None
     metadata: dict[str, Any] = Field(default_factory=dict)

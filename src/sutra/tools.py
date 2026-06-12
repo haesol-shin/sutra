@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -20,14 +21,15 @@ from sutra.config import Config, load_config
 from sutra.dining_format import DiningMenuRecord, format_dining_day, format_dining_line
 from sutra.documents import load_documents
 from sutra.models import Evidence
-from sutra.retrieval import retrieve
+from sutra.retrieval import GENERAL_SEARCH_EXCLUDED_DOMAINS, retrieve
 
 logger = logging.getLogger(__name__)
 
 FETCH_TIMEOUT = 15
-NOTICE_REQUEST_TIMEOUT = 8
-NOTICE_SEARCH_STAGE_TIMEOUT = 20
-NOTICE_BODY_STAGE_TIMEOUT = 10
+NOTICE_REQUEST_TIMEOUT = float(os.getenv("SUTRA_NOTICE_REQUEST_TIMEOUT", "15"))
+NOTICE_SEARCH_STAGE_TIMEOUT = float(os.getenv("SUTRA_NOTICE_SEARCH_STAGE_TIMEOUT", "30"))
+NOTICE_BODY_STAGE_TIMEOUT = float(os.getenv("SUTRA_NOTICE_BODY_STAGE_TIMEOUT", "10"))
+NOTICE_FETCH_MAX_ATTEMPTS = max(1, int(os.getenv("SUTRA_NOTICE_FETCH_MAX_ATTEMPTS", "2")))
 NOTICE_PER_BOARD_FETCH_LIMIT = 5
 NOTICE_INTEGRATED_REGULAR_LIMIT = 10
 NOTICE_INTEGRATED_PINNED_LIMIT = 5
@@ -67,7 +69,9 @@ SOURCE_REGISTRY = {
     },
 }
 
-KNOWLEDGE_BASE_DOMAINS = ["academic_calendar", "calendar", "dining", "graduation", "shuttle"]
+# dining removed from the corpus (tool-only via fetch_cafeteria_menu); notices are
+# fallback-only and excluded from general RAG, so neither is advertised here.
+KNOWLEDGE_BASE_DOMAINS = ["academic_calendar", "calendar", "graduation", "shuttle"]
 DISPLAY_TO_INTERNAL = {
     "fetch_recent_notices.board": {
         "학교 학사공지": "univ_academic",
@@ -436,6 +440,28 @@ def _notice_text_with_prefix(regular: list[NoticeItem], pinned: list[NoticeItem]
     return f"{prefix}\n{text}" if prefix else text
 
 
+def _get_notice_html(url: str, *, params: dict[str, str] | None = None, timeout: float = FETCH_TIMEOUT) -> str:
+    """Fetch notice-board HTML with bounded retries.
+
+    Colab/overseas IPs see intermittent slow or dropped connections to the
+    school server; one retry recovers most transient failures without changing
+    the partial-success semantics of the parallel board fetch.
+    """
+    attempts = NOTICE_FETCH_MAX_ATTEMPTS
+    last_exc: Exception | None = None
+    for attempt in range(1, attempts + 1):
+        try:
+            return _get(url, params=params, timeout=timeout)
+        except Exception as exc:  # noqa: BLE001 - retry then re-raise to caller
+            last_exc = exc
+            if attempt < attempts:
+                logger.warning("Notice fetch attempt %d/%d failed for %s: %s", attempt, attempts, url, exc)
+                continue
+            raise
+    assert last_exc is not None  # unreachable; loop always returns or raises
+    raise last_exc
+
+
 def _fetch_notice_board(
     board: NoticeBoard,
     *,
@@ -443,7 +469,7 @@ def _fetch_notice_board(
     params: dict[str, str] | None = None,
     timeout: float = FETCH_TIMEOUT,
 ) -> list[NoticeItem]:
-    html = _get(board.url, params=params, timeout=timeout)
+    html = _get_notice_html(board.url, params=params, timeout=timeout)
     if board.parser == "computer":
         items = _parse_cs_notices(html, base_url=board.url)
     else:
@@ -632,7 +658,7 @@ def _attach_notice_excerpts(items: list[NoticeItem], *, max_items: int = 2, max_
     name="search_knowledge_base",
     description=(
         "워크스페이스에 저장된 지식베이스 문서를 검색해 관련 근거를 반환한다. "
-        "졸업요건, 셔틀 시간표, 학사일정, 식단 스냅샷, 공지 스냅샷처럼 이미 수집된 정보가 필요한 질문에 사용한다. "
+        "졸업요건, 셔틀 시간표, 학사일정처럼 이미 수집된 정보가 필요한 질문에 사용한다. "
         "반환값은 질문과 가까운 문서 조각과 출처 정보다. "
         "domain 필터는 특정 문서 영역으로 검색 범위를 좁히지만, 최신 실시간 정보 보장은 하지 않는다."
     ),
@@ -646,7 +672,7 @@ def _attach_notice_excerpts(items: list[NoticeItem], *, max_items: int = 2, max_
             "domain": {
                 "type": ["string", "null"],
                 "enum": [*KNOWLEDGE_BASE_DOMAINS, None],
-                "description": "academic_calendar, calendar, dining, graduation, shuttle 중 검색을 제한할 선택적 도메인이다.",
+                "description": "academic_calendar, calendar, graduation, shuttle 중 검색을 제한할 선택적 도메인이다.",
             },
         },
         "required": ["query"],
@@ -661,7 +687,10 @@ def search_knowledge_base(query: str, domain: str | None = None) -> list[Evidenc
     documents = load_documents(config)
     if domain:
         documents = [doc for doc in documents if _matches_domain(doc.id, doc.metadata, domain)]
-    pack = retrieve(query, documents, config)
+    # General RAG-as-tool search excludes fallback-only domains (notices) unless the
+    # caller explicitly targets that domain, matching the retrieve() default policy.
+    exclude_domains = set() if (domain and domain in GENERAL_SEARCH_EXCLUDED_DOMAINS) else GENERAL_SEARCH_EXCLUDED_DOMAINS
+    pack = retrieve(query, documents, config, exclude_domains=exclude_domains)
     return [
         item.model_copy(
             update={

@@ -15,6 +15,13 @@ from sutra.models import Document, Evidence, EvidencePack, ScoredDocument
 
 logger = logging.getLogger(__name__)
 
+# Domains whose docs are snapshot/fallback-only and must NOT pollute general RAG
+# search. notices live behind live tools (fetch_recent_notices); their indexed
+# snapshots are reserved for the forced-tool fallback path, which calls retrieve()
+# with exclude_domains=set() to re-include them. dining is removed from the corpus
+# entirely (tool-only). Keep this the single policy point for domain exclusion.
+GENERAL_SEARCH_EXCLUDED_DOMAINS = frozenset({"notices"})
+
 # Soft dependencies checking
 _KIWI_AVAILABLE = False
 _BM25S_AVAILABLE = False
@@ -401,7 +408,12 @@ def hybrid_bm25_dense(
     return hybrid_combine(bm25_pack, dense_pack, config)
 
 
-def retrieve(question: str, documents: list[Document], config: Config) -> EvidencePack:
+def retrieve(
+    question: str,
+    documents: list[Document],
+    config: Config,
+    exclude_domains: "frozenset[str] | set[str] | None" = None,
+) -> EvidencePack:
     """Rank, build evidence, and return an EvidencePack for a question.
 
     Dispatches on config.rag.backend:
@@ -409,7 +421,19 @@ def retrieve(question: str, documents: list[Document], config: Config) -> Eviden
     - "qwen3": Qwen3-Embedding dense retrieval
     - "hybrid": BM25 + Qwen3 combined (0.5/0.5 weight)
     - "lexical": Legacy regex-based fallback
+
+    exclude_domains: domains dropped from general search. Defaults to
+    GENERAL_SEARCH_EXCLUDED_DOMAINS ({"notices"}); pass an empty set to include
+    every domain (used by the forced-tool fallback re-search path).
     """
+    if exclude_domains is None:
+        exclude_domains = GENERAL_SEARCH_EXCLUDED_DOMAINS
+    if exclude_domains:
+        documents = [
+            doc
+            for doc in documents
+            if (doc.domain or (doc.metadata or {}).get("domain")) not in exclude_domains
+        ]
     retrieval_question = _expand_relative_date_query(question, config.workspace.timezone)
     backend = config.rag.backend
     token_config = _load_token_config(config)

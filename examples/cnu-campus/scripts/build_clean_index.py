@@ -3,8 +3,27 @@ from pathlib import Path
 
 PROCESSED_DIR = Path(__file__).resolve().parent.parent / "data" / "processed"
 OUTPUT_NAME = "knowledge-index.jsonl"
-DOMAIN_INDEXES = ["dining-index.jsonl", "shuttle-index.jsonl", "calendar-index.jsonl", "graduation-index.jsonl", "graduation-general-index.jsonl", "notices-index.jsonl"]
+# dining-index.jsonl is intentionally excluded: dining is tool-only (fetch_cafeteria_menu
+# is the canonical source); see deep-interview spec Round 8/10 sign-off.
+DOMAIN_INDEXES = ["shuttle-index.jsonl", "calendar-index.jsonl", "graduation-index.jsonl", "graduation-general-index.jsonl", "notices-index.jsonl"]
 SUPPORTED_FIELDS = {"id", "text", "title", "source_url", "source_name", "metadata"}
+# Academic-calendar month docs exist for many years with near-identical recurring
+# events (수강신청/개강 등). Undated "언제" questions have no year signal, so stale past
+# years tie with the current year in BM25. Keep only the current academic year onward
+# to remove the temporal-duplication noise at the source.
+CALENDAR_MIN_YEAR = 2026
+
+
+def _calendar_year_ok(obj: dict) -> bool:
+    """Drop academic-calendar month docs older than CALENDAR_MIN_YEAR."""
+    metadata = obj.get("metadata") or {}
+    if metadata.get("domain") != "academic_calendar":
+        return True
+    year = metadata.get("year")
+    if not isinstance(year, int):
+        return True
+    return year >= CALENDAR_MIN_YEAR
+
 
 def validate_line(line: str) -> bool:
     try:
@@ -36,6 +55,7 @@ def main():
     total_lines = 0
     valid_lines = 0
     failed_lines = 0
+    trimmed_lines = 0
     with open(output_path, "w", encoding="utf-8") as out:
         for dp in domain_paths:
             with open(dp, "r", encoding="utf-8") as f:
@@ -44,14 +64,19 @@ def main():
                     if not line:
                         continue
                     total_lines += 1
-                    if validate_line(line):
-                        out.write(line + "\n")
-                        valid_lines += 1
-                    else:
+                    if not validate_line(line):
                         failed_lines += 1
+                        continue
+                    if not _calendar_year_ok(json.loads(line)):
+                        trimmed_lines += 1
+                        continue
+                    out.write(line + "\n")
+                    valid_lines += 1
     print(f"Merged {valid_lines} valid lines from {len(domain_paths)} domain indexes into {output_path}")
     if failed_lines:
         print(f"  ({failed_lines} invalid lines skipped)")
+    if trimmed_lines:
+        print(f"  ({trimmed_lines} calendar lines older than {CALENDAR_MIN_YEAR} trimmed)")
     if valid_lines == 0:
         print("Warning: no valid lines found")
 

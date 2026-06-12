@@ -295,29 +295,37 @@ def _ask_router(
                 temperature=config.runtime.temperature,
                 max_tokens=config.runtime.max_tokens,
             )
-        elif not evidence.items:
-            prompt = render_prompt(question, evidence, config)
-            result = LlamaResult(
-                content="실시간 조회에 실패했고 저장된 자료에서도 관련 정보를 찾지 못했습니다. 충남대학교 공식 홈페이지를 확인해 주세요.",
-                model=config.runtime.model,
-            )
         else:
-            prompt = render_prompt(question, evidence, config)
-            fallback_result = llm.chat(
-                prompt.messages,
-                model=config.runtime.model,
-                temperature=config.runtime.temperature,
-                max_tokens=config.runtime.max_tokens,
-            )
-            result = LlamaResult(
-                content=(
-                    fallback_result.content
-                    + "\n\n(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)"
-                ),
-                model=fallback_result.model,
-                usage=fallback_result.usage,
-                raw=fallback_result.raw,
-            )
+            # Forced tool produced no fresh live evidence. Re-search WITH the
+            # snapshot/fallback-only domains (notices) that general search excludes,
+            # so the indexed snapshot can still answer. dining was removed from the
+            # corpus entirely, so it stays empty here ("확인 불가").
+            fallback_pack = retrieve(question, documents, config, exclude_domains=set())
+            if fallback_pack.items:
+                evidence.items = list(fallback_pack.items)
+            if not evidence.items:
+                prompt = render_prompt(question, evidence, config)
+                result = LlamaResult(
+                    content="실시간 조회에 실패했고 저장된 자료에서도 관련 정보를 찾지 못했습니다. 충남대학교 공식 홈페이지를 확인해 주세요.",
+                    model=config.runtime.model,
+                )
+            else:
+                prompt = render_prompt(question, evidence, config)
+                fallback_result = llm.chat(
+                    prompt.messages,
+                    model=config.runtime.model,
+                    temperature=config.runtime.temperature,
+                    max_tokens=config.runtime.max_tokens,
+                )
+                result = LlamaResult(
+                    content=(
+                        fallback_result.content
+                        + "\n\n(실시간 정보를 가져오지 못해 저장된 자료를 기준으로 답변했습니다.)"
+                    ),
+                    model=fallback_result.model,
+                    usage=fallback_result.usage,
+                    raw=fallback_result.raw,
+                )
 
     answer = Answer(
         answer=_public_answer_text(result.content),
