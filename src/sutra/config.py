@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+from datetime import date
 from pathlib import Path
 from typing import Any, Literal
 
@@ -14,10 +15,22 @@ except ModuleNotFoundError:  # pragma: no cover - exercised on Python 3.10
     import tomli as tomllib  # type: ignore[no-redef]
 
 
+class WorkspacePeriod(BaseModel):
+    """A named date range a workspace cares about (e.g. a semester, a season).
+
+    Optional, workspace-defined. Lets the engine inject a resolved current-period
+    anchor without baking any project-specific calendar into the package."""
+
+    label: str
+    start: date
+    end: date
+
+
 class WorkspaceConfig(BaseModel):
     name: str
     description: str = ""
     timezone: str = "UTC"
+    periods: list[WorkspacePeriod] = Field(default_factory=list)
 
 
 class RuntimeConfig(BaseModel):

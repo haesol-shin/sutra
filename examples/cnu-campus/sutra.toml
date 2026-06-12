@@ -3,6 +3,28 @@ name = "cnu-campus"
 description = "Minimal CNU Campus ChatBot workspace example"
 timezone = "Asia/Seoul"
 
+# CNU 2026 academic-year periods. The engine injects the current matching label
+# as "현재 기간" so the model resolves '이번 학기' correctly. Update each year.
+[[workspace.periods]]
+label = "2026학년도 제1학기"
+start = 2026-03-03
+end = 2026-06-21
+
+[[workspace.periods]]
+label = "하기방학 (하기 계절학기 2026-06-22~07-10)"
+start = 2026-06-22
+end = 2026-08-31
+
+[[workspace.periods]]
+label = "2026학년도 제2학기"
+start = 2026-09-01
+end = 2026-12-20
+
+[[workspace.periods]]
+label = "동기방학 (동기 계절학기 2026-12-21~2027-01-12)"
+start = 2026-12-21
+end = 2027-02-28
+
 [runtime]
 backend = "llama-server"
 base_url = "http://127.0.0.1:18080"
