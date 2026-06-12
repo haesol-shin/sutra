@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -292,6 +294,15 @@ class RouterClient:
         return self.first_result if len(self.calls) == 1 else self.second_result
 
 
+class FrozenMenuResolverDateTime(datetime):
+    @classmethod
+    def now(cls, tz=None):  # noqa: ANN001
+        value = cls(2026, 6, 13, 9, 0, 0)
+        if tz is None:
+            return value
+        return value.replace(tzinfo=ZoneInfo("Asia/Seoul")).astimezone(tz)
+
+
 def test_ask_router_forces_cafeteria_tool_choice_and_uses_live_evidence_only(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -370,14 +381,15 @@ def test_ask_router_runs_forced_cafeteria_tool_when_rag_has_no_evidence(
         text="제2학생회관 점심: 칠리치킨까스",
         source_name="충남대학교 식단",
     )
-    dispatch_calls: list[tuple[str, str]] = []
+    dispatch_calls: list[tuple[str, dict[str, Any]]] = []
 
-    def fake_dispatch(name: str, args: str) -> list[Evidence]:
-        dispatch_calls.append((name, args))
+    def fake_dispatch(name: str, args: dict[str, Any]) -> list[Evidence]:
+        dispatch_calls.append((name, dict(args)))
         return [live_evidence]
 
     monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 3)
     monkeypatch.setattr("sutra.service.dispatch", fake_dispatch)
+    monkeypatch.setattr("sutra.menu_resolver.datetime", FrozenMenuResolverDateTime)
 
     answer = ask("오늘 제2학생회관 점심 뭐야?", workspace=workspace, client=client, mode="router")
 
@@ -387,7 +399,10 @@ def test_ask_router_runs_forced_cafeteria_tool_when_rag_has_no_evidence(
         "function": {"name": "fetch_cafeteria_menu"},
     }
     assert dispatch_calls == [
-        ("fetch_cafeteria_menu", '{"date":"2026-06-11","cafeteria":"제2학생회관"}')
+        (
+            "fetch_cafeteria_menu",
+            {"cafeteria": "제2학생회관", "dates": ["2026-06-13"]},
+        )
     ]
     assert answer.answer == "실시간 식단 근거로 답합니다."
     assert answer.evidence == [live_evidence]
@@ -395,6 +410,183 @@ def test_ask_router_runs_forced_cafeteria_tool_when_rag_has_no_evidence(
     assert answer.trace["routed_domain"] == "dining"
     assert answer.trace["forced_tool"] == "fetch_cafeteria_menu"
     assert answer.trace["tools_called"] == ["fetch_cafeteria_menu"]
+
+
+def test_ask_router_overrides_forced_cafeteria_dates_from_question(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace = _write_workspace(tmp_path)
+    client = RouterClient(
+        LlamaResult(
+            content="",
+            model="fake-qwen",
+            tool_calls=[
+                ToolCall(
+                    id="call-1",
+                    function_name="fetch_cafeteria_menu",
+                    function_arguments='{"date":"2026-06-13","cafeteria":"제2학생회관"}',
+                )
+            ],
+        ),
+        LlamaResult(content="실시간 식단 근거로 답합니다.", model="fake-qwen"),
+    )
+    live_evidence = Evidence(
+        id="live_cafeteria_menu",
+        title="충남대학교 식단",
+        text="다음주 월요일 화요일 식단",
+        source_name="충남대학교 식단",
+    )
+    dispatch_calls: list[tuple[str, dict[str, Any]]] = []
+
+    def fake_dispatch(name: str, args: dict[str, Any]) -> list[Evidence]:
+        dispatch_calls.append((name, dict(args)))
+        return [live_evidence]
+
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 3)
+    monkeypatch.setattr("sutra.service.dispatch", fake_dispatch)
+    monkeypatch.setattr("sutra.menu_resolver.datetime", FrozenMenuResolverDateTime)
+
+    answer = ask("다음주 월요일 화요일 학식", workspace=workspace, client=client, mode="router")
+
+    assert dispatch_calls == [
+        (
+            "fetch_cafeteria_menu",
+            {"cafeteria": "제2학생회관", "dates": ["2026-06-15", "2026-06-16"]},
+        )
+    ]
+    assert "date" not in answer.trace["tool_args"][0]
+    assert answer.trace["tool_args"][0]["dates"] == ["2026-06-15", "2026-06-16"]
+    assert answer.evidence == [live_evidence]
+
+
+def test_ask_router_uses_question_cafeteria_when_model_omits_it(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace = _write_workspace(tmp_path)
+    client = RouterClient(
+        LlamaResult(
+            content="",
+            model="fake-qwen",
+            tool_calls=[
+                ToolCall(
+                    id="call-1",
+                    function_name="fetch_cafeteria_menu",
+                    function_arguments='{"date":"2026-06-13"}',
+                )
+            ],
+        ),
+        LlamaResult(content="2학 식단 근거로 답합니다.", model="fake-qwen"),
+    )
+    live_evidence = Evidence(
+        id="live_cafeteria_menu",
+        title="충남대학교 식단",
+        text="다음주 화요일 제2학생회관 식단",
+        source_name="충남대학교 식단",
+    )
+    dispatched_args: list[dict[str, Any]] = []
+
+    def fake_dispatch(name: str, args: dict[str, Any]) -> list[Evidence]:
+        dispatched_args.append(dict(args))
+        return [live_evidence]
+
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 3)
+    monkeypatch.setattr("sutra.service.dispatch", fake_dispatch)
+    monkeypatch.setattr("sutra.menu_resolver.datetime", FrozenMenuResolverDateTime)
+
+    answer = ask("다음주 화요일 2학 메뉴", workspace=workspace, client=client, mode="router")
+
+    assert dispatched_args == [{"cafeteria": "제2학생회관", "dates": ["2026-06-16"]}]
+    assert answer.trace["tool_args"][0] == {"cafeteria": "제2학생회관", "dates": ["2026-06-16"]}
+    assert answer.evidence == [live_evidence]
+
+
+def test_ask_router_resolves_today_cafeteria_date(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace = _write_workspace(tmp_path)
+    client = RouterClient(
+        LlamaResult(
+            content="",
+            model="fake-qwen",
+            tool_calls=[
+                ToolCall(
+                    id="call-1",
+                    function_name="fetch_cafeteria_menu",
+                    function_arguments='{"cafeteria":"2학"}',
+                )
+            ],
+        ),
+        LlamaResult(content="오늘 식단 근거로 답합니다.", model="fake-qwen"),
+    )
+    live_evidence = Evidence(
+        id="live_cafeteria_menu",
+        title="충남대학교 식단",
+        text="오늘 제2학생회관 식단",
+        source_name="충남대학교 식단",
+    )
+    dispatched_args: list[dict[str, Any]] = []
+
+    def fake_dispatch(name: str, args: dict[str, Any]) -> list[Evidence]:
+        dispatched_args.append(dict(args))
+        return [live_evidence]
+
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 3)
+    monkeypatch.setattr("sutra.service.dispatch", fake_dispatch)
+    monkeypatch.setattr("sutra.menu_resolver.datetime", FrozenMenuResolverDateTime)
+
+    answer = ask("오늘 학식", workspace=workspace, client=client, mode="router")
+
+    assert dispatched_args == [{"cafeteria": "제2학생회관", "dates": ["2026-06-13"]}]
+    assert answer.answer == "오늘 식단 근거로 답합니다."
+    assert answer.evidence == [live_evidence]
+
+
+def test_ask_router_skips_food_court_daily_menu_and_uses_fallback_docs(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace = _write_workspace(tmp_path, include_food_court=True)
+    client = RouterClient(
+        LlamaResult(
+            content="",
+            model="fake-qwen",
+            tool_calls=[
+                ToolCall(
+                    id="call-1",
+                    function_name="fetch_cafeteria_menu",
+                    function_arguments='{"cafeteria":"제1학생회관"}',
+                )
+            ],
+        ),
+        LlamaResult(content="저장된 푸드코트 근거로 답합니다.", model="fake-qwen"),
+    )
+    dispatch_calls: list[tuple[str, Any]] = []
+
+    def fake_dispatch(name: str, args: Any) -> list[Evidence]:
+        dispatch_calls.append((name, args))
+        return [
+            Evidence(
+                id="live_cafeteria_menu",
+                title="충남대학교 식단",
+                text="호출되면 안 되는 식단",
+                source_name="충남대학교 식단",
+            )
+        ]
+
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 3)
+    monkeypatch.setattr("sutra.service.dispatch", fake_dispatch)
+    monkeypatch.setattr("sutra.menu_resolver.datetime", FrozenMenuResolverDateTime)
+
+    answer = ask("1학 메뉴", workspace=workspace, client=client, mode="router")
+
+    assert dispatch_calls == []
+    assert all(item.id != "live_cafeteria_menu" for item in answer.evidence)
+    assert any(item.id.startswith("dining_food_court_제1학생회관") or item.id == "dining_operating_info" for item in answer.evidence)
+    assert answer.trace["tools_called"] == ["fetch_cafeteria_menu:food_court_skip"]
+    assert answer.trace["tool_args"][0]["_sutra_skip"] == "food_court"
 
 
 def test_ask_router_reports_empty_live_and_empty_rag_for_forced_tool_domain(
@@ -832,6 +1024,7 @@ def _write_workspace(
     *,
     answer_prompt: str = "prompts/answer.md",
     include_dining: bool = False,
+    include_food_court: bool = False,
     include_graduation: bool = False,
     include_notices: bool = False,
     include_shuttle: bool = False,
@@ -848,6 +1041,14 @@ def _write_workspace(
                         '{"id":"dining-1","title":"식단","text":"학생회관 점심 메뉴입니다.","source_name":"식단","metadata":{"label":"dining"}}',
                     ]
                     if include_dining
+                    else []
+                ),
+                *(
+                    [
+                        '{"id":"dining_operating_info","title":"식당 운영 정보","text":"제1학생회관은 푸드코트이며 라면, 한식, 중식, 일식 코너가 있습니다.","source_name":"식당","metadata":{"label":"dining","domain":"dining"}}',
+                        '{"id":"dining_food_court_제1학생회관_한식","title":"제1학생회관 한식 코너","text":"1학 제1학생회관 푸드코트 한식 코너 메뉴와 가격 정보입니다.","source_name":"식당","metadata":{"label":"dining","domain":"dining","document_type":"food_court_corner"}}',
+                    ]
+                    if include_food_court
                     else []
                 ),
                 *(
