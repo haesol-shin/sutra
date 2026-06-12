@@ -26,8 +26,11 @@ from sutra.retrieval import GENERAL_SEARCH_EXCLUDED_DOMAINS, retrieve
 logger = logging.getLogger(__name__)
 
 FETCH_TIMEOUT = 15
-NOTICE_REQUEST_TIMEOUT = float(os.getenv("SUTRA_NOTICE_REQUEST_TIMEOUT", "15"))
-NOTICE_SEARCH_STAGE_TIMEOUT = float(os.getenv("SUTRA_NOTICE_SEARCH_STAGE_TIMEOUT", "30"))
+# cs_bachelor board (computer.cnu.ac.kr) responds in ~5-15s (measured avg 9.4s,
+# max 14.9s); on Colab (US->KR latency) a 15s budget times out -> 0 results.
+# 25s/50s defaults cover the slow board + one retry. Env-overridable.
+NOTICE_REQUEST_TIMEOUT = float(os.getenv("SUTRA_NOTICE_REQUEST_TIMEOUT", "25"))
+NOTICE_SEARCH_STAGE_TIMEOUT = float(os.getenv("SUTRA_NOTICE_SEARCH_STAGE_TIMEOUT", "50"))
 NOTICE_BODY_STAGE_TIMEOUT = float(os.getenv("SUTRA_NOTICE_BODY_STAGE_TIMEOUT", "10"))
 NOTICE_FETCH_MAX_ATTEMPTS = max(1, int(os.getenv("SUTRA_NOTICE_FETCH_MAX_ATTEMPTS", "2")))
 NOTICE_PER_BOARD_FETCH_LIMIT = 5
@@ -69,9 +72,10 @@ SOURCE_REGISTRY = {
     },
 }
 
-# dining removed from the corpus (tool-only via fetch_cafeteria_menu); notices are
-# fallback-only and excluded from general RAG, so neither is advertised here.
-KNOWLEDGE_BASE_DOMAINS = ["academic_calendar", "calendar", "graduation", "shuttle"]
+# Stable dining reference docs (operating hours, food-court menus/prices) live in
+# the corpus; volatile daily menus are tool-only (fetch_cafeteria_menu). notices are
+# fallback-only and excluded from general RAG, so notices is not advertised here.
+KNOWLEDGE_BASE_DOMAINS = ["academic_calendar", "calendar", "graduation", "shuttle", "dining"]
 DISPLAY_TO_INTERNAL = {
     "fetch_recent_notices.board": {
         "학교 학사공지": "univ_academic",
@@ -672,7 +676,7 @@ def _attach_notice_excerpts(items: list[NoticeItem], *, max_items: int = 2, max_
             "domain": {
                 "type": ["string", "null"],
                 "enum": [*KNOWLEDGE_BASE_DOMAINS, None],
-                "description": "academic_calendar, calendar, graduation, shuttle 중 검색을 제한할 선택적 도메인이다.",
+                "description": "academic_calendar, calendar, graduation, shuttle, dining 중 검색을 제한할 선택적 도메인이다.",
             },
         },
         "required": ["query"],

@@ -840,6 +840,7 @@ def test_tool_schemas_enum_constrain_string_arguments() -> None:
         "calendar",
         "graduation",
         "shuttle",
+        "dining",
         None,
     ]
 
@@ -992,12 +993,12 @@ def test_notice_timeouts_honor_env_overrides() -> None:
     )
     saved = {k: os.environ.get(k) for k in keys}
     try:
-        os.environ["SUTRA_NOTICE_REQUEST_TIMEOUT"] = "25"
-        os.environ["SUTRA_NOTICE_SEARCH_STAGE_TIMEOUT"] = "40"
+        os.environ["SUTRA_NOTICE_REQUEST_TIMEOUT"] = "99"
+        os.environ["SUTRA_NOTICE_SEARCH_STAGE_TIMEOUT"] = "111"
         os.environ["SUTRA_NOTICE_FETCH_MAX_ATTEMPTS"] = "3"
         importlib.reload(tools_module)
-        assert tools_module.NOTICE_REQUEST_TIMEOUT == 25.0
-        assert tools_module.NOTICE_SEARCH_STAGE_TIMEOUT == 40.0
+        assert tools_module.NOTICE_REQUEST_TIMEOUT == 99.0
+        assert tools_module.NOTICE_SEARCH_STAGE_TIMEOUT == 111.0
         assert tools_module.NOTICE_FETCH_MAX_ATTEMPTS == 3
     finally:
         for key, value in saved.items():
@@ -1007,8 +1008,8 @@ def test_notice_timeouts_honor_env_overrides() -> None:
                 os.environ[key] = value
         importlib.reload(tools_module)
     # defaults restored after env cleared + reload
-    assert tools_module.NOTICE_REQUEST_TIMEOUT == 15.0
-    assert tools_module.NOTICE_SEARCH_STAGE_TIMEOUT == 30.0
+    assert tools_module.NOTICE_REQUEST_TIMEOUT == 25.0
+    assert tools_module.NOTICE_SEARCH_STAGE_TIMEOUT == 50.0
     assert tools_module.NOTICE_FETCH_MAX_ATTEMPTS == 2
 
 

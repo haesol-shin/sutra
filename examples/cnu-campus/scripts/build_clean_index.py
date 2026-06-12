@@ -3,9 +3,11 @@ from pathlib import Path
 
 PROCESSED_DIR = Path(__file__).resolve().parent.parent / "data" / "processed"
 OUTPUT_NAME = "knowledge-index.jsonl"
-# dining-index.jsonl is intentionally excluded: dining is tool-only (fetch_cafeteria_menu
-# is the canonical source); see deep-interview spec Round 8/10 sign-off.
-DOMAIN_INDEXES = ["shuttle-index.jsonl", "calendar-index.jsonl", "graduation-index.jsonl", "graduation-general-index.jsonl", "notices-index.jsonl"]
+# dining-index.jsonl is included for STABLE reference docs only (operating_info,
+# food_court_corner): hours, food-court menus and prices are date-invariant and
+# belong in RAG. Volatile daily-menu docs stay tool-only (fetch_cafeteria_menu is
+# the canonical source); they are dropped by _dining_stable_ok below.
+DOMAIN_INDEXES = ["shuttle-index.jsonl", "calendar-index.jsonl", "graduation-index.jsonl", "graduation-general-index.jsonl", "notices-index.jsonl", "dining-index.jsonl"]
 SUPPORTED_FIELDS = {"id", "text", "title", "source_url", "source_name", "metadata"}
 # Academic-calendar month docs exist for many years with near-identical recurring
 # events (수강신청/개강 등). Undated "언제" questions have no year signal, so stale past
@@ -23,6 +25,22 @@ def _calendar_year_ok(obj: dict) -> bool:
     if not isinstance(year, int):
         return True
     return year >= CALENDAR_MIN_YEAR
+
+
+DINING_STABLE_TYPES = {"operating_info", "food_court_corner"}
+
+
+def _dining_stable_ok(obj: dict) -> bool:
+    """Keep only stable dining reference docs; drop volatile daily menus.
+
+    Allowlist on metadata.document_type: only operating_info and
+    food_court_corner enter the corpus. Daily-menu docs have no document_type
+    and are excluded by construction (fail-closed), staying tool-only.
+    """
+    metadata = obj.get("metadata") or {}
+    if metadata.get("domain") != "dining":
+        return True
+    return metadata.get("document_type") in DINING_STABLE_TYPES
 
 
 def validate_line(line: str) -> bool:
@@ -56,6 +74,7 @@ def main():
     valid_lines = 0
     failed_lines = 0
     trimmed_lines = 0
+    dining_skipped = 0
     with open(output_path, "w", encoding="utf-8") as out:
         for dp in domain_paths:
             with open(dp, "r", encoding="utf-8") as f:
@@ -67,8 +86,12 @@ def main():
                     if not validate_line(line):
                         failed_lines += 1
                         continue
-                    if not _calendar_year_ok(json.loads(line)):
+                    obj = json.loads(line)
+                    if not _calendar_year_ok(obj):
                         trimmed_lines += 1
+                        continue
+                    if not _dining_stable_ok(obj):
+                        dining_skipped += 1
                         continue
                     out.write(line + "\n")
                     valid_lines += 1
@@ -77,6 +100,8 @@ def main():
         print(f"  ({failed_lines} invalid lines skipped)")
     if trimmed_lines:
         print(f"  ({trimmed_lines} calendar lines older than {CALENDAR_MIN_YEAR} trimmed)")
+    if dining_skipped:
+        print(f"  ({dining_skipped} volatile dining daily-menu lines dropped, tool-only)")
     if valid_lines == 0:
         print("Warning: no valid lines found")
 
