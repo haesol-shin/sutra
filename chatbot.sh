@@ -32,9 +32,7 @@ WORKSPACE="$REPO_DIR/examples/cnu-campus/sutra.toml"
 export SUTRA_MODEL_DIR="${SUTRA_MODEL_DIR:-$RUNTIME_DIR/models}"
 export SUTRA_CLASSIFIER_PATH="${SUTRA_CLASSIFIER_PATH:-$SCRIPT_DIR/model/classifier.joblib}"
 export UV_CACHE_DIR="${UV_CACHE_DIR:-$RUNTIME_DIR/uv-cache}"
-# 4096 fits the short grading inputs with room for RAG + tool context and keeps
-# GPU memory headroom on a 15GB T4. Override with SUTRA_N_CTX for longer context.
-N_CTX="${SUTRA_N_CTX:-4096}"
+N_CTX="${SUTRA_N_CTX:-8192}"
 
 mkdir -p "$RUNTIME_DIR" "$SCRIPT_DIR/outputs" "$SUTRA_MODEL_DIR"
 
