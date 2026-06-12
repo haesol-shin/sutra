@@ -197,6 +197,7 @@ def build_submission(
     _copy_cnu_workspace(repo_root, package_dir)
     _copy_optional_classifier(repo_root, package_dir)
     _write_model_link(package_dir)
+    _copy_file(repo_root / "data" / "test_cls.json", package_dir / "data" / "test_cls.json")
     _copy_file(repo_root / "data" / "test_chat.json", package_dir / "data" / "test_chat.json")
     _copy_file(repo_root / "data" / "test_realtime.json", package_dir / "data" / "test_realtime.json")
     _copy_file(repo_root / "pyproject.toml", package_dir / "pyproject.toml")
