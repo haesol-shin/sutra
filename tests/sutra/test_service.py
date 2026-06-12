@@ -9,8 +9,9 @@ import pytest
 from sutra import ask, chat
 from sutra.config import load_config
 from sutra.errors import ConfigError
+from sutra.llama import EchoClient
 from sutra.models import Evidence, LlamaResult, Message, ToolCall
-from sutra.service import _predict_router_label
+from sutra.service import _predict_router_label, _resolve_classifier_model_path
 
 
 class FakeClient:
@@ -316,7 +317,7 @@ def test_ask_router_forces_cafeteria_tool_choice_and_prepends_live_evidence(
         text="제2학생회관 점심: 칠리치킨까스",
         source_name="충남대학교 식단",
     )
-    monkeypatch.setattr("sutra.service._predict_router_label", lambda question: 3)
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 3)
     monkeypatch.setattr("sutra.service.dispatch", lambda name, args: [live_evidence])
 
     answer = ask("오늘 제2학생회관 점심 뭐야?", workspace=workspace, client=client, mode="router")
@@ -373,7 +374,7 @@ def test_ask_router_runs_forced_cafeteria_tool_when_rag_has_no_evidence(
         dispatch_calls.append((name, args))
         return [live_evidence]
 
-    monkeypatch.setattr("sutra.service._predict_router_label", lambda question: 3)
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 3)
     monkeypatch.setattr("sutra.service.dispatch", fake_dispatch)
 
     answer = ask("오늘 제2학생회관 점심 뭐야?", workspace=workspace, client=client, mode="router")
@@ -413,7 +414,7 @@ def test_ask_router_reports_empty_live_and_empty_rag_for_forced_tool_domain(
         ),
         LlamaResult(content="호출되면 안 됩니다.", model="fake-qwen"),
     )
-    monkeypatch.setattr("sutra.service._predict_router_label", lambda question: 3)
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 3)
     monkeypatch.setattr("sutra.service.dispatch", lambda name, args: [])
 
     answer = ask("오늘 제2학생회관 점심 뭐야?", workspace=workspace, client=client, mode="router")
@@ -432,7 +433,7 @@ def test_ask_router_keeps_insufficient_evidence_for_empty_non_forced_domain(
 ) -> None:
     workspace = _write_workspace(tmp_path)
     client = RouterClient(LlamaResult(content="호출되면 안 됩니다.", model="fake-qwen"))
-    monkeypatch.setattr("sutra.service._predict_router_label", lambda question: 2)
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 2)
 
     answer = ask("완전히없는쿼리", workspace=workspace, client=client, mode="router")
 
@@ -451,7 +452,7 @@ def test_ask_router_uses_rag_only_for_graduation(
 ) -> None:
     workspace = _write_workspace(tmp_path, include_graduation=True)
     client = RouterClient(LlamaResult(content="졸업요건은 저장된 근거로 답합니다.", model="fake-qwen"))
-    monkeypatch.setattr("sutra.service._predict_router_label", lambda question: 0)
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 0)
 
     answer = ask("졸업요건 알려줘", workspace=workspace, client=client, mode="router")
 
@@ -504,7 +505,7 @@ def test_ask_router_routes_standalone_greeting_through_classifier(
     client = RouterClient(LlamaResult(content="인사 답변", model="fake-qwen"))
     calls: list[str] = []
 
-    def fake_predict(question: str) -> int:
+    def fake_predict(question: str, **kwargs: Any) -> int:
         calls.append(question)
         return 0
 
@@ -528,7 +529,7 @@ def test_ask_router_routes_mixed_greeting_question_through_classifier(
     client = RouterClient(LlamaResult(content="식단 답변", model="fake-qwen"))
     calls: list[str] = []
 
-    def fake_predict(question: str) -> int:
+    def fake_predict(question: str, **kwargs: Any) -> int:
         calls.append(question)
         return 3
 
@@ -568,6 +569,94 @@ def test_predict_router_label_returns_none_when_prediction_fails(
     assert _predict_router_label("오늘 식단 알려줘") is None
 
 
+def test_resolve_classifier_model_path_prefers_env_path(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace_root = tmp_path / "workspace"
+    workspace_root.mkdir()
+    workspace = _write_workspace(workspace_root)
+    env_model = tmp_path / "env" / "classifier.joblib"
+    workspace_model = tmp_path / "workspace" / "model" / "classifier.joblib"
+    env_model.parent.mkdir()
+    workspace_model.parent.mkdir()
+    env_model.write_text("env", encoding="utf-8")
+    workspace_model.write_text("workspace", encoding="utf-8")
+    monkeypatch.setenv("SUTRA_CLASSIFIER_PATH", str(env_model))
+
+    assert _resolve_classifier_model_path(load_config(workspace)) == env_model.resolve()
+
+
+def test_resolve_classifier_model_path_prefers_workspace_before_cwd(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    cwd = tmp_path / "cwd"
+    workspace_root = tmp_path / "workspace"
+    workspace_root.mkdir()
+    workspace = _write_workspace(workspace_root)
+    cwd_model = cwd / "model" / "classifier.joblib"
+    workspace_model = workspace_root / "model" / "classifier.joblib"
+    cwd_model.parent.mkdir(parents=True)
+    workspace_model.parent.mkdir()
+    cwd_model.write_text("cwd", encoding="utf-8")
+    workspace_model.write_text("workspace", encoding="utf-8")
+    monkeypatch.chdir(cwd)
+    monkeypatch.delenv("SUTRA_CLASSIFIER_PATH", raising=False)
+
+    assert _resolve_classifier_model_path(load_config(workspace)) == workspace_model.resolve()
+
+
+def test_resolve_classifier_model_path_returns_none_when_missing(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace_root = tmp_path / "workspace"
+    workspace_root.mkdir()
+    workspace = _write_workspace(workspace_root)
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.delenv("SUTRA_CLASSIFIER_PATH", raising=False)
+
+    assert _resolve_classifier_model_path(load_config(workspace)) is None
+
+
+def test_predict_router_label_uses_resolved_classifier_path(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace_root = tmp_path / "workspace"
+    workspace_root.mkdir()
+    workspace = _write_workspace(workspace_root)
+    classifier_path = tmp_path / "workspace" / "model" / "classifier.joblib"
+    classifier_path.parent.mkdir()
+    classifier_path.write_text("classifier", encoding="utf-8")
+    seen_paths: list[Path] = []
+
+    class PredictModule:
+        @staticmethod
+        def predict_label(question: str, model_path: Path | None = None) -> int:
+            seen_paths.append(model_path)
+            return 3
+
+    real_import = __import__
+
+    def fake_import(
+        name: str,
+        globals: dict[str, Any] | None = None,
+        locals: dict[str, Any] | None = None,
+        fromlist: tuple[str, ...] = (),
+        level: int = 0,
+    ) -> Any:
+        if name == "nlp_term.classify.predict":
+            return PredictModule
+        return real_import(name, globals, locals, fromlist, level)
+
+    monkeypatch.setattr("builtins.__import__", fake_import)
+
+    assert _predict_router_label("오늘 학식 뭐야?", config=load_config(workspace)) == 3
+    assert seen_paths == [classifier_path.resolve()]
+
+
 def test_ask_router_forces_recent_notices_tool_choice_and_persists_trace(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -594,7 +683,7 @@ def test_ask_router_forces_recent_notices_tool_choice_and_persists_trace(
         text="최신 공지: 수강신청 안내",
         source_name="컴퓨터인공지능학부 학사공지",
     )
-    monkeypatch.setattr("sutra.service._predict_router_label", lambda question: 1)
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 1)
     monkeypatch.setattr("sutra.service.dispatch", lambda name, args: [live_evidence])
 
     answer = ask(
@@ -638,7 +727,7 @@ def test_ask_router_uses_rag_only_for_non_forced_domains(
 ) -> None:
     workspace = _write_workspace(tmp_path, **workspace_kwargs)
     client = RouterClient(LlamaResult(content="저장된 근거로 답합니다.", model="fake-qwen"))
-    monkeypatch.setattr("sutra.service._predict_router_label", lambda question: label)
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: label)
 
     answer = ask(question, workspace=workspace, client=client, mode="router")
 
@@ -681,7 +770,7 @@ def test_ask_router_ignores_tool_evidence_from_unexpected_tool_call(
         dispatch_calls.append(name)
         return [live_evidence]
 
-    monkeypatch.setattr("sutra.service._predict_router_label", lambda question: 3)
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 3)
     monkeypatch.setattr("sutra.service.dispatch", fake_dispatch)
 
     answer = ask("졸업요건 알려줘", workspace=workspace, client=client, mode="router")
@@ -713,7 +802,7 @@ def test_ask_router_falls_back_to_rag_when_forced_tool_returns_no_evidence(
         ),
         LlamaResult(content="저장된 식단 근거로 답합니다.", model="fake-qwen"),
     )
-    monkeypatch.setattr("sutra.service._predict_router_label", lambda question: 3)
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 3)
     monkeypatch.setattr("sutra.service.dispatch", lambda name, args: [])
 
     answer = ask("오늘 학생회관 점심 뭐야?", workspace=workspace, client=client, mode="router")
@@ -728,6 +817,22 @@ def test_ask_router_falls_back_to_rag_when_forced_tool_returns_no_evidence(
     assert answer.trace["routed_domain"] == "dining"
     assert answer.trace["forced_tool"] == "fetch_cafeteria_menu"
     assert answer.trace["tools_called"] == ["fetch_cafeteria_menu"]
+
+
+def test_ask_router_echo_client_accepts_forced_tool_choice(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    workspace = _write_workspace(tmp_path, include_dining=True)
+    monkeypatch.setattr("sutra.service._predict_router_label", lambda question, **kwargs: 3)
+
+    answer = ask("오늘 학생회관 점심 뭐야?", workspace=workspace, client=EchoClient(), mode="router")
+
+    assert "[echo:fake-qwen]" in answer.answer
+    assert answer.evidence[0].id == "dining-1"
+    assert answer.trace["routed_domain"] == "dining"
+    assert answer.trace["forced_tool"] == "fetch_cafeteria_menu"
+    assert answer.trace["tools_called"] == []
 
 
 @pytest.mark.skip(reason="answer prompt validation removed; render_prompt no longer checks answer prompt existence")

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import time
 from pathlib import Path
 from typing import Any, Literal, Protocol
@@ -196,7 +197,7 @@ def _ask_router(
 ) -> Answer:
     started = time.perf_counter() if started is None else started
     trace_file = Path(trace_path) if trace_path is not None else default_trace_path(config.root)
-    label = _predict_router_label(question)
+    label = _predict_router_label(question, config=config)
     classifier_fallback = label is None
     routed_domain = ROUTER_DOMAINS.get(label, "unknown")
 
@@ -356,7 +357,35 @@ def _forced_tool_choice(tool_name: str) -> dict[str, dict[str, str] | str]:
     return {"type": "function", "function": {"name": tool_name}}
 
 
-def _predict_router_label(question: str) -> int | None:
+def _resolve_classifier_model_path(config: Config | None = None) -> Path | None:
+    candidates: list[tuple[str, Path]] = []
+    if env_path := os.getenv("SUTRA_CLASSIFIER_PATH"):
+        candidates.append(("env", Path(env_path).expanduser().resolve()))
+    if config is not None:
+        candidates.append(("workspace", (config.root / CLASSIFIER_MODEL_PATH).resolve()))
+    repo_root = Path(__file__).resolve().parents[2]
+    candidates.append(("repo", (repo_root / CLASSIFIER_MODEL_PATH).resolve()))
+    candidates.append(("cwd", (Path.cwd() / CLASSIFIER_MODEL_PATH).resolve()))
+
+    seen: set[Path] = set()
+    for source, path in candidates:
+        if path in seen:
+            continue
+        seen.add(path)
+        if path.exists():
+            logger.info("Router classifier path candidate %s exists: %s", source, path)
+            return path
+        logger.info("Router classifier path candidate %s missing: %s", source, path)
+
+    logger.info("Router classifier model not found; falling back to RAG-only")
+    return None
+
+
+def _predict_router_label(question: str, *, config: Config | None = None) -> int | None:
+    model_path = _resolve_classifier_model_path(config)
+    if model_path is None:
+        return None
+
     try:
         from nlp_term.classify.predict import predict_label
     except Exception:
@@ -365,9 +394,11 @@ def _predict_router_label(question: str) -> int | None:
 
     try:
         try:
-            label = predict_label(question, model_path=CLASSIFIER_MODEL_PATH)
+            logger.info("Router classifier prediction loading model: %s", model_path)
+            label = predict_label(question, model_path=model_path)
         except TypeError:
             label = predict_label(question)
+        logger.info("Router classifier prediction succeeded: label=%s", label)
         return int(label)
     except Exception:
         logger.warning("Router classifier prediction failed; falling back to RAG-only", exc_info=True)

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 from sutra.cli import main
@@ -79,6 +80,72 @@ def test_batch_echo_writes_cwd_outputs_and_provenance(tmp_path: Path, monkeypatc
     assert rows[0]["model"]
     assert "[echo:fake-qwen]" in rows[0]["model"]
     assert provenance == [{"index": 0, "mode": "llm", "error": ""}]
+
+
+def test_batch_calls_ask_in_router_mode(tmp_path: Path, monkeypatch) -> None:
+    repo_root = tmp_path / "repo"
+    workspace_root = tmp_path / "workspace"
+    workspace = _write_workspace(workspace_root)
+    (repo_root / "data").mkdir(parents=True)
+    (repo_root / "data" / "test_chat.json").write_text(
+        json.dumps([{"user": "오늘 학식 뭐야?"}], ensure_ascii=False),
+        encoding="utf-8",
+    )
+    monkeypatch.chdir(repo_root)
+
+    with patch("sutra.cli.ask", return_value=SimpleNamespace(answer="router answer")) as ask_mock:
+        assert main(
+            [
+                "batch",
+                "--workspace",
+                str(workspace),
+                "--input",
+                "data/test_chat.json",
+                "--output",
+                "outputs/chat_output.json",
+                "--echo",
+            ]
+        ) == 0
+
+    assert ask_mock.call_args.kwargs["mode"] == "router"
+    rows = json.loads((repo_root / "outputs" / "chat_output.json").read_text(encoding="utf-8"))
+    assert rows == [{"user": "오늘 학식 뭐야?", "model": "router answer"}]
+
+
+def test_batch_retry_calls_ask_in_router_mode(tmp_path: Path, monkeypatch) -> None:
+    repo_root = tmp_path / "repo"
+    workspace_root = tmp_path / "workspace"
+    workspace = _write_workspace(workspace_root)
+    (repo_root / "data").mkdir(parents=True)
+    (repo_root / "data" / "test_chat.json").write_text(
+        json.dumps([{"user": "최신 공지 알려줘"}], ensure_ascii=False),
+        encoding="utf-8",
+    )
+    monkeypatch.chdir(repo_root)
+
+    with patch(
+        "sutra.cli.ask",
+        side_effect=[RuntimeError("transient"), SimpleNamespace(answer="retry router answer")],
+    ) as ask_mock:
+        assert main(
+            [
+                "batch",
+                "--workspace",
+                str(workspace),
+                "--input",
+                "data/test_chat.json",
+                "--output",
+                "outputs/chat_output.json",
+            ]
+        ) == 0
+
+    assert [call.kwargs["mode"] for call in ask_mock.call_args_list] == ["router", "router"]
+    rows = json.loads((repo_root / "outputs" / "chat_output.json").read_text(encoding="utf-8"))
+    provenance = json.loads(
+        (repo_root / "outputs" / "chat_output.provenance.json").read_text(encoding="utf-8")
+    )
+    assert rows == [{"user": "최신 공지 알려줘", "model": "retry router answer"}]
+    assert provenance == [{"index": 0, "mode": "llm_retry", "error": "transient"}]
 
 
 def test_batch_falls_back_after_retry_failure(tmp_path: Path, monkeypatch, capsys) -> None:
