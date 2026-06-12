@@ -1,4 +1,6 @@
 import json
+import re
+from datetime import date, timedelta
 from pathlib import Path
 
 PROCESSED_DIR = Path(__file__).resolve().parent.parent / "data" / "processed"
@@ -43,6 +45,35 @@ def _dining_stable_ok(obj: dict) -> bool:
     return metadata.get("document_type") in DINING_STABLE_TYPES
 
 
+# Source academic calendars list 방학(vacation) start but no explicit 종강(end of
+# semester). The semester ends the last weekday before vacation, so derive it
+# deterministically so the model reads the date instead of guessing (it confused
+# 종강 with the 계절학기 종료/성적발표 dates).
+_VACATION_TO_SEMESTER = {"하기방학": "제1학기", "동기방학": "제2학기"}
+_VACATION_RE = re.compile(r"(\d{4})-(\d{2})-(\d{2}):\s*(하기방학|동기방학)")
+
+
+def _jonggang_additions(obj: dict) -> list[str]:
+    """Derived 종강 line(s) for a calendar month doc, last weekday before 방학."""
+    metadata = obj.get("metadata") or {}
+    if metadata.get("domain") != "academic_calendar":
+        return []
+    text = obj.get("text", "")
+    additions: list[str] = []
+    for match in _VACATION_RE.finditer(text):
+        year, month, day, vacation = (
+            int(match.group(1)), int(match.group(2)), int(match.group(3)), match.group(4),
+        )
+        semester = _VACATION_TO_SEMESTER[vacation]
+        jonggang = date(year, month, day) - timedelta(days=1)
+        while jonggang.weekday() >= 5:  # roll back Sat/Sun to Friday
+            jonggang -= timedelta(days=1)
+        line = f"- {jonggang.isoformat()}: {semester} 종강({vacation} 직전, 추정)"
+        if line not in text and line not in additions:
+            additions.append(line)
+    return additions
+
+
 def validate_line(line: str) -> bool:
     try:
         obj = json.loads(line)
@@ -75,6 +106,7 @@ def main():
     failed_lines = 0
     trimmed_lines = 0
     dining_skipped = 0
+    jonggang_added = 0
     with open(output_path, "w", encoding="utf-8") as out:
         for dp in domain_paths:
             with open(dp, "r", encoding="utf-8") as f:
@@ -93,7 +125,13 @@ def main():
                     if not _dining_stable_ok(obj):
                         dining_skipped += 1
                         continue
-                    out.write(line + "\n")
+                    additions = _jonggang_additions(obj)
+                    if additions:
+                        obj["text"] = obj["text"].rstrip() + "\n" + "\n".join(additions)
+                        out.write(json.dumps(obj, ensure_ascii=False) + "\n")
+                        jonggang_added += len(additions)
+                    else:
+                        out.write(line + "\n")
                     valid_lines += 1
     print(f"Merged {valid_lines} valid lines from {len(domain_paths)} domain indexes into {output_path}")
     if failed_lines:
@@ -102,6 +140,8 @@ def main():
         print(f"  ({trimmed_lines} calendar lines older than {CALENDAR_MIN_YEAR} trimmed)")
     if dining_skipped:
         print(f"  ({dining_skipped} volatile dining daily-menu lines dropped, tool-only)")
+    if jonggang_added:
+        print(f"  ({jonggang_added} derived 종강 line(s) added to calendar months)")
     if valid_lines == 0:
         print("Warning: no valid lines found")
 
