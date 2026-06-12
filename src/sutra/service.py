@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import time
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Literal, Protocol
 
@@ -387,25 +388,24 @@ def _resolve_classifier_model_path(config: Config | None = None) -> Path | None:
     return None
 
 
+@lru_cache(maxsize=4)
+def _load_classifier(model_path: Path):
+    """Load the joblib classifier pipeline once per path (cached for batch runs)."""
+    import joblib
+
+    return joblib.load(model_path)
+
+
 def _predict_router_label(question: str, *, config: Config | None = None) -> int | None:
     model_path = _resolve_classifier_model_path(config)
     if model_path is None:
         return None
 
     try:
-        from nlp_term.classify.predict import predict_label
-    except Exception:
-        logger.warning("Router classifier import failed; falling back to RAG-only", exc_info=True)
-        return None
-
-    try:
-        try:
-            logger.info("Router classifier prediction loading model: %s", model_path)
-            label = predict_label(question, model_path=model_path)
-        except TypeError:
-            label = predict_label(question)
+        model = _load_classifier(model_path)
+        label = int(model.predict([question])[0])
         logger.info("Router classifier prediction succeeded: label=%s", label)
-        return int(label)
+        return label
     except Exception:
         logger.warning("Router classifier prediction failed; falling back to RAG-only", exc_info=True)
         return None
