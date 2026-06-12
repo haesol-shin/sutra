@@ -2233,6 +2233,7 @@ name = "nlp-term"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "huggingface-hub" },
     { name = "pydantic" },
     { name = "pymupdf" },
     { name = "requests" },
@@ -2281,11 +2282,12 @@ dev = [
 requires-dist = [
     { name = "bm25s", marker = "extra == 'rag'", specifier = ">=0.3.9" },
     { name = "chainlit", marker = "extra == 'ui'", specifier = ">=1.1.302" },
+    { name = "huggingface-hub", specifier = ">=0.23" },
     { name = "joblib", marker = "extra == 'legacy'" },
     { name = "kiwipiepy", marker = "extra == 'rag'", specifier = ">=0.23.1" },
     { name = "llama-cpp-python", extras = ["server"], marker = "extra == 'cuda'", specifier = ">=0.3.28" },
     { name = "llama-cpp-python", extras = ["server"], marker = "extra == 'xpu'", specifier = ">=0.3.28" },
-    { name = "numpy", marker = "extra == 'rag'" },
+    { name = "numpy", marker = "extra == 'rag'", specifier = ">=1.26,<2.3" },
     { name = "pydantic" },
     { name = "pymupdf" },
     { name = "pytorch-triton-xpu", marker = "extra == 'xpu'", specifier = "==3.5.0", index = "https://download.pytorch.org/whl/xpu" },

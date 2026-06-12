@@ -4,6 +4,7 @@ import json
 import re
 import subprocess
 import sys
+import time
 from collections.abc import Iterable, Iterator
 from pathlib import Path
 from typing import Any
@@ -84,6 +85,32 @@ def download_model(
     return (dest_dir / filename).resolve()
 
 
+def _free_gpu_from_stale_servers() -> None:
+    """Terminate any prior `python -m llama_cpp.server` still holding the GPU.
+
+    A server started in a previous run keeps its VRAM (the process outlives the
+    shell that backgrounded it), so a fresh server OOMs on a runtime that already
+    has one loaded or mid-load. Best-effort: matches only the server child by its
+    command line (never this `sutra.cli llama serve` process) and is a no-op where
+    pgrep/pkill are unavailable (e.g. Windows).
+    """
+    try:
+        found = subprocess.run(
+            ["pgrep", "-f", "llama_cpp.server"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except (FileNotFoundError, OSError):
+        return
+    pids = [pid for pid in found.stdout.split() if pid.strip()]
+    if not pids:
+        return
+    subprocess.run(["pkill", "-9", "-f", "llama_cpp.server"], check=False, capture_output=True)
+    print(f"Freed GPU: terminated {len(pids)} stale llama_cpp.server process(es) before start.")
+    time.sleep(3)
+
+
 def start_llama_server(
     model_path: Path,
     port: int = 18080,
@@ -113,6 +140,7 @@ def start_llama_server(
             f"Model file not found at: {model_path}. Please download it first using 'sutra llama download'"
         )
 
+    _free_gpu_from_stale_servers()
     return subprocess.Popen(cmd)
 
 
