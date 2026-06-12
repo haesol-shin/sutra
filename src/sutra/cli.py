@@ -398,6 +398,11 @@ def build_parser() -> argparse.ArgumentParser:
     batch_parser.add_argument("--live", action="store_true", help="Enable live fetch for stale evidence.")
     batch_parser.add_argument("--workspace", help="Path to sutra.toml or workspace directory.")
     batch_parser.add_argument("--echo", action="store_true", help="Use an echo LLM client for smoke tests.")
+    batch_parser.add_argument(
+        "--provenance",
+        action="store_true",
+        help="Write a <output>.provenance.json sidecar recording per-item mode (llm/llm_retry/fallback). Off by default.",
+    )
 
     # 5. sutra llama health
     llama_parser = subparsers.add_parser("llama", help="Inspect or interact with llama-server.")
@@ -554,8 +559,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             ChatOutput.model_validate(results)
 
             output_path.write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8")
-            provenance_path = output_path.with_suffix(".provenance.json")
-            provenance_path.write_text(json.dumps(provenance, indent=2, ensure_ascii=False), encoding="utf-8")
+            if getattr(args, "provenance", False):
+                provenance_path = output_path.with_suffix(".provenance.json")
+                provenance_path.write_text(json.dumps(provenance, indent=2, ensure_ascii=False), encoding="utf-8")
             return 0
 
         except ConfigError as exc:

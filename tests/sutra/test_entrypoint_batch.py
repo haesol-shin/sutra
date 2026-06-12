@@ -68,6 +68,7 @@ def test_batch_echo_writes_cwd_outputs_and_provenance(tmp_path: Path, monkeypatc
             "--output",
             "outputs/chat_output.json",
             "--echo",
+            "--provenance",
         ]
     ) == 0
 
@@ -80,6 +81,38 @@ def test_batch_echo_writes_cwd_outputs_and_provenance(tmp_path: Path, monkeypatc
     assert rows[0]["model"]
     assert "[echo:fake-qwen]" in rows[0]["model"]
     assert provenance == [{"index": 0, "mode": "llm", "error": ""}]
+
+
+def test_batch_omits_provenance_sidecar_by_default(tmp_path: Path, monkeypatch) -> None:
+    repo_root = tmp_path / "repo"
+    workspace_root = tmp_path / "workspace"
+    workspace = _write_workspace(workspace_root)
+    (repo_root / "data").mkdir(parents=True)
+    (repo_root / "data" / "test_chat.json").write_text(
+        json.dumps([{"user": "수강신청 언제 시작해?"}], ensure_ascii=False),
+        encoding="utf-8",
+    )
+    monkeypatch.chdir(repo_root)
+
+    assert main(
+        [
+            "batch",
+            "--workspace",
+            str(workspace),
+            "--input",
+            "data/test_chat.json",
+            "--output",
+            "outputs/chat_output.json",
+            "--echo",
+        ]
+    ) == 0
+
+    output_path = repo_root / "outputs" / "chat_output.json"
+    provenance_path = repo_root / "outputs" / "chat_output.provenance.json"
+    rows = json.loads(output_path.read_text(encoding="utf-8"))
+
+    assert rows == [{"user": "수강신청 언제 시작해?", "model": rows[0]["model"]}]
+    assert not provenance_path.exists()
 
 
 def test_batch_calls_ask_in_router_mode(tmp_path: Path, monkeypatch) -> None:
@@ -136,6 +169,7 @@ def test_batch_retry_calls_ask_in_router_mode(tmp_path: Path, monkeypatch) -> No
                 "data/test_chat.json",
                 "--output",
                 "outputs/chat_output.json",
+                "--provenance",
             ]
         ) == 0
 
@@ -169,6 +203,7 @@ def test_batch_falls_back_after_retry_failure(tmp_path: Path, monkeypatch, capsy
                 "data/test_chat.json",
                 "--output",
                 "outputs/chat_output.json",
+                "--provenance",
             ]
         ) == 0
 
