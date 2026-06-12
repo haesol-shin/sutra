@@ -4,12 +4,12 @@ A reference Sutra workspace implementing the CNU Campus ChatBot use case.
 
 ## Clean Corpus Counts
 
-The active checked-in clean index is compiled into [data/processed/knowledge-index.jsonl](data/processed/knowledge-index.jsonl), containing a total of **94 clean documents**:
+The active checked-in clean index is compiled into [data/processed/knowledge-index.jsonl](data/processed/knowledge-index.jsonl), containing a total of **116 clean documents**:
+- **Academic Calendar**: 50 documents
+- **Graduation**: 27 documents
+- **Notices**: 24 documents
 - **Dining**: 12 documents
 - **Shuttle**: 3 documents
-- **Academic Calendar**: 50 documents
-- **Graduation**: 5 documents
-- **Notices**: 24 documents
 
 This is separate from the legacy, noisy 2414-document `knowledge_seed.json` corpus, which is no longer active.
 

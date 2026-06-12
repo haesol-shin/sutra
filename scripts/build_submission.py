@@ -9,8 +9,8 @@ from typing import NamedTuple
 
 PACKAGE_NAME = "Termproject_신해솔"
 
-# The submission zip is a minimal bootstrap. All source code (sutra + nlp_term),
-# the CNU workspace corpus, and the prompts are cloned fresh from GitHub by
+# The submission zip is a minimal bootstrap. Sutra runtime source code, the CNU
+# workspace corpus, and the prompts are cloned fresh from GitHub by
 # chatbot.sh at run time, so they stay editable after submission. Only the two
 # entrypoints, the grading inputs, and the frozen Task 1 classifier are shipped.
 SUBMISSION_FILES = (

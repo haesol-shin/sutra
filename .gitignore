@@ -22,5 +22,9 @@ artifacts/
 .cache/
 **/.cache/
 .chainlit/
+.runtime/
+.claude/
+chainlit.md
+test_localsystem.txt
 .opencode/
 opencode.json
