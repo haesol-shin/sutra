@@ -111,19 +111,26 @@ install_llama_cpp() {
     log "llama-cpp-python already importable."
     return 0
   fi
+  # The abetlen CUDA index publishes a prebuilt 0.3.28 wheel tagged
+  # py3-none-linux_x86_64; pinning the exact version makes pip pick that wheel
+  # instead of building PyPI's sdist from source (slow + CPU-only).
+  local spec="llama-cpp-python[server]==0.3.28"
   local index=()
   if command -v nvidia-smi >/dev/null 2>&1; then
     index=(--extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu121)
-    log "Installing llama-cpp-python (CUDA wheel) ..."
+    log "Installing llama-cpp-python 0.3.28 (CUDA wheel) ..."
   else
-    log "Installing llama-cpp-python (CPU) ..."
+    log "WARNING: no GPU detected (nvidia-smi absent). Select a Colab GPU runtime (T4) — CPU inference of a 9B model is far too slow for grading."
+    log "Installing llama-cpp-python 0.3.28 (CPU) ..."
   fi
   if command -v uv >/dev/null 2>&1; then
-    uv pip install --system "llama-cpp-python[server]>=0.3.28" "${index[@]}" \
-      || "${PYTHON_CMD[@]}" -m pip install "llama-cpp-python[server]>=0.3.28" "${index[@]}"
+    uv pip install --system "$spec" "${index[@]}" \
+      || "${PYTHON_CMD[@]}" -m pip install "$spec" "${index[@]}"
   else
-    "${PYTHON_CMD[@]}" -m pip install "llama-cpp-python[server]>=0.3.28" "${index[@]}"
+    "${PYTHON_CMD[@]}" -m pip install "$spec" "${index[@]}"
   fi
+  python_can_import llama_cpp \
+    || fail "llama-cpp-python is not importable after install; aborting before the 5.5GB model download."
 }
 
 setup_deps() {
@@ -134,7 +141,7 @@ setup_deps() {
   ensure_uv
   log "Installing Sutra + extras from clone ..."
   uv_install || fail "dependency install failed."
-  install_llama_cpp || log "WARNING: llama-cpp-python install reported an error; continuing."
+  install_llama_cpp || fail "llama-cpp-python backend install failed."
 }
 
 resolved_model_path() {
@@ -157,7 +164,9 @@ ensure_model() {
     return 0
   fi
   log "Downloading Qwen GGUF (~5.5GB; several minutes on a Colab T4) -> $SUTRA_MODEL_DIR"
-  HF_HUB_ENABLE_HF_TRANSFER=1 "${SUTRA_CMD[@]}" llama download --workspace "$WORKSPACE"
+  # No HF_HUB_ENABLE_HF_TRANSFER: hf_transfer is not a declared dependency and
+  # enabling it without the package raises ImportError at download time.
+  "${SUTRA_CMD[@]}" llama download --workspace "$WORKSPACE"
 }
 
 health_ready() { "${SUTRA_CMD[@]}" llama health --workspace "$WORKSPACE" >/dev/null 2>&1; }
