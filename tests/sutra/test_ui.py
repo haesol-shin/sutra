@@ -304,6 +304,32 @@ class TestInterfaceLabels:
 
 
 class TestAnswerLocalization:
+    def test_insufficient_evidence_answer_is_korean(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        config = load_config(_write_workspace(tmp_path))
+        ui.cl.user_session.set("workspace", config)
+        ui.cl.user_session.set("client", None)
+        monkeypatch.setattr(
+            ui,
+            "retrieve",
+            lambda question, documents, config: EvidencePack(question=question, items=[]),
+        )
+
+        asyncio.run(ui.on_message(ui.cl.Message(content="test")))
+
+        [message] = ui.cl.sent_messages
+        assert message.content == "제공된 자료에서 확인할 수 있는 근거를 찾지 못했습니다."
+        assert "I do not have enough evidence" not in message.content
+        assert [action.label for action in message.actions] == [
+            "👍 Helpful",
+            "👎 Not helpful",
+            "💬 Comment",
+        ]
+
     def test_tool_no_result_suffix_is_korean(
         self,
         monkeypatch: pytest.MonkeyPatch,

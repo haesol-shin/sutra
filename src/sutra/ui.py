@@ -483,7 +483,7 @@ async def on_message(message: cl.Message) -> None:
         return
 
     if not evidence.items:
-        answer = "I do not have enough evidence in this workspace to answer."
+        answer = "제공된 자료에서 확인할 수 있는 근거를 찾지 못했습니다."
         _append_ui_trace(
             config,
             started=started,
