@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -94,6 +95,8 @@ def _free_gpu_from_stale_servers() -> None:
     command line (never this `sutra.cli llama serve` process) and is a no-op where
     pgrep/pkill are unavailable (e.g. Windows).
     """
+    if shutil.which("pgrep") is None or shutil.which("pkill") is None:
+        return
     try:
         found = subprocess.run(
             ["pgrep", "-f", "llama_cpp.server"],
