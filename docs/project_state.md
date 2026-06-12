@@ -43,6 +43,7 @@ Raw source files are git-ignored, with raw provenance metadata tracked in `data/
    - CNU graduation PDF OCR constraints (limited past page 3).
    - Hybrid BM25+embedding retrieval (50/50, decided but unimplemented).
    - WP8 video/slides (excluded for now per user).
+   - **Engine de-CNU (domain-agnostic) refactor — PLANNED/DEFERRED**: the engine is intended to be domain-agnostic, but CNU-specific tools/URLs/constants live in `src/sutra/tools.py`, the router policy (`ROUTER_DOMAINS`/`ROUTER_FORCED_TOOLS`/classifier path) in `src/sutra/service.py`, and dining logic in `src/sutra/dining_router.py`/`menu_resolver.py`/`dining_format.py`. The workspace-plugin boundary that would move these out of `src/sutra` is approved-but-deferred post-deadline (ralplan run `2026-06-12-2123-c9be`). Stage S0 landed now: characterization snapshots (`tests/sutra/test_characterization.py`) + import inventory (`tests/sutra/test_import_inventory.py`) + honest docs. CNU data does NOT yet live in `sutra.toml`/`plugin.py`.
 
 ## Legacy Reference Context (Assignment Tasks)
 

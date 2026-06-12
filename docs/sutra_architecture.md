@@ -10,23 +10,31 @@ Sutra v1 provides:
 - A single-turn service entrypoint: `sutra.ask(...)` / `sutra.service.ask(...)`.
 - External workspace configuration through `sutra.toml`.
 - JSONL document loading.
-- Lightweight lexical retrieval.
+- Lexical and BM25 retrieval.
 - Evidence context construction.
 - Prompt rendering.
 - A llama.cpp `llama-server` HTTP client.
-- A CLI smoke path: `sutra ask`.
+- Tool calling (live `fetch_*` tools + a `search_knowledge_base` tool) and a Task1-classifier forced-tool router (`mode="router"`).
+- A CLI: `sutra ask`, `sutra batch`, `sutra llama`, `sutra ui`, `sutra doctor`, `sutra workspace`, `sutra docs`.
 
 Sutra v1 does not provide:
 
 - A vector database.
 - Embedding or reranking.
-- Tool calling or an agent runtime.
+- An autonomous multi-step agent runtime (tool calling is single-shot / router-forced, not an agent loop).
 - Full OpenAI API compatibility.
-- Streaming.
-- A plugin registry.
-- Python hooks inside workspace config.
+- Streaming (outside the Chainlit UI adapter).
+- A formal workspace plugin registry or Python hooks inside workspace config (**planned/deferred** — see below).
 - llama.cpp build, installation, or daemon supervision (the CLI provides thin foreground launch wrappers, not a process manager).
 - CUDA/XPU routing logic inside the answer service.
+
+> **Current reality vs. the domain-agnostic goal**: Sutra is intended as a domain-agnostic RAG runtime where each use case is an external workspace. Today that separation is **incomplete**. The tool-calling layer and the forced-tool router currently carry CNU-specific implementation **inside the engine**, not in the workspace:
+>
+> - `src/sutra/tools.py` hardcodes CNU live tools and data: source URLs (`mobileadmin.cnu.ac.kr`, `plus.cnu.ac.kr`, `computer.cnu.ac.kr`), cafeteria constants (`CAFETERIAS`, `CAFETERIA_MENU_CHOICES`, `CAFETERIA_ENUM`), the notice-board registry/`SOURCE_REGISTRY`, the display↔internal board maps, and the `fetch_recent_notices` / `fetch_cafeteria_menu` / `fetch_academic_calendar` / `fetch_page_text` handlers with their HTML/OCL parsers.
+> - `src/sutra/service.py` hardcodes the CNU router policy: `ROUTER_DOMAINS`, `ROUTER_FORCED_TOOLS`, the classifier path, and Korean user-facing strings.
+> - `src/sutra/dining_router.py`, `src/sutra/menu_resolver.py`, and `src/sutra/dining_format.py` are CNU dining (학식) logic.
+>
+> A workspace-plugin boundary that moves this CNU implementation out of `src/sutra` (declarative data into `sutra.toml`, parsers/handlers into a trusted workspace plugin loaded through a config-keyed registry) is **planned and deferred**, gated behind frozen-grading-path compatibility. It does **not** exist yet: CNU data does **not** currently live in `sutra.toml` or a `plugin.py`. Characterization tests (`tests/sutra/test_characterization.py`) and an import inventory (`tests/sutra/test_import_inventory.py`) pin the current surface so the deferred move can prove zero regression.
 
 > **Core vs. CLI distinction**: The answer service (`sutra.service.ask()`, `sutra.service.chat()`) is HTTP-client-only — it talks to an already-running llama-server. The CLI includes thin convenience commands (`sutra llama serve`, `sutra llama download`) for local development, evaluator convenience, and demo setup. These are not a daemon manager, process supervisor, or llama.cpp installer.
 
