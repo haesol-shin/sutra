@@ -286,7 +286,7 @@ def _ask_router(
                     extra.extend(fresh)
 
         if extra:
-            evidence.items = [*extra, *evidence.items]
+            evidence.items = list(extra)
             prompt = render_prompt(question, evidence, config)
             result = llm.chat(
                 prompt.messages,

@@ -1,0 +1,5 @@
+a[href*="chainlit"],
+[class*="watermark"],
+[data-testid*="watermark"] {
+  display: none !important;
+}

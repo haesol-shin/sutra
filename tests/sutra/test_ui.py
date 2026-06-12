@@ -353,7 +353,25 @@ class TestInterfaceLabels:
 
         assert _config_name(
             root / "src" / "sutra" / "resources" / "ui" / "chainlit_config.toml",
-        ) == "✨ Sutra"
+        ) == "Sutra"
+
+    def test_chainlit_config_references_packaged_brand_css(self) -> None:
+        root = Path(__file__).parents[2]
+        config = (
+            root / "src" / "sutra" / "resources" / "ui" / "chainlit_config.toml"
+        ).read_text(encoding="utf-8")
+
+        assert 'custom_css = "/public/sutra-brand.css"' in config
+
+    def test_packaged_chainlit_public_brand_assets_exist(self) -> None:
+        root = Path(__file__).parents[2]
+        public = root / "src" / "sutra" / "resources" / "ui" / "public"
+
+        assert (public / "logo_light.svg").exists()
+        assert (public / "logo_dark.svg").exists()
+        assert (public / "favicon.svg").exists()
+        assert (public / "sutra-sparkle.svg").exists()
+        assert (public / "sutra-brand.css").exists()
 
     def test_packaged_chainlit_welcome_readme_is_empty(self) -> None:
         root = Path(__file__).parents[2]
@@ -635,6 +653,7 @@ class TestRouterUiFlow:
 
             def chat(self, messages, *, model, temperature, max_tokens, tools=None, tool_choice=None):
                 self.calls.append({
+                    "messages": messages,
                     "tools": tools,
                     "tool_choice": tool_choice,
                     "max_tokens": max_tokens,
@@ -686,12 +705,57 @@ class TestRouterUiFlow:
         assert client.calls[0]["max_tokens"] == min(config.runtime.max_tokens, 256)
         [message] = ui.cl.sent_messages
         assert message.content == "fresh answer"
+        assert "Live notice text" in client.calls[1]["messages"][-1].content
+        assert "stored text" not in client.calls[1]["messages"][-1].content
         source_key = ui._payload_from_action(message.actions[0])["source_key"]
         assert [item["name"] for item in ui.cl.user_session.store[source_key]] == [
-            "Knowledge Base",
-            "[Knowledge Base 1] stored",
             "Web Search",
             "[Web Search 1] Live Notice",
+        ]
+
+    def test_on_message_attaches_sources_and_feedback_after_streaming_finishes(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        tmp_path: Path,
+    ) -> None:
+        ui = _ui_module(monkeypatch)
+        config = load_config(_write_workspace(tmp_path))
+        observed_actions_during_stream: list[list[str]] = []
+
+        class StreamingClient:
+            def stream_chat(self, messages, *, model, temperature, max_tokens, tools=None):
+                final_msg = ui.cl.sent_messages[-1]
+                observed_actions_during_stream.append([
+                    getattr(action, "label", "") for action in final_msg.actions
+                ])
+                yield "streamed"
+                yield " answer"
+
+        ui.cl.user_session.set("workspace", config)
+        ui.cl.user_session.set("client", StreamingClient())
+        monkeypatch.setattr(
+            ui,
+            "route_question",
+            lambda question, config: ("academic_calendar", None, 2),
+        )
+        monkeypatch.setattr(
+            ui,
+            "retrieve",
+            lambda question, documents, config: EvidencePack(
+                question=question,
+                items=[_evidence("stored", 1.0)],
+            ),
+        )
+
+        asyncio.run(ui.on_message(ui.cl.Message(content="semester dates?")))
+
+        assert observed_actions_during_stream == [[]]
+        [message] = ui.cl.sent_messages
+        assert message.content == "streamed answer"
+        assert [action.label for action in message.actions] == [
+            "📚 Sources",
+            "👍 Helpful",
+            "👎 Not helpful",
         ]
 
     def test_on_message_forced_tool_empty_rag_uses_router_failure_message(

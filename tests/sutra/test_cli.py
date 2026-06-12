@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-from sutra.cli import build_parser, main
+from sutra.cli import _prepare_chainlit_app_root, build_parser, main
 from sutra.config import load_config
 
 
@@ -41,6 +41,23 @@ def test_ui_prepares_empty_chainlit_readme_in_temp_app_root(tmp_path: Path) -> N
         patch("subprocess.Popen", FakeProcess),
     ):
         assert main(["ui", "--workspace", str(workspace), "--echo"]) == 0
+
+
+def test_prepare_chainlit_app_root_copies_packaged_public_brand_assets(tmp_path: Path) -> None:
+    workspace_root = tmp_path / "workspace"
+    workspace_root.mkdir()
+    workspace = _write_workspace(workspace_root)
+    app_root = tmp_path / "app"
+    app_root.mkdir()
+
+    _prepare_chainlit_app_root(app_root, workspace)
+
+    public = app_root / "public"
+    assert (public / "logo_light.svg").exists()
+    assert (public / "logo_dark.svg").exists()
+    assert (public / "favicon.svg").exists()
+    assert (public / "sutra-sparkle.svg").exists()
+    assert (public / "sutra-brand.css").exists()
 
 
 def _write_workspace(root: Path, base_url: str | None = None, reasoning: str | None = None) -> Path:

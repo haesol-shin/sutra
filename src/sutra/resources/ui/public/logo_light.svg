@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Sutra">
+  <path fill="#111827" d="M32 4l5.8 18.2L56 28l-18.2 5.8L32 60l-5.8-26.2L8 28l18.2-5.8L32 4z"/>
+  <path fill="#2563eb" d="M49 5l2.4 7.6L59 15l-7.6 2.4L49 25l-2.4-7.6L39 15l7.6-2.4L49 5z"/>
+  <path fill="#059669" d="M15 39l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6z"/>
+</svg>

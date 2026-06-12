@@ -292,7 +292,7 @@ class RouterClient:
         return self.first_result if len(self.calls) == 1 else self.second_result
 
 
-def test_ask_router_forces_cafeteria_tool_choice_and_prepends_live_evidence(
+def test_ask_router_forces_cafeteria_tool_choice_and_uses_live_evidence_only(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -309,7 +309,7 @@ def test_ask_router_forces_cafeteria_tool_choice_and_prepends_live_evidence(
                 )
             ],
         ),
-        LlamaResult(content="실시간 식단과 저장된 식단 근거로 답합니다.", model="fake-qwen"),
+        LlamaResult(content="실시간 식단 근거로 답합니다.", model="fake-qwen"),
     )
     live_evidence = Evidence(
         id="live_cafeteria_menu",
@@ -335,9 +335,11 @@ def test_ask_router_forces_cafeteria_tool_choice_and_prepends_live_evidence(
     assert client.calls[1]["tools"] is None
     assert client.calls[1]["tool_choice"] is None
     assert "Evidence:" in client.calls[1]["messages"][-1].content
-    assert "학생회관 점심 메뉴입니다." in client.calls[1]["messages"][-1].content
-    assert answer.answer == "실시간 식단과 저장된 식단 근거로 답합니다."
-    assert answer.evidence[0].id == "live_cafeteria_menu"
+    assert "제2학생회관 점심: 칠리치킨까스" in client.calls[1]["messages"][-1].content
+    assert "학생회관 점심 메뉴입니다." not in client.calls[1]["messages"][-1].content
+    assert answer.answer == "실시간 식단 근거로 답합니다."
+    assert [item.id for item in answer.evidence] == ["live_cafeteria_menu"]
+    assert answer.trace["doc_ids"] == ["live_cafeteria_menu"]
     assert answer.trace["routed_domain"] == "dining"
     assert answer.trace["forced_tool"] == "fetch_cafeteria_menu"
     assert answer.trace["tools_called"] == ["fetch_cafeteria_menu"]

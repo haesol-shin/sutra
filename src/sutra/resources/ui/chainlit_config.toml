@@ -98,8 +98,7 @@ reaction_on_message_received = false
 
 [UI]
 # Name of the assistant.
-# Temporary icon until a real logo_file_url/public avatar asset replaces the sparkle.
-name = "✨ Sutra"
+name = "Sutra"
 
 # default_theme = "dark"
 
@@ -128,7 +127,7 @@ cot = "full"
 
 # Specify a CSS file that can be used to customize the user interface.
 # The CSS file can be served from the public directory or via an external link.
-# custom_css = "/public/test.css"
+custom_css = "/public/sutra-brand.css"
 
 # Specify additional attributes for a custom CSS file
 # custom_css_attributes = "media=\"print\""

@@ -623,18 +623,15 @@ async def on_message(message: cl.Message) -> None:
             await final_msg.send()
             mode = "router_tool_no_result"
         else:
-            evidence_for_prompt = [*fresh_items, *rag_items]
+            use_fresh_only = forced_tool is not None and bool(fresh_items)
+            evidence_for_prompt = list(fresh_items) if use_fresh_only else list(rag_items)
             evidence_for_trace = evidence_for_prompt
             prompt = await cl.make_async(render_prompt)(
                 question,
                 EvidencePack(question=question, items=evidence_for_prompt),
                 config,
             )
-            source_actions = _source_actions(
-                rag_items,
-                fresh_items if forced_tool is not None else None,
-            )
-            final_msg = cl.Message(content="", actions=source_actions)
+            final_msg = cl.Message(content="")
             await final_msg.send()
             if fresh_items:
                 mode = "router_tool_stream"
@@ -668,15 +665,15 @@ async def on_message(message: cl.Message) -> None:
                 final_msg.content = final_answer
                 await final_msg.update()
 
-            if fresh_items:
-                _replace_source_actions(final_msg, rag_items, fresh_items)
+            if use_fresh_only:
+                _replace_source_actions(final_msg, [], fresh_items)
                 await final_msg.update()
 
             if result is None:
                 result = LlamaResult(content=final_answer, model=config.runtime.model)
 
         if forced_tool is not None and fresh_items:
-            evidence_for_trace = [*fresh_items, *rag_items]
+            evidence_for_trace = list(fresh_items)
         elif forced_tool is not None:
             evidence_for_trace = rag_items
 
@@ -694,8 +691,8 @@ async def on_message(message: cl.Message) -> None:
         if final_answer and not getattr(final_msg, "actions", None):
             _replace_source_actions(
                 final_msg,
-                rag_items,
-                fresh_items if forced_tool is not None else None,
+                [] if forced_tool is not None and fresh_items else rag_items,
+                fresh_items if forced_tool is not None and fresh_items else None,
             )
             await final_msg.update()
 

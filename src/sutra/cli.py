@@ -52,6 +52,16 @@ def _prepare_chainlit_app_root(app_root: Path, toml_path: Path) -> None:
         pkg_config = pkg_dir / "resources" / "ui" / "chainlit_config.toml"
         shutil.copy2(pkg_config, chainlit_dir / "config.toml")
 
+    app_public = app_root / "public"
+    app_public.mkdir(exist_ok=True)
+    for public_dir in (
+        pkg_dir / "resources" / "ui" / "public",
+        toml_path.parent / ".chainlit" / "public",
+        Path.cwd() / ".chainlit" / "public",
+    ):
+        if public_dir.exists():
+            shutil.copytree(public_dir, app_public, dirs_exist_ok=True)
+
     pkg_readme = pkg_dir / "resources" / "ui" / "chainlit.md"
     app_readme = app_root / "chainlit.md"
     if pkg_readme.exists():
