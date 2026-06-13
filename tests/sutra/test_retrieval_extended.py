@@ -10,13 +10,13 @@ auto-maps from the top-level JSONL key (notices) and falls back to metadata.doma
 from __future__ import annotations
 
 import json
+from datetime import date as _date
 from pathlib import Path
 
 import pytest
 
-from sutra.config import load_config
+from sutra.config import WorkspacePeriod, load_config
 from sutra.documents import load_documents
-from sutra.models import Document
 from sutra.retrieval import GENERAL_SEARCH_EXCLUDED_DOMAINS, retrieve
 
 
@@ -239,10 +239,6 @@ def test_week_expansion_retrieval_ranking_stable(tmp_path: Path) -> None:
     assert pack.items[0].metadata == {"domain": "academic_calendar", "year": 2026, "month": 3}
 
 # --- A1: academic-semester boundary anchoring ----------------------------
-
-from datetime import date as _date
-
-from sutra.config import WorkspacePeriod
 
 _CNU_PERIODS = [
     WorkspacePeriod(label="2026학년도 제1학기", start=_date(2026, 3, 3), end=_date(2026, 6, 21)),

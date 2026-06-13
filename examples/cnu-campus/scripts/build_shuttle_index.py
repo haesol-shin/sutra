@@ -89,7 +89,6 @@ def _canonical_chunks() -> list[dict]:
 def main() -> None:
     script_dir = Path(__file__).resolve().parent
     workspace_root = script_dir.parent
-    repo_root = workspace_root.parent.parent
     processed_dir = workspace_root / "data" / "processed"
     reports_dir = workspace_root / "data" / "reports"
     processed_dir.mkdir(parents=True, exist_ok=True)

@@ -108,6 +108,7 @@ url = "https://abetlen.github.io/llama-cpp-python/whl/cu121"
 explicit = true
 
 [tool.pytest.ini_options]
+testpaths = ["tests"]
 markers = [
     "integration: mark test as an integration test.",
 ]
