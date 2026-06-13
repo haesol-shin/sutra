@@ -1,1 +1,0 @@
-"""Campus source collection helpers."""
