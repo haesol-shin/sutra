@@ -17,6 +17,8 @@ data/raw/**
 !data/raw/**/*.meta.json
 data/sources/
 model/
+!examples/cnu-campus/model/
+!examples/cnu-campus/model/router_classifier.npz
 models/
 artifacts/
 *.egg-info/
