@@ -63,7 +63,7 @@
 
 ## Legacy Validation Contract (nlp_term)
 
-The following commands belong to the legacy `nlp_term` pipeline validation:
+**REMOVED / HISTORICAL (non-runnable):** `src/nlp_term/` was deleted on 2026-06-13. The commands below are preserved only as a historical record of the legacy Task1/Task2 validation pipeline and no longer run in the active Sutra tree:
 - `uv run python -m nlp_term.collect.run_collect --fetch --output data/sources/source_probe.json`
 - `uv run python -m nlp_term.collect.source_audit --source-probe data/sources/source_probe.json --output docs/evidence/source-fetch-audit-2026-06-08.json --markdown docs/source_fetch_audit_2026_06_08.md`
 - `uv run python -m nlp_term.validators --source-inventory --min-stage1-candidates 5 --min-stage2-candidates 5 --require-stage-candidate-labels`

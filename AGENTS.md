@@ -6,7 +6,7 @@ This repository is for Sutra, a lightweight local-first RAG runtime, with an exa
 
 - **Active package**: [src/sutra](src/sutra) is the active engine core.
 - **Example workspace**: [examples/cnu-campus](examples/cnu-campus) contains the reference configuration and data indexes.
-- **Legacy package**: [src/nlp_term](src/nlp_term) is legacy code and is no longer active. Do **not** read, import, or reference any code under `src/nlp_term/`. All new work is under `src/sutra/` or `examples/cnu-campus/`.
+- **Removed legacy package**: `src/nlp_term/` was removed on 2026-06-13. All active code lives under [src/sutra](src/sutra) for the engine and [examples/cnu-campus](examples/cnu-campus) for the CNU workspace.
 - Treat the original assignment constraints in [docs/term_project_requirements.md](docs/term_project_requirements.md) as reference context. The active default task priorities (Task 1, 2, 3) are de-prioritized/legacy; development is centered on Sutra RAG capabilities.
 - The distribution package is named `sutra` (`pyproject.toml`), the import package is `sutra` (`src/sutra/`), and the CLI entrypoint is `sutra` / `python -m sutra.cli`.
 
@@ -71,6 +71,7 @@ The orchestrating agent keeps design judgment, planning, review, gating, merges,
 - **Commit convention**: strictly `type: message` (feat/fix/test/docs/env/refactor/chore). No scope prefixes. Commit with the **actual current date** — do NOT backdate commits. Branch merges into `dev` use **squash merge** (`git merge --squash <branch>` then one `type: message` commit carrying gate evidence).
 - **User approval gate**: the orchestrator reports findings and a proposed plan FIRST and waits for explicit user approval before dispatching new implementation work, committing, merging, or pushing. "~하자" during discussion is consensus on direction, not a go signal; ask "시작할까요?" and wait.
 - **Push approval gate (REQUIRED)**: `git push` to ANY branch requires explicit user approval each time. Commit locally as needed, then STOP before pushing and ask. Never push autonomously. The **`submission` branch is FROZEN** (it is the graded git-clone source): push only to `dev`; never push to `submission` unless the user explicitly requests it.
+- **Dev CI gate**: `.github/workflows/ci.yml` runs on push/PR to `dev` only (not `submission`): `uv sync --frozen --extra rag --extra ui`, `ruff check .`, then lean pytest (`SUTRA_LEAN_TESTS=1 uv run pytest -q`). Dev-CI-green is a necessary-but-not-sufficient human gate before any approval-gated submission update.
 - **Orchestrator keeps**: architecture and tradeoff decisions, task prioritization, prompt/policy design, diff review, test gating, merges into the main tree, commits on `dev`, and user-facing summaries.
 - **Evidence required** from every delegate: files changed, commits made (if any), verification command output (e.g. `pytest -q` tail). Unverified claims are treated as not done.
 - If a workflow skill or subagent is unavailable, continue inline and note that the work was not delegated.

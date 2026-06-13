@@ -48,7 +48,7 @@ reasoning budget: 0
 
 ## Health Probe
 
-실행 가능 여부 확인:
+과거 실행 가능 여부 확인 명령(현재는 **removed/historical**): `nlp_term.llm.env_probe` was removed with `src/nlp_term/` on 2026-06-13, so this command is no longer runnable. The dated backend probe result below is kept as a historical record.
 
 ```powershell
 uv run python -X utf8 -m nlp_term.llm.env_probe --output model/llm_backend_probe_now.json --pretty
@@ -66,7 +66,7 @@ exact_int4_weight_fp8_kv_supported_locally=False
 
 ## Start Llama Server
 
-임시 실험용 서버 실행 예시:
+과거 임시 실험용 서버 실행 예시(현재는 **removed/historical**): the `nlp_term.llm.env_probe` helper was removed with `src/nlp_term/` on 2026-06-13, so this command is no longer runnable. It is preserved only with the dated probe notes below.
 
 ```powershell
 $llama = (& uv run python -X utf8 -c "from nlp_term.llm.env_probe import executable_path; print(executable_path('llama-server') or '')").Trim()
