@@ -6,9 +6,9 @@ This repository is for Sutra, a lightweight local-first RAG runtime, with an exa
 
 - **Active package**: [src/sutra](src/sutra) is the active engine core.
 - **Example workspace**: [examples/cnu-campus](examples/cnu-campus) contains the reference configuration and data indexes.
-- **Legacy package**: [src/nlp_term](src/nlp_term) is legacy code and is no longer active. Do **not** read, import, or reference any code under `src/nlp_term/`. All new work is under `src/sutra/`, `classifier/`, or `examples/cnu-campus/`.
+- **Legacy package**: [src/nlp_term](src/nlp_term) is legacy code and is no longer active. Do **not** read, import, or reference any code under `src/nlp_term/`. All new work is under `src/sutra/` or `examples/cnu-campus/`.
 - Treat the original assignment constraints in [docs/term_project_requirements.md](docs/term_project_requirements.md) as reference context. The active default task priorities (Task 1, 2, 3) are de-prioritized/legacy; development is centered on Sutra RAG capabilities.
-- Use `../aidm-term-proj` only as a reference for environment and workflow patterns.
+- The distribution package is named `sutra` (`pyproject.toml`), the import package is `sutra` (`src/sutra/`), and the CLI entrypoint is `sutra` / `python -m sutra.cli`.
 
 ## Session Bootstrap
 
@@ -59,19 +59,21 @@ Prefer conventional commit-style subjects when committing, for example `env: con
 
 ## Delegation Policy
 
-Implementation work is delegated to CLI sub-agents; the orchestrating agent (Claude) keeps design judgment, review, merge, and user-facing reporting.
+The orchestrating agent keeps design judgment, planning, review, gating, merges, and user-facing reporting. Bounded implementation is delegated to GJC bundled subagents via the `task`/`subagent` tools; multi-step or risky work goes through the GJC workflow skills.
 
-- **Routing by difficulty**:
-  - `codex` (`codex exec --full-auto -c model_reasoning_effort=high`, model gpt-5.5): **default for all code work** — implementation, fixes, parsers, entry-point work, anything where failure-mode design matters.
-  - `opencode` (deepseek-v4-flash-free): mechanical/secondary work only. **Code tasks delegated to opencode MUST use the Executor agent** defined at [.opencode/agent/executor.md](.opencode/agent/executor.md): `opencode run --agent executor "Read tmp/TASK.md and execute it"`. Plain `opencode run` without the agent is reserved for non-code chores.
-  - Internal Claude subagents (search, research, review assistance): model **sonnet**.
-- **Task contract**: every delegation gets a self-contained `tmp/TASK.md` in its worktree containing verified facts, explicit deliverables, file-scope constraints ("do not touch X — owned by parallel agent"), required verification commands, and a stop-condition report format. Launch with a one-line pointer prompt ("Read tmp/TASK.md and execute it").
-- **Review loop**: when an executor session finishes, a FRESH codex session reviews the branch diff (writes `tmp/REVIEW_round<N>.md`), the executor session addresses findings, repeated for at most 3 rounds; unresolved issues escalate to the orchestrator. opencode outputs get the same codex review.
-- **Commit convention**: strictly `type: message` (feat/fix/test/docs/env/refactor/chore). No scope prefixes. Branch merges into dev use **squash merge** (`git merge --squash <branch>` then one `type: message` commit carrying gate evidence) — merge-commit chains were judged noisy by the user.
-- **User approval gate**: the orchestrator reports findings and a proposed plan FIRST and waits for explicit user approval before dispatching new work, committing, or merging. "~하자" during discussion is consensus on direction, not a go signal; ask "시작할까요?" and wait.
+- **Workflow skills** (use the `/skill:<name>` entrypoints):
+  - `ralplan`: consensus planning (Planner → Architect → Critic) for non-trivial architecture/sequencing. Stops at a `pending-approval` plan under `.gjc/plans/ralplan/<run-id>/`; never edits product source before approval.
+  - `ultragoal`: durable goal-tracked execution of an approved plan, with a mandatory completion gate (ai-slop sweep + architect review + executor QA) before checkpointing; ledger at `.gjc/ultragoal/`.
+  - `team`: tmux-backed coordinated workers — only when interactive parallel worker sessions are actually needed.
+- **Role agents** (via the `task` tool, run as detached subagents): `executor` (bounded implementation/fix slices), `planner` (read-only sequencing), `architect` (read-only architecture/code review, CLEAR/WATCH/BLOCK), `critic` (read-only plan critique). Front-load each assignment with verified facts, explicit file scope, acceptance criteria, and a "skip gates/formatters — orchestrator runs them once" instruction.
+- **Delegation contract**: every delegated task is self-contained (verified facts, explicit deliverables, file-scope constraints, required focused verification, stop-condition report). Subagents do NOT run project-wide gates/formatters or commit; the orchestrator runs the union gate and owns commits.
+- **Review/gate loop**: after implementation, the orchestrator runs the slop sweep, focused + full verification, then a fresh `architect` review (and `executor` QA/red-team for behavioral changes). Non-`APPROVE`/non-`CLEAR` verdicts block completion and are iterated until clean.
+- **Commit convention**: strictly `type: message` (feat/fix/test/docs/env/refactor/chore). No scope prefixes. Commit with the **actual current date** — do NOT backdate commits. Branch merges into `dev` use **squash merge** (`git merge --squash <branch>` then one `type: message` commit carrying gate evidence).
+- **User approval gate**: the orchestrator reports findings and a proposed plan FIRST and waits for explicit user approval before dispatching new implementation work, committing, merging, or pushing. "~하자" during discussion is consensus on direction, not a go signal; ask "시작할까요?" and wait.
+- **Push approval gate (REQUIRED)**: `git push` to ANY branch requires explicit user approval each time. Commit locally as needed, then STOP before pushing and ask. Never push autonomously. The **`submission` branch is FROZEN** (it is the graded git-clone source): push only to `dev`; never push to `submission` unless the user explicitly requests it.
 - **Orchestrator keeps**: architecture and tradeoff decisions, task prioritization, prompt/policy design, diff review, test gating, merges into the main tree, commits on `dev`, and user-facing summaries.
-- **Evidence required** from every delegate: files changed, commits made, verification command output (e.g. `pytest -q` tail). Unverified claims are treated as not done.
-- If both CLIs are unavailable, continue inline and note that the work was not delegated.
+- **Evidence required** from every delegate: files changed, commits made (if any), verification command output (e.g. `pytest -q` tail). Unverified claims are treated as not done.
+- If a workflow skill or subagent is unavailable, continue inline and note that the work was not delegated.
 
 ## Worktree Environment Policy
 
@@ -102,4 +104,4 @@ Implementation work is delegated to CLI sub-agents; the orchestrating agent (Cla
 
 - **Git worktree required**: Each parallel agent MUST operate in its own isolated git worktree. Never run multiple agents in the same working directory — file conflicts, port collisions, and dependency state will silently corrupt results.
 - Worktree naming: `../sutra-{group}-{id}` (e.g. `../sutra-a1`, `../sutra-b2`).
-- After task completion and review pass, the agent pushes its branch. The team lead merges branches sequentially into the main working tree.
+- After task completion and review pass, the agent reports its branch and evidence; it does NOT push. The orchestrator merges branches into the main tree and pushes ONLY after explicit user approval (see the push approval gate in Delegation Policy).
