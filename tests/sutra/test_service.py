@@ -10,7 +10,6 @@ import pytest
 
 from sutra import ask, chat
 from sutra.config import load_config
-from sutra.errors import ConfigError
 from sutra.llama import EchoClient
 from sutra.models import Evidence, LlamaResult, Message, ToolCall
 from sutra.service import _predict_router_label, _resolve_classifier_model_path
@@ -1064,14 +1063,6 @@ def test_ask_router_echo_client_accepts_forced_tool_choice(
     assert answer.trace["routed_domain"] == "dining"
     assert answer.trace["forced_tool"] == "fetch_cafeteria_menu"
     assert answer.trace["tools_called"] == []
-
-
-@pytest.mark.skip(reason="answer prompt validation removed; render_prompt no longer checks answer prompt existence")
-def test_ask_rejects_missing_configured_answer_prompt(tmp_path: Path) -> None:
-    workspace = _write_workspace(tmp_path, answer_prompt="prompts/missing.md")
-
-    with pytest.raises(ConfigError, match="configured answer prompt not found"):
-        ask("수강신청 언제 시작해?", workspace=workspace, client=FakeClient())
 
 
 def _write_workspace(

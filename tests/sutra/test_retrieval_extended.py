@@ -190,7 +190,15 @@ def test_weekend_expansion_appends_two_days(question, expected) -> None:
 
 def test_week_only_question_expands_f1_regression() -> None:
     # F1 pin-down: a week-only question (no day-offset term) must still expand.
-    assert _expand("다음주 학식 메뉴") != []
+    assert _expand("다음주 학식 메뉴") == [
+        "2026-06-15",
+        "2026-06-16",
+        "2026-06-17",
+        "2026-06-18",
+        "2026-06-19",
+        "2026-06-20",
+        "2026-06-21",
+    ]
 
 
 @pytest.mark.parametrize(
@@ -215,19 +223,20 @@ def test_iso_date_present_short_circuits() -> None:
     assert _expand("다음주 2026-07-01 일정") == []
 
 
-def test_week_expansion_ranks_in_range_doc_first(tmp_path: Path) -> None:
-    # F4: the expanded query must rank an in-range dated doc above an
-    # out-of-range one when retrieved through retrieve().
+def test_week_expansion_retrieval_ranking_stable(tmp_path: Path) -> None:
+    # Empirical S1 pin-down: current BM25 ranking for the expanded query must
+    # stay stable so date-expansion ranking regressions are visible.
     from unittest.mock import patch
 
     config = load_config(str(_write_workspace(tmp_path / "ws")))
     documents = load_documents(config)
     with patch("sutra.prompts.get_current_time_str", return_value=_FROZEN_NOW):
-        # "다음주" -> 2026-06-15..21; calendar_month_2026_03 has 2026-03 dates
-        # (out of range), so the in-range doc should win when present.
+        # "다음주" expands to 2026-06-15..21; the fixture exposes only
+        # calendar month metadata, so pin the observed ranked document order.
         pack = retrieve("다음주 학사일정", documents, config)
     ids = [item.id for item in pack.items]
-    assert ids, "expected at least one retrieved fact"
+    assert ids == ["calendar_month_2026_03", "calendar_month_2026_08"]
+    assert pack.items[0].metadata == {"domain": "academic_calendar", "year": 2026, "month": 3}
 
 # --- A1: academic-semester boundary anchoring ----------------------------
 

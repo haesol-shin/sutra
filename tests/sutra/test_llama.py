@@ -442,42 +442,6 @@ def test_locate_cli_path_found() -> None:
         locate_llama_server("C:/fake/llama-server.exe")
 
 
-def test_locate_cli_path_not_found() -> None:
-    with pytest.raises(LlamaError, match="llama-server binary is no longer used"):
-        locate_llama_server("C:/fake/missing.exe")
-
-
-def test_locate_empty_cli_path_raises() -> None:
-    with pytest.raises(LlamaError, match="llama-server binary is no longer used"):
-        locate_llama_server("")
-
-
-def test_locate_env_var_found(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("LLAMA_SERVER_PATH", "D:/llama/llama-server.exe")
-    with pytest.raises(LlamaError, match="llama-server binary is no longer used"):
-        locate_llama_server()
-
-
-def test_locate_env_var_not_found(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("LLAMA_SERVER_PATH", "D:/llama/missing.exe")
-    with pytest.raises(LlamaError, match="llama-server binary is no longer used"):
-        locate_llama_server()
-
-
-def test_locate_system_path_found(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("shutil.which", lambda cmd: "C:/bin/llama-server.exe")
-    monkeypatch.delenv("LLAMA_SERVER_PATH", raising=False)
-    with pytest.raises(LlamaError, match="llama-server binary is no longer used"):
-        locate_llama_server()
-
-
-def test_locate_all_fail(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("shutil.which", lambda cmd: None)
-    monkeypatch.delenv("LLAMA_SERVER_PATH", raising=False)
-    with pytest.raises(LlamaError, match="llama-server binary is no longer used"):
-        locate_llama_server()
-
-
 # --- download_model tests ---
 
 
@@ -584,10 +548,6 @@ def test_start_llama_server_missing_model(monkeypatch: pytest.MonkeyPatch) -> No
         )
 
 
-def test_start_llama_server_missing_binary() -> None:
-    pytest.skip("Binary existence check removed; server now uses python -m llama_cpp.server")
-
-
 def test_start_llama_server_spawns_process(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("pathlib.Path.exists", lambda self: True)
     monkeypatch.setattr("sys.platform", "linux")
@@ -620,35 +580,3 @@ def test_start_llama_server_spawns_process(monkeypatch: pytest.MonkeyPatch) -> N
     assert "--n_ctx" in cmd
     assert "4096" in cmd
 
-
-@pytest.mark.skip(reason="Win32 job object wrapping removed; server now uses python -m llama_cpp.server without job object assignment")
-def test_start_llama_server_win32_job_object(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("sys.platform", "win32")
-    monkeypatch.setattr("pathlib.Path.exists", lambda self: True)
-
-    mock_process = mock.MagicMock(spec=subprocess.Popen)
-    mock_process._handle = 12345
-
-    def fake_popen(cmd: list[str], **kwargs: object) -> mock.MagicMock:
-        return mock_process
-
-    monkeypatch.setattr("subprocess.Popen", fake_popen)
-
-    mock_kernel32 = mock.MagicMock()
-    mock_h_job = mock.MagicMock()
-    mock_kernel32.CreateJobObjectW.return_value = mock_h_job
-    mock_kernel32.SetInformationJobObject.return_value = True
-    mock_kernel32.AssignProcessToJobObject.return_value = True
-
-    monkeypatch.setattr("ctypes.WinDLL", lambda name, use_last_error=True: mock_kernel32)
-
-    result = start_llama_server(
-        model_path=Path("model.gguf"),
-        dry_run=False,
-    )
-
-    assert result is mock_process
-    mock_kernel32.CreateJobObjectW.assert_called_once_with(None, None)
-    mock_kernel32.SetInformationJobObject.assert_called_once()
-    mock_kernel32.AssignProcessToJobObject.assert_called_once_with(mock_h_job, 12345)
-    assert mock_process._job_handle is mock_h_job

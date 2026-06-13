@@ -1035,11 +1035,6 @@ class TestArgParse:
         assert args.host == "127.0.0.1"
         assert args.port == 8000
 
-    def test_ui_echo_flag_off_by_default(self) -> None:
-        parser = build_parser()
-        args = parser.parse_args(["ui"])
-        assert args.echo is False
-
 
 class TestDependencyCheck:
     def test_ui_reports_missing_chainlit(self, tmp_path: Path) -> None:

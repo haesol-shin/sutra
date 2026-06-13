@@ -249,10 +249,10 @@ def test_generated_graduation_index_ocr_flag():
     lines = [json.loads(line) for line in index_path.read_text(encoding="utf-8").splitlines() if line.strip()]
     ocr_pages = [doc["metadata"]["page_no"] for doc in lines if doc["metadata"]["needs_ocr"]]
     non_ocr_pages = [doc["metadata"]["page_no"] for doc in lines if not doc["metadata"]["needs_ocr"]]
-    # At least some pages may need OCR (depends on actual PDF content)
-    # This assertion is informative — the test passes regardless
-    total_pages = len(lines)
-    assert len(ocr_pages) + len(non_ocr_pages) == total_pages
+    assert ocr_pages == [3]
+    assert non_ocr_pages == [1, 2, 4, 5]
+    assert len(ocr_pages) == 1
+    assert len(non_ocr_pages) == 4
 
 
 def test_merged_knowledge_index_includes_graduation():

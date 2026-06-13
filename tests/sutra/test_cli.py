@@ -3,8 +3,6 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
-
 from sutra.cli import _prepare_chainlit_app_root, build_parser, main
 from sutra.config import load_config
 
@@ -60,7 +58,7 @@ def test_prepare_chainlit_app_root_copies_packaged_public_brand_assets(tmp_path:
     assert (public / "sutra-brand.css").exists()
 
 
-def _write_workspace(root: Path, base_url: str | None = None, reasoning: str | None = None) -> Path:
+def _write_workspace(root: Path, base_url: str | None = None) -> Path:
     (root / "data").mkdir()
     (root / "prompts").mkdir()
     (root / "data" / "index.jsonl").write_text(
@@ -78,8 +76,6 @@ def _write_workspace(root: Path, base_url: str | None = None, reasoning: str | N
     ]
     if base_url is not None:
         lines.append(f'base_url = "{base_url}"')
-    if reasoning is not None:
-        lines.append(f'reasoning = "{reasoning}"')
     lines += [
         '',
         '[rag]',
@@ -185,45 +181,6 @@ def test_llama_serve_port_default_fallback(tmp_path: Path) -> None:
         main(["llama", "serve", "--workspace", str(workspace), "--dry-run"])
 
     assert mock_start.call_args[1]["port"] == 18080
-
-
-@pytest.mark.skip(reason="--llama-path arg removed; locate_llama_server is deprecated")
-def test_llama_serve_with_llama_path(tmp_path: Path) -> None:
-    workspace = _write_workspace(tmp_path)
-
-    with (
-        patch("sutra.cli.locate_llama_server", return_value=Path("/custom/llama-server")) as mock_locate,
-        patch("sutra.cli.start_llama_server", return_value=None),
-    ):
-        main([
-            "llama", "serve",
-            "--workspace", str(workspace),
-            "--llama-path", "/custom/path",
-            "--dry-run",
-        ])
-
-    mock_locate.assert_called_once_with("/custom/path")
-
-
-@pytest.mark.skip(reason="--reasoning arg removed; use --chat-template-kwargs instead")
-def test_llama_serve_reasoning_fallback_and_override(tmp_path: Path) -> None:
-    workspace = _write_workspace(tmp_path, reasoning="off")
-
-    with (
-        patch("sutra.cli.locate_llama_server", return_value=Path("/fake/llama-server")),
-        patch("sutra.cli.start_llama_server", return_value=None) as mock_start,
-    ):
-        main(["llama", "serve", "--workspace", str(workspace), "--dry-run"])
-
-    assert mock_start.call_args[1]["reasoning"] == "off"
-
-    with (
-        patch("sutra.cli.locate_llama_server", return_value=Path("/fake/llama-server")),
-        patch("sutra.cli.start_llama_server", return_value=None) as mock_start,
-    ):
-        main(["llama", "serve", "--workspace", str(workspace), "--reasoning", "on", "--dry-run"])
-
-    assert mock_start.call_args[1]["reasoning"] == "on"
 
 
 def test_llama_serve_dry_run_shows_resolved_model_path(tmp_path: Path, monkeypatch, capsys) -> None:

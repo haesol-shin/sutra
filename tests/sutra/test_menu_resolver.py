@@ -118,7 +118,7 @@ def test_masking_prevents_weekday_false_positives(
 @pytest.mark.parametrize("question", ["6월 메뉴", "11월 메뉴"])
 def test_month_only_does_not_resolve_to_monday(question: str, config: SimpleNamespace) -> None:
     result = resolve_menu_dates(question, config)
-    assert result is None or result != ["2026-06-08"]
+    assert result is None
 
 
 def test_dateless_question_returns_none(config: SimpleNamespace) -> None:
