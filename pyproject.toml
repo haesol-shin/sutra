@@ -14,8 +14,8 @@ dependencies = [
 ]
 
 # Install:
-#   Local XPU:  uv sync --extra xpu --extra rag --extra ui --extra legacy
-#   Colab CUDA: uv sync --extra cuda --extra rag --extra ui --extra legacy
+#   Local XPU:  uv sync --extra xpu --extra rag --extra ui
+#   Colab CUDA: uv sync --extra cuda --extra rag --extra ui
 [project.optional-dependencies]
 xpu = [
   "torch==2.9.1",
@@ -32,7 +32,6 @@ rag = [
   # Bounded so a --system install does not clobber Colab's preinstalled numpy
   # (ABI break risk); the range covers Colab's 2.0.x and the locked 2.2.x.
   "numpy>=1.26,<2.3",
-  "joblib",
 ]
 # torch-dependent embedding backend, opt-in only: the grading environment
 # pins torch==2.5.1 and the default install path must not touch it.
@@ -41,9 +40,6 @@ embeddings = [
 ]
 ui = [
   "chainlit>=1.1.302",
-]
-legacy = [
-  "scikit-learn",
 ]
 
 [project.scripts]

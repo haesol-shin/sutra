@@ -1,0 +1,272 @@
+{
+  "artifact": "examples/cnu-campus/model/router_classifier.npz",
+  "artifact_sha256": "498d30ff3cce1418e18ede742edf8d45dc23ecbdc2c2f4e2b696344d91b05cdd",
+  "row_count": 53,
+  "rows": [
+    {
+      "id": "public_probe:public_probe_01",
+      "question": "졸업까지 몇 학점 들어야 하나요?",
+      "expected_label": 0
+    },
+    {
+      "id": "public_probe:public_probe_02",
+      "question": "이번 학기 수강신청은 언제 시작하나요?",
+      "expected_label": 2
+    },
+    {
+      "id": "public_probe:public_probe_03",
+      "question": "오늘 학식 뭐 나와요?",
+      "expected_label": 3
+    },
+    {
+      "id": "public_probe:public_probe_04",
+      "question": "다음주에 셔틀버스는 정상 운행하나요?",
+      "expected_label": 4
+    },
+    {
+      "id": "public_probe:public_probe_05",
+      "question": "이번에 올라온 공지사항 어디서 볼 수 있어요?",
+      "expected_label": 1
+    },
+    {
+      "id": "public_probe:public_probe_06",
+      "question": "새로 업데이트된 셔틀버스 정류장이 있을까요?",
+      "expected_label": 4
+    },
+    {
+      "id": "public_probe:public_probe_07",
+      "question": "5월 이후로 변동된 학사일정이 있을까요?",
+      "expected_label": 2
+    },
+    {
+      "id": "public_probe:public_probe_08",
+      "question": "다음주 학식 뭐 나와요?",
+      "expected_label": 3
+    },
+    {
+      "id": "public_probe:public_probe_09",
+      "question": "가장 최근에 올라온 공지사항은 언제 게시되었나요?",
+      "expected_label": 1
+    },
+    {
+      "id": "public_probe:public_probe_10",
+      "question": "충남대학교 인공지능학과 24학번의 경우 프로젝트 수업을 몇 개 들어야 하나요?",
+      "expected_label": 0
+    },
+    {
+      "id": "public_probe:public_probe_11",
+      "question": "이번 학기 종강일이 언제인가요?",
+      "expected_label": 2
+    },
+    {
+      "id": "public_probe:public_probe_12",
+      "question": "이번 여름 계절학기 종강일이 언제인 가요?",
+      "expected_label": 2
+    },
+    {
+      "id": "public_probe:public_probe_13",
+      "question": "다음주 화요일 2학생회관 메뉴가 어떻게 되나요?",
+      "expected_label": 3
+    },
+    {
+      "id": "public_probe:public_probe_14",
+      "question": "토익 장학금을 받으려면 성적이 몇 점 이상이어야 하나요?",
+      "expected_label": 0
+    },
+    {
+      "id": "probe39:public_probe_01",
+      "question": "졸업까지 몇 학점 들어야 하나요?",
+      "expected_label": 0
+    },
+    {
+      "id": "probe39:public_probe_02",
+      "question": "이번 학기 수강신청은 언제 시작하나요?",
+      "expected_label": 2
+    },
+    {
+      "id": "probe39:public_probe_03",
+      "question": "오늘 학식 뭐 나와요?",
+      "expected_label": 3
+    },
+    {
+      "id": "probe39:public_probe_04",
+      "question": "다음주에 셔틀버스는 정상 운행하나요?",
+      "expected_label": 4
+    },
+    {
+      "id": "probe39:public_probe_05",
+      "question": "이번에 올라온 공지사항 어디서 볼 수 있어요?",
+      "expected_label": 1
+    },
+    {
+      "id": "probe39:public_probe_06",
+      "question": "새로 업데이트된 셔틀버스 정류장이 있을까요?",
+      "expected_label": 4
+    },
+    {
+      "id": "probe39:public_probe_07",
+      "question": "5월 이후로 변동된 학사일정이 있을까요?",
+      "expected_label": 2
+    },
+    {
+      "id": "probe39:public_probe_08",
+      "question": "다음주 학식 뭐 나와요?",
+      "expected_label": 3
+    },
+    {
+      "id": "probe39:public_probe_09",
+      "question": "가장 최근에 올라온 공지사항은 언제 게시되었나요?",
+      "expected_label": 1
+    },
+    {
+      "id": "probe39:public_probe_10",
+      "question": "충남대학교 인공지능학과 24학번의 경우 프로젝트 수업을 몇 개 들어야 하나요?",
+      "expected_label": 0
+    },
+    {
+      "id": "probe39:public_probe_11",
+      "question": "이번 학기 종강일이 언제인가요?",
+      "expected_label": 2
+    },
+    {
+      "id": "probe39:public_probe_12",
+      "question": "이번 여름 계절학기 종강일이 언제인 가요?",
+      "expected_label": 2
+    },
+    {
+      "id": "probe39:public_probe_13",
+      "question": "다음주 화요일 2학생회관 메뉴가 어떻게 되나요?",
+      "expected_label": 3
+    },
+    {
+      "id": "probe39:public_probe_14",
+      "question": "토익 장학금을 받으려면 성적이 몇 점 이상이어야 하나요?",
+      "expected_label": 0
+    },
+    {
+      "id": "probe39:gp001",
+      "question": "졸업하려면 총 몇 학점 채워야 하나요?",
+      "expected_label": 0
+    },
+    {
+      "id": "probe39:gp002",
+      "question": "졸업요건 중 교양 필수 영역은 어디에서 확인하나요?",
+      "expected_label": 0
+    },
+    {
+      "id": "probe39:gp003",
+      "question": "복수전공하면 졸업학점 기준이 달라지나요?",
+      "expected_label": 0
+    },
+    {
+      "id": "probe39:gp004",
+      "question": "졸업하려면 영어 성적 같은 졸업인증을 꼭 내야 하나요?",
+      "expected_label": 0
+    },
+    {
+      "id": "probe39:gp005",
+      "question": "2025 교육과정 기준 졸업학점 알려줘",
+      "expected_label": 0
+    },
+    {
+      "id": "probe39:gp013",
+      "question": "졸업요건 변경 안내 공지가 공지사항에 올라왔는지 찾아줘",
+      "expected_label": 1
+    },
+    {
+      "id": "probe39:gp014",
+      "question": "컴퓨터융합학부 졸업요건 관련 최신 학과 공지 있어?",
+      "expected_label": 0
+    },
+    {
+      "id": "probe39:gp015",
+      "question": "약학대 졸업예정자 안내 공지가 이번 주에 나온 거 있어?",
+      "expected_label": 1
+    },
+    {
+      "id": "probe39:gp016",
+      "question": "졸업인증제 기준 변경 공지가 작년 이후 있었나요?",
+      "expected_label": 0
+    },
+    {
+      "id": "probe39:gp017",
+      "question": "체육교육과 졸업 실기 관련 일정 공지 찾아줘",
+      "expected_label": 1
+    },
+    {
+      "id": "probe39:gp031",
+      "question": "이번 학기 수강신청은 언제 시작하나요?",
+      "expected_label": 2
+    },
+    {
+      "id": "probe39:gp032",
+      "question": "이번 학기 종강일이 언제인가요?",
+      "expected_label": 2
+    },
+    {
+      "id": "probe39:gp033",
+      "question": "이번 여름 계절학기 종강일이 언제인가요?",
+      "expected_label": 2
+    },
+    {
+      "id": "probe39:gp034",
+      "question": "2026학년도 1학기 중간고사 기간이 언제야?",
+      "expected_label": 2
+    },
+    {
+      "id": "probe39:gp035",
+      "question": "휴학 신청 마감일이 정확히 며칠이야?",
+      "expected_label": 2
+    },
+    {
+      "id": "probe39:gp043",
+      "question": "오늘 학식 뭐 나와요?",
+      "expected_label": 3
+    },
+    {
+      "id": "probe39:gp044",
+      "question": "오늘 학생회관별 식단을 아침 점심 저녁으로 알려줘",
+      "expected_label": 3
+    },
+    {
+      "id": "probe39:gp045",
+      "question": "다음주 학식 뭐 나와요?",
+      "expected_label": 3
+    },
+    {
+      "id": "probe39:gp046",
+      "question": "다음주 화요일 2학생회관 메뉴가 어떻게 되나요?",
+      "expected_label": 3
+    },
+    {
+      "id": "probe39:gp047",
+      "question": "오늘 저녁에 채식 메뉴 있는 식당 있어?",
+      "expected_label": 3
+    },
+    {
+      "id": "probe39:gp049",
+      "question": "다음주에 셔틀버스는 정상 운행하나요?",
+      "expected_label": 4
+    },
+    {
+      "id": "probe39:gp050",
+      "question": "오늘 셔틀 정상 운행 중인가요?",
+      "expected_label": 4
+    },
+    {
+      "id": "probe39:gp051",
+      "question": "현재 월평역 셔틀 운행하나요?",
+      "expected_label": 4
+    },
+    {
+      "id": "probe39:gp052",
+      "question": "다음주 월요일 통학버스 운영하나요?",
+      "expected_label": 4
+    },
+    {
+      "id": "probe39:gp053",
+      "question": "새로 업데이트된 셔틀버스 정류장이 있을까요?",
+      "expected_label": 4
+    }
+  ]
+}

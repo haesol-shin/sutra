@@ -5038,12 +5038,8 @@ cuda = [
 embeddings = [
     { name = "sentence-transformers" },
 ]
-legacy = [
-    { name = "scikit-learn" },
-]
 rag = [
     { name = "bm25s" },
-    { name = "joblib" },
     { name = "kiwipiepy" },
     { name = "numpy" },
 ]
@@ -5073,7 +5069,6 @@ requires-dist = [
     { name = "bm25s", marker = "extra == 'rag'", specifier = ">=0.3.9" },
     { name = "chainlit", marker = "extra == 'ui'", specifier = ">=1.1.302" },
     { name = "huggingface-hub", specifier = ">=0.23" },
-    { name = "joblib", marker = "extra == 'rag'" },
     { name = "kiwipiepy", marker = "extra == 'rag'", specifier = ">=0.23.1" },
     { name = "llama-cpp-python", extras = ["server"], marker = "extra == 'cuda'", specifier = ">=0.3.28", index = "https://abetlen.github.io/llama-cpp-python/whl/cu121", conflict = { package = "sutra", extra = "cuda" } },
     { name = "llama-cpp-python", extras = ["server"], marker = "extra == 'xpu'", specifier = ">=0.3.28", index = "https://abetlen.github.io/llama-cpp-python/whl/vulkan", conflict = { package = "sutra", extra = "xpu" } },
@@ -5082,13 +5077,12 @@ requires-dist = [
     { name = "pymupdf" },
     { name = "pytorch-triton-xpu", marker = "extra == 'xpu'", specifier = "==3.5.0", index = "https://download.pytorch.org/whl/xpu" },
     { name = "requests" },
-    { name = "scikit-learn", marker = "extra == 'legacy'" },
     { name = "sentence-transformers", marker = "extra == 'embeddings'", specifier = ">=2.7.0" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
     { name = "torch", marker = "extra == 'cuda'", specifier = ">=2.5.1", index = "https://download.pytorch.org/whl/cu121", conflict = { package = "sutra", extra = "cuda" } },
     { name = "torch", marker = "extra == 'xpu'", specifier = "==2.9.1", index = "https://download.pytorch.org/whl/xpu", conflict = { package = "sutra", extra = "xpu" } },
 ]
-provides-extras = ["xpu", "cuda", "rag", "embeddings", "ui", "legacy"]
+provides-extras = ["xpu", "cuda", "rag", "embeddings", "ui"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -5134,7 +5128,7 @@ resolution-markers = [
     "python_full_version < '3.13' and extra != 'extra-5-sutra-cuda' and extra != 'extra-5-sutra-xpu'",
 ]
 dependencies = [
-    { name = "mpmath" },
+    { name = "mpmath", marker = "extra == 'extra-5-sutra-xpu' or extra != 'extra-5-sutra-cuda'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/83/d3/803453b36afefb7c2bb238361cd4ae6125a569b4db67cd9e79846ba2d68c/sympy-1.14.0.tar.gz", hash = "sha256:d3d3fe8df1e5a0b42f0e7bdf50541697dbe7d23746e894990c030e2b05e72517", size = 7793921, upload-time = "2025-04-27T18:05:01.611Z" }
 wheels = [
@@ -5578,7 +5572,7 @@ resolution-markers = [
     "python_full_version < '3.12'",
 ]
 dependencies = [
-    { name = "filelock", marker = "extra == 'extra-5-sutra-cuda'" },
+    { name = "filelock", marker = "(python_full_version < '3.13' and extra == 'extra-5-sutra-cuda') or (extra == 'extra-5-sutra-cuda' and extra == 'extra-5-sutra-xpu')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/98/29/69aa56dc0b2eb2602b553881e34243475ea2afd9699be042316842788ff5/triton-3.1.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6b0dd10a925263abbe9fa37dcde67a5e9b2383fc269fdf59f5657cac38c5d1d8", size = 209460013, upload-time = "2024-10-14T16:05:32.106Z" },

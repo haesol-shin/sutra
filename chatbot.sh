@@ -93,9 +93,9 @@ ensure_uv() {
 uv_install() {
   # Install editable clone + runtime extras into the active interpreter.
   if command -v uv >/dev/null 2>&1; then
-    uv pip install --system -e "$REPO_DIR[rag,ui,legacy]" || return 1
+    uv pip install --system -e "$REPO_DIR[rag,ui]" || return 1
   else
-    "${PYTHON_CMD[@]}" -m pip install -e "$REPO_DIR[rag,ui,legacy]" || return 1
+    "${PYTHON_CMD[@]}" -m pip install -e "$REPO_DIR[rag,ui]" || return 1
   fi
 }
 

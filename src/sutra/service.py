@@ -3,10 +3,11 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 import time
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Literal, Protocol
+from typing import Any, Literal, NamedTuple, Protocol
 
 from sutra.config import Config, load_config
 from sutra.documents import load_documents
@@ -24,6 +25,7 @@ from sutra.tools import INTERNAL_TO_DISPLAY, dispatch, get_tool_definitions
 from sutra.tracelog import TraceSource, append_chat_trace, default_trace_path
 
 logger = logging.getLogger(__name__)
+_ROUTER_WHITESPACE_RE = re.compile(r"\s\s+")
 
 TOOL_ONLY_SYSTEM_INSTRUCTION = (
     "저장된 정보가 필요하면 search_knowledge_base를 호출하고, "
@@ -57,7 +59,19 @@ ROUTER_FORCED_TOOLS = {
     "dining": "fetch_cafeteria_menu",
     "notices": "fetch_recent_notices",
 }
-CLASSIFIER_MODEL_PATH = Path("model/classifier.joblib")
+
+ROUTER_ARTIFACT_PATH = Path("model/router_classifier.npz")
+
+
+class RouterClassifierArtifact(NamedTuple):
+    schema_version: int
+    source_classifier_sha256: str
+    terms: Any
+    idf: Any
+    coef: Any
+    intercept: Any
+    classes: Any
+    vocabulary: dict[str, int]
 
 
 def route_question(question: str, config: Config) -> tuple[str, str | None, int | None]:
@@ -413,15 +427,12 @@ def _forced_tool_choice(tool_name: str) -> dict[str, dict[str, str] | str]:
     return {"type": "function", "function": {"name": tool_name}}
 
 
-def _resolve_classifier_model_path(config: Config | None = None) -> Path | None:
+def _resolve_router_artifact_path(config: Config | None = None) -> Path | None:
     candidates: list[tuple[str, Path]] = []
-    if env_path := os.getenv("SUTRA_CLASSIFIER_PATH"):
+    if env_path := os.getenv("SUTRA_ROUTER_ARTIFACT_PATH"):
         candidates.append(("env", Path(env_path).expanduser().resolve()))
     if config is not None:
-        candidates.append(("workspace", (config.root / CLASSIFIER_MODEL_PATH).resolve()))
-    repo_root = Path(__file__).resolve().parents[2]
-    candidates.append(("repo", (repo_root / CLASSIFIER_MODEL_PATH).resolve()))
-    candidates.append(("cwd", (Path.cwd() / CLASSIFIER_MODEL_PATH).resolve()))
+        candidates.append(("workspace", (config.root / ROUTER_ARTIFACT_PATH).resolve()))
 
     seen: set[Path] = set()
     for source, path in candidates:
@@ -429,34 +440,115 @@ def _resolve_classifier_model_path(config: Config | None = None) -> Path | None:
             continue
         seen.add(path)
         if path.exists():
-            logger.info("Router classifier path candidate %s exists: %s", source, path)
+            logger.info("Router artifact path candidate %s exists: %s", source, path)
             return path
-        logger.info("Router classifier path candidate %s missing: %s", source, path)
+        logger.info("Router artifact path candidate %s missing: %s", source, path)
 
-    logger.info("Router classifier model not found; falling back to RAG-only")
+    logger.info("Router artifact not found; falling back to RAG-only")
     return None
 
 
 @lru_cache(maxsize=4)
-def _load_classifier(model_path: Path):
-    """Load the joblib classifier pipeline once per path (cached for batch runs)."""
-    import joblib
+def _load_router_artifact(artifact_path: str | Path) -> RouterClassifierArtifact:
+    """Load the frozen numpy router classifier artifact once per path."""
+    import numpy as np
 
-    return joblib.load(model_path)
+    path = Path(artifact_path)
+    with np.load(path, allow_pickle=False) as data:
+        schema_version = int(data["schema_version"].item())
+        source_classifier_sha256 = str(data["source_classifier_sha256"].item())
+        terms = np.asarray(data["terms"]).copy()
+        idf = np.asarray(data["idf"], dtype=np.float64).copy()
+        coef = np.asarray(data["coef"], dtype=np.float64).copy()
+        intercept = np.asarray(data["intercept"], dtype=np.float64).copy()
+        classes = np.asarray(data["classes"], dtype=np.int64).copy()
+
+    if schema_version != 1:
+        raise ValueError(f"unsupported router artifact schema_version={schema_version}")
+    if terms.dtype.hasobject:
+        raise ValueError("router artifact terms must load without pickle/object dtype")
+    if terms.ndim != 1:
+        raise ValueError(f"router artifact terms must be 1-D, got shape={terms.shape}")
+    if idf.shape != (terms.shape[0],):
+        raise ValueError(f"router artifact idf shape mismatch: {idf.shape} vs terms={terms.shape}")
+    if coef.ndim != 2 or coef.shape[1] != terms.shape[0]:
+        raise ValueError(f"router artifact coef shape mismatch: {coef.shape} vs terms={terms.shape}")
+    if intercept.shape != (coef.shape[0],):
+        raise ValueError(f"router artifact intercept shape mismatch: {intercept.shape} vs coef={coef.shape}")
+    if classes.shape != (coef.shape[0],):
+        raise ValueError(f"router artifact classes shape mismatch: {classes.shape} vs coef={coef.shape}")
+
+    vocabulary = {str(term): index for index, term in enumerate(terms.tolist())}
+    if len(vocabulary) != terms.shape[0]:
+        raise ValueError("router artifact terms contain duplicates")
+    return RouterClassifierArtifact(
+        schema_version=schema_version,
+        source_classifier_sha256=source_classifier_sha256,
+        terms=terms,
+        idf=idf,
+        coef=coef,
+        intercept=intercept,
+        classes=classes,
+        vocabulary=vocabulary,
+    )
+
+
+def _router_char_wb_ngrams(question: str) -> list[str]:
+    text = _ROUTER_WHITESPACE_RE.sub(" ", question.lower())
+    ngrams: list[str] = []
+    for token in text.split():
+        word = f" {token} "
+        for n in range(2, 6):
+            offset = 0
+            ngrams.append(word[offset : offset + n])
+            while offset + n < len(word):
+                offset += 1
+                ngrams.append(word[offset : offset + n])
+            if offset == 0:
+                break
+    return ngrams
+
+
+def _router_decision_scores_from_artifact(question: str, artifact: RouterClassifierArtifact):
+    import numpy as np
+
+    counts: dict[int, float] = {}
+    for ngram in _router_char_wb_ngrams(question):
+        index = artifact.vocabulary.get(ngram)
+        if index is not None:
+            counts[index] = counts.get(index, 0.0) + 1.0
+
+    scores = np.asarray(artifact.intercept, dtype=np.float64).copy()
+    if not counts:
+        return scores
+
+    weighted = [(index, count * float(artifact.idf[index])) for index, count in counts.items()]
+    norm = float(np.sqrt(sum(value * value for _, value in weighted)))
+    if norm > 0.0:
+        for index, value in weighted:
+            scores += np.asarray(artifact.coef[:, index], dtype=np.float64) * (value / norm)
+    return scores
+
+
+def _router_predict_label_from_artifact(question: str, artifact: RouterClassifierArtifact) -> int:
+    scores = _router_decision_scores_from_artifact(question, artifact)
+    import numpy as np
+
+    return int(artifact.classes[int(np.argmax(scores))])
 
 
 def _predict_router_label(question: str, *, config: Config | None = None) -> int | None:
-    model_path = _resolve_classifier_model_path(config)
-    if model_path is None:
+    artifact_path = _resolve_router_artifact_path(config)
+    if artifact_path is None:
         return None
 
     try:
-        model = _load_classifier(model_path)
-        label = int(model.predict([question])[0])
-        logger.info("Router classifier prediction succeeded: label=%s", label)
+        artifact = _load_router_artifact(artifact_path)
+        label = _router_predict_label_from_artifact(question, artifact)
+        logger.info("Router artifact prediction succeeded: label=%s", label)
         return label
     except Exception:
-        logger.warning("Router classifier prediction failed; falling back to RAG-only", exc_info=True)
+        logger.warning("Router artifact prediction failed; falling back to RAG-only", exc_info=True)
         return None
 
 

@@ -12,7 +12,7 @@ from sutra import ask, chat
 from sutra.config import load_config
 from sutra.llama import EchoClient
 from sutra.models import Evidence, LlamaResult, Message, ToolCall
-from sutra.service import _predict_router_label, _resolve_classifier_model_path
+from sutra.service import _predict_router_label
 
 
 class FakeClient:
@@ -714,7 +714,7 @@ def test_ask_router_uses_rag_only_for_graduation(
     assert answer.trace["tools_called"] == []
 
 
-def test_ask_router_falls_back_to_rag_when_classifier_load_fails(
+def test_ask_router_falls_back_to_rag_when_router_artifact_load_fails(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -722,14 +722,14 @@ def test_ask_router_falls_back_to_rag_when_classifier_load_fails(
     client = RouterClient(LlamaResult(content="저장된 학사일정 근거로 답합니다.", model="fake-qwen"))
 
     monkeypatch.setattr(
-        "sutra.service._resolve_classifier_model_path",
-        lambda config=None: tmp_path / "model" / "classifier.joblib",
+        "sutra.service._resolve_router_artifact_path",
+        lambda config=None: tmp_path / "model" / "router_classifier.npz",
     )
 
-    def _raise_on_load(model_path: Path) -> Any:
-        raise RuntimeError("classifier load failed")
+    def _raise_on_load(artifact_path: Any) -> Any:
+        raise RuntimeError("router artifact load failed")
 
-    monkeypatch.setattr("sutra.service._load_classifier", _raise_on_load)
+    monkeypatch.setattr("sutra.service._load_router_artifact", _raise_on_load)
 
     answer = ask("수강신청 언제 시작해?", workspace=workspace, client=client, mode="router")
 
@@ -791,100 +791,52 @@ def test_predict_router_label_returns_none_when_prediction_fails(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setattr(
-        "sutra.service._resolve_classifier_model_path",
-        lambda config=None: Path("model") / "classifier.joblib",
+        "sutra.service._resolve_router_artifact_path",
+        lambda config=None: Path("model") / "router_classifier.npz",
     )
 
-    def _raise_on_load(model_path: Path) -> Any:
-        raise RuntimeError("missing classifier model")
+    def _raise_on_load(artifact_path: Any) -> Any:
+        raise RuntimeError("router artifact load failed")
 
-    monkeypatch.setattr("sutra.service._load_classifier", _raise_on_load)
+    monkeypatch.setattr("sutra.service._load_router_artifact", _raise_on_load)
 
     assert _predict_router_label("오늘 식단 알려줘") is None
 
 
-def test_resolve_classifier_model_path_prefers_env_path(
+def test_predict_router_label_uses_resolved_router_artifact(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    workspace_root = tmp_path / "workspace"
-    workspace_root.mkdir()
-    workspace = _write_workspace(workspace_root)
-    env_model = tmp_path / "env" / "classifier.joblib"
-    workspace_model = tmp_path / "workspace" / "model" / "classifier.joblib"
-    env_model.parent.mkdir()
-    workspace_model.parent.mkdir()
-    env_model.write_text("env", encoding="utf-8")
-    workspace_model.write_text("workspace", encoding="utf-8")
-    monkeypatch.setenv("SUTRA_CLASSIFIER_PATH", str(env_model))
-
-    assert _resolve_classifier_model_path(load_config(workspace)) == env_model.resolve()
-
-
-def test_resolve_classifier_model_path_prefers_workspace_before_cwd(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    cwd = tmp_path / "cwd"
-    workspace_root = tmp_path / "workspace"
-    workspace_root.mkdir()
-    workspace = _write_workspace(workspace_root)
-    cwd_model = cwd / "model" / "classifier.joblib"
-    workspace_model = workspace_root / "model" / "classifier.joblib"
-    cwd_model.parent.mkdir(parents=True)
-    workspace_model.parent.mkdir()
-    cwd_model.write_text("cwd", encoding="utf-8")
-    workspace_model.write_text("workspace", encoding="utf-8")
-    monkeypatch.chdir(cwd)
-    monkeypatch.delenv("SUTRA_CLASSIFIER_PATH", raising=False)
-
-    assert _resolve_classifier_model_path(load_config(workspace)) == workspace_model.resolve()
-
-
-def test_resolve_classifier_model_path_returns_none_when_missing(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    workspace_root = tmp_path / "workspace"
-    workspace_root.mkdir()
-    workspace = _write_workspace(workspace_root)
-    monkeypatch.chdir(tmp_path)
-    monkeypatch.delenv("SUTRA_CLASSIFIER_PATH", raising=False)
-    # Use a sentinel relative path so no candidate (env/workspace/repo/cwd) can
-    # resolve to a real file — including the development checkout's model/ dir.
-    monkeypatch.setattr(
-        "sutra.service.CLASSIFIER_MODEL_PATH",
-        Path("model") / "__missing_for_test__.joblib",
+    repo_npz = (
+        Path(__file__).resolve().parents[2]
+        / "examples"
+        / "cnu-campus"
+        / "model"
+        / "router_classifier.npz"
     )
+    assert repo_npz.exists(), f"router artifact missing: {repo_npz}"
 
-    assert _resolve_classifier_model_path(load_config(workspace)) is None
-
-
-def test_predict_router_label_uses_resolved_classifier_path(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
+    # 1) env-resolved artifact path
     workspace_root = tmp_path / "workspace"
     workspace_root.mkdir()
     workspace = _write_workspace(workspace_root)
-    classifier_path = tmp_path / "workspace" / "model" / "classifier.joblib"
-    classifier_path.parent.mkdir()
-    classifier_path.write_text("classifier", encoding="utf-8")
-    seen_paths: list[Path] = []
-
-    class _FakeModel:
-        @staticmethod
-        def predict(questions: list[str]) -> list[int]:
-            return [3]
-
-    def _capture_load(model_path: Path) -> Any:
-        seen_paths.append(model_path)
-        return _FakeModel()
-
-    monkeypatch.setattr("sutra.service._load_classifier", _capture_load)
-
+    monkeypatch.setenv("SUTRA_ROUTER_ARTIFACT_PATH", str(repo_npz))
     assert _predict_router_label("오늘 학식 뭐야?", config=load_config(workspace)) == 3
-    assert seen_paths == [classifier_path.resolve()]
+
+    # 2) workspace-resolved artifact path (no env)
+    monkeypatch.delenv("SUTRA_ROUTER_ARTIFACT_PATH", raising=False)
+    ws2_root = tmp_path / "workspace2"
+    ws2_root.mkdir()
+    workspace2 = _write_workspace(ws2_root)
+    (ws2_root / "model").mkdir(parents=True, exist_ok=True)
+    (ws2_root / "model" / "router_classifier.npz").write_bytes(repo_npz.read_bytes())
+    assert _predict_router_label("오늘 학식 뭐야?", config=load_config(workspace2)) == 3
+
+    # 3) missing artifact -> RAG fallback (None)
+    ws3_root = tmp_path / "workspace3"
+    ws3_root.mkdir()
+    workspace3 = _write_workspace(ws3_root)
+    assert _predict_router_label("오늘 학식 뭐야?", config=load_config(workspace3)) is None
 
 
 def test_ask_router_forces_recent_notices_tool_choice_and_persists_trace(
