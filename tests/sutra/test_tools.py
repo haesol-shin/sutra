@@ -845,7 +845,12 @@ def test_tool_schemas_enum_constrain_string_arguments() -> None:
     dates_schema = schemas["fetch_cafeteria_menu"]["properties"]["dates"]
     assert dates_schema["minItems"] == 1
     assert dates_schema["maxItems"] == 5
-    assert dates_schema["items"]["pattern"] == r"^\d{4}-\d{2}-\d{2}$"
+    dates_item = dates_schema["items"]
+    assert dates_item["type"] == "string"
+    # No JSON-schema regex pattern: llama.cpp GBNF conversion turns `\d` into invalid
+    # string-literal escapes, which breaks the forced tool-call grammar at load time.
+    # The server validates ISO dates (dining_router._ISO_DATE_RE) instead.
+    assert "pattern" not in dates_item
     assert schemas["fetch_page_text"]["properties"]["source_id"]["enum"] == ["셔틀버스 안내", "수강신청 안내"]
     exposed = json.dumps([schemas["fetch_recent_notices"], schemas["fetch_page_text"]], ensure_ascii=False)
     assert "univ_academic" not in exposed
