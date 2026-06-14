@@ -561,6 +561,7 @@ def test_start_llama_server_spawns_process(monkeypatch: pytest.MonkeyPatch) -> N
 
     monkeypatch.setattr("subprocess.Popen", fake_popen)
 
+    monkeypatch.setattr("sutra.llama._free_gpu_from_stale_servers", lambda: None)
     result = start_llama_server(
         model_path=Path("/models/qwen.gguf"),
         port=18080,
