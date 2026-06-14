@@ -71,7 +71,7 @@ def test_full_tool_definitions_snapshot() -> None:
         get_tool_definitions(include_knowledge_base=True), ensure_ascii=False, sort_keys=True
     )
     digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()
-    assert digest == "33ed8b24a83c480811ab1446f1f2fe52aa69d5ae371652a14f2232fff2f6b7c2"
+    assert digest == "74ea6653e6289830480512075fb62ab6580ecc235613f033856f5b20a2de8c63"
 
 
 def test_fetch_cafeteria_menu_schema_snapshot() -> None:
@@ -80,7 +80,7 @@ def test_fetch_cafeteria_menu_schema_snapshot() -> None:
     assert "date" not in props
     dates = props["dates"]
     assert dates["type"] == "array"
-    assert dates["items"] == {"type": "string", "pattern": r"^\d{4}-\d{2}-\d{2}$"}
+    assert dates["items"] == {"type": "string", "description": "YYYY-MM-DD"}
     assert dates["minItems"] == 1
     assert dates["maxItems"] == 5
     assert props["cafeteria"]["enum"] == [

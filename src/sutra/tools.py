@@ -948,7 +948,7 @@ def _parse_cs_notices(html: str, *, base_url: str = CS_BACHELOR_NOTICE_URL) -> l
         "properties": {
             "dates": {
                 "type": "array",
-                "items": {"type": "string", "pattern": r"^\d{4}-\d{2}-\d{2}$"},
+                "items": {"type": "string", "description": "YYYY-MM-DD"},
                 "minItems": 1,
                 "maxItems": 5,
                 "description": "YYYY-MM-DD 날짜 목록, 최대 5일",
